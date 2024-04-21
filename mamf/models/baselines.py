@@ -9,8 +9,6 @@ class MAMFTextOnly(MAMFBase):
     def __init__(self, head):
         """
         Args:
-            tokenizer: tokenizer to use
-            embedder: embedder to use
             head: head to use
         """
         super().__init__()
@@ -39,8 +37,6 @@ class MAMFAudioOnly(MAMFBase):
     def __init__(self, head):
         """
         Args:
-            tokenizer: tokenizer to use
-            embedder: embedder to use
             head: head to use
         """
         super().__init__()
