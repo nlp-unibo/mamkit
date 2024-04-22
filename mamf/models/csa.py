@@ -1,19 +1,30 @@
 import torch
-import torch.nn as nn
-
 from core import MAMFBase
-from common import PositionalEncoding
 
-class CSA(MAMFBase):
-    def __init__(self, tokenizer, embedder, transformer, head, embedding_dim, max_length):
+class MAMFCSA(MAMFBase):
+    def __init__(self, transformer, head, positional_encoder):
+        """
+        Args:
+            transformer: transformer to use
+            head: head to use
+            positional_encoder: positional encoder to use
+        """
         super().__init__()
-        self.pos_encoder = PositionalEncoding(embedding_dim, dual_modality=False, max_len=max_length)
-        self.tokenizer = tokenizer
-        self.embedder = embedder
         self.transformer = transformer
         self.head = head
+        self.pos_encoder = positional_encoder
 
-    def forward(self, text_features, text_attentions, audio_features, audio_attentions):
+    
+    def forward(self, text_features, text_attentions, audio_features, audio_attentions, **kwargs):
+        """
+        Forward pass of the model
+        Args:
+            text_features: texts to use
+            text_attentions: text attentions to use
+            audio_features: audio features to use
+            audio_attentions: audio attentions to use
+        """
+
         concatenated_attentions = torch.cat((text_attentions, audio_attentions.float()), dim=1)
         
         audio_features = self.pos_encoder(audio_features)
@@ -26,3 +37,6 @@ class CSA(MAMFBase):
         transformer_output_sum = (transformer_output * concatenated_attentions.unsqueeze(-1)).sum(axis=1)
         transformer_output_pooled = transformer_output_sum / concatenated_attentions.sum(axis=1).unsqueeze(-1)
         return self.head(transformer_output_pooled)
+
+
+        
