@@ -22,7 +22,8 @@ class MAMFEnsemble(MAMFBase):
         """
         Forward pass of the model
         Args:
-            texts: texts to use
+            text_features: texts to use
+            text_attentions: text attentions to use
             audio_features: audio features to use
             audio_attentions: audio attentions to use
         """
