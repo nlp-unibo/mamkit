@@ -57,7 +57,7 @@ class MAMFAudioOnly(MAMFBase):
             audio_attentions: audio attentions to use
         """
         padding_mask = ~audio_attention.to(torch.bool)        
-        full_attention_mask = torch.zeros((audio_features.shape[1],audio_features.shape[1]), dtype=torch.bool).to(device)
+        full_attention_mask = torch.zeros((audio_features.shape[1],audio_features.shape[1]), dtype=torch.bool).to(audio_features.device)
         
         audio_features = self.positional_encoding(audio_features)
         transformer_output = self.transformer(audio_features, mask=full_attention_mask, src_key_padding_mask=padding_mask)
