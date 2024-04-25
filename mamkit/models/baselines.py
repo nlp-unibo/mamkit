@@ -14,16 +14,14 @@ class MAMKitTextOnly(MAMKitBase):
         super().__init__()
         self.head = head
 
-    def forward(self, text_features, text_attentions, audio_features, audio_attention):
+    def forward(self, text_data, audio_data, **kwargs):
         """
         Forward pass of the model
         Args:
-            text_features: texts to use
-            text_attentions: text attentions to use
-            audio_features: audio features to use
-            audio_attentions: audio attentions to use
+            text_data: texts to use
+            audio_data: audio to use
         """
-
+        text_features, text_attentions = text_data
         # pooling transformer output
         text_features_sum = (text_features * text_attentions.unsqueeze(-1)).sum(axis=1)
         text_features_pooled = text_features_sum / text_attentions.sum(axis=1).unsqueeze(-1)
@@ -47,15 +45,14 @@ class MAMKitAudioOnly(MAMKitBase):
         self.layer_norm = LayerNorm(d_model=transformer.d_model)
         self.dropout = torch.nn.Dropout(dropout)
 
-    def forward(self, text_features, text_attentions, audio_features, audio_attention):
+    def forward(self, text_data, audio_data, **kwargs):
         """
         Forward pass of the model
         Args:
-            text_features: texts to use
-            text_attentions: text attentions to use
-            audio_features: audio features to use
-            audio_attentions: audio attentions to use
+            text_data: texts to use
+            audio_data: audio to use
         """
+        audio_features, audio_attention = audio_data
         padding_mask = ~audio_attention.to(torch.bool)        
         full_attention_mask = torch.zeros((audio_features.shape[1],audio_features.shape[1]), dtype=torch.bool).to(audio_features.device)
         

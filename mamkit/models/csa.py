@@ -15,15 +15,15 @@ class MAMKitCSA(MAMKitBase):
         self.pos_encoder = positional_encoder
 
     
-    def forward(self, text_features, text_attentions, audio_features, audio_attentions, **kwargs):
+    def forward(self, text_data, audio_data, **kwargs):
         """
         Forward pass of the model
         Args:
-            text_features: texts to use
-            text_attentions: text attentions to use
-            audio_features: audio features to use
-            audio_attentions: audio attentions to use
+            text_data: texts to use
+            audio_data: audio to use
         """
+        text_features, text_attentions = text_data
+        audio_features, audio_attentions = audio_data
 
         concatenated_attentions = torch.cat((text_attentions, audio_attentions.float()), dim=1)
         

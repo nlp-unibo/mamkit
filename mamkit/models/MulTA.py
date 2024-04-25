@@ -1,5 +1,6 @@
 import torch
 from core import MAMKitBase
+from torch import nn
 from ..modules.transformer_modules import PositionwiseFeedForward, PositionalEncoding
 
 class MulTA_CrossAttentionBlock(nn.Module):
@@ -72,14 +73,16 @@ class MAMKitMulTA(MAMKitBase):
         self.pos_encoder = PositionalEncoding(embedding_dim, dual_modality=False)
         self.hidden_state_index = hidden_state_index
     
-    def forward(self, texts, audio_features, audio_attentions):
+    def forward(self, text_data, audio_data):
         """
         Forward pass of the model
         Args:
-            texts: texts to use
-            audio_features: audio features to use
-            audio_attentions: audio attentions to use
+            text_data: texts to use
+            audio_data: audio to use
         """
+        texts = text_data
+        audio_features, audio_attentions = audio_data
+
         tokenizer_output = tokenizer(texts, return_tensors='pt', padding=True, truncation=False).to(device)
         embedder_output = embedder(**tokenizer_output, output_hidden_states=True)
         if self.hidden_state_index == -1:

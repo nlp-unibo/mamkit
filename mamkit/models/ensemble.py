@@ -18,15 +18,16 @@ class MAMKitEnsemble(MAMKitBase):
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
     
-    def forward(self, text_features, text_attentions, audio_features, audio_attentions, **kwargs):
+    def forward(self, text_data, audio_data, **kwargs):
         """
         Forward pass of the model
         Args:
-            text_features: texts to use
-            text_attentions: text attentions to use
-            audio_features: audio features to use
-            audio_attentions: audio attentions to use
+            text_data: texts to use
+            audio_data: audio to use
         """
+        text_features, text_attentions = text_data
+        audio_features, audio_attentions = audio_data
+
         text_logits = self.text_model(text_features, text_attentions)
         audio_logits = self.audio_model(audio_features, audio_attentions)
         

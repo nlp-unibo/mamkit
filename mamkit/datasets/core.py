@@ -21,12 +21,12 @@ class MAMKitModularDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         text, audio, target = self.dataset[idx]
         
-        text_features, text_attentions = self.text_preprocessor(text)
-        audio_features, audio_attentions = self.audio_preprocessor(audio)
+        text_data = self.text_preprocessor(text) # epected to return a list of features or a list of features and attentions
+        audio_data = self.audio_preprocessor(audio) # epected to return a list of features or a list of features and attentions
 
         target = self.target_preprocessor(target)
 
-        return text_features, text_attentions, audio_features, audio_attentions, target
+        return text_data, audio_data, target
 
     def __len__(self):
         return len(self.text_dataset)
