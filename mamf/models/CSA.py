@@ -1,7 +1,7 @@
 import torch
-from core import MAMFBase
+from core import MAMKitBase
 
-class MAMFCSA(MAMFBase):
+class MAMKitCSA(MAMKitBase):
     def __init__(self, transformer, head, positional_encoder):
         """
         Args:

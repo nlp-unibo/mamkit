@@ -3,13 +3,13 @@ import torch.utils
 
 from typing import Tuple
 
-class MAMFDataset(torch.utils.data.Dataset):
+class MAMKitDataset(torch.utils.data.Dataset):
     # returns [text_features, text_attentions, audio_features, audio_attentions, target]
     def __getitem__(self, idx) -> Tuple[list, list, list, list, list]:
         raise NotImplementedError
 
 
-class MAMFModularDataset(torch.utils.data.Dataset):
+class MAMKitModularDataset(torch.utils.data.Dataset):
     def __init__(self, dataset, text_preprocessor, audio_preprocessor, target_preprocessor):
         super().__init__()
         self.dataset = dataset
@@ -33,7 +33,7 @@ class MAMFModularDataset(torch.utils.data.Dataset):
 
 
 
-class MAMFListDataset(torch.utils.data.Dataset):
+class MAMKitListDataset(torch.utils.data.Dataset):
     def __init__(self, *datasets):
         assert all(len(datasets[0]) == len(dataset) for dataset in datasets)
         self.datasets = datasets

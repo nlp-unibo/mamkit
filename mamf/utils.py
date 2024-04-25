@@ -1,7 +1,7 @@
 import lightning as L
 
 
-class MAMFLightingModel(L.LightningModule):
+class MAMKitLightingModel(L.LightningModule):
     def __init__(self, model, loss_function, optimizer_class, **optimizer_kwargs):
         super().__init__()
         self.model = model
@@ -23,4 +23,4 @@ class MAMFLightingModel(L.LightningModule):
         return self.optimizer_class(self.model.parameters(), **self.optimizer_kwargs)
 
 def to_lighting_model(model, loss_function, optimizer_class, **optimizer_kwargs):
-    return MAMFLightingModel(model, loss_function, optimizer_class, **optimizer_kwargs)
+    return MAMKitLightingModel(model, loss_function, optimizer_class, **optimizer_kwargs)

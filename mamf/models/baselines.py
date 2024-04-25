@@ -1,8 +1,8 @@
 import torch
-from core import MAMFBase
+from core import MAMKitBase
 from ..modules.transformer_modules import PositionalEncoding, LayerNorm
 
-class MAMFTextOnly(MAMFBase):
+class MAMKitTextOnly(MAMKitBase):
     """
     Class for the text-only model
     """
@@ -30,7 +30,7 @@ class MAMFTextOnly(MAMFBase):
         return self.head(text_features_pooled)
 
 
-class MAMFAudioOnly(MAMFBase):
+class MAMKitAudioOnly(MAMKitBase):
     """
     Class for the audio-only model
     """

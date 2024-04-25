@@ -1,5 +1,5 @@
 import torch
-from core import MAMFBase
+from core import MAMKitBase
 from ..modules.transformer_modules import PositionwiseFeedForward, PositionalEncoding
 
 class MulTA_CrossAttentionBlock(nn.Module):
@@ -45,7 +45,7 @@ class MulTA_CrossAttentionBlock(nn.Module):
         out = out_ffn + add_out
         return out
 
-class MAMFMulTA(MAMFBase):
+class MAMKitMulTA(MAMKitBase):
     """
     Class for the unaligned multimodal model
     """

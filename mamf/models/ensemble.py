@@ -1,7 +1,7 @@
 import torch
-from core import MAMFBase
+from core import MAMKitBase
 
-class MAMFEnsemble(MAMFBase):
+class MAMKitEnsemble(MAMKitBase):
     def __init__(self, text_model, audio_model, lower_bound=0.3, upper_bound=0.7):
         """
         Args:
