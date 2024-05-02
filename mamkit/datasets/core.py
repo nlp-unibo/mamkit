@@ -24,3 +24,11 @@ class MAMKitPrecomputedDataset(torch.utils.data.Dataset):
     
     def __getitem__(self, idx):
         return self.text_features[idx], self.audio_features[idx], self.labels[idx]
+
+class MAMKitMonomodalDataset(torch.utils.data.Dataset):
+    def __init__(self, features, labels):
+        self.features = features
+        self.labels = labels
+    
+    def __getitem__(self, idx):
+        return self.features[idx], self.labels[idx]
