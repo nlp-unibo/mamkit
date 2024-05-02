@@ -1,5 +1,5 @@
 import torch
-from core import MAMKitBase
+from .core import MAMKitBase
 
 class MAMKitEnsemble(MAMKitBase):
     def __init__(self, text_model, audio_model, lower_bound=0.3, upper_bound=0.7):
@@ -18,18 +18,18 @@ class MAMKitEnsemble(MAMKitBase):
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
     
-    def forward(self, text_data, audio_data, **kwargs):
+    def forward(self, data, **kwargs):
         """
         Forward pass of the model
         Args:
             text_data: texts to use
             audio_data: audio to use
         """
-        text_features, text_attentions = text_data
-        audio_features, audio_attentions = audio_data
 
-        text_logits = self.text_model(text_features, text_attentions)
-        audio_logits = self.audio_model(audio_features, audio_attentions)
+        text, audio = data
+
+        text_logits = self.text_model(text)
+        audio_logits = self.audio_model(audio)
         
         text_probabilities = torch.nn.functional.softmax(text_logits)
         audio_probabilities = torch.nn.functional.softmax(audio_logits)

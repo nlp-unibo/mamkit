@@ -1,5 +1,5 @@
 import torch
-from core import MAMKitBase
+from .core import MAMKitBase
 from torch import nn
 from ..modules.transformer_modules import PositionwiseFeedForward, PositionalEncoding
 
@@ -50,7 +50,7 @@ class MAMKitMulTA(MAMKitBase):
     """
     Class for the unaligned multimodal model
     """
-    def __init__(self, embedding_dim, d_ffn, n_blocks, head, dropout_prob=0.1, hidden_state_index=8):
+    def __init__(self, embedding_dim, d_ffn, n_blocks, head, dropout_prob=0.1):
         """
         Args:
             embedding_dim: dimension of the embedding
@@ -71,28 +71,19 @@ class MAMKitMulTA(MAMKitBase):
             MulTA_CrossAttentionBlock(self.embedding_dim, self.d_ffn,  dropout_prob=self.dropout_prob) for _ in range(self.n_blocks)
         ])
         self.pos_encoder = PositionalEncoding(embedding_dim, dual_modality=False)
-        self.hidden_state_index = hidden_state_index
     
-    def forward(self, text_data, audio_data):
+    def forward(self, data):
         """
         Forward pass of the model
         Args:
-            text_data: texts to use
-            audio_data: audio to use
+            data: data to use
         """
-        texts = text_data
-        audio_features, audio_attentions = audio_data
-
-        tokenizer_output = tokenizer(texts, return_tensors='pt', padding=True, truncation=False).to(device)
-        embedder_output = embedder(**tokenizer_output, output_hidden_states=True)
-        if self.hidden_state_index == -1:
-            text_features = embedder_output['last_hidden_state']
-        else:
-            assert self.hidden_state_index < len(embedder_output['hidden_states']), f'hidden_state_index must be between 0 and {len(embedder_output["hidden_states"])}'
-            text_features = embedder_output['hidden_states'][self.hidden_state_index]
-        text_features = self.pos_encoder(text_features)
-        text_attentions = tokenizer_output.attention_mask
         
+        text, audio = data
+        text_features, text_attentions = text
+        audio_features, audio_attentions = audio
+
+        text_features = self.pos_encoder(text_features)        
         audio_features = self.pos_encoder(audio_features)
         
         # cross modal attention blocks for text

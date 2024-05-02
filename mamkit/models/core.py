@@ -1,5 +1,5 @@
 import torch
 
 class MAMKitBase(torch.nn.Module):
-    def forward(self, text_data, audio_data, **kwargs):
+    def forward(self, data, **kwargs):
         raise NotImplementedError
