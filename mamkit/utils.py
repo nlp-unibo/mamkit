@@ -1,13 +1,14 @@
-# import lightning as L
+import lightning as L
 import os
 from mamkit.datasets import MAMKitPrecomputedDataset, MAMKitMonomodalDataset
 import pandas as pd
+from mamkit.datasets import prepare_for_task
 import torch
 
 SUPPORTED_DATASETS = {
     'usdbelec' : {
         'audio' : {
-            'wavlm-single': 'https://huggingface.co/datasets/andreazecca3/wavlm-single/resolve/main/WavLMsingle.zip',
+            'wav2vec2-single': 'https://huggingface.co/datasets/andreazecca3/wav2vec2-single/resolve/main/wav2vec2Single.zip',
             'wavlm-downsampled': ...,
         },
         'text' : {
@@ -16,29 +17,42 @@ SUPPORTED_DATASETS = {
     }
 }
 
-# class MAMKitLightingModel(L.LightningModule):
-#     def __init__(self, model, loss_function, optimizer_class, **optimizer_kwargs):
-#         super().__init__()
-#         self.model = model
-#         self.loss_function = loss_function
-#         self.optimizer_class = optimizer_class
-#         self.optimizer_kwargs = optimizer_kwargs
+class MAMKitLightingModel(L.LightningModule):
+    def __init__(self, model, loss_function, optimizer_class, **optimizer_kwargs):
+        super().__init__()
+        self.model = model
+        self.loss_function = loss_function
+        self.optimizer_class = optimizer_class
+        self.optimizer_kwargs = optimizer_kwargs
 
-#     def forward(self, x):
-#         return self.model(x)
+    def forward(self, x):
+        return self.model(x)
 
-#     def training_step(self, batch, batch_idx):
-#         inputs = { k: v for k, v in batch.items() if k != 'targets' }
+    def training_step(self, batch, batch_idx):
+        inputs, targets = batch[:-1], batch[-1]        
+        y_hat = self.model(inputs)
+        loss = self.loss_function(y_hat, targets)
+        return loss
+    
+    def validation_step(self, batch, batch_idx):
+        inputs, targets = batch[:-1], batch[-1]
+        y_hat = self.model(inputs)
+        loss = self.loss_function(y_hat, targets)
+        return loss
 
-#         y_hat = self.model(**inputs)
-#         loss = self.loss_function(y_hat, batch['targets'])
-#         return loss
+    def test_step(self, batch, batch_idx):
+        # compute accuracy
+        inputs, targets = batch[:-1], batch[-1]
+        y_hat = self.model(inputs)
+        loss = self.loss_function(y_hat, targets)
+        acc = (y_hat.argmax(dim=1) == targets).float().mean()
+        return {'loss': loss, 'acc': acc}
 
-#     def configure_optimizers(self):
-#         return self.optimizer_class(self.model.parameters(), **self.optimizer_kwargs)
+    def configure_optimizers(self):
+        return self.optimizer_class(self.model.parameters(), **self.optimizer_kwargs)
 
-# def to_lighting_model(model, loss_function, optimizer_class, **optimizer_kwargs):
-#     return MAMKitLightingModel(model, loss_function, optimizer_class, **optimizer_kwargs)
+def to_lighting_model(model, loss_function, optimizer_class, **optimizer_kwargs):
+    return MAMKitLightingModel(model, loss_function, optimizer_class, **optimizer_kwargs)
 
 
 
