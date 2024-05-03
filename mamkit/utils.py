@@ -108,7 +108,7 @@ def load_precomputed_audio(dataset_name, audio_preprocessing, download_dir='./da
     return audio_train, audio_val, audio_test
 
 
-def get_audio_dataset(dataset_name, audio_preprocessing=None, download_dir='./data'):
+def get_audio_dataset(dataset_name, audio_preprocessing=None, taskname='acc', download_dir='./data'):
     if dataset_name.lower() not in SUPPORTED_DATASETS.keys():
         raise ValueError(f'Dataset {dataset_name} not supported. Supported datasets: {SUPPORTED_DATASETS.keys()}')
     
@@ -116,9 +116,9 @@ def get_audio_dataset(dataset_name, audio_preprocessing=None, download_dir='./da
         audio_train, audio_val, audio_test = load_precomputed_audio(dataset_name, audio_preprocessing, download_dir)
         labels_train, labels_val, labels_test = load_labels(dataset_name)
 
-        train_dataset = MAMKitMonomodalDataset(audio_train, labels_train)
-        val_dataset = MAMKitMonomodalDataset(audio_val, labels_val)
-        test_dataset = MAMKitMonomodalDataset(audio_test, labels_test)
+        train_dataset = MAMKitMonomodalDataset(audio_train, labels_train, taskname)
+        val_dataset = MAMKitMonomodalDataset(audio_val, labels_val, taskname)
+        test_dataset = MAMKitMonomodalDataset(audio_test, labels_test, taskname)
         return train_dataset, val_dataset, test_dataset
     elif callable(audio_preprocessing) or audio_preprocessing is None:
         raise NotImplementedError('Audio preprocessing is not implemented yet.')
@@ -126,7 +126,7 @@ def get_audio_dataset(dataset_name, audio_preprocessing=None, download_dir='./da
         raise ValueError(f'Audio preprocessing must be a string or a callable. Received: {audio_preprocessing}')
 
 
-def get_text_dataset(dataset_name, text_preprocessing=None):
+def get_text_dataset(dataset_name, text_preprocessing=None, taskname='acc'):
     if dataset_name.lower() not in SUPPORTED_DATASETS.keys():
         raise ValueError(f'Dataset {dataset_name} not supported. Supported datasets: {SUPPORTED_DATASETS.keys()}')
     
@@ -138,14 +138,14 @@ def get_text_dataset(dataset_name, text_preprocessing=None):
         text_val = list(map(text_preprocessing, raw_text_val))
         text_test = list(map(text_preprocessing, raw_text_test))
         labels_train, labels_val, labels_test = load_labels(dataset_name)
-        train_dataset = MAMKitMonomodalDataset(text_train, labels_train)
-        val_dataset = MAMKitMonomodalDataset(text_val, labels_val)
-        test_dataset = MAMKitMonomodalDataset(text_test, labels_test)
+        train_dataset = MAMKitMonomodalDataset(text_train, labels_train, taskname)
+        val_dataset = MAMKitMonomodalDataset(text_val, labels_val, taskname)
+        test_dataset = MAMKitMonomodalDataset(text_test, labels_test, taskname)
         return train_dataset, val_dataset, test_dataset
     
 
 
-def get_multimodal_dataset(dataset_name, text_preprocessing=None, audio_preprocessing=None, download_dir='./data'):
+def get_multimodal_dataset(dataset_name, text_preprocessing=None, audio_preprocessing=None,  taskname='acc', download_dir='./data',):
     if dataset_name.lower() not in SUPPORTED_DATASETS.keys():
         raise ValueError(f'Dataset {dataset_name} not supported. Supported datasets: {SUPPORTED_DATASETS.keys()}')
     
@@ -172,8 +172,8 @@ def get_multimodal_dataset(dataset_name, text_preprocessing=None, audio_preproce
     ### Labels
     labels_train, labels_val, labels_test = load_labels(dataset_name)
 
-    train = MAMKitPrecomputedDataset(text_train, audio_train, labels_train)
-    val = MAMKitPrecomputedDataset(text_val, audio_val, labels_val)
-    test = MAMKitPrecomputedDataset(text_test, audio_test, labels_test)
+    train = MAMKitPrecomputedDataset(text_train, audio_train, labels_train, taskname)
+    val = MAMKitPrecomputedDataset(text_val, audio_val, labels_val, taskname)
+    test = MAMKitPrecomputedDataset(text_test, audio_test, labels_test, taskname)
 
     return train, val, test

@@ -1,2 +1,2 @@
-from .core import MAMKitPrecomputedDataset, MAMKitMonomodalDataset, prepare_for_task
+from .core import MAMKitPrecomputedDataset, MAMKitMonomodalDataset
 from .dataloaders import MultimodalCollator, BERT_Collator, UnimodalCollator
