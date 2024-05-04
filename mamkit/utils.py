@@ -46,7 +46,7 @@ class MAMKitLightingModel(L.LightningModule):
         y_hat = self.model(inputs)
         loss = self.loss_function(y_hat, targets)
         acc = (y_hat.argmax(dim=1) == targets).float().mean()
-        return {'loss': loss, 'acc': acc}
+        self.log_dict({'loss': loss, 'acc': acc})
 
     def configure_optimizers(self):
         return self.optimizer_class(self.model.parameters(), **self.optimizer_kwargs)
