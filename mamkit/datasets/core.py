@@ -44,6 +44,9 @@ class MAMKitDataset(torch.utils.data.Dataset):
 
     def precompute_audio(self):
         raise NotImplementedError
+    
+    def __len__(self):
+        raise NotImplementedError
 
 class MAMKitPrecomputedDataset(torch.utils.data.Dataset):
     def __init__(self, text_features, audio_features, labels, taskname):
@@ -54,6 +57,9 @@ class MAMKitPrecomputedDataset(torch.utils.data.Dataset):
     
     def __getitem__(self, idx):
         return self.text_features[idx], self.audio_features[idx], self.labels[idx]
+    
+    def __len__(self):
+        return len(self.labels)
 
 class MAMKitMonomodalDataset(torch.utils.data.Dataset):
     def __init__(self, features, labels, taskname):
@@ -63,3 +69,6 @@ class MAMKitMonomodalDataset(torch.utils.data.Dataset):
     
     def __getitem__(self, idx):
         return self.features[idx], self.labels[idx]
+
+    def __len__(self):
+        return len(self.labels)
