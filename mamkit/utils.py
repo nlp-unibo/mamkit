@@ -3,6 +3,10 @@ import os
 from mamkit.datasets import MAMKitPrecomputedDataset, MAMKitMonomodalDataset
 import pandas as pd
 import torch
+import torch.nn as nn
+import torchmetrics
+
+from lightning import Callback
 
 SUPPORTED_DATASETS = {
     'usdbelec' : {
@@ -17,35 +21,55 @@ SUPPORTED_DATASETS = {
 }
 
 class MAMKitLightingModel(L.LightningModule):
-    def __init__(self, model, loss_function, optimizer_class, **optimizer_kwargs):
+    def __init__(self, model, loss_function, optimizer_class, val_metrics, test_metrics, log_metrics, **optimizer_kwargs):
         super().__init__()
         self.model = model
         self.loss_function = loss_function
         self.optimizer_class = optimizer_class
         self.optimizer_kwargs = optimizer_kwargs
+        self.log_metrics = log_metrics
+
+        self.val_metrics_names = val_metrics.keys()
+        self.val_metrics = nn.ModuleList(list(val_metrics.values()))
+        self.test_metrics_names = test_metrics.keys()
+        self.test_metrics = nn.ModuleList(list(test_metrics.values()))
 
     def forward(self, x):
         return self.model(x)
 
-    def training_step(self, batch, batch_idx):
+
+    def training_step(self, batch):
         inputs, targets = batch[:-1], batch[-1]        
         y_hat = self.model(inputs)
-        loss = self.loss_function(y_hat, targets)
-        return loss
-    
-    def validation_step(self, batch, batch_idx):
-        inputs, targets = batch[:-1], batch[-1]
-        y_hat = self.model(inputs)
-        loss = self.loss_function(y_hat, targets)
-        return loss
 
-    def test_step(self, batch, batch_idx):
-        # compute accuracy
+        loss = self.loss_function(y_hat, targets)
+        self.log_dict({'train_loss': loss}, on_step=True, on_epoch=False, prog_bar=True)
+
+    def on_train_epoch_end(self):
+        print('\n')
+
+
+    def validation_step(self, batch):
         inputs, targets = batch[:-1], batch[-1]
         y_hat = self.model(inputs)
+
         loss = self.loss_function(y_hat, targets)
-        acc = (y_hat.argmax(dim=1) == targets).float().mean()
-        self.log_dict({'loss': loss, 'acc': acc})
+        self.log_dict({'val_loss': loss}, on_step=True, on_epoch=False, prog_bar=True)
+
+        for val_metric_name, val_metric in zip(self.val_metrics_names, self.val_metrics):
+            val_metric(y_hat, targets)
+            self.log(val_metric_name, val_metric, on_step=False, on_epoch=True, prog_bar=self.log_metrics)
+
+    def test_step(self, batch):
+        inputs, targets = batch[:-1], batch[-1]
+        y_hat = self.model(inputs)
+
+        loss = self.loss_function(y_hat, targets)
+        self.log_dict({'loss': loss})
+
+        for test_metric_name, test_metric in zip(self.test_metrics_names, self.test_metrics):
+            test_metric(y_hat, targets)
+            self.log(test_metric_name, test_metric, on_step=False, on_epoch=True)
 
     def configure_optimizers(self):
         return self.optimizer_class(self.model.parameters(), **self.optimizer_kwargs)
@@ -176,3 +200,16 @@ def get_multimodal_dataset(dataset_name, text_preprocessing=None, audio_preproce
     test = MAMKitPrecomputedDataset(text_test, audio_test, labels_test, taskname)
 
     return train, val, test
+
+class MetricTracker(Callback):
+  def __init__(self):
+    self.collection = []
+
+  """def on_validation_batch_end(self, trainer, module, outputs):
+    vacc = outputs['val_acc'] # you can access them here
+    self.collection.append(vacc) # track them"""
+
+  def on_validation_epoch_end(self, trainer, module):
+    elogs = trainer.logged_metrics # access it here
+    self.collection.append(elogs)
+    # do whatever is needed
