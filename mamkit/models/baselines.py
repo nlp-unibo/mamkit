@@ -1,11 +1,11 @@
-import torch
 from .core import MAMKitBase
-from ..modules.transformer_modules import PositionalEncoding, LayerNorm
+
 
 class MAMKitTextOnly(MAMKitBase):
     """
     Class for the text-only model
     """
+
     def __init__(self, head):
         """
         Args:
@@ -31,6 +31,7 @@ class MAMKitAudioOnly(MAMKitBase):
     """
     Class for the audio-only model
     """
+
     def __init__(self, head, dropout=0.1):
         """
         Args:
@@ -54,12 +55,12 @@ class MAMKitAudioOnly(MAMKitBase):
 
         # padding_mask = ~audio_attention.to(torch.bool)        
         # full_attention_mask = torch.zeros((audio_features.shape[1],audio_features.shape[1]), dtype=torch.bool).to(audio_features.device)
-        
+
         # audio_features = self.positional_encoding(audio_features)
         # transformer_output = self.transformer(audio_features, mask=full_attention_mask, src_key_padding_mask=padding_mask)
         # transformer_output = self.dropout(transformer_output)
         # transformer_output = self.layer_norm(audio_features + transformer_output)
-        
+
         # pooling transformer output
         audio_features_sum = (audio_features * audio_attention.unsqueeze(-1)).sum(axis=1)
         audio_features_pooled = audio_features_sum / audio_attention.sum(axis=1).unsqueeze(-1)

@@ -1,9 +1,10 @@
+import logging
 import tarfile
 from pathlib import Path
 from typing import Optional
-from urllib import request
 
-from mamkit.datasets.core import Loader, UnimodalDataset, MultimodalDataset, DataInfo
+from mamkit.data.core import Loader, UnimodalDataset, MultimodalDataset, DataInfo
+from mamkit.utils import download
 
 
 class UKDebate(Loader):
@@ -64,14 +65,21 @@ class UKDebate(Loader):
     def load_data(
             self
     ):
+        logging.getLogger(__name__).info('Downloading UKDebate dataset...')
         archive_path = self.filepath.parent.joinpath('ukdebate.tar.gz')
-        request.urlretrieve(self.download_url, archive_path)
+        download(url=self.download_url,
+                 file_path=archive_path)
+        logging.getLogger(__name__).info('Download completed...')
 
+        logging.getLogger(__name__).info('Extracting data...')
         self.filepath.mkdir(parents=True)
         with tarfile.open(archive_path) as loaded_tar:
             loaded_tar.extractall(self.filepath)
 
-        archive_path.unlink()
+        logging.getLogger(__name__).info('Extraction completed...')
+
+        if archive_path.is_file():
+            archive_path.unlink()
 
     def get_splits(
             self,

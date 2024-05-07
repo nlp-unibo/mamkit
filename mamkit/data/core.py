@@ -116,7 +116,7 @@ class UnimodalCollator:
         else:
             labels_collated = self.label_collator(labels)
 
-        return (*features_collated, labels_collated)
+        return features_collated, labels_collated
 
 
 class MultimodalCollator:
