@@ -85,13 +85,13 @@ class UKDebate(Loader):
             self,
     ) -> DataInfo:
         if self.input_mode == 'text-only':
-            DataInfo(train=UnimodalDataset(inputs=self.texts, labels=self.labels),
-                     val=None,
-                     test=None)
+            return DataInfo(train=UnimodalDataset(inputs=self.texts, labels=self.labels),
+                            val=None,
+                            test=None)
         if self.input_mode == 'audio-only':
-            DataInfo(train=UnimodalDataset(inputs=self.audio, labels=self.labels),
-                     val=None,
-                     test=None)
+            return DataInfo(train=UnimodalDataset(inputs=self.audio, labels=self.labels),
+                            val=None,
+                            test=None)
 
         return DataInfo(train=MultimodalDataset(texts=self.texts, audio=self.audio, labels=self.labels),
                         val=None,

@@ -1,8 +1,23 @@
-import torch
-from .core import MAMKitBase
+import torch as th
 
-class MAMKitCSA(MAMKitBase):
-    def __init__(self, transformer, head, positional_encoder):
+
+class MAMKitTextAudio(th.nn.Module):
+
+    def forward(
+            self,
+            text,
+            audio
+    ):
+        pass
+
+
+class CSA(MAMKitTextAudio):
+    def __init__(
+            self,
+            transformer,
+            head,
+            positional_encoder
+    ):
         """
         Args:
             transformer: transformer to use
@@ -14,7 +29,6 @@ class MAMKitCSA(MAMKitBase):
         self.head = head
         self.pos_encoder = positional_encoder
 
-    
     def forward(self, data, **kwargs):
         """
         Forward pass of the model
@@ -27,17 +41,16 @@ class MAMKitCSA(MAMKitBase):
         audio_features, audio_attentions = audio
 
         concatenated_attentions = torch.cat((text_attentions, audio_attentions.float()), dim=1)
-        
+
         audio_features = self.pos_encoder(audio_features)
-        
+
         concatenated_features = torch.cat((text_features, audio_features), dim=1)
 
         transformer_output = self.transformer(concatenated_features, text_attentions, audio_attentions)
 
-        # pooling of transformer output        
+        # pooling of transformer output
         transformer_output_sum = (transformer_output * concatenated_attentions.unsqueeze(-1)).sum(axis=1)
         transformer_output_pooled = transformer_output_sum / concatenated_attentions.sum(axis=1).unsqueeze(-1)
         return self.head(transformer_output_pooled)
 
 
-        

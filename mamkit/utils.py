@@ -1,7 +1,7 @@
 import os
 
 import httpx
-import lightning as L
+
 import pandas as pd
 import torch
 import torch.nn as nn

@@ -7,29 +7,6 @@ from torch.utils.data import Dataset
 from transformers import BertTokenizer, BertModel
 
 
-# We want to return a boolean array to filter labels depending on the task
-def get_task_map(labels, taskname):
-    if taskname.lower() == 'asd':
-        return [True if label in ['Claim', 'Premise', 'O'] else False for label in labels]
-
-    if taskname.lower() == 'acc':
-        return [True if label in ['Claim', 'Premise'] else False for label in labels]
-
-    raise ValueError(f'Taskname {taskname} not supported. Supported tasks: ["ASD", "ACC"]')
-
-
-def get_task_labels(labels, taskname):
-    # In ASD we want to merge Caim and Premise labels into "ARG", while the rest should be named "Not-ARG"
-    if taskname.lower() == 'asd':
-        return ['ARG' if label in ['Claim', 'Premise'] else 'Not-ARG' for label in labels]
-
-    # In ACC we want only Claim and Premise labels, 
-    if taskname.lower() == 'acc':
-        return labels
-
-    raise ValueError(f'Taskname {taskname} not supported. Supported tasks: ["ASD", "ACC"]')
-
-
 @dataclass
 class DataInfo:
     train: Dataset
@@ -142,7 +119,7 @@ class MultimodalCollator:
         else:
             labels_collated = self.label_collator(labels)
 
-        return text_collated, audio_collated, labels_collated
+        return (*text_collated, *audio_collated), labels_collated
 
 
 class BERT_Collator:

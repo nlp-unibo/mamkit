@@ -1,8 +1,7 @@
-from mamkit.models.core import MAMKitBase
 import torch as th
 
 
-class BiLSTM(MAMKitBase):
+class BiLSTM(th.nn.Module):
 
     def __init__(
             self,
