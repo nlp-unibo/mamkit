@@ -1,3 +1,5 @@
+import logging
+
 import lightning as L
 import torch as th
 from torch.nn.utils.rnn import pad_sequence
@@ -5,11 +7,10 @@ from torch.utils.data import DataLoader
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 
-from mamkit.data.core import UnimodalCollator
-from mamkit.data.ukdebate import UKDebate
+from mamkit.data.datasets import UKDebate
+from mamkit.data.processing import UnimodalCollator
 from mamkit.models.text import BiLSTMBaseline
 from mamkit.utility.model import to_lighting_model
-import logging
 
 
 def text_collator(texts):
