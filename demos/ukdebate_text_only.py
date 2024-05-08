@@ -34,6 +34,7 @@ if __name__ == '__main__':
     )
 
     train_dataloader = DataLoader(data_info.train, batch_size=8, shuffle=True, collate_fn=unimodal_collator)
+    test_dataloader = DataLoader(data_info.train, batch_size=8, shuffle=False, collate_fn=unimodal_collator)
 
     model = BiLSTMBaseline(vocab_size=len(vocab),
                            embedding_dim=50,
@@ -51,5 +52,5 @@ if __name__ == '__main__':
                         accelerator='gpu')
     trainer.fit(model, train_dataloader)
 
-    train_metric = trainer.test(model, train_dataloader)
+    train_metric = trainer.test(model, test_dataloader)
     logging.getLogger(__name__).info(train_metric)

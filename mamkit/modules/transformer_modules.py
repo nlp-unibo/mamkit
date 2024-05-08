@@ -1,14 +1,16 @@
 import math
+
 import torch
-import torch.nn.functional as F
 import torch.nn as nn
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 class PositionalEncoding(nn.Module):
     """
         Positional Encoding for Transformer
     """
+
     def __init__(self, d_model: int, dual_modality=False, dropout: float = 0.1, max_len: int = 5000):
         """
         Args:
@@ -37,13 +39,12 @@ class PositionalEncoding(nn.Module):
         if self.dual_modality:
             modality = torch.ones((x.shape[0], x.shape[1], 4), dtype=torch.float32).to(device) * (0 if is_first else 1)
             x = x + self.pe[:, :x.size(1)]
-            x = self.dropout(x)        
+            x = self.dropout(x)
             return torch.cat((x, modality), axis=-1)
         else:
             # x = (bs, sqlen, emb)  pe = (1, sqlen, emb)
             x = x + self.pe[:, :x.size(1)]
             return self.dropout(x)
-
 
 
 class CustomScaleDotProductAttention(nn.Module):
@@ -77,13 +78,15 @@ class CustomScaleDotProductAttention(nn.Module):
         k_t = k.transpose(2, 3)  # transpose
         score = (q @ k_t) / math.sqrt(d_tensor)  # scaled dot product
         ## score dimension: (batch, n_heads, length, length)
-    
+
         # 2. apply masking (opt)
         padding_mask = torch.cat((text_mask, audio_mask), dim=1).unsqueeze(1)
         ## padding_mask is now (batch, 1, seq_length)
-        score = score.masked_fill(padding_mask.unsqueeze(-1) == 0, -10_000) # padding_mask applied = (batch, 1, seq_length, 1)
-        score = score.masked_fill(padding_mask.unsqueeze(1) == 0, -10_000) # padding_mask applied = (batch, 1, 1, seq_length)
-        
+        score = score.masked_fill(padding_mask.unsqueeze(-1) == 0,
+                                  -10_000)  # padding_mask applied = (batch, 1, seq_length, 1)
+        score = score.masked_fill(padding_mask.unsqueeze(1) == 0,
+                                  -10_000)  # padding_mask applied = (batch, 1, 1, seq_length)
+
         # 3. pass them softmax to make [0, 1] range
         score = self.softmax(score)
 
@@ -91,23 +94,23 @@ class CustomScaleDotProductAttention(nn.Module):
         text_lengths = torch.sum(text_mask, dim=1)
         audio_lengths = torch.sum(audio_mask, dim=1)
         ## text_length and audio_length dimension = (batch,)
-        
+
         total_lengths = text_lengths + audio_lengths
         ## total_lengths dimension = (batch,)
-        
-        text_coefficients = (total_lengths / (2*text_lengths)).unsqueeze(-1)
-        audio_coefficients = (total_lengths / (2*audio_lengths)).unsqueeze(-1)
+
+        text_coefficients = (total_lengths / (2 * text_lengths)).unsqueeze(-1)
+        audio_coefficients = (total_lengths / (2 * audio_lengths)).unsqueeze(-1)
         ## text_coefficients and audio_coefficients dimension = (batch, 1)
-        
-        text_weights = text_mask*text_coefficients
-        audio_weights = audio_mask*audio_coefficients
+
+        text_weights = text_mask * text_coefficients
+        audio_weights = audio_mask * audio_coefficients
         ## text_weights dimension = (batch, text_sequence_length)
         ## audio_weights dimension = (batch, audio_sequence_length)
-        
+
         attention_coefficients = torch.cat((text_weights, audio_weights), dim=1).unsqueeze(1).unsqueeze(1)
         ## attention_coefficients dimension = (batch, 1, 1, total_sequence_length)
         score = score * attention_coefficients
-        
+
         # 5. multiply with Value
         v = score @ v
 
@@ -118,6 +121,7 @@ class CustomMultiHeadAttention(nn.Module):
     """
     Multi Head Attention Class for Transformer
     """
+
     def __init__(self, d_model, n_head):
         """
         Args:
@@ -149,7 +153,7 @@ class CustomMultiHeadAttention(nn.Module):
 
         # 3. do scale dot product to compute similarity
         out, attention = self.attention(q, k, v, text_mask, audio_mask)
-        
+
         # 4. concat and pass to linear layer
         out = self.concat(out)
         out = self.w_concat(out)
@@ -187,10 +191,12 @@ class CustomMultiHeadAttention(nn.Module):
         tensor = tensor.transpose(1, 2).contiguous().view(batch_size, length, d_model)
         return tensor
 
+
 class LayerNorm(nn.Module):
     """
     Layer Normalization Class
     """
+
     def __init__(self, d_model, eps=1e-12):
         """
         Args:
@@ -215,10 +221,12 @@ class LayerNorm(nn.Module):
         out = self.gamma * out + self.beta
         return out
 
+
 class PositionwiseFeedForward(nn.Module):
     """
     Position-wise Feed Forward Layer
     """
+
     def __init__(self, d_model, hidden, drop_prob=0.1):
         """
         Args:
@@ -243,10 +251,12 @@ class PositionwiseFeedForward(nn.Module):
         x = self.linear2(x)
         return x
 
+
 class CustomEncoderLayer(nn.Module):
     """
     Encoder Layer Class
     """
+
     def __init__(self, d_model, ffn_hidden, n_head, drop_prob):
         """
         Args:
@@ -274,24 +284,26 @@ class CustomEncoderLayer(nn.Module):
         # 1. compute self attention
         _x = x
         x = self.attention(q=x, k=x, v=x, text_mask=text_mask, audio_mask=audio_mask)
-        
+
         # 2. add and norm
         x = self.dropout1(x)
         x = self.norm1(x + _x)
-        
+
         # 3. positionwise feed forward network
         _x = x
         x = self.ffn(x)
-      
+
         # 4. add and norm
         x = self.dropout2(x)
         x = self.norm2(x + _x)
         return x
 
+
 class CustomEncoder(nn.Module):
     """
     Encoder Class
     """
+
     def __init__(self, d_model, ffn_hidden, n_head, n_layers, drop_prob):
         """
         Args:
@@ -303,7 +315,9 @@ class CustomEncoder(nn.Module):
         """
         super().__init__()
 
-        self.layers = nn.ModuleList([CustomEncoderLayer(d_model=d_model,ffn_hidden=ffn_hidden,n_head=n_head,drop_prob=drop_prob) for _ in range(n_layers)])
+        self.layers = nn.ModuleList(
+            [CustomEncoderLayer(d_model=d_model, ffn_hidden=ffn_hidden, n_head=n_head, drop_prob=drop_prob) for _ in
+             range(n_layers)])
 
     def forward(self, embedding, text_mask, audio_mask):
         """
@@ -317,3 +331,49 @@ class CustomEncoder(nn.Module):
             x = layer(x, text_mask, audio_mask)
 
         return x
+
+
+class MulTA_CrossAttentionBlock(torch.nn.Module):
+    """
+    Class for the cross modal attention block
+    """
+
+    def __init__(self, embedding_dim, d_ffn, num_heads=4, dropout_prob=0.1):
+        """
+        Args:
+            embedding_dim: dimension of the embedding
+            d_ffn: dimension of the feed forward layer
+            num_heads: number of heads to use
+            dropout_prob: dropout to use
+        """
+        super().__init__()
+        self.embedding_dim = embedding_dim
+        self.d_ffn = d_ffn
+        self.num_heads = num_heads
+        self.dropout_prob = dropout_prob
+        self.layer_norm = torch.nn.LayerNorm(self.embedding_dim)
+        self.mh_attention = torch.nn.MultiheadAttention(embed_dim=self.embedding_dim, num_heads=self.num_heads,
+                                                        dropout=self.dropout_prob, batch_first=True)
+        self.pointwise_ff = PositionwiseFeedForward(d_model=self.embedding_dim, hidden=self.d_ffn)
+
+    def forward(self, elem_a, elem_b, attn_mask):
+        """
+        Forward pass of the model
+        Args:
+            elem_a: elements of the modality A
+            elem_b: elements of the modality B
+            attn_mask: attention mask to use
+        """
+        elem_a = self.layer_norm(elem_a)
+        elem_b = self.layer_norm(elem_b)
+        attn_mask = attn_mask.to(torch.float32)
+
+        # cross modal attention with elem_a as query and elem_b as key and value
+        mh_out, _ = self.mh_attention(elem_a, elem_b, elem_b, key_padding_mask=attn_mask, need_weights=False)
+        # residual connection
+        add_out = mh_out + elem_a
+
+        add_out_norm = self.layer_norm(add_out)
+        out_ffn = self.pointwise_ff(add_out_norm)
+        out = out_ffn + add_out
+        return out

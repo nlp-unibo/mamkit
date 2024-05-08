@@ -1,10 +1,82 @@
+import abc
 import logging
 import tarfile
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
-from mamkit.data.core import Loader, UnimodalDataset, MultimodalDataset, DataInfo
+from torch.utils.data import Dataset
+
 from mamkit.utils import download
+
+
+@dataclass
+class DataInfo:
+    train: Dataset
+    val: Optional[Dataset]
+    test: Optional[Dataset]
+
+
+class Loader(abc.ABC):
+
+    def __init__(
+            self,
+            task_name: str,
+            input_mode: str
+    ):
+        self.task_name = task_name
+        self.input_mode = input_mode
+        self.texts = None
+        self.audio = None
+        self.labels = None
+
+    @abc.abstractmethod
+    def get_splits(
+            self,
+    ) -> DataInfo:
+        pass
+
+
+class UnimodalDataset(Dataset):
+
+    def __init__(
+            self,
+            inputs,
+            labels
+    ):
+        self.inputs = inputs
+        self.labels = labels
+
+    def __getitem__(
+            self,
+            idx
+    ):
+        return self.inputs[idx], self.labels[idx]
+
+    def __len__(self):
+        return len(self.labels)
+
+
+class MultimodalDataset(Dataset):
+
+    def __init__(
+            self,
+            texts,
+            audio,
+            labels
+    ):
+        self.texts = texts
+        self.audio = audio
+        self.labels = labels
+
+    def __getitem__(
+            self,
+            idx
+    ):
+        return self.texts[idx], self.audio[idx], self.labels[idx]
+
+    def __len__(self):
+        return len(self.labels)
 
 
 class UKDebate(Loader):
@@ -96,3 +168,19 @@ class UKDebate(Loader):
         return DataInfo(train=MultimodalDataset(texts=self.texts, audio=self.audio, labels=self.labels),
                         val=None,
                         test=None)
+
+
+# TODO: complete
+# TODO: integrate EM's script for building the corpus
+class MMUSED(Loader):
+    pass
+
+
+# TODO: complete
+class MMUSEDFallacy(Loader):
+    pass
+
+
+# TODO: complete
+class MArg(Loader):
+    pass

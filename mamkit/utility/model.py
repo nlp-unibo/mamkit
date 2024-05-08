@@ -40,6 +40,7 @@ class MAMKitLightingModel(L.LightningModule):
 
         self.train_acc(y_hat, y_true)
         self.log('train_acc', self.train_acc, on_step=True, on_epoch=True)
+        self.log('train_loss', loss, on_step=True, on_epoch=True)
 
         return loss
 
@@ -54,6 +55,7 @@ class MAMKitLightingModel(L.LightningModule):
 
         self.val_acc(y_hat, y_true)
         self.log('val_acc', self.val_acc, on_step=True, on_epoch=True)
+        self.log('val_loss', loss, on_step=True, on_epoch=True)
 
         return loss
 
@@ -69,6 +71,9 @@ class MAMKitLightingModel(L.LightningModule):
 
         self.test_acc(y_hat, y_true)
         self.log('test_acc', self.test_acc, on_step=True, on_epoch=True)
+        self.log('test_loss', loss, on_step=True, on_epoch=True)
+
+        return loss
 
     def configure_optimizers(
             self
