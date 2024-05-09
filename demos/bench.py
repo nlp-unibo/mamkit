@@ -12,8 +12,8 @@ class UKDebateBenchmark:
         loader = UKDebate(**self.loader_args)
         data_info = loader.get_splits()
 
-        # List[DataInfo]
-        # DataInfo train, val, test
+        # List[SplitInfo]
+        # SplitInfo train, val, test
         folds = self.load_prebuilt_folds('mancini-et-al-2022')
 
         for fold_data_info in folds:

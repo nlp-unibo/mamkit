@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 
-from mamkit.data.datasets import UKDebate
+from mamkit.data.datasets import UKDebate, InputMode
 from mamkit.data.processing import UnimodalCollator
 from mamkit.models.text import BiLSTM
 from mamkit.utility.model import to_lighting_model
@@ -19,23 +19,24 @@ def text_collator(texts):
 
 
 if __name__ == '__main__':
-    loader = UKDebate(speaker='Miliband',
-                      task_name='asd',
-                      input_mode='text-only')
-    data_info = loader.get_splits()
+    loader = UKDebate(task_name='asd',
+                      input_mode=InputMode.TEXT_ONLY)
+    split_info = loader.get_splits(key='mancini-et-al-2022')[0]
 
     tokenizer = get_tokenizer(tokenizer='basic_english')
-    vocab = build_vocab_from_iterator(iter([tokenizer(text) for (text, _) in data_info.train]),
+    vocab = build_vocab_from_iterator(iter([tokenizer(text) for (text, _) in split_info.train]),
                                       specials=['<pad>', '<unk>'],
                                       special_first=True)
+    vocab.set_default_index(vocab['<unk>'])
 
     unimodal_collator = UnimodalCollator(
         features_collator=text_collator,
         label_collator=lambda labels: th.tensor(labels)
     )
 
-    train_dataloader = DataLoader(data_info.train, batch_size=8, shuffle=True, collate_fn=unimodal_collator)
-    test_dataloader = DataLoader(data_info.train, batch_size=8, shuffle=False, collate_fn=unimodal_collator)
+    train_dataloader = DataLoader(split_info.train, batch_size=8, shuffle=True, collate_fn=unimodal_collator)
+    val_dataloader = DataLoader(split_info.val, batch_size=8, shuffle=False, collate_fn=unimodal_collator)
+    test_dataloader = DataLoader(split_info.test, batch_size=8, shuffle=False, collate_fn=unimodal_collator)
 
     model = BiLSTM(vocab_size=len(vocab),
                    embedding_dim=50,
@@ -51,7 +52,9 @@ if __name__ == '__main__':
 
     trainer = L.Trainer(max_epochs=5,
                         accelerator='gpu')
-    trainer.fit(model, train_dataloader)
+    trainer.fit(model,
+                train_dataloaders=train_dataloader,
+                val_dataloaders=val_dataloader)
 
     train_metric = trainer.test(model, test_dataloader)
     logging.getLogger(__name__).info(train_metric)
