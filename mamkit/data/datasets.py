@@ -3,6 +3,7 @@ import logging
 import os
 import shutil
 import tarfile
+from collections import Counter
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -16,7 +17,7 @@ from pydub import AudioSegment
 from torch.utils.data import Dataset
 from tqdm import tqdm
 
-from mamkit.utils import download
+from mamkit.utility.data import download, download_from_git
 
 
 class InputMode(Enum):
@@ -259,11 +260,37 @@ class MMUSED(Loader):
         assert self.task_name in ['asd', 'acc']
 
         self.folder_name = 'MMUSED'
-        self.filepath = Path(Path.cwd().parent, 'data', self.folder_name).resolve()
-        self.audio_path = self.filepath.joinpath('audio')
-        self.text_path = self.filepath.joinpath('text')
-        self.transcripts_path = self.filepath.joinpath('transcripts')
         self.deleted_ids = ['13_1988, 17_1992, 42_2016, 43_2016']
+
+        self.data_path = Path(Path.cwd().parent, 'data', self.folder_name).resolve()
+        self.files_path = self.data_path.joinpath('files')
+        self.aeneas_path = self.data_path.joinpath('aeneas')
+        self.audio_path = self.files_path.joinpath('debates_audio_recordings')
+        self.datasets_path = self.files_path.joinpath('datasets')
+        self.transcripts_path = self.files_path.joinpath('transcripts')
+        self.alignments_path = self.files_path.joinpath('alignment_results')
+        self.clips_path = self.files_path.joinpath('audio_clips')
+        self.final_path = self.files_path.joinpath('MM-USElecDeb60to16')
+
+        self.clips_path.mkdir(parents=True)
+        self.files_path.mkdir(parents=True)
+        self.aeneas_path.mkdir(parents=True)
+        self.files_path.mkdir(parents=True)
+
+        download_from_git(repo='multimodal-am',
+                          org='lt-nlp-lab-unibo',
+                          folder=Path('multimodal-dataset', 'files'),
+                          destination=self.files_path)
+
+        download_from_git(repo='multimodal-am',
+                          org='lt-nlp-lab-unibo',
+                          folder=Path('multimodal-dataset', 'run_aeneas'),
+                          destination=self.aeneas_path)
+
+        if self.input_mode != InputMode.AUDIO_ONLY and not self.final_path.joinpath('MM-USElecDeb60to16.csv').is_file():
+            self.build_from_scratch()
+        elif not self.final_path.joinpath('audio_clips').exists():
+            self.build_audio()
 
     def youtube_download(
             self,
@@ -356,7 +383,7 @@ class MMUSED(Loader):
         """
         for el in debate_ids:
             if el not in self.deleted_ids:
-                current_path = self.text_path.joinpath(f'{el}.txt')
+                current_path = self.datasets_path.joinpath('YesWeCan', 'ElecDeb60to16', f'{el}.txt')
                 transcript_folder = self.transcripts_path.joinpath(el)
                 transcript_folder.mkdir(parents=True, exist_ok=False)
                 shutil.copy(current_path, transcript_folder)
@@ -444,7 +471,7 @@ class MMUSED(Loader):
             split_transcripts_path.mkdir(parents=True, exist_ok=False)
             for filename in splits_audio_path.glob('*'):
                 if filename.stem != '.DS_Store':  # MacOS hidden files check
-                    txt_filename = filename.with_suffix('txt')
+                    txt_filename = filename.with_suffix('.txt')
                     txt_filename.open().close()
 
     def run_aeneas(
@@ -464,49 +491,307 @@ class MMUSED(Loader):
 
             split_transcripts_path = self.transcripts_path.joinpath(folder_id, 'splits')
             splits_audio_path = self.audio_path.joinpath(folder_id, 'splits')
-            curr_dir = os.getcwd()
-            aeneas_script_folder = Path.cwd().joinpath('run_aeneas')
-            DEST_CLIP_FOLDER = Path.cwd().joinpath(') + '/files/alignment_results/' + folder_id
-            os.mkdir(DEST_CLIP_FOLDER)
-            for filename in os.listdir(splits_audio_path):
-                if filename != '.DS_Store':
-                    parts = filename.split('.')
-                    txt_file = parts[0] + '.txt'
-                    split_audio_path = splits_audio_path + '/' + filename
-                    split_text_path = split_transcripts_path + txt_file
-                    copy_command_text = "cp " + split_text_path + " " + aeneas_script_folder
-                    copy_command_audio = "cp " + split_audio_path + " " + aeneas_script_folder
-                    os.system(copy_command_text)
-                    os.system(copy_command_audio)
-            os.chdir('run_aeneas')
+            dest_clip_folder = self.alignments_path.joinpath(folder_id)
+            dest_clip_folder.mkdir(parents=True)
+            for filename in splits_audio_path.glob('*'):
+                if filename.stem != '.DS_Store':
+                    txt_filename = filename.with_suffix('.txt')
+                    split_text_path = split_transcripts_path.joinpath(txt_filename.name)
+                    shutil.copy(split_text_path, self.aeneas_path.joinpath(split_text_path.name))
+                    shutil.copy(filename, self.aeneas_path.joinpath(filename.name))
 
-            AENEAS_COMMAND = "./run.sh"
-            os.system(AENEAS_COMMAND)
+            current_path = Path.cwd()
+            os.chdir(self.aeneas_path)
+            os.system('./run.sh')
 
-            for filename in os.listdir(os.getcwd()):
-                if filename != '.DS_Store':
-                    parts = filename.split('.')
-                    if parts[-1] == 'json':
-                        shutil.move(os.getcwd() + '/' + filename, DEST_CLIP_FOLDER)
+            for filename in self.aeneas_path.glob('*.json'):
+                shutil.move(filename, dest_clip_folder.joinpath(filename.name))
 
-            for filename in os.listdir(os.getcwd()):
-                if filename != '.DS_Store':
-                    parts = filename.split('.')
-                    if parts[-1] == 'wav' or parts[-1] == 'txt':
-                        os.system("rm " + filename)
-            os.chdir('..')
+            for filename in self.aeneas_path.glob('**/*'):
+                if filename.suffix in ['.wav', 'txt']:
+                    filename.unlink()
+
+            os.chdir(current_path)
+
+    def generate_dataset(
+            self,
+            debate_ids: List
+    ):
+        """
+
+        :param debate_ids: list of strings representing debates IDs
+        :return: None. The function generates a new dataset '.csv' for each debate from the original dataset.
+                Each new dataset contains 3 new columns corresponding to the new start and end timestamps calculated
+                through the alignment with 'aeneas' and the debate_ids of the clip corresponding to each sentence.
+                The function also saves a 'duplicates.txt' file for each debate, containing the duplicated
+                sentences and the number of occurrences.
+        """
+
+        for debate_id in tqdm(range(len(debate_ids))):
+            folder_id = debate_ids[debate_id]
+
+            directory_alignments = self.alignments_path.joinpath(folder_id)
+            full_dataset_path = self.datasets_path.joinpath('YesWeCan', 'sentence_db_candidate.csv')
+            new_files_path = self.datasets_path.joinpath(folder_id)
+            new_files_path.mkdir(parents=True)
+
+            df_debates = pd.read_csv(full_dataset_path)
+
+            # count_rows of debate
+            count_row_debate = 0
+            for i, row in df_debates.iterrows():
+                if row['Document'] == folder_id:
+                    count_row_debate += 1
+
+            # generate new dataframe
+            rows_new_df = []
+            for i, row in df_debates.iterrows():
+                if row['Document'] == folder_id:
+                    rows_new_df.append(row)
+            new_df = pd.DataFrame(rows_new_df)
+
+            # set new datasets columns
+            new_col_begin = ['NOT_FOUND' for i in range(count_row_debate)]
+            new_col_end = ['NOT_FOUND' for i in range(count_row_debate)]
+            new_col_id = ['NOT_FOUND' for i in range(count_row_debate)]
+            new_df['NewBegin'] = new_col_begin
+            new_df['NewEnd'] = new_col_end
+            new_df['idClip'] = new_col_id
+
+            count_matches = 0
+            matches = []
+            count_matches_no_duplicates = 0
+            for filepath in directory_alignments.glob('*.json'):
+                df = pd.read_json(filepath, orient=str)
+                filename = filepath.stem.split('_')
+                split_index = float(filename[-1])
+                mul_factor = split_index * 1200.00
+                for j, r in tqdm(df.iterrows(), total=df.shape[0], position=0):
+                    for i, row in new_df.iterrows():
+                        if row['Speech'].strip() == r.fragments['lines'][0].strip():
+                            # print(r.fragments['lines'][0].strip())
+                            new_df.at[i, "NewBegin"] = round(float(r.fragments['begin']) + mul_factor, 3)
+                            # print(round(float(r.fragments['begin'])+mul_factor,3))
+                            new_df.at[i, "NewEnd"] = round(float(r.fragments['end']) + mul_factor, 3)
+                            if row['Speech'].strip() not in matches:
+                                count_matches_no_duplicates += 1
+                            count_matches += 1
+                            matches.append(row['Speech'].strip())
+
+            a = dict(Counter(matches))
+            for k, v in a.items():
+                if v > 1:
+                    print(k, v)
+
+            # save csv
+            new_df.to_csv(new_files_path.joinpath('dataset.csv'))
+
+            # save files of duplicates for future removal of those lines from the dataset
+            with open(new_files_path.joinpath('duplicates.txt'), 'w') as f:
+                for k, v in a.items():
+                    if v > 1:
+                        line = k + ' : ' + str(v) + '\n'
+                        f.write(line)
+
+    def generate_clips(
+            self,
+            debate_ids: List
+    ):
+        """
+
+        :param debate_ids: list of strings representing debates IDs
+        :return: None. The function generates, for each debate, the audio clips corresponding to each sentence in the
+                 dataset. The audio files are saved in 'files/audio_clips' in subfolders corresponding to each debate.
+                 For each debate it creates a new dataset in which the column corresponding to the debate_ids of the clips
+                 is filled with the debate_ids of the corresponding generated clip.
+        """
+
+        for debate_id in tqdm(range(len(debate_ids))):
+            folder_id = debate_ids[debate_id]
+            dataset_path = self.datasets_path.joinpath(folder_id, 'dataset.csv')
+            dataset_clip_path = self.datasets_path.joinpath(folder_id, 'dataset_clip.csv')
+            full_audio_path = self.audio_path.joinpath(folder_id, 'full_audio_trim.wav')
+            audio_clips_path = self.clips_path.joinpath(folder_id)
+            audio_clips_path.mkdir(parents=True)
+
+            # read dataframe with timestamps
+            df = pd.read_csv(dataset_path)
+
+            # generate clips
+            sound = AudioSegment.from_file(full_audio_path)
+            total_len = df.shape[0]
+            for i, row in tqdm(df.iterrows(), total=total_len, position=0):
+                start_time = row['NewBegin']
+                idClip = 'clip_' + str(i)
+                if start_time != 'NOT_FOUND':
+                    start_time = float(row['NewBegin']) * 1000  # sec -> ms conversion
+                    end_time = float(row['NewEnd']) * 1000  # sec -> ms conversion
+                    clip_name = audio_clips_path.joinpath(f'{idClip}.wav')
+                    extract = sound[start_time:end_time]
+                    extract.export(clip_name, format="wav")
+                    df.at[i, "idClip"] = idClip
+
+            # save new csv
+            df.to_csv(dataset_clip_path)
+
+    def remove_duplicates(
+            self,
+            debate_ids: List
+    ):
+        """
+
+        :param debate_ids: list of strings representing debates IDs
+        :return: None. The function removes duplicates in the dataset
+        """
+        for debate_id in tqdm(range(len(debate_ids))):
+            folder_id = debate_ids[debate_id]
+            dataset_clip_path = self.datasets_path.joinpath(folder_id, 'dataset_clip.csv')
+            duplicates_file_path = self.datasets_path.joinpath(folder_id, 'duplicates.txt')
+            dataset_no_dup_path = self.datasets_path.joinpath(folder_id, 'dataset_clip_nodup.csv')
+            df = pd.read_csv(dataset_clip_path)
+            df['Component'] = df['Component'].fillna('999')
+
+            with duplicates_file_path.open('r') as f:
+                lines = f.readlines()
+            lines_sentences = []
+
+            # get only text
+            for el in lines:
+                lines_sentences.append(el.split(':')[0].strip())
+
+            lines_component_nan = []
+            indexes_component_nan = []
+            for i, row in df.iterrows():
+                if row['Component'] == '999':
+                    lines_component_nan.append((row, i))
+
+            for i, row in df.iterrows():
+                for line in lines_component_nan:
+                    if row['Speech'] == line[0]['Speech'] and row['Component'] != '999':
+                        indexes_component_nan.append(line[1])
+
+            new_df = df.drop(indexes_component_nan, axis=0)
+            indexes_duplicates = []
+
+            duplicates_without_compnull = []
+            lines_nan = []
+            for el in lines_component_nan:
+                lines_nan.append(el[0]['Speech'])
+
+            flag = 0
+            for el in lines_sentences:
+                for l in lines_nan:
+                    if el.strip() == l.strip():
+                        flag = 1
+                if flag == 0:
+                    duplicates_without_compnull.append(el)
+                flag = 0
+
+            for i, row in new_df.iterrows():
+                for line in duplicates_without_compnull:
+                    if row['Speech'].strip() == line.strip():
+                        # print(row['Speech'])
+                        indexes_duplicates.append(i)
+            final_df = new_df.drop(indexes_duplicates, axis=0)
+
+            nan = []
+            for i, row in final_df.iterrows():
+                if row['Component'] == '999':
+                    nan.append(i)
+            fdf = final_df.drop(nan, axis=0)
+
+            fdf.to_csv(dataset_no_dup_path)
+
+    def remove_not_found(
+            self,
+            debate_ids: List
+    ):
+        """
+
+        :param debate_ids: list of strings representing debates IDs
+        :return: None. The function removes samples marked 'NOT_FOUND', i.e. sentences for which a match with the alignment
+                 results was not found.
+        """
+        for debate_id in tqdm(range(len(debate_ids))):
+            folder_id = debate_ids[debate_id]
+            dataset_clip_path = self.datasets_path.joinpath(folder_id, 'dataset_clip_nodup.csv')
+            dataset_no_dup_path_no_nf = self.datasets_path.joinpath(folder_id, 'dataset_clip_final.csv')
+            df = pd.read_csv(dataset_clip_path)
+
+            df = df.drop(df[df['idClip'].str.strip().str.match('NOT_FOUND', na=False)].index)
+
+            # save df without duplicates
+            df.to_csv(dataset_no_dup_path_no_nf)
+
+    def unify_datasets_debates(
+            self,
+            debate_ids: List
+    ):
+        """
+
+        :param debate_ids: list of strings representing debates IDs
+        :return: None. The function combines the datasets created for each debate to create the new dataset MM-ElecDeb60to16
+        """
+        for debate_id in tqdm(range(len(debate_ids))):
+            folder_id = debate_ids[debate_id]
+            dataset_no_dup_path_no_nf = self.datasets_path.joinpath(folder_id, 'dataset_clip_final.csv')
+            df = pd.read_csv(dataset_no_dup_path_no_nf)
+            break
+
+        for debate_id in tqdm(range(1, len(debate_ids))):
+            folder_id = debate_ids[debate_id]
+            dataset_no_dup_path_no_nf = self.datasets_path.joinpath(folder_id, 'dataset_clip_final.csv')
+            df_1 = pd.read_csv(dataset_no_dup_path_no_nf)
+            df = pd.concat([df, df_1])
+
+        df = df.loc[:, ~df.columns.str.match('Unnamed')]
+
+        # save
+        final_dataset_path = self.datasets_path.joinpath('final_dataset', 'final_dataset.csv')
+        final_dataset_path.parent.mkdir(parents=True)
+        df.to_csv(final_dataset_path)
+
+        # compare dimension to original dataframe
+        full_dataset_path = self.datasets_path.joinpath('YesWeCan', 'sentence_db_candidate.csv')
+        df_full = pd.read_csv(full_dataset_path)
+        logging.getLogger(__name__).info("Actual shape: ", df.shape, "Original shape: ", df_full.shape)
+
+    def copy_final_csv(
+            self,
+    ):
+        """
+
+        :return: None. The function copies the generated dataset into the official 'MM-USElecDeb60to16' folder,
+                 renaming the file to 'MM-USElecDeb60to16.csv'
+        """
+        final_csv_path = self.datasets_path.joinpath('final_dataset', 'final_dataset.csv')
+        dest_final_csv = self.files_path.joinpath('MM-USElecDeb60to16', 'final_dataset.csv')
+        shutil.copy(final_csv_path, dest_final_csv)
+        dest_final_csv.rename(dest_final_csv.with_name('MM-USElecDeb60to16.csv'))
+
+    def copy_clips(
+            self,
+    ):
+        """
+
+        :return: None. The function copies the clips contained in 'files/audio_clips'
+                 to the official folder 'MM-USElecDeb60to16'.
+        """
+        dest_final_clips = self.files_path.joinpath('MM-USElecDeb60to16', 'audio_clips')
+        dest_final_clips.mkdir(parents=True)
+        shutil.copytree(self.clips_path, dest_final_clips)
 
     def build_from_scratch(
             self
     ):
-        df = pd.read_csv('files/dictionary.csv', sep=';')
-        df.columns = ['debate_ids', 'debate_urls', 'start_min', 'start_sec', 'end_min', 'end_sec']
-        debate_ids = df.id
-        link = df.link
-        start_min = df.startMin
-        start_sec = df.startSec
-        end_min = df.endMin
-        end_sec = df.endSec
+        df = pd.read_csv(self.files_path.joinpath('dictionary.csv'), sep=';')
+        df.columns = ['id', 'link', 'startMin', 'startSec', 'endMin', 'endSec']
+        debate_ids = df.id.values
+        link = df.link.values
+        start_min = df.startMin.values
+        start_sec = df.startSec.values
+        end_min = df.endMin.values
+        end_sec = df.endSec.values
 
         self.youtube_download(debate_ids, link)
         self.trim_audio(debate_ids, start_min, start_sec, end_min, end_sec)
@@ -514,15 +799,32 @@ class MMUSED(Loader):
         self.create_plain_text(debate_ids)
         self.generate_chunks(debate_ids)
         self.generate_empty_transcript_files(debate_ids)
-        utils.run_aeneas(debate_ids)
-        utils.generate_dataset(debate_ids)
-        utils.generate_clips(debate_ids)
-        utils.remove_duplicates(debate_ids)
-        utils.remove_not_found(debate_ids)
-        utils.unify_datasets_debates(debate_ids)
+        self.run_aeneas(debate_ids)
+        self.generate_dataset(debate_ids)
+        self.generate_clips(debate_ids)
+        self.remove_duplicates(debate_ids)
+        self.remove_not_found(debate_ids)
+        self.unify_datasets_debates(debate_ids)
+        self.copy_final_csv()
+        self.copy_clips()
 
-        utils.copy_final_csv()
-        utils.copy_clips()
+    def build_audio(
+            self
+    ):
+        df = pd.read_csv(self.files_path.joinpath('dictionary.csv'), sep=';')
+        df.columns = ['id', 'link', 'startMin', 'startSec', 'endMin', 'endSec']
+        debate_ids = df.id.values
+        link = df.link.values
+        start_min = df.startMin.values
+        start_sec = df.startSec.values
+        end_min = df.endMin.values
+        end_sec = df.endSec.values
+
+        self.youtube_download(debate_ids, link)
+        self.trim_audio(debate_ids, start_min, start_sec, end_min, end_sec)
+        self.generate_chunks(debate_ids)
+        self.generate_clips(debate_ids)
+        self.copy_clips()
 
 
 # TODO: complete
