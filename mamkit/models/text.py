@@ -1,7 +1,7 @@
 import torch as th
 
 
-class MAMKitTextOnly(th.nn.Module):
+class TextOnlyModel(th.nn.Module):
 
     def forward(
             self,
@@ -10,7 +10,7 @@ class MAMKitTextOnly(th.nn.Module):
         pass
 
 
-class BiLSTMBaseline(MAMKitTextOnly):
+class BiLSTM(TextOnlyModel):
 
     def __init__(
             self,
@@ -65,17 +65,19 @@ class BiLSTMBaseline(MAMKitTextOnly):
         return logits
 
 
-class TransformerHead(MAMKitTextOnly):
+class TransformerHead(TextOnlyModel):
     """
     Class for the text-only model
     """
 
     def __init__(
             self,
-            head: th.nn.Module
+            head: th.nn.Module,
+            dropout_rate=0.0
     ):
         super().__init__()
         self.head = head
+        self.dropout = th.nn.Dropout(dropout_rate)
 
     def forward(
             self,
@@ -84,6 +86,8 @@ class TransformerHead(MAMKitTextOnly):
         # tokens_emb     -> [bs, N, d]
         # attention_mask -> [bs, N]
         tokens_emb, attention_mask = text
+
+        tokens_emb = self.dropout(tokens_emb)
 
         # [bs, d]
         text_emb = (tokens_emb * attention_mask[:, :, None]).sum(dim=1)

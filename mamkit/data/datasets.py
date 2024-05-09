@@ -154,7 +154,7 @@ class UKDebate(Loader):
             archive_path.unlink()
 
     def get_splits(
-            self,
+            self
     ) -> DataInfo:
         if self.input_mode == 'text-only':
             return DataInfo(train=UnimodalDataset(inputs=self.texts, labels=self.labels),

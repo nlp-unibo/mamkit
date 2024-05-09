@@ -1,9 +1,9 @@
 import torch as th
-
+from transformers import AutoModel
 from mamkit.modules.transformer_modules import MulTA_CrossAttentionBlock, PositionalEncoding
 
 
-class MAMKitTextAudio(th.nn.Module):
+class TextAudioModel(th.nn.Module):
 
     def forward(
             self,
@@ -13,7 +13,7 @@ class MAMKitTextAudio(th.nn.Module):
         pass
 
 
-class BiLSTM(th.nn.Module):
+class BiLSTM(TextAudioModel):
 
     def __init__(
             self,
@@ -83,7 +83,49 @@ class BiLSTM(th.nn.Module):
         return logits
 
 
-class CSA(MAMKitTextAudio):
+# TODO: fix cnn
+class MArgNet(TextAudioModel):
+
+    def __init__(
+            self,
+            transformer_model_card,
+            embedding_dim,
+            lstm_weights,
+            cnn_info,
+            mlp_weights,
+            dropout_rate,
+            num_classes
+    ):
+        super().__init__()
+        
+        # Text
+        self.transformer = AutoModel.from_pretrained(transformer_model_card)
+
+        # Audio
+        self.lstm = th.nn.Sequential()
+        input_size = embedding_dim
+        for weight in lstm_weights:
+            self.lstm.append(th.nn.LSTM(input_size=input_size,
+                                        hidden_size=weight,
+                                        batch_first=True,
+                                        bidirectional=True))
+            input_size = weight
+
+        self.dropout = th.nn.Dropout(dropout_rate)
+
+        self.pre_classifier = th.nn.Sequential()
+        input_size = lstm_weights[-1] * 2
+        for weight in mlp_weights:
+            self.pre_classifier.append(th.nn.Linear(in_features=input_size,
+                                                    out_features=weight))
+            self.pre_classifier.append(th.nn.LeakyReLU())
+            self.pre_classifier.append(th.nn.Dropout(p=dropout_rate))
+            input_size = weight
+
+        self.classifier = th.nn.Linear(in_features=mlp_weights[-1], out_features=num_classes)
+
+
+class CSA(TextAudioModel):
     def __init__(
             self,
             transformer,
@@ -131,7 +173,7 @@ class CSA(MAMKitTextAudio):
         return logits
 
 
-class MAMKitEnsemble(th.nn.Module):
+class Ensemble(TextAudioModel):
     def __init__(
             self,
             text_model,
@@ -174,7 +216,7 @@ class MAMKitEnsemble(th.nn.Module):
         return coefficient * text_probabilities + (1 - coefficient) * audio_probabilities
 
 
-class MAMKitMulTA(th.nn.Module):
+class MulTA(TextAudioModel):
     """
     Class for the unaligned multimodal model
     """

@@ -2,7 +2,6 @@ import logging
 
 import lightning as L
 import torch as th
-from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
@@ -13,15 +12,10 @@ from mamkit.models.text import BiLSTM
 from mamkit.utility.model import to_lighting_model
 
 
-def text_collator(texts):
-    texts = [th.tensor(vocab(tokenizer(text))) for text in texts]
-    return pad_sequence(texts, padding_value=0, batch_first=True)
-
-
 if __name__ == '__main__':
     loader = UKDebate(speaker='Miliband',
                       task_name='asd',
-                      input_mode='text-only')
+                      input_mode='audio-only')
     data_info = loader.get_splits()
 
     tokenizer = get_tokenizer(tokenizer='basic_english')
