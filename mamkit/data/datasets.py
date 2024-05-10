@@ -272,10 +272,10 @@ class MMUSED(Loader):
         self.clips_path = self.files_path.joinpath('audio_clips')
         self.final_path = self.files_path.joinpath('MM-USElecDeb60to16')
 
+        self.alignments_path.mkdir(parents=True)
         self.clips_path.mkdir(parents=True)
-        self.files_path.mkdir(parents=True)
         self.aeneas_path.mkdir(parents=True)
-        self.files_path.mkdir(parents=True)
+        self.final_path.mkdir(parents=True)
 
         download_from_git(repo='multimodal-am',
                           org='lt-nlp-lab-unibo',
