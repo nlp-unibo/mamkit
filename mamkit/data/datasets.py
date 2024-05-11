@@ -6,6 +6,7 @@ import tarfile
 import zipfile
 from collections import Counter
 from dataclasses import dataclass
+from distutils.dir_util import copy_tree
 from enum import Enum
 from pathlib import Path
 from typing import Optional, List, Callable, Union, Dict
@@ -367,24 +368,9 @@ class MMUSED(Loader):
         self.clips_path = self.files_path.joinpath('audio_clips')
         self.final_path = self.files_path.joinpath('MM-USElecDeb60to16')
 
-        self.alignments_path.mkdir(parents=True, exist_ok=True)
-        self.clips_path.mkdir(parents=True, exist_ok=True)
-        self.aeneas_path.mkdir(parents=True, exist_ok=True)
-        self.final_path.mkdir(parents=True, exist_ok=True)
+        self.data_path.mkdir(parents=True, exist_ok=True)
 
-        tmp_path = self.data_path.joinpath('data.zip')
-        download(url='https://zenodo.org/api/records/11179380/files-archive',
-                 file_path=tmp_path)
-
-        with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
-            loaded_zip.extractall(self.data_path)
-
-        tmp_path.unlink()
-
-        if self.input_mode != InputMode.AUDIO_ONLY and not self.final_path.joinpath('MM-USElecDeb60to16.csv').is_file():
-            self.build_from_scratch()
-        elif not self.final_path.joinpath('audio_clips').exists():
-            self.build_audio()
+        self.load()
 
     def trim_audio(
             self,
@@ -872,6 +858,37 @@ class MMUSED(Loader):
         self.generate_chunks(debate_ids)
         self.generate_clips(debate_ids)
 
+    def load(
+            self
+    ):
+        if not self.files_path.exists():
+            logging.info('Download MMUSED data...')
+            tmp_path = self.data_path.joinpath('data.zip')
+            download(url='https://zenodo.org/api/records/11179380/files-archive',
+                     file_path=tmp_path)
+
+            with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
+                loaded_zip.extractall(self.data_path)
+
+            internal_tmp_path = self.data_path.joinpath('MMUSED-data.zip')
+
+            with zipfile.ZipFile(internal_tmp_path, 'r') as loaded_zip:
+                loaded_zip.extractall(self.data_path)
+
+            tmp_path.unlink()
+            internal_tmp_path.unlink()
+
+            source_path = self.data_path.joinpath('multimodal-dataset')
+            copy_tree(source_path.as_posix(), self.data_path.as_posix())
+            shutil.rmtree(source_path)
+
+            logging.info('Download completed!')
+
+        if self.input_mode != InputMode.AUDIO_ONLY and not self.final_path.joinpath('MM-USElecDeb60to16.csv').is_file():
+            self.build_from_scratch()
+        elif not self.final_path.joinpath('audio_clips').exists():
+            self.build_audio()
+
     def get_text_data(
             self,
             df: pd.DataFrame
@@ -1111,18 +1128,30 @@ class MMUSEDFallacy(Loader):
     def load(
             self
     ):
-        if not self.audio_path.exists():
+        if not self.resources_path.exists():
             logging.info('Download MMUSED-fallacy data...')
             tmp_path = self.data_path.joinpath('data.zip')
             download(url='https://zenodo.org/api/records/11179390/files-archive',
                      file_path=tmp_path)
-            logging.info('Download completed! Building audio clips...')
 
             with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
                 loaded_zip.extractall(self.data_path)
 
-            tmp_path.unlink()
+            internal_tmp_path = self.data_path.joinpath('MMUSED-fallacy.zip')
+            with zipfile.ZipFile(internal_tmp_path, 'r') as loaded_zip:
+                loaded_zip.extractall(self.data_path)
 
+            tmp_path.unlink()
+            internal_tmp_path.unlink()
+
+            source_path = self.data_path.joinpath('MMUSED-fallacy')
+            copy_tree(source_path.as_posix(), self.data_path.as_posix())
+            shutil.rmtree(source_path)
+
+            logging.info('Download completed!')
+
+        if not self.audio_path.exists():
+            logging.info('Building audio clips...')
             self.build_clips()
             logging.info('Build completed!')
 
@@ -1277,6 +1306,9 @@ class MArg(Loader):
         self.data_path.mkdir(parents=True, exist_ok=True)
 
         self.df = self.build()
+
+        self.add_splits(method=self.get_mancini_2022_splits,
+                        key='mancini-et-al-2022')
 
     def _build_complete_dataset(
             self,
@@ -1443,6 +1475,18 @@ class MArg(Loader):
                     loaded_zip.extractall(self.data_path)
 
                 tmp_path.unlink()
+
+                dl_tmp_path = self.data_path.joinpath('rafamestre', 'm-arg_multimodal-argumentation-dataset-v1.0.0.zip')
+                with zipfile.ZipFile(dl_tmp_path, 'r') as loaded_zip:
+                    loaded_zip.extractall(self.data_path)
+
+                dl_tmp_path.unlink()
+
+                source_path = self.data_path.joinpath('m-arg_multimodal-argumentation-dataset-v1.0.0',
+                                                      'rafamestre-m-arg_multimodal-argumentation-dataset-851736f')
+                copy_tree(source_path.as_posix(), self.data_path.as_posix())
+
+                shutil.rmtree(source_path.parent)
 
             logging.info('Building M-Arg dataset...')
             self.build_chunks()
