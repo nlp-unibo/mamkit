@@ -1,8 +1,11 @@
+import logging
+import os
 from pathlib import Path
+from typing import List
 
 import httpx
+import yt_dlp
 from tqdm import tqdm
-import fsspec
 
 
 # kudos to: https://pub.aimind.so/download-large-file-in-python-with-beautiful-progress-bar-f4f86b394ad7
@@ -17,7 +20,7 @@ def download(
                 total = int(r.headers.get('content-length', 0))
 
                 tqdm_params = {
-                    'desc': url,
+                    'desc': f'Downloading: {url}',
                     'total': total,
                     'miniters': 1,
                     'unit': 'B',
@@ -33,16 +36,42 @@ def download(
                         downloaded = r.num_bytes_downloaded
 
 
-# TODO: integrate progress bar
-def download_from_git(
-        repo: str,
-        org: str,
-        folder: Path,
-        destination: Path,
-        force_download: bool = False
-):
-    if destination.exists() and not force_download:
-        return
+def youtube_download(
+        save_path: Path,
+        debate_ids: List,
+        debate_urls: List
+) -> None:
+    """
 
-    fs = fsspec.filesystem('github', org=org, repo=repo)
-    fs.get(str(folder.as_posix()), str(destination.as_posix()), recursive=True)
+    :param save_path: path where to download youtube videos
+    :param debate_ids: list of strings representing debates IDs
+    :param debate_urls: list of strings representing the urls to the YouTube videos of the debates
+    :return: None. The function populates the folder 'files/debates_audio_recordings' by creating a folder for each
+             debate. Each folder contains the audio file extracted from the corresponding video
+    """
+
+    map_debate_link = dict(zip(debate_ids, debate_urls))
+    for doc, link in tqdm(map_debate_link.items()):
+        doc_path = save_path.joinpath(doc)
+        if not save_path.exists():
+            save_path.mkdir(parents=True)
+
+        doc_path.mkdir(parents=True, exist_ok=True)
+        filename = doc_path.joinpath("full_audio")
+
+        if filename.with_suffix('.wav').exists():
+            logging.info(f'Skipping {link} since {filename.name} already exists...')
+            continue
+        else:
+            ydl_opts = {
+                'format': 'bestaudio/best',
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'wav',
+                    'preferredquality': '192',
+                }],
+                'outtmpl': filename
+            }
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([link])
+            os.system("youtube-dl --rm-cache-dir")

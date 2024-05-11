@@ -3,6 +3,7 @@ import logging
 import os
 import shutil
 import tarfile
+import zipfile
 from collections import Counter
 from dataclasses import dataclass
 from enum import Enum
@@ -12,13 +13,12 @@ from typing import Optional, List, Callable, Union, Dict
 import numpy as np
 import pandas as pd
 import simplejson as sj
-import yt_dlp
 from nltk.tokenize import sent_tokenize
 from pydub import AudioSegment
 from torch.utils.data import Dataset
 from tqdm import tqdm
 
-from mamkit.utility.data import download, download_from_git
+from mamkit.utility.data import download, youtube_download
 
 
 class InputMode(Enum):
@@ -261,18 +261,18 @@ class UKDebate(Loader):
     def load(
             self
     ):
-        logging.getLogger(__name__).info('Downloading UKDebate dataset...')
+        logging.info('Downloading UKDebate dataset...')
         archive_path = self.data_path.parent.joinpath('ukdebate.tar.gz')
         download(url=self.download_url,
                  file_path=archive_path)
-        logging.getLogger(__name__).info('Download completed...')
+        logging.info('Download completed...')
 
-        logging.getLogger(__name__).info('Extracting data...')
+        logging.info('Extracting data...')
         self.data_path.mkdir(parents=True)
         with tarfile.open(archive_path) as loaded_tar:
             loaded_tar.extractall(self.data_path)
 
-        logging.getLogger(__name__).info('Extraction completed...')
+        logging.info('Extraction completed...')
 
         if archive_path.is_file():
             archive_path.unlink()
@@ -372,61 +372,19 @@ class MMUSED(Loader):
         self.aeneas_path.mkdir(parents=True, exist_ok=True)
         self.final_path.mkdir(parents=True, exist_ok=True)
 
-        download_from_git(repo='multimodal-am',
-                          org='lt-nlp-lab-unibo',
-                          folder=Path('multimodal-dataset', 'files'),
-                          destination=self.files_path,
-                          force_download=force_download)
+        tmp_path = self.data_path.joinpath('data.zip')
+        download(url='https://zenodo.org/api/records/11179380/files-archive',
+                 file_path=tmp_path)
 
-        download_from_git(repo='multimodal-am',
-                          org='lt-nlp-lab-unibo',
-                          folder=Path('multimodal-dataset', 'run_aeneas'),
-                          destination=self.aeneas_path,
-                          force_download=force_download)
+        with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
+            loaded_zip.extractall(self.data_path)
+
+        tmp_path.unlink()
 
         if self.input_mode != InputMode.AUDIO_ONLY and not self.final_path.joinpath('MM-USElecDeb60to16.csv').is_file():
             self.build_from_scratch()
         elif not self.final_path.joinpath('audio_clips').exists():
             self.build_audio()
-
-    def youtube_download(
-            self,
-            debate_ids: List,
-            debate_urls: List
-    ) -> None:
-        """
-
-        :param debate_ids: list of strings representing debates IDs
-        :param debate_urls: list of strings representing the urls to the YouTube videos of the debates
-        :return: None. The function populates the folder 'files/debates_audio_recordings' by creating a folder for each
-                 debate. Each folder contains the audio file extracted from the corresponding video
-        """
-
-        map_debate_link = dict(zip(debate_ids, debate_urls))
-        for doc, link in tqdm(map_debate_link.items()):
-            doc_path = self.audio_path.joinpath(doc)
-            if not self.audio_path.exists():
-                self.audio_path.mkdir(parents=True)
-
-            doc_path.mkdir(parents=True, exist_ok=True)
-            filename = doc_path.joinpath("full_audio")
-
-            if filename.with_suffix('.wav').exists():
-                logging.getLogger(__name__).info(f'Skipping {link} since {filename.name} already exists...')
-                continue
-            else:
-                ydl_opts = {
-                    'format': 'bestaudio/best',
-                    'postprocessors': [{
-                        'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'wav',
-                        'preferredquality': '192',
-                    }],
-                    'outtmpl': filename
-                }
-                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                    ydl.download([link])
-                os.system("youtube-dl --rm-cache-dir")
 
     def trim_audio(
             self,
@@ -856,7 +814,7 @@ class MMUSED(Loader):
         # compare dimension to original dataframe
         full_dataset_path = self.datasets_path.joinpath('YesWeCan', 'sentence_db_candidate.csv')
         df_full = pd.read_csv(full_dataset_path)
-        logging.getLogger(__name__).info("Actual shape: ", df.shape, "Original shape: ", df_full.shape)
+        logging.info("Actual shape: ", df.shape, "Original shape: ", df_full.shape)
 
     def copy_final_csv(
             self,
@@ -883,7 +841,7 @@ class MMUSED(Loader):
         end_min = df.endMin.values
         end_sec = df.endSec.values
 
-        self.youtube_download(debate_ids, link)
+        youtube_download(save_path=self.audio_path, debate_ids=debate_ids, debate_urls=link)
         self.trim_audio(debate_ids, start_min, start_sec, end_min, end_sec)
         self.copy_transcripts(debate_ids)
         self.create_plain_text(debate_ids)
@@ -909,7 +867,7 @@ class MMUSED(Loader):
         end_min = df.endMin.values
         end_sec = df.endSec.values
 
-        self.youtube_download(debate_ids, link)
+        youtube_download(save_path=self.audio_path, debate_ids=debate_ids, debate_urls=link)
         self.trim_audio(debate_ids, start_min, start_sec, end_min, end_sec)
         self.generate_chunks(debate_ids)
         self.generate_clips(debate_ids)
@@ -966,20 +924,250 @@ class MMUSEDFallacy(Loader):
 
     def __init__(
             self,
+            sample_rate=16000,
             force_download=False,
+            clip_modality='full',
+            n_files=None,
             **kwargs
     ):
         super().__init__(**kwargs)
 
         assert self.task_name in ['afc']
+        assert clip_modality in ['full', 'partial']
 
+        self.sample_rate = sample_rate
+        self.force_download = force_download
+        self.clip_modality = clip_modality
+        self.n_files = n_files
         self.folder_name = 'MMUSED-fallacy'
 
         self.data_path = Path(Path.cwd().parent, 'data', self.folder_name).resolve()
-        self.audio_path = self.data_path.joinpath('debates_audio_recordings')
+        self.resources_path = self.data_path.joinpath('resources')
+        self.audio_path = self.resources_path.joinpath('debates_audio_recordings')
         self.clips_path = self.data_path.joinpath('audio_clips')
 
         self.clips_path.mkdir(parents=True, exist_ok=True)
+
+        self.df = self.load()
+
+    def generate_clips(
+            self,
+            element,
+            ids,
+            dataset_path,
+    ):
+        # element can be sentences dialogue, snippets, components and dialogues
+        # ids is a list of ids of the elements to be processed
+        # modality is the modality of the audio clips to be generated
+        # dataset_path is the path to the dataset
+        # sample_rate is the sample rate of the audio clips to be generated
+
+        df = pd.read_csv(dataset_path, sep='\t')
+        if self.clip_modality == 'full':
+            ids = df.id_map.unique()
+
+        main_folder_path = self.clips_path.joinpath(element)
+        if main_folder_path.exists():
+            shutil.rmtree(main_folder_path)
+
+        main_folder_path.mkdir(parents=True)
+
+        for doc_id in tqdm(range(len(ids))):
+            folder_id = ids[doc_id]
+
+            dataset_path_clip_empty = self.resources_path.joinpath('clips_generation', element, folder_id,
+                                                                   'dataset.csv')
+            full_audio_path = self.audio_path.joinpath(folder_id, 'full_audio_trim.wav')
+
+            audio_clips_path = main_folder_path.joinpath(folder_id)
+
+            if audio_clips_path.exists():
+                shutil.rmtree(audio_clips_path)
+            audio_clips_path.mkdir(parents=True)
+
+            df = pd.read_csv(dataset_path_clip_empty, sep='\t')
+            if element == 'dial_sent':
+                unique_dialogue_rows = {}
+                sound = AudioSegment.from_file(full_audio_path)
+                total_len = df.shape[0]
+                for idx, row in tqdm(df.iterrows(), total=total_len, position=0):
+                    timestamps_dial_begin = list(row['DialogueAlignmentBegin'][1:-1].strip().split(','))
+                    timestamps_dial_end = list(row['DialogueAlignmentEnd'][1:-1].strip().split(','))
+                    dialogue = row['Dialogue']
+
+                    id_clip_dialogues = []
+                    if dialogue not in unique_dialogue_rows.keys():
+                        for j in range(len(timestamps_dial_begin)):
+                            if timestamps_dial_begin[j].strip() != 'NOT_FOUND' and timestamps_dial_end[
+                                j].strip() != 'NOT_FOUND':
+                                start_time = float(timestamps_dial_begin[j].strip().replace('\'', '')) * 1000 - 1005
+                                end_time = float(timestamps_dial_end[j].strip().replace('\'', '')) * 1000 + 100
+                                id_clip = 'clip_' + str(idx) + '_' + str(j)
+                                clip_name = audio_clips_path.joinpath(f'{id_clip}.wav')
+                                extract = sound[start_time:end_time]
+                                extract = extract.set_frame_rate(self.sample_rate)
+                                extract = extract.set_channels(1)
+                                extract.export(clip_name, format="wav")
+                                id_clip_dialogues.append(id_clip)
+                        df.at[idx, "idClipDialSent"] = id_clip_dialogues
+                        unique_dialogue_rows[dialogue] = id_clip_dialogues
+                    else:
+                        df.at[idx, "idClipDialSent"] = unique_dialogue_rows[dialogue]
+            elif element == 'snippet':
+                unique_snippet_rows = {}
+                sound = AudioSegment.from_file(full_audio_path)
+                total_len = df.shape[0]
+                for idx, row in tqdm(df.iterrows(), total=total_len, position=0):
+                    start_time = row['BeginSnippet']
+                    end_time = row['EndSnippet']
+                    snippet = row['Snippet']
+                    if snippet not in unique_snippet_rows.keys():
+                        id_clip = 'clip_' + str(idx)
+                        if start_time != 'NOT_FOUND' and end_time != 'NOT_FOUND':
+                            start_time = float(row['BeginSnippet'].strip().replace('\'', '')) * 1000 - 1005
+                            end_time = float(row['EndSnippet'].strip().replace('\'', '')) * 1000 + 100
+                            clip_name = audio_clips_path.joinpath(f'{id_clip}.wav')
+                            extract = sound[start_time:end_time]
+                            extract = extract.set_frame_rate(self.sample_rate)
+                            extract = extract.set_channels(1)
+                            extract.export(clip_name, format="wav")
+                            df.at[idx, "idClipSnippet"] = id_clip
+                            unique_snippet_rows[snippet] = id_clip
+                    else:
+                        df.at[idx, "idClipSnippet"] = unique_snippet_rows[snippet]
+
+    def build_clips(
+            self
+    ):
+        dict_download_links = self.resources_path.joinpath("download", "download_links.csv")
+        dict_mapping_ids = self.resources_path.joinpath("download", "link_ids.csv")
+
+        df_mapping = pd.read_csv(dict_mapping_ids, sep=';')
+        df = pd.read_csv(dict_download_links, sep=';')
+
+        id_mapping = df_mapping.mm_id
+        id_links = df.id.values
+        link = df.link.values
+        start_min_df = df.startMin
+        start_sec_df = df.startSec
+        end_min_df = df.endMin
+        end_sec_df = df.endSec
+
+        youtube_download(save_path=self.audio_path,
+                         debate_ids=id_links,
+                         debate_urls=link)
+
+        tmp = []
+        for x in id_links:
+            tmp.append(str(x))
+
+        id_links = tmp
+        tmp = []
+        for x in id_mapping:
+            tmp.append(str(x))
+        id_mapping = tmp
+
+        id = []
+        links = []
+        start_min = []
+        start_sec = []
+        end_min = []
+        end_sec = []
+
+        for i in range(len(id_links)):
+            if id_links[i] in id_mapping:
+                id.append(id_links[i])
+                links.append(link[i])
+                start_min.append(start_min_df[i])
+                start_sec.append(start_sec_df[i])
+                end_min.append(end_min_df[i])
+                end_sec.append(end_sec_df[i])
+
+        if self.clip_modality == "full":
+            ids = id
+        elif self.clip_modality == "partial":
+            # if modality is partial, the user must specify the number of files to be downloaded
+            # the first n_files in "dictionary.csv" will be downloaded
+            if self.n_files is not None:
+                n_files = int(self.n_files)
+                ids = id[:n_files]
+
+        # generate clips only if AUDIO_CLIPS_PATH is empty
+        if not any(self.data_path.iterdir()):
+            base_dir_support_datasets = self.resources_path.joinpath("clips_generation")
+
+            output_cleaned_dataset_path_csv = os.path.join(base_dir_support_datasets, 'trial_cleaned.csv')
+            output_snippet_dataset_path_csv = os.path.join(base_dir_support_datasets, 'trial_snippet.csv')
+
+            # generate clips for sentences
+            self.generate_clips(element="dial_sent",
+                                ids=ids,
+                                dataset_path=output_cleaned_dataset_path_csv)
+
+            self.generate_clips(element="snippet",
+                                ids=ids,
+                                dataset_path=output_snippet_dataset_path_csv)
+
+    def load(
+            self
+    ):
+        if not self.audio_path.exists():
+            logging.info('Download MMUSED-fallacy data...')
+            tmp_path = self.data_path.joinpath('data.zip')
+            download(url='https://zenodo.org/api/records/11179390/files-archive',
+                     file_path=tmp_path)
+            logging.info('Download completed! Building audio clips...')
+
+            with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
+                loaded_zip.extractall(self.data_path)
+
+            tmp_path.unlink()
+
+            self.build_clips()
+            logging.info('Build completed!')
+
+        df = pd.read_csv(self.data_path.joinpath('no_duplicates', 'dataset.csv'), sep='\t')
+        audio_paths = [self.clips_path.joinpath('snippet', debate_id, f'{clip_id}.wav')
+                       for debate_id, clip_id in zip(df['Dialogue ID'].values, df['idClipSnippet'].values)]
+        df['audio_paths'] = audio_paths
+
+        return df
+
+    def get_text_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return UnimodalDataset(inputs=df['SentenceSnippet'].values,
+                               labels=df['Fallacy'].values)
+
+    def get_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return UnimodalDataset(inputs=df['audio_paths'].values,
+                               labels=df['Fallacy'].values)
+
+    def get_text_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return MultimodalDataset(texts=df['SentenceSnippet'].values,
+                                 audio=df['audio_paths'].values,
+                                 labels=df['Fallacy'].values)
+
+    @property
+    def data(
+            self
+    ) -> pd.DataFrame:
+        return self.df
+
+    def get_default_splits(
+            self,
+            data: pd.DataFrame
+    ) -> SplitInfo:
+        return self.build_info_from_splits(train_df=data,
+                                           val_df=pd.DataFrame.empty,
+                                           test_df=pd.DataFrame.empty)
 
 
 class MArg(Loader):
@@ -1222,7 +1410,7 @@ class MArg(Loader):
                 try:
                     speaker = speak_df[speak_df['text'] == row['text']]['speaker'].iloc[0]
                 except:
-                    logging.getLogger(__name__).info(f'Error parsing {row["text"]}')
+                    logging.info(f'Error parsing {row["text"]}')
                     speaker = 'error'
 
                 context = df_topic[df_topic['id'] == 'n' + str_idx]['context'].values[0]
@@ -1245,14 +1433,18 @@ class MArg(Loader):
     def build(self):
         if not self.final_path.exists():
             if not any(self.data_path.iterdir()):
-                logging.getLogger(__name__).info('Download M-Arg data...')
-                download_from_git(repo='m-arg_multimodal-argumentation-dataset',
-                                  org='rafamestre',
-                                  folder=Path('.'),
-                                  destination=self.data_path)
-                logging.getLogger(__name__).info('Download completed...')
+                logging.info('Download M-Arg data...')
+                tmp_path = self.data_path.joinpath('data.zip')
+                download(url='https://zenodo.org/api/records/5653504/files-archive',
+                         file_path=tmp_path)
+                logging.info('Download completed...')
 
-            logging.getLogger(__name__).info('Building M-Arg dataset...')
+                with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
+                    loaded_zip.extractall(self.data_path)
+
+                tmp_path.unlink()
+
+            logging.info('Building M-Arg dataset...')
             self.build_chunks()
             feature_df = pd.read_csv(self.feature_path)
             aggregated_df = pd.read_csv(self.aggregated_path)
