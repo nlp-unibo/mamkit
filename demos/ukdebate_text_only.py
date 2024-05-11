@@ -21,6 +21,7 @@ def text_collator(texts):
 if __name__ == '__main__':
     loader = UKDebate(task_name='asd',
                       input_mode=InputMode.TEXT_ONLY)
+    # take just the first cross-validation split
     split_info = loader.get_splits(key='mancini-et-al-2022')[0]
 
     tokenizer = get_tokenizer(tokenizer='basic_english')

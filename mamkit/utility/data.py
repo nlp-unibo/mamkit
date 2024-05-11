@@ -24,6 +24,7 @@ def download(
                     'unit_scale': True,
                     'unit_divisor': 1024,
                 }
+
                 with tqdm(**tqdm_params) as pb:
                     downloaded = r.num_bytes_downloaded
                     for chunk in r.iter_bytes():
@@ -37,7 +38,11 @@ def download_from_git(
         repo: str,
         org: str,
         folder: Path,
-        destination: Path
+        destination: Path,
+        force_download: bool = False
 ):
+    if destination.exists() and not force_download:
+        return
+
     fs = fsspec.filesystem('github', org=org, repo=repo)
-    fs.get(fs.ls(folder.as_posix()), destination)
+    fs.get(str(folder.as_posix()), str(destination.as_posix()), recursive=True)

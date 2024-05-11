@@ -7,8 +7,9 @@ from collections import Counter
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Optional, List, Callable
+from typing import Optional, List, Callable, Union, Dict
 
+import numpy as np
 import pandas as pd
 import simplejson as sj
 import yt_dlp
@@ -53,6 +54,28 @@ class UnimodalDataset(Dataset):
         return len(self.labels)
 
 
+class PairUnimodalDataset(Dataset):
+
+    def __init__(
+            self,
+            a_inputs,
+            b_inputs,
+            labels
+    ):
+        self.a_inputs = a_inputs
+        self.b_inputs = b_inputs
+        self.labels = labels
+
+    def __getitem__(
+            self,
+            idx
+    ):
+        return self.a_inputs[idx], self.b_inputs[idx], self.labels[idx]
+
+    def __len__(self):
+        return len(self.labels)
+
+
 class MultimodalDataset(Dataset):
 
     def __init__(
@@ -75,6 +98,32 @@ class MultimodalDataset(Dataset):
         return len(self.labels)
 
 
+class PairMultimodalDataset(Dataset):
+
+    def __init__(
+            self,
+            a_texts,
+            b_texts,
+            a_audio,
+            b_audio,
+            labels
+    ):
+        self.a_texts = a_texts
+        self.b_texts = b_texts
+        self.a_audio = a_audio
+        self.b_audio = b_audio
+        self.labels = labels
+
+    def __getitem__(
+            self,
+            idx
+    ):
+        return self.a_texts[idx], self.b_texts[idx], self.a_audio[idx], self.b_audio[idx], self.labels[idx]
+
+    def __len__(self):
+        return len(self.labels)
+
+
 class Loader(abc.ABC):
 
     def __init__(
@@ -85,13 +134,13 @@ class Loader(abc.ABC):
         self.task_name = task_name
         self.input_mode = input_mode
 
-        self.texts = None
-        self.audio = None
-        self.labels = None
-        self.splits = None
-
         self.splitters = {
             'default': self.get_default_splits
+        }
+        self.data_retriever: Dict[InputMode, Callable[[pd.DataFrame], Dataset]] = {
+            InputMode.TEXT_ONLY: self.get_text_data,
+            InputMode.AUDIO_ONLY: self.get_audio_data,
+            InputMode.TEXT_AUDIO: self.get_text_audio_data
         }
 
     def add_splits(
@@ -101,52 +150,60 @@ class Loader(abc.ABC):
     ):
         self.splitters[key] = method
 
+    @abc.abstractmethod
+    def get_text_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        pass
+
+    @abc.abstractmethod
+    def get_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        pass
+
+    @abc.abstractmethod
+    def get_text_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        pass
+
     def build_info_from_splits(
             self,
             train_df,
             val_df,
             test_df
     ) -> SplitInfo:
-        if self.input_mode == InputMode.TEXT_ONLY:
-            return SplitInfo(train=UnimodalDataset(inputs=train_df.texts.values, labels=train_df.labels.values),
-                             val=UnimodalDataset(inputs=val_df.texts.values, labels=val_df.labels.values),
-                             test=UnimodalDataset(inputs=test_df.texts.values, labels=test_df.labels.values))
-        if self.input_mode == InputMode.AUDIO_ONLY:
-            return SplitInfo(train=UnimodalDataset(inputs=train_df.audio.values, labels=train_df.labels.values),
-                             val=UnimodalDataset(inputs=val_df.audio.values, labels=val_df.labels.values),
-                             test=UnimodalDataset(inputs=test_df.audio.values, labels=test_df.labels.values))
+        train_data = self.data_retriever[self.input_mode](df=train_df)
+        val_data = self.data_retriever[self.input_mode](df=val_df)
+        test_data = self.data_retriever[self.input_mode](df=test_df)
 
-        return SplitInfo(train=MultimodalDataset(texts=train_df.texts.values, audio=train_df.audio.values,
-                                                 labels=train_df.labels.values),
-                         val=MultimodalDataset(texts=val_df.texts.values, audio=val_df.audio.values,
-                                               labels=val_df.labels.values),
-                         test=MultimodalDataset(texts=test_df.texts.values, audio=test_df.audio.values,
-                                                labels=test_df.labels.values))
+        return SplitInfo(train=train_data,
+                         val=val_data,
+                         test=test_data)
 
+    @abc.abstractmethod
     def get_default_splits(
             self,
             data: pd.DataFrame
-    ) -> List[SplitInfo]:
-        train_df = data[data.split == 'train']
-        val_df = data[data.split == 'val']
-        test_df = data[data.split == 'test']
-
-        return [self.build_info_from_splits(train_df=train_df, val_df=val_df, test_df=test_df)]
+    ) -> SplitInfo:
+        pass
 
     def get_splits(
             self,
             key: str = 'default'
-    ) -> List[SplitInfo]:
+    ) -> Union[List[SplitInfo], SplitInfo]:
         return self.splitters[key](self.data)
 
     @property
+    @abc.abstractmethod
     def data(
             self
     ) -> pd.DataFrame:
-        return pd.DataFrame.from_dict({'texts': self.texts,
-                                       'audio': self.audio,
-                                       'labels': self.labels,
-                                       'split': self.splits})
+        pass
 
 
 class UKDebate(Loader):
@@ -161,13 +218,13 @@ class UKDebate(Loader):
 
         self.download_url = 'http://argumentationmining.disi.unibo.it/dataset_aaai2016.tgz'
         self.folder_name = 'UKDebate'
-        self.filepath = Path(Path.cwd().parent, 'data', self.folder_name).resolve()
-        self.audio_path = self.filepath.joinpath('audio')
+        self.data_path = Path(Path.cwd().parent, 'data', self.folder_name).resolve()
+        self.audio_path = self.data_path.joinpath('audio')
 
-        if not self.filepath.exists():
+        if not self.data_path.exists():
             self.load()
 
-        self.texts, self.audio, self.labels, self.splits = self.parse_all_annotations()
+        self.texts, self.audio, self.labels = self.parse_all_annotations()
 
         self.add_splits(method=self.get_mancini_2022_splits,
                         key='mancini-et-al-2022')
@@ -175,57 +232,94 @@ class UKDebate(Loader):
     def parse_all_annotations(
             self
     ):
-        texts, audio, labels, splits = [], [], [], []
+        texts, audio, labels = [], [], []
         for speaker in ['Miliband', 'Clegg', 'Cameron']:
-            sp_texts, sp_audio, sp_labels, sp_splits = self.parse_speaker_annotations(speaker=speaker)
+            sp_texts, sp_audio, sp_labels = self.parse_speaker_annotations(speaker=speaker)
             texts.extend(sp_texts)
             audio.extend(sp_audio)
             labels.extend(sp_labels)
-            splits.extend(sp_splits)
 
-        return texts, audio, labels, splits
+        return texts, audio, labels
 
     def parse_speaker_annotations(
             self,
             speaker
     ):
-        speaker_path = self.filepath.joinpath('dataset', f'{speaker.capitalize()}.txt')
+        speaker_path = self.data_path.joinpath('dataset', f'{speaker.capitalize()}.txt')
         with speaker_path.open('r') as txt:
             texts = txt.readlines()
 
-        annotations_path = self.filepath.joinpath('dataset', f'{speaker.capitalize()}Labels.txt')
+        annotations_path = self.data_path.joinpath('dataset', f'{speaker.capitalize()}Labels.txt')
         with annotations_path.open('r') as txt:
             labels = txt.readlines()
             labels = [1 if label == 'C' else 0 for label in labels]
 
         audio = [self.audio_path.joinpath(speaker.capitalize(), f'{idx}.wav') for idx in range(len(texts))]
 
-        return texts, audio, labels, ['train'] * len(texts)
+        return texts, audio, labels
 
     def load(
             self
     ):
         logging.getLogger(__name__).info('Downloading UKDebate dataset...')
-        archive_path = self.filepath.parent.joinpath('ukdebate.tar.gz')
+        archive_path = self.data_path.parent.joinpath('ukdebate.tar.gz')
         download(url=self.download_url,
                  file_path=archive_path)
         logging.getLogger(__name__).info('Download completed...')
 
         logging.getLogger(__name__).info('Extracting data...')
-        self.filepath.mkdir(parents=True)
+        self.data_path.mkdir(parents=True)
         with tarfile.open(archive_path) as loaded_tar:
-            loaded_tar.extractall(self.filepath)
+            loaded_tar.extractall(self.data_path)
 
         logging.getLogger(__name__).info('Extraction completed...')
 
         if archive_path.is_file():
             archive_path.unlink()
 
+    def get_text_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return UnimodalDataset(inputs=df.texts.values,
+                               labels=df.labels.values)
+
+    def get_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return UnimodalDataset(inputs=df.audio.values,
+                               labels=df.labels.values)
+
+    def get_text_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return MultimodalDataset(texts=df.texts.values,
+                                 audio=df.audio.values,
+                                 labels=df.labels.values)
+
+    @property
+    def data(
+            self
+    ) -> pd.DataFrame:
+        return pd.DataFrame.from_dict({
+            'texts': self.texts,
+            'audio': self.audio,
+            'labels': self.labels
+        })
+
+    def get_default_splits(
+            self,
+            data: pd.DataFrame
+    ) -> SplitInfo:
+        return self.build_info_from_splits(train_df=data, val_df=pd.DataFrame.empty, test_df=pd.DataFrame.empty)
+
     def get_mancini_2022_splits(
             self,
             data: pd.DataFrame
     ) -> List[SplitInfo]:
-        folds_path = Path(Path.cwd().parent, 'data', 'UKDebate', 'mancini_2022_folds.json').resolve()
+        folds_path = self.data_path.joinpath('mancini_2022_folds.json')
         if not folds_path.is_file():
             download(
                 url='https://raw.githubusercontent.com/lt-nlp-lab-unibo/multimodal-am/main/deasy-speech/prebuilt_folds/aaai2016_all_folds.json',
@@ -253,6 +347,7 @@ class MMUSED(Loader):
 
     def __init__(
             self,
+            force_download=False,
             **kwargs
     ):
         super().__init__(**kwargs)
@@ -272,20 +367,22 @@ class MMUSED(Loader):
         self.clips_path = self.files_path.joinpath('audio_clips')
         self.final_path = self.files_path.joinpath('MM-USElecDeb60to16')
 
-        self.alignments_path.mkdir(parents=True)
-        self.clips_path.mkdir(parents=True)
-        self.aeneas_path.mkdir(parents=True)
-        self.final_path.mkdir(parents=True)
+        self.alignments_path.mkdir(parents=True, exist_ok=True)
+        self.clips_path.mkdir(parents=True, exist_ok=True)
+        self.aeneas_path.mkdir(parents=True, exist_ok=True)
+        self.final_path.mkdir(parents=True, exist_ok=True)
 
         download_from_git(repo='multimodal-am',
                           org='lt-nlp-lab-unibo',
                           folder=Path('multimodal-dataset', 'files'),
-                          destination=self.files_path)
+                          destination=self.files_path,
+                          force_download=force_download)
 
         download_from_git(repo='multimodal-am',
                           org='lt-nlp-lab-unibo',
                           folder=Path('multimodal-dataset', 'run_aeneas'),
-                          destination=self.aeneas_path)
+                          destination=self.aeneas_path,
+                          force_download=force_download)
 
         if self.input_mode != InputMode.AUDIO_ONLY and not self.final_path.joinpath('MM-USElecDeb60to16.csv').is_file():
             self.build_from_scratch()
@@ -311,20 +408,25 @@ class MMUSED(Loader):
             if not self.audio_path.exists():
                 self.audio_path.mkdir(parents=True)
 
-            doc_path.mkdir(parents=True, exist_ok=False)
-            filename = doc_path.joinpath("full_audio.wav")
-            ydl_opts = {
-                'format': 'bestaudio/best',
-                'postprocessors': [{
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'wav',
-                    'preferredquality': '192',
-                }],
-                'outtmpl': filename
-            }
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([link])
-            os.system("youtube-dl --rm-cache-dir")
+            doc_path.mkdir(parents=True, exist_ok=True)
+            filename = doc_path.joinpath("full_audio")
+
+            if filename.with_suffix('.wav').exists():
+                logging.getLogger(__name__).info(f'Skipping {link} since {filename.name} already exists...')
+                continue
+            else:
+                ydl_opts = {
+                    'format': 'bestaudio/best',
+                    'postprocessors': [{
+                        'key': 'FFmpegExtractAudio',
+                        'preferredcodec': 'wav',
+                        'preferredquality': '192',
+                    }],
+                    'outtmpl': filename
+                }
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([link])
+                os.system("youtube-dl --rm-cache-dir")
 
     def trim_audio(
             self,
@@ -348,7 +450,7 @@ class MMUSED(Loader):
         for idx in tqdm(range(len(debate_ids))):
             db_folder_id = debate_ids[idx]
 
-            export_filename = self.audio_path.joinpath(db_folder_id, 'full_audio_trim.wav')
+            export_filename = self.audio_path.joinpath(db_folder_id, 'full_audio.wav')
             import_filename = self.audio_path.joinpath(db_folder_id, 'full_audio.wav')
 
             # importing file from location by giving its path
@@ -432,9 +534,9 @@ class MMUSED(Loader):
         """
         for debate_id in range(len(debate_ids)):
             folder_id = debate_ids[debate_id]
-            filename = self.audio_path.joinpath(folder_id, 'full_audio_trim.wav')
+            filename = self.audio_path.joinpath(folder_id, 'full_audio.wav')
             chunks_folder = self.audio_path.joinpath(folder_id, 'splits')
-            chunks_folder.mkdir(parents=True, exist_ok=False)
+            chunks_folder.mkdir(parents=True, exist_ok=True)
 
             sound = AudioSegment.from_mp3(filename)
             duration = sound.duration_seconds
@@ -610,9 +712,9 @@ class MMUSED(Loader):
             folder_id = debate_ids[debate_id]
             dataset_path = self.datasets_path.joinpath(folder_id, 'dataset.csv')
             dataset_clip_path = self.datasets_path.joinpath(folder_id, 'dataset_clip.csv')
-            full_audio_path = self.audio_path.joinpath(folder_id, 'full_audio_trim.wav')
+            full_audio_path = self.audio_path.joinpath(folder_id, 'full_audio.wav')
             audio_clips_path = self.clips_path.joinpath(folder_id)
-            audio_clips_path.mkdir(parents=True)
+            audio_clips_path.mkdir(parents=True, exist_ok=True)
 
             # read dataframe with timestamps
             df = pd.read_csv(dataset_path)
@@ -769,18 +871,6 @@ class MMUSED(Loader):
         shutil.copy(final_csv_path, dest_final_csv)
         dest_final_csv.rename(dest_final_csv.with_name('MM-USElecDeb60to16.csv'))
 
-    def copy_clips(
-            self,
-    ):
-        """
-
-        :return: None. The function copies the clips contained in 'files/audio_clips'
-                 to the official folder 'MM-USElecDeb60to16'.
-        """
-        dest_final_clips = self.files_path.joinpath('MM-USElecDeb60to16', 'audio_clips')
-        dest_final_clips.mkdir(parents=True)
-        shutil.copytree(self.clips_path, dest_final_clips)
-
     def build_from_scratch(
             self
     ):
@@ -806,7 +896,6 @@ class MMUSED(Loader):
         self.remove_not_found(debate_ids)
         self.unify_datasets_debates(debate_ids)
         self.copy_final_csv()
-        self.copy_clips()
 
     def build_audio(
             self
@@ -824,14 +913,420 @@ class MMUSED(Loader):
         self.trim_audio(debate_ids, start_min, start_sec, end_min, end_sec)
         self.generate_chunks(debate_ids)
         self.generate_clips(debate_ids)
-        self.copy_clips()
+
+    def get_text_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return UnimodalDataset(inputs=df.Text.values,
+                               labels=df.Component.values)
+
+    def get_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return UnimodalDataset(inputs=df['audio_paths'].values,
+                               labels=df.Component.values)
+
+    def get_text_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return MultimodalDataset(texts=df.Text.values,
+                                 audio=df['audio_paths'].values,
+                                 labels=df.Component.values)
+
+    @property
+    def data(
+            self
+    ) -> pd.DataFrame:
+        df = pd.read_csv(self.final_path.joinpath('MM-USElecDeb60to16.csv'))
+
+        audio_paths = [self.clips_path.joinpath(document_id, f'{clip_id}.wav')
+                       for document_id, clip_id in zip(df.Document.values, df['idClip'].values)]
+        df['audio_paths'] = audio_paths
+
+        if self.task_name == 'acd':
+            df = df[df['Component'].isin(['Premise', 'Claim'])]
+        else:
+            df.loc[df['Component'].isin(['Premise', 'Claim']), 'Component'] = 'Arg'
+
+        return df
+
+    def get_default_splits(
+            self,
+            data: pd.DataFrame
+    ) -> SplitInfo:
+        return self.build_info_from_splits(train_df=data[data.Set == 'TRAIN'],
+                                           val_df=data[data.Set == 'VALIDATION'],
+                                           test_df=data[data.Set == 'TEST'])
 
 
-# TODO: complete
 class MMUSEDFallacy(Loader):
-    pass
+
+    def __init__(
+            self,
+            force_download=False,
+            **kwargs
+    ):
+        super().__init__(**kwargs)
+
+        assert self.task_name in ['afc']
+
+        self.folder_name = 'MMUSED-fallacy'
+
+        self.data_path = Path(Path.cwd().parent, 'data', self.folder_name).resolve()
+        self.audio_path = self.data_path.joinpath('debates_audio_recordings')
+        self.clips_path = self.data_path.joinpath('audio_clips')
+
+        self.clips_path.mkdir(parents=True, exist_ok=True)
 
 
-# TODO: complete
 class MArg(Loader):
-    pass
+
+    def __init__(
+            self,
+            confidence,
+            **kwargs
+    ):
+        super().__init__(**kwargs)
+
+        assert confidence in [0.85, 1.0]
+        assert self.task_name in ['arc']
+
+        self.confidence = confidence
+        self.folder_name = 'MArg'
+
+        self.data_path = Path(Path.cwd().parent, 'data', self.folder_name).resolve()
+        self.feature_path = self.data_path.joinpath('data', 'preprocessed full dataset',
+                                                    'full_feature_extraction_dataset.csv')
+        self.aggregated_path = self.data_path.joinpath('annotated dataset', 'aggregated_dataset.csv')
+        self.final_path = self.data_path.joinpath(f'final_dataset_{self.confidence:.2f}.csv')
+        self.audio_path = self.data_path.joinpath('data', 'audio sentences')
+
+        self.speakers_map = {
+            'Chris Wallace': 'Chris Wallace',
+            'Vice President Joe Biden': 'Joe Biden',
+            'President Donald J. Trump': 'Donald Trump',
+            'Chris Wallace:': 'Chris Wallace',
+            'Kristen Welker': 'Kristen Welker',
+            'Donald Trump': 'Donald Trump',
+            'Joe Biden': 'Joe Biden',
+            'George Stephanopoulos': 'George Stephanopoulos',
+            'Nicholas Fed': 'Audience Member 1',
+            'Kelly Lee': 'Audience Member 2',
+            'Anthony Archer': 'Audience Member 3',
+            'Voice Over': 'Voice Over',
+            'Cedric Humphrey': 'Audience Member 4',
+            'George Stephanopoulus': 'George Stephanopoulos',
+            'Angelia Politarhos': 'Audience Member 5',
+            'Speaker 1': 'Voice Over',
+            'Nathan Osburn': 'Audience Member 6',
+            'Andrew Lewis': 'Audience Member 7',
+            'Speaker 2': 'Voice Over',
+            'Michele Ellison': 'Audience Member 8',
+            'Mark Hoffman': 'Audience Member 9',
+            'Mieke Haeck': 'Audience Member 10',
+            'Speaker 3': 'Voice Over',
+            'Keenan Wilson': 'Audience Member 11',
+            'Savannah Guthrie': 'Savannah Guthrie',
+            'President Trump': 'Donald Trump',
+            'Jacqueline Lugo': 'Audience Member 12',
+            'Barbara Peña': 'Audience Member 13',
+            'Isabella Peña': 'Audience Member 14',
+            'Savannah': 'Savannah Guthrie',
+            'Cristy Montesinos Alonso': 'Audience Member 15',
+            'Adam Schucher': 'Audience Member 16',
+            'Moriah Geene': 'Audience Member 17',
+            'Cindy Velez': 'Audience Member 18',
+            'Paulette Dale': 'Audience Member 19',
+            'Susan Page': 'Susan Page',
+            'Kamala Harris': 'Kamala Harris',
+            'Mike Pence': 'Mike Pence',
+            'Kamala Harris ': 'Kamala Harris'
+        }
+        self.speakers_to_id = {
+            'error': 'error'
+        }
+        self.debate_id_map = {
+            'us_election_2020_1st_presidential_debate_part1_timestamp.csv': '00',
+            'us_election_2020_1st_presidential_debate_part2_timestamp.csv': '01',
+            'us_election_2020_2nd_presidential_debate_part1_timestamp.csv': '02',
+            'us_election_2020_2nd_presidential_debate_part2_timestamp.csv': '03',
+            'us_election_2020_biden_town_hall_part1_timestamp.csv': '04',
+            'us_election_2020_biden_town_hall_part2_timestamp.csv': '05',
+            'us_election_2020_biden_town_hall_part3_timestamp.csv': '06',
+            'us_election_2020_biden_town_hall_part4_timestamp.csv': '07',
+            'us_election_2020_biden_town_hall_part5_timestamp.csv': '08',
+            'us_election_2020_biden_town_hall_part6_timestamp.csv': '09',
+            'us_election_2020_biden_town_hall_part7_timestamp.csv': '10',
+            'us_election_2020_trump_town_hall_1_timestamp.csv': '11',
+            'us_election_2020_trump_town_hall_2_timestamp.csv': '12',
+            'us_election_2020_trump_town_hall_3_timestamp.csv': '13',
+            'us_election_2020_trump_town_hall_4_timestamp.csv': '14',
+            'us_election_2020_vice_presidential_debate_1_timestamp.csv': '15',
+            'us_election_2020_vice_presidential_debate_2_timestamp.csv': '16'
+        }
+        self.file_map_timestamp = {
+            'us_election_2020_1st_presidential_debate_part1_timestamp.csv': 'us_election_2020_1st_presidential_debate_split.csv',
+            'us_election_2020_1st_presidential_debate_part2_timestamp.csv': 'us_election_2020_1st_presidential_debate_split.csv',
+            'us_election_2020_2nd_presidential_debate_part1_timestamp.csv': 'us_election_2020_2nd_presidential_debate_split.csv',
+            'us_election_2020_2nd_presidential_debate_part2_timestamp.csv': 'us_election_2020_2nd_presidential_debate_split.csv',
+            'us_election_2020_biden_town_hall_part1_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
+            'us_election_2020_biden_town_hall_part2_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
+            'us_election_2020_biden_town_hall_part3_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
+            'us_election_2020_biden_town_hall_part4_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
+            'us_election_2020_biden_town_hall_part5_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
+            'us_election_2020_biden_town_hall_part6_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
+            'us_election_2020_biden_town_hall_part7_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
+            'us_election_2020_trump_town_hall_1_timestamp.csv': 'us_election_2020_trump_town_hall_split.csv',
+            'us_election_2020_trump_town_hall_2_timestamp.csv': 'us_election_2020_trump_town_hall_split.csv',
+            'us_election_2020_trump_town_hall_3_timestamp.csv': 'us_election_2020_trump_town_hall_split.csv',
+            'us_election_2020_trump_town_hall_4_timestamp.csv': 'us_election_2020_trump_town_hall_split.csv',
+            'us_election_2020_vice_presidential_debate_1_timestamp.csv': 'us_election_2020_vice_presidential_debate_split.csv',
+            'us_election_2020_vice_presidential_debate_2_timestamp.csv': 'us_election_2020_vice_presidential_debate_split.csv'}
+
+        self.data_path.mkdir(parents=True, exist_ok=True)
+
+        self.df = self.build()
+
+    def _build_complete_dataset(
+            self,
+            feature_df,
+            aggregated_df
+    ):
+        df_final = pd.DataFrame(columns=['id',
+                                         'relation',
+                                         'confidence',
+                                         'sentence_1',
+                                         'sentence_2',
+                                         'sentence_1_audio',
+                                         'sentence_2_audio'])
+
+        for index, row in aggregated_df.iterrows():
+            # ids
+            id1 = row["pair_id"]
+
+            # labels
+            relation1 = row["relation"]
+
+            # label confidence
+            conf1 = row["relation:confidence"]
+
+            # sentences
+            s1t = row["sentence_1"]
+            s2t = row["sentence_2"]
+
+            # corresponding audio sentences based on the text
+            s1a = feature_df['audio_file'].loc[feature_df['text'] == s1t].values[0]
+            s2a = feature_df['audio_file'].loc[feature_df['text'] == s2t].values[0]
+
+            # If we want to filter by annotation confidence we can add here the following if statement
+            if row["relation:confidence"] > self.confidence:
+                df_final = df_final.append(
+                    {'id': id1,
+                     'relation': relation1,
+                     'confidence': conf1,
+                     'sentence_1': s1t,
+                     'sentence_2': s2t,
+                     'sentence_1_audio': s1a,
+                     'sentence_1_audio_path': self.audio_path.joinpath(s1a + '.wav'),
+                     'sentence_2_audio': s2a,
+                     'sentence_2_audio_path': self.audio_path.joinpath(s2a + '.wav'),
+                     }, ignore_index=True)
+
+        return df_final
+
+    def build_chunks(
+            self
+    ):
+        tokenized_path = self.data_path.joinpath('data', 'tokenised text')
+
+        idx = 0
+        for filepath in self.data_path.joinpath('data', 'original data').glob('*.csv'):
+
+            speaker = []
+            text = []
+
+            df = pd.read_csv(filepath,
+                             header=0,
+                             names=['speaker', 'minute', 'text'])
+
+            for r in df.index:
+                # Tokenised text
+                split_text = sent_tokenize(df['text'].iloc[r])
+                text += split_text
+                # Match speakers to their names using the dictionary above
+                try:
+                    speaker_name = self.speakers_map[df['speaker'].iloc[r]]
+                except:  # In theory this exception is never raised
+                    speaker_name = 'Speaker not found'
+                speaker += [speaker_name] * len(split_text)
+                # Assign IDs to speakers
+                # A dictionary of speakers_to_id is filled for later use
+                if not (speaker_name in self.speakers_to_id):
+                    if idx < 10:
+                        self.speakers_to_id[speaker_name] = '0' + str(idx)
+                    else:
+                        self.speakers_to_id[speaker_name] = str(idx)
+                    idx = idx + 1
+
+            df_split = pd.DataFrame({'speaker': speaker, 'text': text})
+            df_split.to_csv(tokenized_path.joinpath(filepath.stem + '_split.csv'), index=False)
+
+            # We also create a version in plan text (used by the force aligner tool)
+            with open(tokenized_path.joinpath(filepath.stem + '_plain.txt'), 'w', encoding='utf8') as f:
+                for t in df_split['text']:
+                    f.write(t + '\n')
+
+        filepath_topic = self.data_path.joinpath('data', 'preprocessed full dataset')
+        df_topic = pd.read_csv(filepath_topic.joinpath('dataset_context_definition.csv'))
+        filepath_timestamps = self.data_path.joinpath('data', 'timestamps')
+        filepath_audio = self.data_path.joinpath('data', 'split audio')
+        filepath_audio_save = self.data_path.joinpath('data', 'audio sentences')
+
+        filepath_audio_save.mkdir(parents=True, exist_ok=True)
+
+        buffer = 2
+
+        big_df = pd.DataFrame(columns=['id', 'text', 'speaker', 'speaker_id', 'audio_file', 'context', 'debate'])
+
+        for timestamp_name in self.debate_id_map:
+            df = pd.read_csv(filepath_timestamps.joinpath(timestamp_name),
+                             header=None,
+                             names=['id', 'start', 'end', 'text'])
+
+            debate_mp3 = AudioSegment.from_mp3(filepath_audio.joinpath(timestamp_name.split('_timestamp')[0] + '.mp3'))
+
+            speak_df = pd.read_csv(tokenized_path.joinpath(self.file_map_timestamp[timestamp_name]),
+                                   header=0,
+                                   names=['speaker', 'text'])
+
+            f_idx = self.debate_id_map[timestamp_name]
+            idx = 0
+            for index, row in df.iterrows():
+                if row['start'] < buffer:
+                    extract = debate_mp3[row['start'] * 1000:(row['end'] + buffer) * 1000]
+                else:
+                    try:
+                        extract = debate_mp3[(row['start'] - buffer) * 1000:(row['end'] + buffer) * 1000]
+                    except:
+                        extract = debate_mp3[(row['start'] - buffer) * 1000:row['end'] * 1000]
+
+                str_idx = str(idx)
+                while len(str_idx) < 4:
+                    str_idx = '0' + str_idx
+                str_idx = str(f_idx) + str_idx
+
+                idx = idx + 1
+                try:
+                    speaker = speak_df[speak_df['text'] == row['text']]['speaker'].iloc[0]
+                except:
+                    logging.getLogger(__name__).info(f'Error parsing {row["text"]}')
+                    speaker = 'error'
+
+                context = df_topic[df_topic['id'] == 'n' + str_idx]['context'].values[0]
+                if context == 'Ignore':
+                    context = None
+
+                timestamp = row['id']
+                big_df = big_df.append({'id': 'n' + str_idx,
+                                        'text': row['text'],
+                                        'speaker': speaker,
+                                        'speaker_id': self.speakers_to_id[speaker],
+                                        'audio_file': ('a' + str_idx), 'context': context,
+                                        'debate': str(f_idx), 'timestamp': timestamp},
+                                       ignore_index=True)
+
+                extract.export(filepath_audio_save.joinpath('a' + str_idx + '.wav'), format="wav")
+
+        big_df.to_csv(filepath_topic.joinpath('full_feature_extraction_dataset.csv'), index=False)
+
+    def build(self):
+        if not self.final_path.exists():
+            if not any(self.data_path.iterdir()):
+                logging.getLogger(__name__).info('Download M-Arg data...')
+                download_from_git(repo='m-arg_multimodal-argumentation-dataset',
+                                  org='rafamestre',
+                                  folder=Path('.'),
+                                  destination=self.data_path)
+                logging.getLogger(__name__).info('Download completed...')
+
+            logging.getLogger(__name__).info('Building M-Arg dataset...')
+            self.build_chunks()
+            feature_df = pd.read_csv(self.feature_path)
+            aggregated_df = pd.read_csv(self.aggregated_path)
+            train_df = self._build_complete_dataset(feature_df=feature_df,
+                                                    aggregated_df=aggregated_df)
+
+            # Add index for cv routine
+            train_df['index'] = np.arange(train_df.shape[0])
+
+            train_df.to_csv(self.final_path, index=False)
+        else:
+            train_df = pd.read_csv(self.final_path)
+
+        return train_df
+
+    def get_text_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return PairUnimodalDataset(a_inputs=df.sentence_1.values,
+                                   b_inputs=df.sentence_2.values,
+                                   labels=df.relation.values)
+
+    def get_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return PairUnimodalDataset(a_inputs=df.sentence_1_audio_path.values,
+                                   b_inputs=df.sentence_2_audio_path.values,
+                                   labels=df.relation.values)
+
+    def get_text_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> Dataset:
+        return PairMultimodalDataset(a_texts=df.sentence_1.values,
+                                     b_texts=df.sentence_2.values,
+                                     a_audio=df.sentence_1_audio_path.values,
+                                     b_audio=df.sentence_2_audio_path.values,
+                                     labels=df.relation.values)
+
+    @property
+    def data(
+            self
+    ) -> pd.DataFrame:
+        return self.df
+
+    def get_default_splits(
+            self,
+            data: pd.DataFrame
+    ) -> SplitInfo:
+        return self.build_info_from_splits(train_df=data, val_df=pd.DataFrame.empty, test_df=pd.DataFrame.empty)
+
+    def get_mancini_2022_splits(
+            self,
+            data: pd.DataFrame
+    ) -> List[SplitInfo]:
+        folds_path = self.data_path.joinpath('mancini_2022_folds.json')
+        if not folds_path.is_file():
+            download(
+                url=f'https://raw.githubusercontent.com/lt-nlp-lab-unibo/multimodal-am/main/deasy-speech/prebuilt_folds/m_arg_folds_{self.confidence:.2f}.json',
+                file_path=folds_path)
+
+        with folds_path.open('r') as json_file:
+            folds_data = sj.load(json_file)
+            folds_data = sorted(folds_data.items(), key=lambda item: int(item[0].split('_')[-1]))
+
+        split_info = []
+        for _, fold in folds_data:
+            train_df = data.iloc[fold['train']]
+            val_df = data.iloc[fold['validation']]
+            test_df = data.iloc[fold['test']]
+
+            fold_info = self.build_info_from_splits(train_df=train_df, val_df=val_df, test_df=test_df)
+            split_info.append(fold_info)
+
+        return split_info
