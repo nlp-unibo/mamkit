@@ -207,7 +207,7 @@ class Loader(abc.ABC):
         pass
 
 
-class UKDebate(Loader):
+class UKDebates(Loader):
 
     def __init__(
             self,
@@ -215,10 +215,10 @@ class UKDebate(Loader):
     ):
         super().__init__(**kwargs)
 
-        assert self.task_name in ['asd', 'cd']
+        assert self.task_name == 'asd'
 
         self.download_url = 'http://argumentationmining.disi.unibo.it/dataset_aaai2016.tgz'
-        self.folder_name = 'UKDebate'
+        self.folder_name = 'UKDebates'
         self.data_path = Path(Path.cwd().parent, 'data', self.folder_name).resolve()
         self.audio_path = self.data_path.joinpath('audio')
 
@@ -262,7 +262,7 @@ class UKDebate(Loader):
     def load(
             self
     ):
-        logging.info('Downloading UKDebate dataset...')
+        logging.info('Downloading UKDebates dataset...')
         archive_path = self.data_path.parent.joinpath('ukdebate.tar.gz')
         download(url=self.download_url,
                  file_path=archive_path)

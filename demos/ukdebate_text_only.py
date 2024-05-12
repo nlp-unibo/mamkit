@@ -2,36 +2,33 @@ import logging
 
 import lightning as L
 import torch as th
-from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader
-from torchtext.data.utils import get_tokenizer
-from torchtext.vocab import build_vocab_from_iterator
 
-from mamkit.data.datasets import UKDebate, InputMode
-from mamkit.data.processing import UnimodalCollator
+from mamkit.configs.base import ConfigKey
+from mamkit.configs.text import BiLSTMConfig
+from mamkit.data.datasets import UKDebates, InputMode
+from mamkit.data.processing import UnimodalCollator, VocabBuilder, TextCollator
 from mamkit.models.text import BiLSTM
 from mamkit.utility.model import to_lighting_model
 
-
-def text_collator(texts):
-    texts = [th.tensor(vocab(tokenizer(text))) for text in texts]
-    return pad_sequence(texts, padding_value=0, batch_first=True)
-
-
 if __name__ == '__main__':
-    loader = UKDebate(task_name='asd',
-                      input_mode=InputMode.TEXT_ONLY)
+    loader = UKDebates(task_name='asd',
+                       input_mode=InputMode.TEXT_ONLY)
     # take just the first cross-validation split
     split_info = loader.get_splits(key='mancini-et-al-2022')[0]
 
-    tokenizer = get_tokenizer(tokenizer='basic_english')
-    vocab = build_vocab_from_iterator(iter([tokenizer(text) for (text, _) in split_info.train]),
-                                      specials=['<pad>', '<unk>'],
-                                      special_first=True)
-    vocab.set_default_index(vocab['<unk>'])
+    config = BiLSTMConfig.from_config(key=ConfigKey(dataset='ukdebates',
+                                                    input_mode=InputMode.TEXT_ONLY,
+                                                    task_name='asd',
+                                                    tags='mancini-et-al-2022'))
+
+    vocab_builder = VocabBuilder(tokenizer=config.tokenizer,
+                                 embedding_model=config.embedding_model,
+                                 embedding_dim=config.embedding_dim)
+    vocab_builder([text for (text, _) in split_info.train])
 
     unimodal_collator = UnimodalCollator(
-        features_collator=text_collator,
+        features_collator=TextCollator(tokenizer=config.tokenizer),
         label_collator=lambda labels: th.tensor(labels)
     )
 
@@ -39,17 +36,19 @@ if __name__ == '__main__':
     val_dataloader = DataLoader(split_info.val, batch_size=8, shuffle=False, collate_fn=unimodal_collator)
     test_dataloader = DataLoader(split_info.test, batch_size=8, shuffle=False, collate_fn=unimodal_collator)
 
-    model = BiLSTM(vocab_size=len(vocab),
-                   embedding_dim=50,
-                   dropout_rate=0.2,
-                   lstm_weights=[16],
-                   mlp_weights=[32],
-                   num_classes=2)
+    model = BiLSTM(vocab_size=len(vocab_builder.vocab),
+                   embedding_dim=config.embedding_dim,
+                   dropout_rate=config.dropout_rate,
+                   lstm_weights=config.lstm_weights,
+                   mlp_weights=config.mlp_weights,
+                   num_classes=config.num_classes,
+                   embedding_matrix=vocab_builder.embedding_matrix
+                   )
     model = to_lighting_model(model=model,
                               loss_function=th.nn.CrossEntropyLoss(),
-                              num_classes=2,
-                              optimizer_class=th.optim.Adam,
-                              lr=1e-3)
+                              num_classes=config.num_classes,
+                              optimizer_class=config.optimizer,
+                              **config.optimizer_args)
 
     trainer = L.Trainer(max_epochs=5,
                         accelerator='gpu')

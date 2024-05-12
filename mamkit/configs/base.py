@@ -1,0 +1,63 @@
+from typing import TypeVar, Set, Union, Dict, Callable
+from mamkit.data.datasets import InputMode
+
+Tag = Union[str, Set[str]]
+
+C = TypeVar('C', bound='BaseConfig')
+
+
+class ConfigKey:
+    """
+    Compound key used for configurations.
+    """
+
+    def __init__(
+            self,
+            dataset: str,
+            input_mode: InputMode,
+            task_name: str,
+            tags: Tag,
+    ):
+        self.dataset = dataset
+        self.input_mode = input_mode
+        self.task_name = task_name
+        self.tags = {tags} if type(tags) == str else tags
+
+    def __hash__(
+            self
+    ) -> int:
+        return hash(self.__str__())
+
+    def __str__(
+            self
+    ) -> str:
+        return f'{self.dataset}:{self.tags}'
+
+    def __repr__(
+            self
+    ) -> str:
+        return self.__str__()
+
+    def __eq__(
+            self,
+            other
+    ) -> bool:
+        if other is None or not isinstance(other, ConfigKey):
+            return False
+
+        return (self.dataset == other.dataset and
+                self.input_mode == other.input_mode and
+                self.task_name == other.task_name and
+                self.tags == other.tags)
+
+
+class BaseConfig:
+    configs: Dict[ConfigKey, str] = {}
+
+    @classmethod
+    def from_config(
+            cls,
+            key: ConfigKey
+    ) -> C:
+        config_method = cls.configs[key]
+        return getattr(cls, config_method)()

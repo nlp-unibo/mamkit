@@ -19,13 +19,16 @@ class BiLSTM(TextOnlyModel):
             lstm_weights,
             mlp_weights,
             dropout_rate,
-            num_classes
+            num_classes,
+            embedding_matrix=None
     ):
         super().__init__()
 
         self.embedding = th.nn.Embedding(num_embeddings=vocab_size,
                                          embedding_dim=embedding_dim,
                                          padding_idx=0)
+        if embedding_matrix is not None:
+            self.embedding.weight.data = embedding_matrix
 
         self.lstm = th.nn.Sequential()
         input_size = embedding_dim
