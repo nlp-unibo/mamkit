@@ -30,6 +30,7 @@ class BiLSTM(TextOnlyModel):
         if embedding_matrix is not None:
             self.embedding.weight.data = embedding_matrix
 
+        # TODO: make ModuleList of LSTMs since a stack is not supported in Sequential
         self.lstm = th.nn.Sequential()
         input_size = embedding_dim
         for weight in lstm_weights:

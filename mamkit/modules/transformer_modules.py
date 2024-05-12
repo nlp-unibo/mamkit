@@ -40,7 +40,7 @@ class PositionalEncoding(nn.Module):
             modality = torch.ones((x.shape[0], x.shape[1], 4), dtype=torch.float32).to(device) * (0 if is_first else 1)
             x = x + self.pe[:, :x.size(1)]
             x = self.dropout(x)
-            return torch.cat((x, modality), axis=-1)
+            return torch.cat((x, modality), dim=-1)
         else:
             # x = (bs, sqlen, emb)  pe = (1, sqlen, emb)
             x = x + self.pe[:, :x.size(1)]

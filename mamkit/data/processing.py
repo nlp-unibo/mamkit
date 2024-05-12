@@ -105,15 +105,17 @@ class TextCollator:
 
     def __init__(
             self,
-            tokenizer
+            tokenizer,
+            vocab
     ):
         self.tokenizer = tokenizer
+        self.vocab = vocab
 
     def __call__(
             self,
             texts
     ):
-        texts = [th.tensor(vocab(self.tokenizer(text))) for text in texts]
+        texts = [th.tensor(self.vocab(self.tokenizer(text))) for text in texts]
         return pad_sequence(texts, padding_value=0, batch_first=True)
 
 

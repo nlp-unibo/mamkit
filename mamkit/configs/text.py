@@ -26,6 +26,7 @@ class BiLSTMConfig(BaseConfig):
             num_classes,
             optimizer,
             tokenizer,
+            seeds,
             tokenization_args=None,
             embedding_model=None,
             optimizer_args=None,
@@ -40,6 +41,7 @@ class BiLSTMConfig(BaseConfig):
         self.optimizer_args = optimizer_args
         self.tokenizer = tokenizer
         self.tokenization_args = tokenization_args
+        self.seeds = seeds
 
     @classmethod
     def ukdebates_mancini_2022(
@@ -57,7 +59,8 @@ class BiLSTMConfig(BaseConfig):
             embedding_dim=200,
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            num_classes=2
+            num_classes=2,
+            seeds=[15371, 15372, 15373]
         )
 
     @classmethod
@@ -76,7 +79,8 @@ class BiLSTMConfig(BaseConfig):
                 'lr': 0.0002,
                 'weight_decay': 0.0001
             },
-            num_classes=2
+            num_classes=2,
+            seeds=[15371, 15372, 15373]
         )
 
     @classmethod
@@ -95,7 +99,8 @@ class BiLSTMConfig(BaseConfig):
                 'l2': 0.0002,
                 'weight_decay': 0.0001
             },
-            num_classes=2
+            num_classes=2,
+            seeds=[15371, 15372, 15373]
         )
 
     @classmethod
@@ -114,5 +119,6 @@ class BiLSTMConfig(BaseConfig):
                 'l2': 0.001,
                 'weight_decay': 0.0005
             },
-            num_classes=2
+            num_classes=2,
+            seeds=[15371, 15372, 15373]
         )
