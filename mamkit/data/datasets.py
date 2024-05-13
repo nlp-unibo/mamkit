@@ -220,7 +220,7 @@ class UKDebates(Loader):
         self.download_url = 'http://argumentationmining.disi.unibo.it/dataset_aaai2016.tgz'
         self.folder_name = 'UKDebates'
         self.data_path = Path(Path.cwd().parent, 'data', self.folder_name).resolve()
-        self.audio_path = self.data_path.joinpath('audio')
+        self.audio_path = self.data_path.joinpath('dataset', 'audio')
 
         if not self.data_path.exists():
             self.load()
@@ -255,7 +255,7 @@ class UKDebates(Loader):
             labels = txt.readlines()
             labels = [1 if label == 'C' else 0 for label in labels]
 
-        audio = [self.audio_path.joinpath(speaker.capitalize(), f'{idx}.wav') for idx in range(len(texts))]
+        audio = [self.audio_path.joinpath(speaker.capitalize(), f'{idx + 1}.wav') for idx in range(len(texts))]
 
         return texts, audio, labels
 

@@ -1,5 +1,7 @@
 import torch as th
 
+from mamkit.modules.rnn import LSTMStack
+
 
 class TextOnlyModel(th.nn.Module):
 
@@ -30,15 +32,8 @@ class BiLSTM(TextOnlyModel):
         if embedding_matrix is not None:
             self.embedding.weight.data = embedding_matrix
 
-        # TODO: make ModuleList of LSTMs since a stack is not supported in Sequential
-        self.lstm = th.nn.Sequential()
-        input_size = embedding_dim
-        for weight in lstm_weights:
-            self.lstm.append(th.nn.LSTM(input_size=input_size,
-                                        hidden_size=weight,
-                                        batch_first=True,
-                                        bidirectional=True))
-            input_size = weight
+        self.lstm = LSTMStack(input_size=embedding_dim,
+                              lstm_weigths=lstm_weights)
 
         self.pre_classifier = th.nn.Sequential()
         input_size = lstm_weights[-1] * 2
@@ -59,8 +54,7 @@ class BiLSTM(TextOnlyModel):
         tokens_emb = self.embedding(text)
 
         # [bs, d']
-        _, (text_emb, _) = self.lstm(tokens_emb)
-        text_emb = text_emb.permute(1, 0, 2).reshape(tokens_emb.shape[0], -1)
+        text_emb = self.lstm(tokens_emb)
 
         logits = self.pre_classifier(text_emb)
         logits = self.classifier(logits)

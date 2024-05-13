@@ -24,24 +24,21 @@ class BiLSTMConfig(BaseConfig):
             mlp_weights,
             dropout_rate,
             num_classes,
-            optimizer,
             tokenizer,
-            seeds,
             tokenization_args=None,
             embedding_model=None,
-            optimizer_args=None,
+            **kwargs
     ):
+        super().__init__(**kwargs)
+
         self.embedding_dim = embedding_dim
         self.embedding_model = embedding_model
         self.lstm_weights = lstm_weights
         self.mlp_weights = mlp_weights
         self.dropout_rate = dropout_rate
         self.num_classes = num_classes
-        self.optimizer = optimizer
-        self.optimizer_args = optimizer_args
         self.tokenizer = tokenizer
         self.tokenization_args = tokenization_args
-        self.seeds = seeds
 
     @classmethod
     def ukdebates_mancini_2022(

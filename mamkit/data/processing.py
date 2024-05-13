@@ -9,6 +9,7 @@ from skimage.measure import block_reduce
 from torch.nn.utils.rnn import pad_sequence
 from torchtext.vocab import pretrained_aliases, build_vocab_from_iterator, vocab, GloVe
 from transformers import AutoTokenizer, AutoModel, AutoProcessor
+from torch.nn.utils.rnn import pad_sequence
 
 
 class UnimodalCollator:
@@ -152,12 +153,12 @@ class MFCCCollator:
 
     def __init__(
             self,
-            n_mfcc: int,
+            mfccs: int,
             pooling_sizes: Optional[Iterable[int]] = None,
             remove_energy: bool = True,
             normalize: bool = True
     ):
-        self.n_mfcc = n_mfcc
+        self.mfccs = mfccs
         self.pooling_sizes = pooling_sizes
         self.remove_energy = remove_energy
         self.normalize = normalize
@@ -167,14 +168,14 @@ class MFCCCollator:
             audio_file
     ):
         audio, sampling_rate = librosa.load(audio_file)
-        mfccs = librosa.feature.mfcc(y=audio, sr=sampling_rate, n_mfcc=self.n_mfcc)[2:]
+        mfccs = librosa.feature.mfcc(y=audio, sr=sampling_rate, n_mfcc=self.mfccs)[2:]
         spectral_centroids = librosa.feature.spectral_centroid(y=audio, sr=sampling_rate)
         spectral_bandwidth = librosa.feature.spectral_bandwidth(y=audio, sr=sampling_rate)
         spectral_rolloff = librosa.feature.spectral_rolloff(y=audio, sr=sampling_rate)
         spectral_contrast = librosa.feature.spectral_contrast(y=audio, sr=sampling_rate)
         chroma_ft = librosa.feature.chroma_stft(y=audio, sr=sampling_rate)
 
-        # [frames, n_mfcc]
+        # [frames, mfccs]
         features = np.concatenate(
             (spectral_centroids, spectral_bandwidth, spectral_rolloff, spectral_contrast, chroma_ft, mfccs),
             axis=0).transpose()
@@ -186,7 +187,7 @@ class MFCCCollator:
             for pooling_size in self.pooling_sizes:
                 features = block_reduce(features, (pooling_size, 1), np.mean)
 
-        if self.normalize:
+        if self.normalize and features.shape[0] > 1:
             mean = np.mean(features, axis=0)
             std = np.std(features, axis=0)
             features = np.divide((features - mean[np.newaxis, :]), std[np.newaxis, :])
@@ -204,7 +205,7 @@ class MFCCCollator:
             audio_features = th.tensor(audio_features, dtype=th.float32)
             features.append(audio_features)
 
-        return th.tensor(features)
+        return pad_sequence(features, padding_value=0.0, batch_first=True)
 
 
 class AudioTransformerCollator:

@@ -31,7 +31,7 @@ class ConfigKey:
     def __str__(
             self
     ) -> str:
-        return f'{self.dataset}:{self.tags}'
+        return f'{self.dataset}:{self.input_mode}:{self.task_name}:{self.tags}'
 
     def __repr__(
             self
@@ -53,6 +53,16 @@ class ConfigKey:
 
 class BaseConfig:
     configs: Dict[ConfigKey, str] = {}
+
+    def __init__(
+            self,
+            seeds,
+            optimizer,
+            optimizer_args=None
+    ):
+        self.optimizer = optimizer
+        self.optimizer_args = optimizer_args if optimizer_args is not None else {}
+        self.seeds = seeds
 
     @classmethod
     def from_config(

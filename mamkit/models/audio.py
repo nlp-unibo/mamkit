@@ -1,5 +1,7 @@
 import torch as th
 
+from mamkit.modules.rnn import LSTMStack
+
 
 class AudioOnlyModel(th.nn.Module):
 
@@ -22,14 +24,8 @@ class BiLSTM(AudioOnlyModel):
     ):
         super().__init__()
 
-        self.lstm = th.nn.Sequential()
-        input_size = embedding_dim
-        for weight in lstm_weights:
-            self.lstm.append(th.nn.LSTM(input_size=input_size,
-                                        hidden_size=weight,
-                                        batch_first=True,
-                                        bidirectional=True))
-            input_size = weight
+        self.lstm = LSTMStack(input_size=embedding_dim,
+                              lstm_weigths=lstm_weights)
 
         self.pre_classifier = th.nn.Sequential()
         input_size = lstm_weights[-1] * 2
@@ -49,8 +45,7 @@ class BiLSTM(AudioOnlyModel):
         # audio -> [bs, N, d]
 
         # [bs, d']
-        _, (audio_emb, _) = self.lstm(audio)
-        audio_emb = audio_emb.permute(1, 0, 2).reshape(audio_emb.shape[0], -1)
+        audio_emb = self.lstm(audio)
 
         logits = self.pre_classifier(audio_emb)
         logits = self.classifier(logits)
