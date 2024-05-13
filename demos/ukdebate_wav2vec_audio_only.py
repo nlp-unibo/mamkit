@@ -6,10 +6,11 @@ from lightning.pytorch import seed_everything
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from torch.utils.data import DataLoader
 
-from mamkit.configs.audio import BiLSTMMFCCsConfig
+from mamkit.configs.audio import BiLSTMTransformerConfig
 from mamkit.configs.base import ConfigKey
+from mamkit.data.collators import AudioCollator, UnimodalCollator
 from mamkit.data.datasets import UKDebates, InputMode
-from mamkit.data.processing import UnimodalCollator, MFCCCollator
+from mamkit.data.processing import AudioTransformer, UnimodalProcessor
 from mamkit.models.audio import BiLSTM
 from mamkit.utility.model import to_lighting_model
 
@@ -17,19 +18,29 @@ if __name__ == '__main__':
     loader = UKDebates(task_name='asd',
                        input_mode=InputMode.AUDIO_ONLY)
 
-    config = BiLSTMMFCCsConfig.from_config(key=ConfigKey(dataset='ukdebates',
-                                                         input_mode=InputMode.AUDIO_ONLY,
-                                                         task_name='asd',
-                                                         tags='mancini-et-al-2022'))
+    config = BiLSTMTransformerConfig.from_config(key=ConfigKey(dataset='ukdebates',
+                                                               input_mode=InputMode.AUDIO_ONLY,
+                                                               task_name='asd',
+                                                               tags='mancini-et-al-2022'))
 
     for seed in config.seeds:
         seed_everything(seed=seed)
         for split_info in loader.get_splits(key='mancini-et-al-2022'):
+            unimodal_processor = UnimodalProcessor(features_processor=AudioTransformer(
+                model_card=config.model_card,
+                processor_args=config.processor_args,
+                model_args=config.model_args,
+                aggregate=config.aggregate,
+                sampling_rate=config.sampling_rate
+            ))
+
+            split_info.train = unimodal_processor(split_info.train)
+            split_info.val = unimodal_processor(split_info.val)
+            split_info.test = unimodal_processor(split_info.test)
+            unimodal_processor.clear()
+
             unimodal_collator = UnimodalCollator(
-                features_collator=MFCCCollator(mfccs=config.mfccs,
-                                               pooling_sizes=config.pooling_sizes,
-                                               remove_energy=config.remove_energy,
-                                               normalize=config.normalize),
+                features_collator=AudioCollator(),
                 label_collator=lambda labels: th.tensor(labels)
             )
 

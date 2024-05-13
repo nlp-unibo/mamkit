@@ -28,13 +28,6 @@ class InputMode(Enum):
     TEXT_AUDIO = 'text-audio'
 
 
-@dataclass
-class SplitInfo:
-    train: Dataset
-    val: Optional[Dataset]
-    test: Optional[Dataset]
-
-
 class UnimodalDataset(Dataset):
 
     def __init__(
@@ -125,6 +118,16 @@ class PairMultimodalDataset(Dataset):
         return len(self.labels)
 
 
+MAMDataset = Union[UnimodalDataset, PairUnimodalDataset, MultimodalDataset, PairMultimodalDataset]
+
+
+@dataclass
+class SplitInfo:
+    train: MAMDataset
+    val: Optional[MAMDataset]
+    test: Optional[MAMDataset]
+
+
 class Loader(abc.ABC):
 
     def __init__(
@@ -138,7 +141,7 @@ class Loader(abc.ABC):
         self.splitters = {
             'default': self.get_default_splits
         }
-        self.data_retriever: Dict[InputMode, Callable[[pd.DataFrame], Dataset]] = {
+        self.data_retriever: Dict[InputMode, Callable[[pd.DataFrame], MAMDataset]] = {
             InputMode.TEXT_ONLY: self.get_text_data,
             InputMode.AUDIO_ONLY: self.get_audio_data,
             InputMode.TEXT_AUDIO: self.get_text_audio_data
@@ -155,21 +158,21 @@ class Loader(abc.ABC):
     def get_text_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         pass
 
     @abc.abstractmethod
     def get_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         pass
 
     @abc.abstractmethod
     def get_text_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         pass
 
     def build_info_from_splits(
@@ -281,21 +284,21 @@ class UKDebates(Loader):
     def get_text_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return UnimodalDataset(inputs=df.texts.values,
                                labels=df.labels.values)
 
     def get_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return UnimodalDataset(inputs=df.audio.values,
                                labels=df.labels.values)
 
     def get_text_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return MultimodalDataset(texts=df.texts.values,
                                  audio=df.audio.values,
                                  labels=df.labels.values)
@@ -892,21 +895,21 @@ class MMUSED(Loader):
     def get_text_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return UnimodalDataset(inputs=df.Text.values,
                                labels=df.Component.values)
 
     def get_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return UnimodalDataset(inputs=df['audio_paths'].values,
                                labels=df.Component.values)
 
     def get_text_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return MultimodalDataset(texts=df.Text.values,
                                  audio=df['audio_paths'].values,
                                  labels=df.Component.values)
@@ -1165,21 +1168,21 @@ class MMUSEDFallacy(Loader):
     def get_text_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return UnimodalDataset(inputs=df['SentenceSnippet'].values,
                                labels=df['Fallacy'].values)
 
     def get_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return UnimodalDataset(inputs=df['audio_paths'].values,
                                labels=df['Fallacy'].values)
 
     def get_text_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return MultimodalDataset(texts=df['SentenceSnippet'].values,
                                  audio=df['audio_paths'].values,
                                  labels=df['Fallacy'].values)
@@ -1507,7 +1510,7 @@ class MArg(Loader):
     def get_text_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return PairUnimodalDataset(a_inputs=df.sentence_1.values,
                                    b_inputs=df.sentence_2.values,
                                    labels=df.relation.values)
@@ -1515,7 +1518,7 @@ class MArg(Loader):
     def get_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return PairUnimodalDataset(a_inputs=df.sentence_1_audio_path.values,
                                    b_inputs=df.sentence_2_audio_path.values,
                                    labels=df.relation.values)
@@ -1523,7 +1526,7 @@ class MArg(Loader):
     def get_text_audio_data(
             self,
             df: pd.DataFrame
-    ) -> Dataset:
+    ) -> MAMDataset:
         return PairMultimodalDataset(a_texts=df.sentence_1.values,
                                      b_texts=df.sentence_2.values,
                                      a_audio=df.sentence_1_audio_path.values,

@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Optional, Iterable
 
@@ -5,10 +6,126 @@ import librosa
 import numpy as np
 import resampy
 import torch as th
+from librosa import feature
 from skimage.measure import block_reduce
-from torch.nn.utils.rnn import pad_sequence
 from torchtext.vocab import pretrained_aliases, build_vocab_from_iterator
-from transformers import AutoModel, AutoProcessor
+from tqdm import tqdm
+from transformers import AutoModel, AutoProcessor, AutoTokenizer
+
+from mamkit.data.datasets import UnimodalDataset, MultimodalDataset, MAMDataset
+
+
+class Processor:
+
+    def fit(
+            self,
+            train_data: MAMDataset
+    ):
+        pass
+
+    def clear(
+            self
+    ):
+        pass
+
+    def __call__(
+            self,
+            data: MAMDataset
+    ):
+        return data
+
+
+class UnimodalProcessor(Processor):
+    def __init__(
+            self,
+            features_processor=None,
+            label_processor=None,
+    ):
+        self.features_processor = features_processor
+        self.label_processor = label_processor
+
+    def fit(
+            self,
+            train_data: UnimodalDataset
+    ):
+        if self.features_processor is not None:
+            self.features_processor.fit(train_data.inputs)
+
+        if self.label_processor is not None:
+            self.label_processor.fit(train_data.labels)
+
+    def __call__(
+            self,
+            data: UnimodalDataset
+    ):
+        if self.features_processor is not None:
+            data.inputs = self.features_processor(data.inputs)
+
+        if self.label_processor is not None:
+            data.labels = self.label_processor(data.labels)
+
+        return data
+
+    def clear(
+            self
+    ):
+        if self.features_processor is not None:
+            self.features_processor.clear()
+
+        if self.label_processor is not None:
+            self.label_processor.clear()
+
+
+class MultimodalProcessor(Processor):
+    def __init__(
+            self,
+            text_processor=None,
+            audio_processor=None,
+            label_processor=None
+    ):
+        self.text_processor = text_processor
+        self.audio_processor = audio_processor
+        self.label_processor = label_processor
+
+    def fit(
+            self,
+            train_data: MultimodalDataset
+    ):
+        if self.text_processor is not None:
+            self.text_processor.fit(train_data.texts)
+
+        if self.audio_processor is not None:
+            self.audio_processor.fit(train_data.audio)
+
+        if self.label_processor is not None:
+            self.label_processor.fit(train_data.labels)
+
+    def __call__(
+            self,
+            data: MultimodalDataset
+    ):
+        if self.text_processor is not None:
+            data.texts = self.text_processor(data.texts)
+
+        if self.audio_processor is not None:
+            data.audio = self.audio_processor(data.audio)
+
+        if self.label_processor is not None:
+            data.labels = self.label_processor(data.labels)
+
+        return data
+
+    def clear(
+            self
+    ):
+        if self.text_processor is not None:
+            self.text_processor.clear()
+
+        if self.audio_processor is not None:
+            self.audio_processor.clear()
+
+        if self.label_processor is not None:
+            self.label_processor.clear()
 
 
 class VocabBuilder:
@@ -27,10 +144,11 @@ class VocabBuilder:
         self.tokenization_args = tokenization_args if tokenization_args is not None else {}
         self.embedding_matrix = None
 
-    def __call__(
+    def fit(
             self,
             texts
     ):
+        logging.info('Building vocabulary...')
         self.vocab = build_vocab_from_iterator(
             iterator=iter([self.tokenizer(text) for text in texts]),
             specials=['<pad>', '<unk>'],
@@ -42,8 +160,19 @@ class VocabBuilder:
         if self.embedding_model is not None:
             self.embedding_matrix = self.embedding_model.get_vecs_by_tokens(self.vocab.get_itos())
 
+    def __call__(
+            self,
+            texts
+    ):
+        return texts
 
-class MFCCCollator:
+    def clear(
+            self
+    ):
+        self.embedding_model = None
+
+
+class MFCCExtractor:
 
     def __init__(
             self,
@@ -93,16 +222,56 @@ class MFCCCollator:
             audio_files: Iterable[Path]
     ):
         features = []
-        for audio_file in audio_files:
+        for audio_file in tqdm(audio_files, desc='Extracting MFCCs'):
             assert audio_file.is_file(), f'Could not find file {audio_file}'
             audio_features = self.parse_audio(audio_file=audio_file)
-            audio_features = th.tensor(audio_features, dtype=th.float32)
             features.append(audio_features)
 
-        return pad_sequence(features, padding_value=0.0, batch_first=True)
+        return features
+
+    def clear(
+            self
+    ):
+        pass
 
 
-class AudioTransformerCollator:
+class TextTransformer:
+
+    def __init__(
+            self,
+            model_card,
+            tokenizer_args=None,
+            model_args=None,
+    ):
+        self.model_card = model_card
+        self.tokenizer_args = tokenizer_args if tokenizer_args is not None else {}
+        self.model_args = model_args if model_args is not None else {}
+
+        self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
+        self.tokenizer = AutoTokenizer.from_pretrained(model_card)
+        self.model = AutoModel.from_pretrained(model_card).to(self.device)
+
+    def __call__(
+            self,
+            texts
+    ):
+        tokenized = self.tokenizer(texts,
+                                   padding=True,
+                                   truncation=True,
+                                   return_tensors='pt',
+                                   **self.tokenizer_args).to(self.device)
+        text_features = self.model(**tokenized, **self.model_args).last_hidden_state
+        return text_features.detach().cpu().numpy()
+
+    def clear(
+            self
+    ):
+        self.tokenizer = None
+        self.model = None
+        th.cuda.empty_cache()
+
+
+class AudioTransformer:
 
     def __init__(
             self,
@@ -120,32 +289,39 @@ class AudioTransformerCollator:
 
         self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
 
-        self.processor = AutoProcessor.from_pretrained(model_card).to(self.device)
+        self.processor = AutoProcessor.from_pretrained(model_card)
         self.model = AutoModel.from_pretrained(model_card).to(self.device)
 
     def __call__(
             self,
             audio_files: Iterable[Path]
     ):
-        audio_raw = []
-        for audio_file in audio_files:
-            assert audio_file.is_file()
+        parsed_audio = []
+        for audio_file in tqdm(audio_files, desc='Extracting Audio Features...'):
+            if not audio_file.is_file():
+                raise RuntimeError(f'Could not read file {audio_file}')
             audio, sampling_rate = librosa.load(audio_file, sr=None)
             audio = resampy.resample(audio, sampling_rate, self.sampling_rate)
-            audio_raw.append(audio)
 
-        features = self.processor(audio_raw,
-                                  sampling_rate=self.sampling_rate,
-                                  padding=True,
-                                  truncation=True,
-                                  return_tensors='pt',
-                                  return_attention_mask=True,
-                                  **self.processor_args)
-        attention_mask = features.attention_mask
-        features = features.input_values[0]
-        features = self.model(features[None, :], **self.model_args).last_hidden_state
+            features = self.processor(audio,
+                                      sampling_rate=self.sampling_rate,
+                                      padding=True,
+                                      return_tensors='pt',
+                                      **self.processor_args)
+            features = features.input_values[0].to(self.device)
+            features = self.model(features[None, :], **self.model_args).last_hidden_state
+            features = features.detach().cpu().numpy()
 
-        if self.aggregate:
-            features = np.mean(features.detach().cpu().numpy().squeeze(axis=0), axis=0)
+            if self.aggregate:
+                features = np.mean(features.squeeze(axis=0), axis=0)
 
-        return features, attention_mask
+            parsed_audio.append(features)
+
+        return parsed_audio
+
+    def clear(
+            self
+    ):
+        self.model = None
+        self.processor = None
+        th.cuda.empty_cache()

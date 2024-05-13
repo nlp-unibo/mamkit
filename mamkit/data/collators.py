@@ -1,7 +1,6 @@
 import torch as th
 from torch.nn.utils.rnn import pad_sequence
-from torchtext.vocab import vocab
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer
 
 
 class UnimodalCollator:
@@ -93,7 +92,6 @@ class TextTransformerCollator:
 
         self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
         self.tokenizer = AutoTokenizer.from_pretrained(model_card)
-        self.model = AutoModel.from_pretrained(model_card).to(self.device)
 
     def __call__(
             self,
@@ -104,6 +102,23 @@ class TextTransformerCollator:
                                    truncation=True,
                                    return_tensors='pt',
                                    **self.tokenizer_args).to(self.device)
-        text_features = self.model(**tokenized, **self.model_args).last_hidden_state
-        text_attentions = tokenized.attention_mask
-        return text_features, text_attentions
+        return tokenized['input_ids'], tokenized['attention_mask']
+
+
+class AudioCollator:
+
+    def __call__(
+            self,
+            features
+    ):
+        features = [th.tensor(feature_set, dtype=th.float32) for feature_set in features]
+        features = pad_sequence(features, batch_first=True, padding_value=float('-inf'))
+        features[(features == float('-inf'))] = 0
+
+        if len(features.shape) == 3:
+            attention_mask = features[:, :, 0] != float('-inf')
+        else:
+            attention_mask = th.ones((features.shape[0]), dtype=th.int32)
+            features = features[:, None, :]
+
+        return features, attention_mask

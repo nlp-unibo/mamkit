@@ -139,6 +139,7 @@ class BiLSTMTransformerConfig(BaseConfig):
     def __init__(
             self,
             model_card,
+            embedding_dim,
             sampling_rate,
             lstm_weights,
             mlp_weights,
@@ -151,6 +152,7 @@ class BiLSTMTransformerConfig(BaseConfig):
     ):
         super().__init__(**kwargs)
         self.model_card = model_card
+        self.embedding_dim = embedding_dim
         self.sampling_rate = sampling_rate
         self.lstm_weights = lstm_weights
         self.mlp_weights = mlp_weights
@@ -166,6 +168,7 @@ class BiLSTMTransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='facebook/wav2vec2-base-960h',
+            embedding_dim=768,
             sampling_rate=16000,
             mlp_weights=[32, 32],
             optimizer_args={
@@ -186,6 +189,7 @@ class BiLSTMTransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='facebook/wav2vec2-base-960h',
+            embedding_dim=768,
             sampling_rate=16000,
             mlp_weights=[256],
             optimizer_args={
@@ -206,6 +210,7 @@ class BiLSTMTransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='facebook/wav2vec2-base-960h',
+            embedding_dim=768,
             sampling_rate=16000,
             mlp_weights=[128],
             optimizer_args={
@@ -226,6 +231,7 @@ class BiLSTMTransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='facebook/wav2vec2-base-960h',
+            embedding_dim=768,
             sampling_rate=16000,
             mlp_weights=[256],
             optimizer_args={

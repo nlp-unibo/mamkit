@@ -22,10 +22,11 @@ class LSTMStack(th.nn.Module):
             self,
             x
     ):
-        inputs, hidden = x, None
+        inputs, attention_mask = x
+        hidden = None
         for lstm_module in self.lstm:
             inputs, hidden = lstm_module(inputs)
 
         # [bs, d * 2]
         last_hidden = hidden[0]
-        return last_hidden.permute(1, 0, 2).reshape(x.shape[0], -1)
+        return last_hidden.permute(1, 0, 2).reshape(inputs.shape[0], -1)
