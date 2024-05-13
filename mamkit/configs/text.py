@@ -119,3 +119,53 @@ class BiLSTMConfig(BaseConfig):
             num_classes=2,
             seeds=[15371, 15372, 15373]
         )
+
+
+class TransformerConfig(BaseConfig):
+    configs = {
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
+                  tags={'mancini-et-al-2024', 'bert'}): 'mmused_fallacy_afc_bert_mancini_2024',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
+                  tags={'mancini-et-al-2024', 'roberta'}): 'mmused_fallacy_afc_roberta_mancini_2024'
+    }
+
+    def __init__(
+            self,
+            model_card,
+            mlp_weights,
+            num_classes,
+            dropout_rate=0.0,
+            is_transformer_trainable: bool = False,
+            **kwargs
+    ):
+        super().__init__(**kwargs)
+
+        self.model_card = model_card
+        self.mlp_weights = mlp_weights
+        self.num_classes = num_classes
+        self.dropout_rate = dropout_rate
+        self.is_transformer_trainable = is_transformer_trainable
+
+    @classmethod
+    def mmused_fallacy_afc_bert_mancini_2024(
+            cls
+    ):
+        return cls(
+            model_card='bert-base-uncased',
+            mlp_weights=[100, 50],
+            num_classes=2,
+            dropout_rate=0.1,
+            is_transformer_trainable=True
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_roberta_mancini_2024(
+            cls
+    ):
+        return cls(
+            model_card='roberta-base',
+            mlp_weights=[100, 50],
+            num_classes=2,
+            dropout_rate=0.1,
+            is_transformer_trainable=True
+        )
