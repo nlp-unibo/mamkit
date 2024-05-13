@@ -7,7 +7,8 @@ from torch.utils.data import DataLoader
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text import BiLSTMConfig
 from mamkit.data.datasets import UKDebates, InputMode
-from mamkit.data.processing import UnimodalCollator, VocabBuilder, TextCollator
+from mamkit.data.processing import VocabBuilder
+from mamkit.data.collators import UnimodalCollator, TextCollator
 from mamkit.models.text import BiLSTM
 from mamkit.utility.model import to_lighting_model
 from lightning.pytorch import seed_everything
