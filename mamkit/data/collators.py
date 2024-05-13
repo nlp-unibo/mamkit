@@ -1,6 +1,6 @@
 import torch as th
 from torch.nn.utils.rnn import pad_sequence
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, AutoProcessor
 
 
 class UnimodalCollator:
@@ -99,10 +99,36 @@ class TextTransformerCollator:
     ):
         tokenized = self.tokenizer(text,
                                    padding=True,
-                                   truncation=True,
                                    return_tensors='pt',
                                    **self.tokenizer_args).to(self.device)
         return tokenized['input_ids'], tokenized['attention_mask']
+
+
+class AudioTransformerCollator:
+
+    def __init__(
+            self,
+            model_card,
+            processor_args=None,
+            model_args=None,
+    ):
+        self.model_card = model_card
+        self.processor_args = processor_args if processor_args is not None else {}
+        self.model_args = model_args if model_args is not None else {}
+
+        self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
+        self.processor = AutoProcessor.from_pretrained(model_card)
+
+    def __call__(
+            self,
+            audio
+    ):
+        processed = self.processor(audio,
+                                   padding=True,
+                                   return_tensors='pt',
+                                   return_attention_mask=True,
+                                   **self.processor_args).to(self.device)
+        return processed['input_values'], processed['attention_mask']
 
 
 class AudioCollator:

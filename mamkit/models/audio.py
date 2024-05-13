@@ -1,6 +1,7 @@
 import torch as th
 
 from mamkit.modules.rnn import LSTMStack
+from transformers import AutoModel, AutoConfig
 
 
 class AudioOnlyModel(th.nn.Module):
@@ -110,6 +111,35 @@ class BiLSTMCNN(AudioOnlyModel):
             input_size = weight
 
         self.classifier = th.nn.Linear(in_features=mlp_weights[-1], out_features=num_classes)
+
+
+class Transformer(AudioOnlyModel):
+
+    def __init__(
+            self,
+            model_card,
+            num_classes
+    ):
+        super().__init__()
+
+        self.model_card = model_card
+        self.model_config = AutoConfig.from_pretrained(model_card)
+        self.model = AutoModel.from_pretrained(model_card)
+        self.classifier = th.nn.Linear(in_features=self.model_config.hidden_dim,
+                                       out_features=num_classes)
+
+    def forward(
+            self,
+            audio
+    ):
+        input_ids, attention_mask = audio
+
+        tokens_emb = self.model(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state
+        text_emb = th.mean(tokens_emb, dim=1)
+
+        logits = self.classifier(text_emb)
+
+        return logits
 
 
 class TransformerHead(AudioOnlyModel):

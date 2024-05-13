@@ -345,8 +345,6 @@ class UKDebates(Loader):
         return split_info
 
 
-# TODO: complete
-# TODO: integrate EM's script for building the corpus
 class MMUSED(Loader):
 
     def __init__(

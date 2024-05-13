@@ -6,7 +6,6 @@ import librosa
 import numpy as np
 import resampy
 import torch as th
-from librosa import feature
 from skimage.measure import block_reduce
 from torchtext.vocab import pretrained_aliases, build_vocab_from_iterator
 from tqdm import tqdm
