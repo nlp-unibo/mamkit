@@ -28,11 +28,43 @@ class Processor:
     ):
         pass
 
+    def reset(
+            self
+    ):
+        pass
+
     def __call__(
             self,
             data: MAMDataset
     ):
         return data
+
+
+class ProcessorComponent:
+
+    def fit(
+            self,
+            *args,
+            **kwargs
+    ):
+        pass
+
+    def clear(
+            self
+    ):
+        pass
+
+    def reset(
+            self
+    ):
+        pass
+
+    def __call__(
+            self,
+            *args,
+            **kwargs
+    ):
+        return args, kwargs
 
 
 class UnimodalProcessor(Processor):
@@ -128,7 +160,7 @@ class MultimodalProcessor(Processor):
             self.label_processor.clear()
 
 
-class VocabBuilder:
+class VocabBuilder(ProcessorComponent):
 
     def __init__(
             self,
@@ -170,11 +202,14 @@ class VocabBuilder:
             self
     ):
         self.embedding_model = None
-        self.vocab = None
+
+    def reset(
+            self
+    ):
         self.embedding_matrix = None
 
 
-class MFCCExtractor:
+class MFCCExtractor(ProcessorComponent):
 
     def __init__(
             self,
@@ -231,13 +266,8 @@ class MFCCExtractor:
 
         return features
 
-    def clear(
-            self
-    ):
-        pass
 
-
-class TextTransformer:
+class TextTransformer(ProcessorComponent):
 
     def __init__(
             self,
@@ -248,9 +278,9 @@ class TextTransformer:
         self.model_card = model_card
         self.tokenizer_args = tokenizer_args if tokenizer_args is not None else {}
         self.model_args = model_args if model_args is not None else {}
-
         self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
-
+        self.model = None
+        self.tokenizer = None
 
     def _init_models(
             self
@@ -296,11 +326,9 @@ class AudioTransformer:
         self.aggregate = aggregate
         self.processor_args = processor_args if processor_args is not None else {}
         self.model_args = model_args if model_args is not None else {}
-
         self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
-
-        self.processor = AutoProcessor.from_pretrained(model_card)
-        self.model = AutoModel.from_pretrained(model_card).to(self.device)
+        self.processor = None
+        self.model = None
 
     def _init_models(
             self

@@ -57,7 +57,9 @@ class BiLSTMConfig(BaseConfig):
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
             num_classes=2,
-            seeds=[15371, 15372, 15373]
+            seeds=[15371, 15372, 15373],
+            batch_size=16,
+            loss_function=th.nn.CrossEntropyLoss(),
         )
 
     @classmethod

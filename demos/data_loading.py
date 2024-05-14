@@ -1,24 +1,44 @@
-from mamkit.data.datasets import MMUSED, InputMode
+import logging
+from typing import List
+
+from mamkit.data.datasets import SplitInfo, UKDebates, InputMode
+
+
+def loading_data_example():
+    loader = UKDebates(task_name='asd',
+                       input_mode=InputMode.TEXT_ONLY)
+    logging.info(loader.data)
+
+
+def loading_predefined_splits():
+    loader = UKDebates(task_name='asd',
+                       input_mode=InputMode.TEXT_ONLY)
+    split_info = loader.get_splits('mancini-et-al-2022')
+    logging.info(split_info[0])
+
+
+def custom_splits(
+        self,
+) -> List[SplitInfo]:
+    train_df = self.data.iloc[:50]
+    val_df = self.data.iloc[50:100]
+    test_df = self.data.iloc[100:]
+    fold_info = self.build_info_from_splits(train_df=train_df, val_df=val_df, test_df=test_df)
+    return [fold_info]
+
+
+def defining_custom_splits_example():
+    loader = UKDebates(task_name='asd',
+                       input_mode=InputMode.TEXT_ONLY)
+    loader.add_splits(method=custom_splits,
+                      key='custom')
+
+    split_info = loader.get_splits('custom')
+    logging.info(split_info[0])
 
 
 if __name__ == '__main__':
-    # Loading MM-USED view for task ASD and text-only modality
-    # If the dataset is not stored locally, it is automatically built
-    loader = MMUSED(task_name='asd',
-                    input_mode=InputMode.TEXT_ONLY)
-
-    # DataFrame view
-    data = loader.data
-
-    # Dataset views
-    to_data = loader.get_text_data(data)
-    ao_data = loader.get_audio_data(data)
-    ta_data = loader.get_text_audio_data(data)
-
-    # Split views
-    default_splits = loader.get_default_splits(data)
-    custom_splits = loader.get_splits(key='mancini-et-al-2022')
-
-    # Custom split view
-    loader.add_splits(method=my_split_method, key='my-key')
-    new_splits = loader.get_splits(key='my-key')
+    logging.basicConfig(level=logging.INFO)
+    # loading_data_example()
+    loading_predefined_splits()
+    # defining_custom_splits_example()

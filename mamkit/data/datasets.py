@@ -143,9 +143,9 @@ class Loader(abc.ABC):
             'default': partial(self.get_default_splits, as_iterator=True)
         }
         self.data_retriever: Dict[InputMode, Callable[[pd.DataFrame], MAMDataset]] = {
-            InputMode.TEXT_ONLY: self.get_text_data,
-            InputMode.AUDIO_ONLY: self.get_audio_data,
-            InputMode.TEXT_AUDIO: self.get_text_audio_data
+            InputMode.TEXT_ONLY: self._get_text_data,
+            InputMode.AUDIO_ONLY: self._get_audio_data,
+            InputMode.TEXT_AUDIO: self._get_text_audio_data
         }
 
     def add_splits(
@@ -153,24 +153,28 @@ class Loader(abc.ABC):
             method: Callable[[pd.DataFrame], List[SplitInfo]],
             key: str
     ):
-        self.splitters[key] = method
+        if not hasattr(self, method.__name__):
+            setattr(self, method.__name__, partial(method, self=self))
+            self.splitters[key] = getattr(self, method.__name__)
+        else:
+            self.splitters[key] = method
 
     @abc.abstractmethod
-    def get_text_data(
+    def _get_text_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         pass
 
     @abc.abstractmethod
-    def get_audio_data(
+    def _get_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         pass
 
     @abc.abstractmethod
-    def get_text_audio_data(
+    def _get_text_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
@@ -193,7 +197,6 @@ class Loader(abc.ABC):
     @abc.abstractmethod
     def get_default_splits(
             self,
-            data: pd.DataFrame,
             as_iterator: bool = False
     ) -> Union[List[SplitInfo], SplitInfo]:
         pass
@@ -202,7 +205,7 @@ class Loader(abc.ABC):
             self,
             key: str = 'default'
     ) -> List[SplitInfo]:
-        return self.splitters[key](self.data)
+        return self.splitters[key]()
 
     @property
     @abc.abstractmethod
@@ -229,6 +232,8 @@ class UKDebates(Loader):
 
         if not self.data_path.exists():
             self.load()
+        else:
+            logging.info(f'Found existing data at {self.data_path}')
 
         self.texts, self.audio, self.labels = self.parse_all_annotations()
 
@@ -258,7 +263,7 @@ class UKDebates(Loader):
         annotations_path = self.data_path.joinpath('dataset', f'{speaker.capitalize()}Labels.txt')
         with annotations_path.open('r') as txt:
             labels = txt.readlines()
-            labels = [1 if label == 'C' else 0 for label in labels]
+            labels = [1 if label.strip() == 'C' else 0 for label in labels]
 
         audio = [self.audio_path.joinpath(speaker.capitalize(), f'{idx + 1}.wav') for idx in range(len(texts))]
 
@@ -283,21 +288,21 @@ class UKDebates(Loader):
         if archive_path.is_file():
             archive_path.unlink()
 
-    def get_text_data(
+    def _get_text_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         return UnimodalDataset(inputs=df.texts.values,
                                labels=df.labels.values)
 
-    def get_audio_data(
+    def _get_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         return UnimodalDataset(inputs=df.audio.values,
                                labels=df.labels.values)
 
-    def get_text_audio_data(
+    def _get_text_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
@@ -317,15 +322,15 @@ class UKDebates(Loader):
 
     def get_default_splits(
             self,
-            data: pd.DataFrame,
             as_iterator: bool = False
     ) -> Union[List[SplitInfo], SplitInfo]:
-        split_info = self.build_info_from_splits(train_df=data, val_df=pd.DataFrame.empty, test_df=pd.DataFrame.empty)
+        split_info = self.build_info_from_splits(train_df=self.data,
+                                                 val_df=pd.DataFrame.empty,
+                                                 test_df=pd.DataFrame.empty)
         return [split_info] if as_iterator else split_info
 
     def get_mancini_2022_splits(
-            self,
-            data: pd.DataFrame
+            self
     ) -> List[SplitInfo]:
         folds_path = self.data_path.joinpath('mancini_2022_folds.json')
         if not folds_path.is_file():
@@ -339,9 +344,9 @@ class UKDebates(Loader):
 
         split_info = []
         for _, fold in folds_data:
-            train_df = data.iloc[fold['train']]
-            val_df = data.iloc[fold['validation']]
-            test_df = data.iloc[fold['test']]
+            train_df = self.data.iloc[fold['train']]
+            val_df = self.data.iloc[fold['validation']]
+            test_df = self.data.iloc[fold['test']]
 
             fold_info = self.build_info_from_splits(train_df=train_df, val_df=val_df, test_df=test_df)
             split_info.append(fold_info)
@@ -894,21 +899,21 @@ class MMUSED(Loader):
         elif not self.clips_path.exists() and not any(self.clips_path.iterdir()):
             self.build_audio()
 
-    def get_text_data(
+    def _get_text_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         return UnimodalDataset(inputs=df.Text.values,
                                labels=df.Component.values)
 
-    def get_audio_data(
+    def _get_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         return UnimodalDataset(inputs=df['audio_paths'].values,
                                labels=df.Component.values)
 
-    def get_text_audio_data(
+    def _get_text_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
@@ -939,12 +944,11 @@ class MMUSED(Loader):
 
     def get_default_splits(
             self,
-            data: pd.DataFrame,
             as_iterator: bool = False
     ) -> Union[List[SplitInfo], SplitInfo]:
-        split_info = self.build_info_from_splits(train_df=data[data.Set == 'TRAIN'],
-                                                 val_df=data[data.Set == 'VALIDATION'],
-                                                 test_df=data[data.Set == 'TEST'])
+        split_info = self.build_info_from_splits(train_df=self.data[self.data.Set == 'TRAIN'],
+                                                 val_df=self.data[self.data.Set == 'VALIDATION'],
+                                                 test_df=self.data[self.data.Set == 'TEST'])
         return [split_info] if as_iterator else split_info
 
 
@@ -1173,7 +1177,7 @@ class MMUSEDFallacy(Loader):
 
         return df
 
-    def get_text_data(
+    def _get_text_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
@@ -1191,9 +1195,9 @@ class MMUSEDFallacy(Loader):
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
-        return MultimodalDataset(texts=df['SentenceSnippet'].values,
-                                 audio=df['audio_paths'].values,
-                                 labels=df['Fallacy'].values)
+        return MultimodalDataset(texts=df.values,
+                                 audio=df.values,
+                                 labels=df.values)
 
     @property
     def data(
@@ -1203,10 +1207,9 @@ class MMUSEDFallacy(Loader):
 
     def get_default_splits(
             self,
-            data: pd.DataFrame,
             as_iterator: bool = False
     ) -> Union[List[SplitInfo], SplitInfo]:
-        split_info = self.build_info_from_splits(train_df=data,
+        split_info = self.build_info_from_splits(train_df=self.data,
                                                  val_df=pd.DataFrame.empty,
                                                  test_df=pd.DataFrame.empty)
         return [split_info] if as_iterator else split_info
@@ -1517,7 +1520,7 @@ class MArg(Loader):
 
         return train_df
 
-    def get_text_data(
+    def _get_text_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
@@ -1525,7 +1528,7 @@ class MArg(Loader):
                                    b_inputs=df.sentence_2.values,
                                    labels=df.relation.values)
 
-    def get_audio_data(
+    def _get_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
@@ -1533,7 +1536,7 @@ class MArg(Loader):
                                    b_inputs=df.sentence_2_audio_path.values,
                                    labels=df.relation.values)
 
-    def get_text_audio_data(
+    def _get_text_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
@@ -1551,15 +1554,15 @@ class MArg(Loader):
 
     def get_default_splits(
             self,
-            data: pd.DataFrame,
             as_iterator: bool = False
     ) -> Union[List[SplitInfo], SplitInfo]:
-        split_info = self.build_info_from_splits(train_df=data, val_df=pd.DataFrame.empty, test_df=pd.DataFrame.empty)
+        split_info = self.build_info_from_splits(train_df=self.data,
+                                                 val_df=pd.DataFrame.empty,
+                                                 test_df=pd.DataFrame.empty)
         return [split_info] if as_iterator else split_info
 
     def get_mancini_2022_splits(
             self,
-            data: pd.DataFrame
     ) -> List[SplitInfo]:
         folds_path = self.data_path.joinpath('mancini_2022_folds.json')
         if not folds_path.is_file():
@@ -1573,9 +1576,9 @@ class MArg(Loader):
 
         split_info = []
         for _, fold in folds_data:
-            train_df = data.iloc[fold['train']]
-            val_df = data.iloc[fold['validation']]
-            test_df = data.iloc[fold['test']]
+            train_df = self.data.iloc[fold['train']]
+            val_df = self.data.iloc[fold['validation']]
+            test_df = self.data.iloc[fold['test']]
 
             fold_info = self.build_info_from_splits(train_df=train_df, val_df=val_df, test_df=test_df)
             split_info.append(fold_info)

@@ -43,10 +43,11 @@ class BiLSTM(AudioOnlyModel):
             self,
             audio
     ):
-        # audio -> [bs, N, d]
+        # audio_features -> [bs, N, d]
+        audio_features, audio_attention = audio
 
         # [bs, d']
-        audio_emb = self.lstm(audio)
+        audio_emb = self.lstm(audio_features)
 
         logits = self.pre_classifier(audio_emb)
         logits = self.classifier(logits)

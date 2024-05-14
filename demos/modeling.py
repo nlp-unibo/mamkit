@@ -1,39 +1,51 @@
-from mamkit.models.text import BiLSTM
-from mamkit.configs.text import BiLSTMConfig
+import logging
+
+from mamkit.models.text import Transformer
+from mamkit.configs.text import TransformerConfig
 from mamkit.configs.base import ConfigKey
 from mamkit.data.datasets import InputMode
 from mamkit.utility.model import to_lighting_model
+from mamkit.utility.config import extract_from_class, extract_from_method
 import lightning
 
-if __name__ == '__main__':
-    # Custom model definition
-    model = BiLSTM(vocab_size=...,
-                   lstm_weights=[32],
-                   num_classes=2,
-                   mlp_weights=[64],
-                   embedding_dim=16,
-                   dropout_rate=0.2,
-                   embedding_matrix=...)
 
-    # Model definition from pre-defined configuration
-    config_key = ConfigKey(dataset='mmused', task_name='asd', input_mode=InputMode.TEXT_ONLY,
-                           tags={'mancini-et-al-2022'})
-    config = BiLSTMConfig.from_config(key=config_key)
-    model = BiLSTM(vocab_size=...,
-                   lstm_weights=config.lstm_weights,
-                   num_classes=config.num_classes,
-                   ...)
+def custom_model_example():
+    model = Transformer(model_card='bert-base-uncased', mlp_weights=[512],
+                        num_classes=2, dropout_rate=0.1,
+                        is_transformer_trainable=True)
+    logging.info(model)
+    return model
+
+
+def model_from_config():
+    config_key = ConfigKey(dataset='mmused', task_name='asd', input_mode=InputMode.TEXT_ONLY, tags={'mancini-et-al-2022'})
+    config = TransformerConfig.from_config(key=config_key)
+    model_args = extract_from_class(config=config, class_name=Transformer)
+    model = Transformer(**model_args)
+    logging.info(model)
+    return model
+
+
+def training_from_config():
+    config_key = ConfigKey(dataset='mmused', task_name='asd', input_mode=InputMode.TEXT_ONLY, tags={'mancini-et-al-2022'})
+    config = TransformerConfig.from_config(key=config_key)
+    model_args = extract_from_class(config=config, class_name=Transformer)
+    model = Transformer(**model_args)
 
     # Lightning wrapper
-    model = to_lighting_model(model=model,
-                              num_classes=config.num_classes,
-                              loss_function=...,
-                              optimizer_class=...)
+    lightning_args = extract_from_method(config=config, method=to_lighting_model)
+    model = to_lighting_model(model=model, **lightning_args)
+    logging.info(model)
 
     # Training
-    trainer = lightning.Trainer(max_epochs=100,
-                                accelerator='gpu',
-                                ...)
-    trainer.fit(model,
-                train_dataloaders=train_dataloader,
-                val_dataloaders=val_dataloader)
+    trainer = lightning.Trainer(**config.trainer_args)
+    trainer.fit(model, train_dataloaders=...)
+
+
+if __name__ == '__main__':
+    # model = custom_model_example()
+    # model = model_from_config()
+    training_from_config()
+
+
+
