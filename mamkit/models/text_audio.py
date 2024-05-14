@@ -1,6 +1,6 @@
 import torch as th
 from transformers import AutoModel
-from mamkit.modules.transformer_modules import MulTA_CrossAttentionBlock, PositionalEncoding
+from mamkit.modules.transformer import MulTA_CrossAttentionBlock, PositionalEncoding
 
 
 class TextAudioModel(th.nn.Module):

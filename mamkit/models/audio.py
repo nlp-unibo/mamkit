@@ -1,7 +1,8 @@
 import torch as th
+from transformers import AutoModel, AutoConfig
 
 from mamkit.modules.rnn import LSTMStack
-from transformers import AutoModel, AutoConfig
+from mamkit.modules.transformer import PositionalEncoding
 
 
 class AudioOnlyModel(th.nn.Module):
@@ -166,3 +167,45 @@ class TransformerHead(AudioOnlyModel):
 
         logits = self.head(text_emb)
         return logits
+
+
+class TransformerEncoder(AudioOnlyModel):
+
+    def __init__(
+            self,
+            embedding_dim,
+            encoder: th.nn.Module,
+            head: th.nn.Module,
+            dropout_rate=0.0
+    ):
+        super().__init__()
+
+        self.encoder = encoder
+        self.head = head
+        self.pos_encoder = PositionalEncoding(embedding_dim, dual_modality=False)
+        self.layer_norm = th.nn.LayerNorm(embedding_dim)
+        self.dropout = th.nn.Dropout(p=dropout_rate)
+
+    def forward(
+            self,
+            audio
+    ):
+        audio_features, attention_mask = audio
+
+        padding_mask = ~attention_mask.to(th.bool)
+        full_attention_mask = th.zeros((audio_features.shape[1], audio_features.shape[1]), dtype=th.bool).to(
+            audio_features.device)
+
+        audio_features = self.pos_encoder(audio_features)
+
+        transformer_output = self.transformer(audio_features, mask=full_attention_mask,
+                                              src_key_padding_mask=padding_mask)
+
+        # Dropout and LayerNorm to help training phase
+        transformer_output = self.dropout(transformer_output)
+        transformer_output = self.ln(audio_features + transformer_output)
+
+        transformer_output_sum = (transformer_output * attention_mask.unsqueeze(-1)).sum(dim=1)
+        transformer_output_pooled = transformer_output_sum / attention_mask.sum(dim=1).unsqueeze(-1)
+
+        return self.head(transformer_output_pooled)

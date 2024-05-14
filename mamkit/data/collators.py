@@ -130,8 +130,6 @@ class AudioTransformerCollator:
         return processed['input_values'], processed['attention_mask']
 
 
-
-
 class AudioCollator:
 
     def __call__(

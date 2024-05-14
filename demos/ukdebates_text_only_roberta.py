@@ -24,7 +24,7 @@ if __name__ == '__main__':
                        input_mode=InputMode.TEXT_ONLY)
 
     config = TransformerConfig(
-        model_card='bert-base-uncased',
+        model_card='roberta-base',
         head=th.nn.Sequential(
             th.nn.Linear(768, 100),
             th.nn.ReLU(),
@@ -37,7 +37,8 @@ if __name__ == '__main__':
         is_transformer_trainable=True,
         seeds=[42, 2024, 666],
         optimizer=th.optim.Adam,
-        optimizer_args={'lr': 5e-05}
+        optimizer_args={'lr': 5e-05},
+        batch_size=8
     )
 
     metrics = {}

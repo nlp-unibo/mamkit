@@ -245,3 +245,33 @@ class BiLSTMTransformerConfig(BaseConfig):
             num_classes=2,
             seeds=[15371, 15372, 15373]
         )
+
+
+class TransformerEncoderConfig(BaseConfig):
+
+    def __init__(
+            self,
+            model_card,
+            embedding_dim,
+            encoder: th.nn.Module,
+            head: th.nn.Module,
+            num_classes,
+            dropout_rate=0.0,
+            processor_args=None,
+            model_args=None,
+            aggregate=False,
+            sampling_rate=16000,
+            **kwargs
+    ):
+        super().__init__(**kwargs)
+
+        self.model_card = model_card
+        self.embedding_dim = embedding_dim
+        self.encoder = encoder
+        self.head = head
+        self.num_classes = num_classes
+        self.dropout_rate = dropout_rate
+        self.processor_args = processor_args
+        self.model_args = model_args
+        self.aggregate = aggregate
+        self.sampling_rate = sampling_rate

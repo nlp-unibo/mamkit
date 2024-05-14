@@ -131,6 +131,8 @@ class BiLSTMConfig(BaseConfig):
 
 class TransformerConfig(BaseConfig):
     configs = {
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_ONLY, task_name='asd',
+                  tags={'mancini-et-al-2022'}): 'ukdebates_asd_mancini_2022',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
                   tags={'mancini-et-al-2024', 'bert'}): 'mmused_fallacy_afc_bert_mancini_2024',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
@@ -155,6 +157,25 @@ class TransformerConfig(BaseConfig):
         self.dropout_rate = dropout_rate
         self.is_transformer_trainable = is_transformer_trainable
         self.tokenizer_args = tokenizer_args
+
+    @classmethod
+    def ukdebates_asd_mancini_2022(
+            cls
+    ):
+        return cls(
+            model_card='bert-base-uncased',
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            num_classes=2,
+            dropout_rate=0.0,
+            is_transformer_trainable=True,
+            tokenizer_args={},
+            batch_size=8,
+            loss_function=th.nn.CrossEntropyLoss()
+        )
 
     @classmethod
     def mmused_fallacy_afc_bert_mancini_2024(
@@ -205,11 +226,15 @@ class TransformerHeadConfig(BaseConfig):
             self,
             model_card,
             head: th.nn.Module,
+            num_classes,
             dropout_rate=0.0,
+            tokenizer_args=None,
             **kwargs
     ):
         super().__init__(**kwargs)
 
         self.model_card = model_card
         self.head = head
+        self.num_classes = num_classes
         self.dropout_rate = dropout_rate
+        self.tokenizer_args = tokenizer_args

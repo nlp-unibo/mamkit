@@ -7,18 +7,23 @@ from mamkit.data.datasets import InputMode
 from mamkit.utility.model import to_lighting_model
 from mamkit.utility.config import extract_from_class, extract_from_method
 import lightning
+import torch as th
 
 
 def custom_model_example():
-    model = Transformer(model_card='bert-base-uncased', mlp_weights=[512],
-                        num_classes=2, dropout_rate=0.1,
+    model = Transformer(model_card='bert-base-uncased',
+                        head=th.nn.Sequential(
+                            th.nn.Linear(768, 2)
+                        ),
+                        dropout_rate=0.1,
                         is_transformer_trainable=True)
     logging.info(model)
     return model
 
 
 def model_from_config():
-    config_key = ConfigKey(dataset='mmused', task_name='asd', input_mode=InputMode.TEXT_ONLY, tags={'mancini-et-al-2022'})
+    config_key = ConfigKey(dataset='mmused', task_name='asd', input_mode=InputMode.TEXT_ONLY,
+                           tags={'mancini-et-al-2022'})
     config = TransformerConfig.from_config(key=config_key)
     model_args = extract_from_class(config=config, class_name=Transformer)
     model = Transformer(**model_args)
@@ -27,7 +32,8 @@ def model_from_config():
 
 
 def training_from_config():
-    config_key = ConfigKey(dataset='mmused', task_name='asd', input_mode=InputMode.TEXT_ONLY, tags={'mancini-et-al-2022'})
+    config_key = ConfigKey(dataset='mmused', task_name='asd', input_mode=InputMode.TEXT_ONLY,
+                           tags={'mancini-et-al-2022'})
     config = TransformerConfig.from_config(key=config_key)
     model_args = extract_from_class(config=config, class_name=Transformer)
     model = Transformer(**model_args)
@@ -46,6 +52,3 @@ if __name__ == '__main__':
     # model = custom_model_example()
     # model = model_from_config()
     training_from_config()
-
-
-
