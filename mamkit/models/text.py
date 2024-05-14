@@ -69,8 +69,7 @@ class Transformer(TextOnlyModel):
     def __init__(
             self,
             model_card,
-            mlp_weights,
-            num_classes,
+            head: th.nn.Module,
             dropout_rate=0.0,
             is_transformer_trainable: bool = False,
     ):
@@ -85,20 +84,8 @@ class Transformer(TextOnlyModel):
                 for param in module.parameters():
                     param.requires_grad = False
 
-        self.pre_classifier = th.nn.Sequential()
-        in_features = self.model_config.hidden_size
-        for weight in mlp_weights:
-            self.pre_classifier.append(th.nn.Linear(in_features=in_features,
-                                                    out_features=weight))
-            in_features = weight
-
-        self.classifier = th.nn.Sequential()
-        self.classifier.append(th.nn.Linear(in_features=in_features,
-                                            out_features=num_classes))
-        self.classifier.append(th.nn.ReLU())
-
+        self.head = head
         self.dropout = th.nn.Dropout(p=dropout_rate)
-        self.bn = th.nn.BatchNorm1d(num_features=mlp_weights[-1])
 
     def forward(
             self,
@@ -107,13 +94,11 @@ class Transformer(TextOnlyModel):
         input_ids, attention_mask = text
 
         tokens_emb = self.model(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state
-        text_emb = th.mean(tokens_emb, dim=1)
+        tokens_emb = self.dropout(tokens_emb)
+        text_emb = (tokens_emb * attention_mask[:, :, None]).sum(dim=1)
+        text_emb = text_emb / attention_mask.sum(dim=1)[:, None]
 
-        pre_logits = self.pre_classifier(text_emb)
-        pre_logits = self.bn(pre_logits)
-        pre_logits = self.dropout(pre_logits)
-        logits = self.classifier(pre_logits)
-
+        logits = self.head(text_emb)
         return logits
 
 

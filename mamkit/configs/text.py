@@ -79,7 +79,9 @@ class BiLSTMConfig(BaseConfig):
                 'weight_decay': 0.0001
             },
             num_classes=2,
-            seeds=[15371, 15372, 15373]
+            seeds=[15371, 15372, 15373],
+            batch_size=16,
+            loss_function=th.nn.CrossEntropyLoss()
         )
 
     @classmethod
@@ -99,7 +101,9 @@ class BiLSTMConfig(BaseConfig):
                 'weight_decay': 0.0001
             },
             num_classes=2,
-            seeds=[15371, 15372, 15373]
+            seeds=[15371, 15372, 15373],
+            batch_size=16,
+            loss_function=th.nn.CrossEntropyLoss()
         )
 
     @classmethod
@@ -119,7 +123,9 @@ class BiLSTMConfig(BaseConfig):
                 'weight_decay': 0.0005
             },
             num_classes=2,
-            seeds=[15371, 15372, 15373]
+            seeds=[15371, 15372, 15373],
+            batch_size=16,
+            loss_function=th.nn.CrossEntropyLoss()
         )
 
 
@@ -134,7 +140,7 @@ class TransformerConfig(BaseConfig):
     def __init__(
             self,
             model_card,
-            mlp_weights,
+            head: th.nn.Module,
             num_classes,
             dropout_rate=0.0,
             is_transformer_trainable: bool = False,
@@ -144,7 +150,7 @@ class TransformerConfig(BaseConfig):
         super().__init__(**kwargs)
 
         self.model_card = model_card
-        self.mlp_weights = mlp_weights
+        self.head = head
         self.num_classes = num_classes
         self.dropout_rate = dropout_rate
         self.is_transformer_trainable = is_transformer_trainable
@@ -156,11 +162,19 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='bert-base-uncased',
-            mlp_weights=[100, 50],
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 100),
+                th.nn.ReLU(),
+                th.nn.Linear(100, 50),
+                th.nn.ReLU(),
+                th.nn.Linear(50, 2)
+            ),
             num_classes=2,
             dropout_rate=0.1,
             is_transformer_trainable=True,
-            tokenizer_args={}
+            tokenizer_args={},
+            batch_size=8,
+            loss_function=th.nn.CrossEntropyLoss()
         )
 
     @classmethod
@@ -169,9 +183,33 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='roberta-base',
-            mlp_weights=[100, 50],
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 100),
+                th.nn.ReLU(),
+                th.nn.Linear(100, 50),
+                th.nn.ReLU(),
+                th.nn.Linear(50, 2)
+            ),
             num_classes=2,
             dropout_rate=0.1,
             is_transformer_trainable=True,
-            tokenizer_args={}
+            tokenizer_args={},
+            batch_size=8,
+            loss_function=th.nn.CrossEntropyLoss()
         )
+
+
+class TransformerHeadConfig(BaseConfig):
+
+    def __init__(
+            self,
+            model_card,
+            head: th.nn.Module,
+            dropout_rate=0.0,
+            **kwargs
+    ):
+        super().__init__(**kwargs)
+
+        self.model_card = model_card
+        self.head = head
+        self.dropout_rate = dropout_rate
