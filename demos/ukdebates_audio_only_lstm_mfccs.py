@@ -33,6 +33,8 @@ if __name__ == '__main__':
                 normalize=config.normalize
             ))
 
+            unimodal_processor.fit(split_info.train)
+
             split_info.train = unimodal_processor(split_info.train)
             split_info.val = unimodal_processor(split_info.val)
             split_info.test = unimodal_processor(split_info.test)
