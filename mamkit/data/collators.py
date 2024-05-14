@@ -76,7 +76,8 @@ class TextCollator:
             texts
     ):
         texts = [th.tensor(self.vocab(self.tokenizer(text))) for text in texts]
-        return pad_sequence(texts, padding_value=0, batch_first=True)
+        texts = pad_sequence(texts, padding_value=0, batch_first=True)
+        return texts
 
 
 class TextTransformerCollator:
@@ -84,11 +85,9 @@ class TextTransformerCollator:
             self,
             model_card,
             tokenizer_args=None,
-            model_args=None,
     ):
         self.model_card = model_card
         self.tokenizer_args = tokenizer_args if tokenizer_args is not None else {}
-        self.model_args = model_args if model_args is not None else {}
 
         self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
         self.tokenizer = AutoTokenizer.from_pretrained(model_card)

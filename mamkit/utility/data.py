@@ -70,7 +70,7 @@ def youtube_download(
                     'preferredcodec': 'wav',
                     'preferredquality': '192',
                 }],
-                'outtmpl': filename
+                'outtmpl': filename.as_posix()
             }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([link])

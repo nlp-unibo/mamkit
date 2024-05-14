@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional, Iterable
 
 import librosa
+from librosa import feature
 import numpy as np
 import resampy
 import torch as th
@@ -169,6 +170,8 @@ class VocabBuilder:
             self
     ):
         self.embedding_model = None
+        self.vocab = None
+        self.embedding_matrix = None
 
 
 class MFCCExtractor:
@@ -247,13 +250,21 @@ class TextTransformer:
         self.model_args = model_args if model_args is not None else {}
 
         self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
-        self.tokenizer = AutoTokenizer.from_pretrained(model_card)
-        self.model = AutoModel.from_pretrained(model_card).to(self.device)
+
+
+    def _init_models(
+            self
+    ):
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_card)
+        self.model = AutoModel.from_pretrained(self.model_card).to(self.device)
 
     def __call__(
             self,
             texts
     ):
+        if self.model is None:
+            self._init_models()
+
         tokenized = self.tokenizer(texts,
                                    padding=True,
                                    truncation=True,
@@ -291,10 +302,19 @@ class AudioTransformer:
         self.processor = AutoProcessor.from_pretrained(model_card)
         self.model = AutoModel.from_pretrained(model_card).to(self.device)
 
+    def _init_models(
+            self
+    ):
+        self.processor = AutoProcessor.from_pretrained(self.model_card)
+        self.model = AutoModel.from_pretrained(self.model_card).to(self.device)
+
     def __call__(
             self,
             audio_files: Iterable[Path]
     ):
+        if self.model is None:
+            self._init_models()
+
         parsed_audio = []
         for audio_file in tqdm(audio_files, desc='Extracting Audio Features...'):
             if not audio_file.is_file():

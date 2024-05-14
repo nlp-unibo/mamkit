@@ -8,6 +8,7 @@ from collections import Counter
 from dataclasses import dataclass
 from distutils.dir_util import copy_tree
 from enum import Enum
+from functools import partial
 from pathlib import Path
 from typing import Optional, List, Callable, Union, Dict
 
@@ -139,7 +140,7 @@ class Loader(abc.ABC):
         self.input_mode = input_mode
 
         self.splitters = {
-            'default': self.get_default_splits
+            'default': partial(self.get_default_splits, as_iterator=True)
         }
         self.data_retriever: Dict[InputMode, Callable[[pd.DataFrame], MAMDataset]] = {
             InputMode.TEXT_ONLY: self.get_text_data,
@@ -192,14 +193,15 @@ class Loader(abc.ABC):
     @abc.abstractmethod
     def get_default_splits(
             self,
-            data: pd.DataFrame
-    ) -> SplitInfo:
+            data: pd.DataFrame,
+            as_iterator: bool = False
+    ) -> Union[List[SplitInfo], SplitInfo]:
         pass
 
     def get_splits(
             self,
             key: str = 'default'
-    ) -> Union[List[SplitInfo], SplitInfo]:
+    ) -> List[SplitInfo]:
         return self.splitters[key](self.data)
 
     @property
@@ -315,9 +317,11 @@ class UKDebates(Loader):
 
     def get_default_splits(
             self,
-            data: pd.DataFrame
-    ) -> SplitInfo:
-        return self.build_info_from_splits(train_df=data, val_df=pd.DataFrame.empty, test_df=pd.DataFrame.empty)
+            data: pd.DataFrame,
+            as_iterator: bool = False
+    ) -> Union[List[SplitInfo], SplitInfo]:
+        split_info = self.build_info_from_splits(train_df=data, val_df=pd.DataFrame.empty, test_df=pd.DataFrame.empty)
+        return [split_info] if as_iterator else split_info
 
     def get_mancini_2022_splits(
             self,
@@ -392,7 +396,7 @@ class MMUSED(Loader):
                           to the specified seconds and minutes and saves a new version of the file '_trim.wav' in
                           'files/debates_audio_recordings' (in the corresponding debate's sub folder).
         """
-        for idx in tqdm(range(len(debate_ids))):
+        for idx in tqdm(range(len(debate_ids)), desc='Trimming audio files...'):
             db_folder_id = debate_ids[idx]
 
             export_filename = self.audio_path.joinpath(db_folder_id, 'full_audio.wav')
@@ -477,7 +481,7 @@ class MMUSED(Loader):
         :return: None. The function generates the 20-minute chunks for each debate and saves them in the 'split'
                  sub-folders of each debate in 'files/debates_audio_recordings'
         """
-        for debate_id in range(len(debate_ids)):
+        for debate_id in tqdm(range(len(debate_ids)), desc='Generating audio chunks...'):
             folder_id = debate_ids[debate_id]
             filename = self.audio_path.joinpath(folder_id, 'full_audio.wav')
             chunks_folder = self.audio_path.joinpath(folder_id, 'splits')
@@ -488,7 +492,7 @@ class MMUSED(Loader):
             cut_sec = 1200
             n_chunks = round(duration / cut_sec)  # we split files in chunks of 20 mins
 
-            for chunk_id in tqdm(range(n_chunks)):
+            for chunk_id in range(n_chunks):
                 start_sec = cut_sec * chunk_id
                 end_sec = cut_sec * (chunk_id + 1)
                 if chunk_id == n_chunks - 1:
@@ -533,7 +537,7 @@ class MMUSED(Loader):
                  A subfolder for each debate.
         """
 
-        for i in tqdm(range(len(debate_ids))):
+        for i in tqdm(range(len(debate_ids)), desc='Alignment w/ Aeneas'):
             folder_id = debate_ids[i]
 
             split_transcripts_path = self.transcripts_path.joinpath(folder_id, 'splits')
@@ -574,7 +578,7 @@ class MMUSED(Loader):
                 sentences and the number of occurrences.
         """
 
-        for debate_id in tqdm(range(len(debate_ids))):
+        for debate_id in tqdm(range(len(debate_ids)), desc='Generating dataset...'):
             folder_id = debate_ids[debate_id]
 
             directory_alignments = self.alignments_path.joinpath(folder_id)
@@ -653,7 +657,7 @@ class MMUSED(Loader):
                  is filled with the debate_ids of the corresponding generated clip.
         """
 
-        for debate_id in tqdm(range(len(debate_ids))):
+        for debate_id in tqdm(range(len(debate_ids)), desc='Generating clips...'):
             folder_id = debate_ids[debate_id]
             dataset_path = self.datasets_path.joinpath(folder_id, 'dataset.csv')
             dataset_clip_path = self.datasets_path.joinpath(folder_id, 'dataset_clip.csv')
@@ -690,7 +694,7 @@ class MMUSED(Loader):
         :param debate_ids: list of strings representing debates IDs
         :return: None. The function removes duplicates in the dataset
         """
-        for debate_id in tqdm(range(len(debate_ids))):
+        for debate_id in tqdm(range(len(debate_ids)), desc='Removing duplicates...'):
             folder_id = debate_ids[debate_id]
             dataset_clip_path = self.datasets_path.joinpath(folder_id, 'dataset_clip.csv')
             duplicates_file_path = self.datasets_path.joinpath(folder_id, 'duplicates.txt')
@@ -759,7 +763,7 @@ class MMUSED(Loader):
         :return: None. The function removes samples marked 'NOT_FOUND', i.e. sentences for which a match with the alignment
                  results was not found.
         """
-        for debate_id in tqdm(range(len(debate_ids))):
+        for debate_id in tqdm(range(len(debate_ids)), desc='Removing not found...'):
             folder_id = debate_ids[debate_id]
             dataset_clip_path = self.datasets_path.joinpath(folder_id, 'dataset_clip_nodup.csv')
             dataset_no_dup_path_no_nf = self.datasets_path.joinpath(folder_id, 'dataset_clip_final.csv')
@@ -779,13 +783,13 @@ class MMUSED(Loader):
         :param debate_ids: list of strings representing debates IDs
         :return: None. The function combines the datasets created for each debate to create the new dataset MM-ElecDeb60to16
         """
-        for debate_id in tqdm(range(len(debate_ids))):
+        for debate_id in range(len(debate_ids)):
             folder_id = debate_ids[debate_id]
             dataset_no_dup_path_no_nf = self.datasets_path.joinpath(folder_id, 'dataset_clip_final.csv')
             df = pd.read_csv(dataset_no_dup_path_no_nf)
             break
 
-        for debate_id in tqdm(range(1, len(debate_ids))):
+        for debate_id in range(1, len(debate_ids)):
             folder_id = debate_ids[debate_id]
             dataset_no_dup_path_no_nf = self.datasets_path.joinpath(folder_id, 'dataset_clip_final.csv')
             df_1 = pd.read_csv(dataset_no_dup_path_no_nf)
@@ -887,7 +891,7 @@ class MMUSED(Loader):
 
         if self.input_mode != InputMode.AUDIO_ONLY and not self.final_path.joinpath('MM-USElecDeb60to16.csv').is_file():
             self.build_from_scratch()
-        elif not self.final_path.joinpath('audio_clips').exists():
+        elif not self.clips_path.exists() and not any(self.clips_path.iterdir()):
             self.build_audio()
 
     def get_text_data(
@@ -924,18 +928,24 @@ class MMUSED(Loader):
 
         if self.task_name == 'acd':
             df = df[df['Component'].isin(['Premise', 'Claim'])]
+            df.loc[df.Component == 'Premise', 'Component'] = 0
+            df.loc[df.Component == 'Claim', 'Component'] = 1
         else:
             df.loc[df['Component'].isin(['Premise', 'Claim']), 'Component'] = 'Arg'
+            df.loc[df.Component != 'Arg', 'Component'] = 0
+            df.loc[df.Component == 'Arg', 'Component'] = 1
 
         return df
 
     def get_default_splits(
             self,
-            data: pd.DataFrame
-    ) -> SplitInfo:
-        return self.build_info_from_splits(train_df=data[data.Set == 'TRAIN'],
-                                           val_df=data[data.Set == 'VALIDATION'],
-                                           test_df=data[data.Set == 'TEST'])
+            data: pd.DataFrame,
+            as_iterator: bool = False
+    ) -> Union[List[SplitInfo], SplitInfo]:
+        split_info = self.build_info_from_splits(train_df=data[data.Set == 'TRAIN'],
+                                                 val_df=data[data.Set == 'VALIDATION'],
+                                                 test_df=data[data.Set == 'TEST'])
+        return [split_info] if as_iterator else split_info
 
 
 class MMUSEDFallacy(Loader):
@@ -1193,11 +1203,13 @@ class MMUSEDFallacy(Loader):
 
     def get_default_splits(
             self,
-            data: pd.DataFrame
-    ) -> SplitInfo:
-        return self.build_info_from_splits(train_df=data,
-                                           val_df=pd.DataFrame.empty,
-                                           test_df=pd.DataFrame.empty)
+            data: pd.DataFrame,
+            as_iterator: bool = False
+    ) -> Union[List[SplitInfo], SplitInfo]:
+        split_info = self.build_info_from_splits(train_df=data,
+                                                 val_df=pd.DataFrame.empty,
+                                                 test_df=pd.DataFrame.empty)
+        return [split_info] if as_iterator else split_info
 
 
 class MArg(Loader):
@@ -1539,9 +1551,11 @@ class MArg(Loader):
 
     def get_default_splits(
             self,
-            data: pd.DataFrame
-    ) -> SplitInfo:
-        return self.build_info_from_splits(train_df=data, val_df=pd.DataFrame.empty, test_df=pd.DataFrame.empty)
+            data: pd.DataFrame,
+            as_iterator: bool = False
+    ) -> Union[List[SplitInfo], SplitInfo]:
+        split_info = self.build_info_from_splits(train_df=data, val_df=pd.DataFrame.empty, test_df=pd.DataFrame.empty)
+        return [split_info] if as_iterator else split_info
 
     def get_mancini_2022_splits(
             self,

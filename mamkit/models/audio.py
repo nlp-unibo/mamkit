@@ -125,7 +125,7 @@ class Transformer(AudioOnlyModel):
         self.model_card = model_card
         self.model_config = AutoConfig.from_pretrained(model_card)
         self.model = AutoModel.from_pretrained(model_card)
-        self.classifier = th.nn.Linear(in_features=self.model_config.hidden_dim,
+        self.classifier = th.nn.Linear(in_features=self.model_config.hidden_size,
                                        out_features=num_classes)
 
     def forward(

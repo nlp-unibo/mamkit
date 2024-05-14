@@ -93,7 +93,7 @@ class BiLSTMConfig(BaseConfig):
             tokenizer=get_tokenizer(tokenizer='basic_english'),
             optimizer=th.optim.Adam,
             optimizer_args={
-                'l2': 0.0002,
+                'lr': 0.0002,
                 'weight_decay': 0.0001
             },
             num_classes=2,
@@ -113,7 +113,7 @@ class BiLSTMConfig(BaseConfig):
             tokenizer=get_tokenizer(tokenizer='basic_english'),
             optimizer=th.optim.Adam,
             optimizer_args={
-                'l2': 0.001,
+                'lr': 0.001,
                 'weight_decay': 0.0005
             },
             num_classes=2,
@@ -136,6 +136,7 @@ class TransformerConfig(BaseConfig):
             num_classes,
             dropout_rate=0.0,
             is_transformer_trainable: bool = False,
+            tokenizer_args=None,
             **kwargs
     ):
         super().__init__(**kwargs)
@@ -145,6 +146,7 @@ class TransformerConfig(BaseConfig):
         self.num_classes = num_classes
         self.dropout_rate = dropout_rate
         self.is_transformer_trainable = is_transformer_trainable
+        self.tokenizer_args = tokenizer_args
 
     @classmethod
     def mmused_fallacy_afc_bert_mancini_2024(
@@ -155,7 +157,8 @@ class TransformerConfig(BaseConfig):
             mlp_weights=[100, 50],
             num_classes=2,
             dropout_rate=0.1,
-            is_transformer_trainable=True
+            is_transformer_trainable=True,
+            tokenizer_args={}
         )
 
     @classmethod
@@ -167,5 +170,6 @@ class TransformerConfig(BaseConfig):
             mlp_weights=[100, 50],
             num_classes=2,
             dropout_rate=0.1,
-            is_transformer_trainable=True
+            is_transformer_trainable=True,
+            tokenizer_args={}
         )

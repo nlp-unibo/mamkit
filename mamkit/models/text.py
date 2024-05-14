@@ -86,10 +86,10 @@ class Transformer(TextOnlyModel):
                     param.requires_grad = False
 
         self.pre_classifier = th.nn.Sequential()
-        in_features = self.model_config.hidden_dim
+        in_features = self.model_config.hidden_size
         for weight in mlp_weights:
-            self.classifier.append(th.nn.Linear(in_features=in_features,
-                                                out_features=weight))
+            self.pre_classifier.append(th.nn.Linear(in_features=in_features,
+                                                    out_features=weight))
             in_features = weight
 
         self.classifier = th.nn.Sequential()
