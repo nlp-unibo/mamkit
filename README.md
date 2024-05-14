@@ -1,2 +1,2 @@
-# MAMKit: Multimodal Argument Mining Framework
-Multimodal Argument Mining Framework
+# MAMKit: Multimodal Argument Mining Toolkit
+Multimodal Argument Mining Toolkit
