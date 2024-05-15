@@ -261,6 +261,7 @@ class UKDebates(Loader):
         speaker_path = self.data_path.joinpath('dataset', f'{speaker.capitalize()}.txt')
         with speaker_path.open('r') as txt:
             texts = txt.readlines()
+        texts = [' '.join(text.split(' ')[1:]) for text in texts]
 
         annotations_path = self.data_path.joinpath('dataset', f'{speaker.capitalize()}Labels.txt')
         with annotations_path.open('r') as txt:
