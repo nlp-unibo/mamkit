@@ -139,7 +139,7 @@ class Loader(abc.ABC):
     ):
         self.task_name = task_name
         self.input_mode = input_mode
-        self.base_data_path = Path.cwd() if base_data_path is not None else base_data_path
+        self.base_data_path = Path.cwd() if base_data_path is None else base_data_path
 
         self.splitters = {
             'default': partial(self.get_default_splits, as_iterator=True)
@@ -229,7 +229,7 @@ class UKDebates(Loader):
 
         self.download_url = 'http://argumentationmining.disi.unibo.it/dataset_aaai2016.tgz'
         self.folder_name = 'UKDebates'
-        self.data_path = Path(self.base_data_path, 'data', self.folder_name).resolve()
+        self.data_path = Path(self.base_data_path, self.folder_name).resolve()
         self.audio_path = self.data_path.joinpath('dataset', 'audio')
 
         if not self.data_path.exists():
@@ -370,7 +370,7 @@ class MMUSED(Loader):
         self.folder_name = 'MMUSED'
         self.deleted_ids = ['13_1988, 17_1992, 42_2016, 43_2016']
 
-        self.data_path = Path(self.base_data_path, 'data', self.folder_name).resolve()
+        self.data_path = Path(self.base_data_path, self.folder_name).resolve()
         self.files_path = self.data_path.joinpath('files')
         self.aeneas_path = self.data_path.joinpath('aeneas')
         self.audio_path = self.files_path.joinpath('debates_audio_recordings')
@@ -975,7 +975,7 @@ class MMUSEDFallacy(Loader):
         self.n_files = n_files
         self.folder_name = 'MMUSED-fallacy'
 
-        self.data_path = Path(self.base_data_path, 'data', self.folder_name).resolve()
+        self.data_path = Path(self.base_data_path, self.folder_name).resolve()
         self.resources_path = self.data_path.joinpath('resources')
         self.audio_path = self.resources_path.joinpath('debates_audio_recordings')
         self.clips_path = self.data_path.joinpath('audio_clips')
@@ -1232,7 +1232,7 @@ class MArg(Loader):
         self.confidence = confidence
         self.folder_name = 'MArg'
 
-        self.data_path = Path(self.base_data_path, 'data', self.folder_name).resolve()
+        self.data_path = Path(self.base_data_path, self.folder_name).resolve()
         self.feature_path = self.data_path.joinpath('data', 'preprocessed full dataset',
                                                     'full_feature_extraction_dataset.csv')
         self.aggregated_path = self.data_path.joinpath('annotated dataset', 'aggregated_dataset.csv')
