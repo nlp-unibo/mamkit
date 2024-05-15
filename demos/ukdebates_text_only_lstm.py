@@ -113,7 +113,7 @@ if __name__ == '__main__':
     metric_names = list(metrics['validation'].keys())
     for split_name in ['validation', 'test']:
         for metric_name in metric_names:
-            metric_values = np.array(metrics[split_name][metric_name]).reshape(len(config.seeds[:1]), -1)
+            metric_values = np.array(metrics[split_name][metric_name]).reshape(len(config.seeds), -1)
             per_seed_avg = metric_values.mean(axis=-1)
             per_seed_std = metric_values.std(axis=-1)
             avg = per_seed_avg.mean(axis=-1)
