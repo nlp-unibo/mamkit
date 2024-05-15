@@ -1,7 +1,8 @@
 import torch as th
 from transformers import AutoModel
-from mamkit.modules.transformer import MulTA_CrossAttentionBlock, PositionalEncoding
+
 from mamkit.modules.rnn import LSTMStack
+from mamkit.modules.transformer import MulTA_CrossAttentionBlock, PositionalEncoding
 
 
 class TextAudioModel(th.nn.Module):
@@ -87,7 +88,7 @@ class MArgNet(TextAudioModel):
             num_classes
     ):
         super().__init__()
-        
+
         # Text
         self.transformer = AutoModel.from_pretrained(transformer_model_card)
 
@@ -135,14 +136,13 @@ class CSA(TextAudioModel):
 
     def forward(
             self,
-            text,
-            audio,
-            **kwargs
+            inputs
     ):
         # tokens_emb        -> [bs, N_t, d]
         # text_attentions   -> [bs, N]
         # audio_features    -> [bs, N_a, d]
         # audio_attentions  -> [bs, N]
+        text, audio = inputs
         tokens_emb, text_attentions = text
         audio_features, audio_attentions = audio
 
@@ -188,9 +188,9 @@ class Ensemble(TextAudioModel):
 
     def forward(
             self,
-            text,
-            audio
+            inputs
     ):
+        text, audio = inputs
         text_logits = self.text_model(text)
         audio_logits = self.audio_model(audio)
 
@@ -244,9 +244,9 @@ class MulTA(TextAudioModel):
 
     def forward(
             self,
-            text,
-            audio
+            inputs
     ):
+        text, audio = inputs
         text_features, text_attentions = text
         audio_features, audio_attentions = audio
 
