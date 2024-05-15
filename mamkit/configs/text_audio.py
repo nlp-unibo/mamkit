@@ -177,7 +177,7 @@ class MMTransformerConfig(BaseConfig):
             text_model_card='roberta-base',
             text_embedding_dim=768,
             head=th.nn.Sequential(
-                th.nn.Linear(128, 128),
+                th.nn.Linear(832, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
             ),
