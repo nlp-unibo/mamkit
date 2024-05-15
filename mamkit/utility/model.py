@@ -1,6 +1,6 @@
 import lightning as L
 import torch as th
-from torchmetrics.classification import Accuracy
+from typing import Dict
 
 
 class MAMKitLightingModel(L.LightningModule):
@@ -10,6 +10,9 @@ class MAMKitLightingModel(L.LightningModule):
             loss_function,
             num_classes: int,
             optimizer_class,
+            val_metrics: Dict = None,
+            test_metrics: Dict = None,
+            log_metrics: bool = True,
             **optimizer_kwargs
     ):
         super().__init__()
@@ -18,10 +21,21 @@ class MAMKitLightingModel(L.LightningModule):
         self.optimizer_class = optimizer_class
         self.optimizer_kwargs = optimizer_kwargs
         self.num_classes = num_classes
+        self.log_metrics = log_metrics
 
-        self.train_acc = Accuracy(task='multiclass', num_classes=num_classes)
-        self.val_acc = Accuracy(task='multiclass', num_classes=num_classes)
-        self.test_acc = Accuracy(task='multiclass', num_classes=num_classes)
+        if val_metrics is not None:
+            self.val_metrics_names = val_metrics.keys()
+            self.val_metrics = th.nn.ModuleList(list(val_metrics.values()))
+        else:
+            self.val_metric_names = None
+            self.val_metrics = None
+
+        if test_metrics is not None:
+            self.test_metrics_names = test_metrics.keys()
+            self.test_metrics = th.nn.ModuleList(list(test_metrics.values()))
+        else:
+            self.test_metrics_names = None
+            self.test_metrics = None
 
     def forward(
             self,
@@ -38,9 +52,7 @@ class MAMKitLightingModel(L.LightningModule):
         y_hat = self.model(inputs)
         loss = self.loss_function(y_hat, y_true)
 
-        self.train_acc(y_hat, y_true)
-        self.log('train_acc', self.train_acc, on_step=True, on_epoch=True)
-        self.log('train_loss', loss, on_step=True, on_epoch=True)
+        self.log_dict({'train_loss': loss}, on_step=True, on_epoch=False, prog_bar=True)
 
         return loss
 
@@ -52,10 +64,12 @@ class MAMKitLightingModel(L.LightningModule):
         inputs, y_true = batch
         y_hat = self.model(inputs)
         loss = self.loss_function(y_hat, y_true)
+        self.log_dict({'val_loss': loss}, on_step=True, on_epoch=True, prog_bar=True)
 
-        self.val_acc(y_hat, y_true)
-        self.log('val_acc', self.val_acc, on_step=True, on_epoch=True)
-        self.log('val_loss', loss, on_step=True, on_epoch=True)
+        if self.val_metrics is not None:
+            for val_metric_name, val_metric in zip(self.val_metrics_names, self.val_metrics):
+                val_metric(y_hat, y_true)
+                self.log(val_metric_name, val_metric, on_step=False, on_epoch=True, prog_bar=self.log_metrics)
 
         return loss
 
@@ -68,10 +82,12 @@ class MAMKitLightingModel(L.LightningModule):
         inputs, y_true = batch
         y_hat = self.model(inputs)
         loss = self.loss_function(y_hat, y_true)
+        self.log_dict({'test_loss': loss}, on_step=False, on_epoch=True, prog_bar=True)
 
-        self.test_acc(y_hat, y_true)
-        self.log('test_acc', self.test_acc, on_step=True, on_epoch=True)
-        self.log('test_loss', loss, on_step=True, on_epoch=True)
+        if self.test_metrics is not None:
+            for test_metric_name, test_metric in zip(self.test_metrics_names, self.test_metrics):
+                test_metric(y_hat, y_true)
+                self.log(test_metric_name, test_metric, on_step=False, on_epoch=True)
 
         return loss
 
@@ -86,10 +102,16 @@ def to_lighting_model(
         loss_function,
         num_classes,
         optimizer_class,
+        val_metrics: Dict = None,
+        test_metrics: Dict = None,
+        log_metrics: bool = True,
         **optimizer_kwargs
 ):
     return MAMKitLightingModel(model=model,
                                loss_function=loss_function,
                                num_classes=num_classes,
                                optimizer_class=optimizer_class,
+                               val_metrics=val_metrics,
+                               test_metrics=test_metrics,
+                               log_metrics=log_metrics,
                                **optimizer_kwargs)
