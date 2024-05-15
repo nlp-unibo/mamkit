@@ -152,7 +152,7 @@ class Loader(abc.ABC):
 
     def add_splits(
             self,
-            method: Callable[[pd.DataFrame], List[SplitInfo]],
+            method: Callable[[], List[SplitInfo]],
             key: str
     ):
         if not hasattr(self, method.__name__):

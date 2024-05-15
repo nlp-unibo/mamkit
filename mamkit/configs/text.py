@@ -11,8 +11,6 @@ class BiLSTMConfig(BaseConfig):
                   tags={'anonymous'}): 'ukdebates_anonymous',
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_ONLY, task_name='asd',
                   tags={'mancini-et-al-2022'}): 'ukdebates_mancini_2022',
-        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
-                  tags={'mancini-et-al-2022'}): 'marg_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='asd',
                   tags={'mancini-et-al-2022'}): 'mmused_asd_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='asd',
@@ -21,6 +19,10 @@ class BiLSTMConfig(BaseConfig):
                   tags={'mancini-et-al-2022'}): 'mmused_acd_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
+                  tags={'mancini-et-al-2022'}): 'marg_arc_mancini_2022',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
+                  tags={'anonymous'}): 'marg_arc_anonymous'
     }
 
     def __init__(
@@ -99,7 +101,7 @@ class BiLSTMConfig(BaseConfig):
         )
 
     @classmethod
-    def marg_mancini_2022(
+    def marg_arc_mancini_2022(
             cls
     ):
         return cls(
@@ -122,6 +124,32 @@ class BiLSTMConfig(BaseConfig):
             seeds=[15371, 15372, 15373],
             batch_size=16,
             loss_function=th.nn.CrossEntropyLoss()
+        )
+
+    @classmethod
+    def marg_arc_anonymous(
+            cls
+    ):
+        return cls(
+            embedding_dim=200,
+            lstm_weights=[128, 32],
+            head=th.nn.Sequential(
+                th.nn.Linear(64, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            dropout_rate=0.0,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 0.0002,
+                'weight_decay': 0.0001
+            },
+            embedding_model='glove.6B.200d',
+            tokenizer=get_tokenizer(tokenizer='basic_english'),
+            loss_function=th.nn.CrossEntropyLoss(),
+            batch_size=4,
+            num_classes=2
         )
 
     @classmethod

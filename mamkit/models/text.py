@@ -56,6 +56,37 @@ class BiLSTM(TextOnlyModel):
         return logits
 
 
+class PairBiLSTM(BiLSTM):
+
+    def forward(
+            self,
+            text
+    ):
+        a_text, b_text = text
+
+        # A input
+        # [bs, T, d_t]
+        a_tokens_emb = self.embedding(a_text)
+        a_tokens_emb = self.dropout(a_tokens_emb)
+
+        # [bs, d']
+        a_text_emb = self.lstm(a_tokens_emb)
+
+        # B input
+        # [bs, T, d_t]
+        b_tokens_emb = self.embedding(b_text)
+        b_tokens_emb = self.dropout(b_tokens_emb)
+
+        # [bs, d']
+        b_text_emb = self.lstm(b_tokens_emb)
+
+        concat_emb = th.concat((a_text_emb, b_text_emb), dim=-1)
+        logits = self.head(concat_emb)
+
+        # [bs, #classes]
+        return logits
+
+
 class Transformer(TextOnlyModel):
 
     def __init__(

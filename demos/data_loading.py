@@ -1,12 +1,15 @@
 import logging
+from pathlib import Path
 from typing import List
 
 from mamkit.data.datasets import SplitInfo, UKDebates, InputMode
 
 
 def loading_data_example():
+    base_data_path = Path(__file__).parent.parent.resolve().joinpath('data')
     loader = UKDebates(task_name='asd',
-                       input_mode=InputMode.TEXT_ONLY)
+                       input_mode=InputMode.TEXT_ONLY,
+                       base_data_path=base_data_path)
     logging.info(loader.data)
 
 
@@ -40,5 +43,5 @@ def defining_custom_splits_example():
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     # loading_data_example()
-    loading_predefined_splits()
-    # defining_custom_splits_example()
+    # loading_predefined_splits()
+    defining_custom_splits_example()
