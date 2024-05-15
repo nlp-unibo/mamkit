@@ -5,15 +5,15 @@ import lightning as L
 import numpy as np
 import torch as th
 from lightning.pytorch import seed_everything
-from lightning.pytorch.callbacks.early_stopping import EarlyStopping
+from lightning.pytorch.callbacks import EarlyStopping
 from torch.utils.data import DataLoader
 
-from mamkit.configs.text import TransformerConfig
-from mamkit.data.collators import UnimodalCollator, TextTransformerCollator
-from mamkit.data.datasets import UKDebates, InputMode
-from mamkit.data.processing import UnimodalProcessor
-from mamkit.models.text import Transformer
 from mamkit.configs.base import ConfigKey
+from mamkit.configs.text_audio import BiLSTMConfig
+from mamkit.data.collators import MultimodalCollator, TextCollator, AudioCollator
+from mamkit.data.datasets import UKDebates, InputMode
+from mamkit.data.processing import VocabBuilder, MultimodalProcessor, AudioTransformer
+from mamkit.models.text_audio import BiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model
 
@@ -22,20 +22,28 @@ if __name__ == '__main__':
     save_path = Path(__file__).parent.resolve()
 
     loader = UKDebates(task_name='asd',
-                       input_mode=InputMode.TEXT_ONLY)
+                       input_mode=InputMode.TEXT_AUDIO)
 
-    config = TransformerConfig.from_config(key=ConfigKey(dataset='ukdebates',
-                                                         task_name='asd',
-                                                         input_mode=InputMode.TEXT_ONLY,
-                                                         tags={'anonymous', 'bert'}))
-
+    config = BiLSTMConfig.from_config(key=ConfigKey(dataset='ukdebates',
+                                                    input_mode=InputMode.TEXT_AUDIO,
+                                                    task_name='asd',
+                                                    tags='anonymous'))
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
         for split_info in loader.get_splits(key='mancini-et-al-2022'):
-            processor = UnimodalProcessor()
-
-            processor.fit(split_info.train)
+            processor = MultimodalProcessor(text_processor=VocabBuilder(tokenizer=config.tokenizer,
+                                                                        embedding_model=config.embedding_model,
+                                                                        embedding_dim=config.text_embedding_dim),
+                                            audio_processor=AudioTransformer(
+                                                model_card=config.audio_model_card,
+                                                processor_args=config.processor_args,
+                                                model_args=config.audio_model_args,
+                                                aggregate=config.aggregate,
+                                                downsampling_factor=config.downsampling_factor,
+                                                sampling_rate=config.sampling_rate
+                                            ))
+            processor.fit(train_data=split_info.train)
 
             split_info.train = processor(split_info.train)
             split_info.val = processor(split_info.val)
@@ -43,9 +51,10 @@ if __name__ == '__main__':
 
             processor.clear()
 
-            unimodal_collator = UnimodalCollator(
-                features_collator=TextTransformerCollator(model_card=config.model_card,
-                                                          tokenizer_args=config.tokenizer_args),
+            unimodal_collator = MultimodalCollator(
+                text_collator=TextCollator(tokenizer=config.tokenizer,
+                                           vocab=processor.text_processor.vocab),
+                audio_collator=AudioCollator(),
                 label_collator=lambda labels: th.tensor(labels)
             )
 
@@ -62,19 +71,25 @@ if __name__ == '__main__':
                                          shuffle=False,
                                          collate_fn=unimodal_collator)
 
-            model = Transformer(model_card=config.model_card,
-                                is_transformer_trainable=config.is_transformer_trainable,
-                                dropout_rate=config.dropout_rate,
-                                head=config.head)
+            model = BiLSTM(vocab_size=len(processor.text_processor.vocab),
+                           audio_embedding_dim=config.audio_embedding_dim,
+                           text_embedding_dim=config.text_embedding_dim,
+                           text_lstm_weights=config.text_lstm_weights,
+                           audio_lstm_weights=config.audio_lstm_weights,
+                           head=config.head,
+                           text_dropout_rate=config.text_dropout_rate,
+                           audio_dropout_rate=config.audio_dropout_rate,
+                           embedding_matrix=processor.text_processor.embedding_matrix
+                           )
             model = to_lighting_model(model=model,
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
                                       **config.optimizer_args)
 
-            trainer = L.Trainer(max_epochs=50,
+            trainer = L.Trainer(max_epochs=200,
                                 accelerator='gpu',
-                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=3),
+                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=20),
                                            PycharmProgressBar()])
             trainer.fit(model,
                         train_dataloaders=train_dataloader,

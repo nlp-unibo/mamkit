@@ -8,6 +8,8 @@ from mamkit.data.datasets import InputMode
 class BiLSTMConfig(BaseConfig):
     configs = {
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_ONLY, task_name='asd',
+                  tags={'anonymous'}): 'ukdebates_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_ONLY, task_name='asd',
                   tags={'mancini-et-al-2022'}): 'ukdebates_mancini_2022',
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
                   tags={'mancini-et-al-2022'}): 'marg_mancini_2022',
@@ -21,7 +23,7 @@ class BiLSTMConfig(BaseConfig):
             self,
             embedding_dim,
             lstm_weights,
-            mlp_weights,
+            head: th.nn.Module,
             dropout_rate,
             num_classes,
             tokenizer,
@@ -34,18 +36,48 @@ class BiLSTMConfig(BaseConfig):
         self.embedding_dim = embedding_dim
         self.embedding_model = embedding_model
         self.lstm_weights = lstm_weights
-        self.mlp_weights = mlp_weights
+        self.head = head
         self.dropout_rate = dropout_rate
         self.num_classes = num_classes
         self.tokenizer = tokenizer
         self.tokenization_args = tokenization_args
 
     @classmethod
+    def ukdebates_anonymous(
+            cls
+    ):
+        return cls(
+            embedding_dim=200,
+            lstm_weights=[128, 32],
+            head=th.nn.Sequential(
+                th.nn.Linear(64, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            dropout_rate=0.0,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 0.0001,
+                'weight_decay': 0.0005
+            },
+            embedding_model='glove.6B.200d',
+            tokenizer=get_tokenizer(tokenizer='basic_english'),
+            loss_function=th.nn.CrossEntropyLoss(),
+            batch_size=8,
+            num_classes=2
+        )
+
+    @classmethod
     def ukdebates_mancini_2022(
             cls
     ):
         return cls(
-            mlp_weights=[128],
+            head=th.nn.Sequential(
+                th.nn.Linear(64, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
             optimizer_args={
                 'lr': 0.0001,
                 'weight_decay': 0.0005
@@ -67,7 +99,11 @@ class BiLSTMConfig(BaseConfig):
             cls
     ):
         return cls(
-            mlp_weights=[64],
+            head=th.nn.Sequential(
+                th.nn.Linear(256, 64),
+                th.nn.ReLU(),
+                th.nn.Linear(64, 2)
+            ),
             dropout_rate=0.4,
             embedding_dim=100,
             embedding_model='glove.6B.100d',
@@ -89,7 +125,11 @@ class BiLSTMConfig(BaseConfig):
             cls
     ):
         return cls(
-            mlp_weights=[256],
+            head=th.nn.Sequential(
+                th.nn.Linear(128, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
             dropout_rate=0.0,
             embedding_dim=100,
             embedding_model='glove.6B.100d',
@@ -111,7 +151,11 @@ class BiLSTMConfig(BaseConfig):
             cls
     ):
         return cls(
-            mlp_weights=[64],
+            head=th.nn.Sequential(
+                th.nn.Linear(64, 64),
+                th.nn.ReLU(),
+                th.nn.Linear(64, 2)
+            ),
             dropout_rate=0.3,
             embedding_dim=100,
             embedding_model='glove.6B.100d',
@@ -131,6 +175,10 @@ class BiLSTMConfig(BaseConfig):
 
 class TransformerConfig(BaseConfig):
     configs = {
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_ONLY, task_name='asd',
+                  tags={'anonymous', 'bert'}): 'ukdebates_asd_bert_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_ONLY, task_name='asd',
+                  tags={'anonymous', 'roberta'}): 'ukdebates_asd_roberta_anonymous',
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_ONLY, task_name='asd',
                   tags={'mancini-et-al-2022'}): 'ukdebates_asd_mancini_2022',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
@@ -157,6 +205,46 @@ class TransformerConfig(BaseConfig):
         self.dropout_rate = dropout_rate
         self.is_transformer_trainable = is_transformer_trainable
         self.tokenizer_args = tokenizer_args
+
+    @classmethod
+    def ukdebates_asd_bert_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='bert-base-uncased',
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            dropout_rate=0.0,
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=8,
+            num_classes=2,
+            is_transformer_trainable=False
+        )
+
+    @classmethod
+    def ukdebates_asd_roberta_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='roberta-base',
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            dropout_rate=0.0,
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=8,
+            num_classes=2,
+            is_transformer_trainable=False
+        )
 
     @classmethod
     def ukdebates_asd_mancini_2022(
@@ -221,6 +309,10 @@ class TransformerConfig(BaseConfig):
 
 
 class TransformerHeadConfig(BaseConfig):
+    configs = {
+        ConfigKey(dataset='ukdebates', task_name='asd', input_mode=InputMode.TEXT_ONLY,
+                  tags={'anonymous'}): 'ukdebates_anonymous'
+    }
 
     def __init__(
             self,
@@ -238,3 +330,22 @@ class TransformerHeadConfig(BaseConfig):
         self.num_classes = num_classes
         self.dropout_rate = dropout_rate
         self.tokenizer_args = tokenizer_args
+
+    @classmethod
+    def ukdebates_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='bert-base-uncased',
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            dropout_rate=0.0,
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=8,
+            num_classes=2
+        )

@@ -1,14 +1,14 @@
 import torch as th
 from transformers import AutoModel
 from mamkit.modules.transformer import MulTA_CrossAttentionBlock, PositionalEncoding
+from mamkit.modules.rnn import LSTMStack
 
 
 class TextAudioModel(th.nn.Module):
 
     def forward(
             self,
-            text,
-            audio
+            inputs
     ):
         pass
 
@@ -18,66 +18,56 @@ class BiLSTM(TextAudioModel):
     def __init__(
             self,
             vocab_size,
-            embedding_dim,
-            lstm_weights,
-            mlp_weights,
-            dropout_rate,
-            num_classes
+            text_embedding_dim,
+            audio_embedding_dim,
+            text_lstm_weights,
+            audio_lstm_weights,
+            head: th.nn.Module,
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
+            embedding_matrix=None
     ):
         super().__init__()
 
         self.embedding = th.nn.Embedding(num_embeddings=vocab_size,
-                                         embedding_dim=embedding_dim,
+                                         embedding_dim=text_embedding_dim,
                                          padding_idx=0)
+        if embedding_matrix is not None:
+            self.embedding.weight.data = embedding_matrix
 
-        self.text_lstm = th.nn.Sequential()
-        input_size = embedding_dim
-        for weight in lstm_weights:
-            self.text_lstm.append(th.nn.LSTM(input_size=input_size,
-                                             hidden_size=weight,
-                                             batch_first=True,
-                                             bidirectional=True))
-            input_size = weight
+        self.text_lstm = LSTMStack(input_size=text_embedding_dim,
+                                   lstm_weigths=text_lstm_weights)
+        self.audio_lstm = LSTMStack(input_size=audio_embedding_dim,
+                                    lstm_weigths=audio_lstm_weights)
+        self.head = head
 
-        self.audio_lstm = th.nn.Sequential()
-        input_size = embedding_dim
-        for weight in lstm_weights:
-            self.audio_lstm.append(th.nn.LSTM(input_size=input_size,
-                                              hidden_size=weight,
-                                              batch_first=True,
-                                              bidirectional=True))
-            input_size = weight
-
-        self.pre_classifier = th.nn.Sequential()
-        input_size = lstm_weights[-1] * 4
-        for weight in mlp_weights:
-            self.pre_classifier.append(th.nn.Linear(in_features=input_size,
-                                                    out_features=weight))
-            self.pre_classifier.append(th.nn.LeakyReLU())
-            self.pre_classifier.append(th.nn.Dropout(p=dropout_rate))
-            input_size = weight
-
-        self.classifier = th.nn.Linear(in_features=mlp_weights[-1], out_features=num_classes)
+        self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
+        self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
 
     def forward(
             self,
-            text,
-            audio,
+            inputs
     ):
+        text, audio = inputs
 
-        # [bs, N, d]
+        # [bs, T, d_t]
         tokens_emb = self.embedding(text)
+        tokens_emb = self.text_dropout(tokens_emb)
 
         # [bs, d']
-        _, (text_emb, _) = self.text_lstm(tokens_emb)
-        text_emb = text_emb.permute(1, 0, 2).reshape(tokens_emb.shape[0], -1)
+        text_emb = self.text_lstm(tokens_emb)
 
-        audio_emb = self.audio_lstm(audio)
+        # [bs, A, d_a]
+        audio_features, audio_attention = audio
+        audio_features = self.audio_dropout(audio_features)
 
+        # [bs, d']
+        audio_emb = self.audio_lstm(audio_features)
+
+        # [bs, d' * 2]
         concat_emb = th.concat((text_emb, audio_emb), dim=-1)
 
-        logits = self.pre_classifier(concat_emb)
-        logits = self.classifier(logits)
+        logits = self.head(concat_emb)
 
         # [bs, #classes]
         return logits

@@ -20,25 +20,16 @@ class BiLSTM(AudioOnlyModel):
             self,
             embedding_dim,
             lstm_weights,
-            mlp_weights,
-            dropout_rate,
-            num_classes
+            head: th.nn.Module,
+            dropout_rate
     ):
         super().__init__()
 
         self.lstm = LSTMStack(input_size=embedding_dim,
                               lstm_weigths=lstm_weights)
 
-        self.pre_classifier = th.nn.Sequential()
-        input_size = lstm_weights[-1] * 2
-        for weight in mlp_weights:
-            self.pre_classifier.append(th.nn.Linear(in_features=input_size,
-                                                    out_features=weight))
-            self.pre_classifier.append(th.nn.LeakyReLU())
-            self.pre_classifier.append(th.nn.Dropout(p=dropout_rate))
-            input_size = weight
-
-        self.classifier = th.nn.Linear(in_features=mlp_weights[-1], out_features=num_classes)
+        self.head = head
+        self.dropout = th.nn.Dropout(p=dropout_rate)
 
     def forward(
             self,
@@ -47,11 +38,12 @@ class BiLSTM(AudioOnlyModel):
         # audio_features -> [bs, N, d]
         audio_features, audio_attention = audio
 
+        audio_features = self.dropout(audio_features)
+
         # [bs, d']
         audio_emb = self.lstm(audio_features)
 
-        logits = self.pre_classifier(audio_emb)
-        logits = self.classifier(logits)
+        logits = self.head(audio_emb)
 
         # [bs, #classes]
         return logits
@@ -198,12 +190,13 @@ class TransformerEncoder(AudioOnlyModel):
 
         audio_features = self.pos_encoder(audio_features)
 
-        transformer_output = self.transformer(audio_features, mask=full_attention_mask,
-                                              src_key_padding_mask=padding_mask)
+        transformer_output = self.encoder(audio_features,
+                                          mask=full_attention_mask,
+                                          src_key_padding_mask=padding_mask)
 
         # Dropout and LayerNorm to help training phase
         transformer_output = self.dropout(transformer_output)
-        transformer_output = self.ln(audio_features + transformer_output)
+        transformer_output = self.layer_norm(audio_features + transformer_output)
 
         transformer_output_sum = (transformer_output * attention_mask.unsqueeze(-1)).sum(dim=1)
         transformer_output_pooled = transformer_output_sum / attention_mask.sum(dim=1).unsqueeze(-1)

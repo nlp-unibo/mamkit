@@ -8,6 +8,7 @@ from lightning.pytorch import seed_everything
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from torch.utils.data import DataLoader
 
+from mamkit.configs.base import ConfigKey
 from mamkit.configs.text import TransformerConfig
 from mamkit.data.collators import UnimodalCollator, TextTransformerCollator
 from mamkit.data.datasets import UKDebates, InputMode
@@ -23,23 +24,10 @@ if __name__ == '__main__':
     loader = UKDebates(task_name='asd',
                        input_mode=InputMode.TEXT_ONLY)
 
-    config = TransformerConfig(
-        model_card='roberta-base',
-        head=th.nn.Sequential(
-            th.nn.Linear(768, 100),
-            th.nn.ReLU(),
-            th.nn.Linear(100, 50),
-            th.nn.ReLU(),
-            th.nn.Linear(50, 2)
-        ),
-        num_classes=2,
-        dropout_rate=0.1,
-        is_transformer_trainable=True,
-        seeds=[42, 2024, 666],
-        optimizer=th.optim.Adam,
-        optimizer_args={'lr': 5e-05},
-        batch_size=8
-    )
+    config = TransformerConfig.from_config(key=ConfigKey(dataset='ukdebates',
+                                                         task_name='asd',
+                                                         input_mode=InputMode.TEXT_ONLY,
+                                                         tags={'anonymous', 'roberta'}))
 
     metrics = {}
     for seed in config.seeds:

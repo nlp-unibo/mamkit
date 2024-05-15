@@ -20,9 +20,8 @@ class BiLSTM(TextOnlyModel):
             vocab_size,
             embedding_dim,
             lstm_weights,
-            mlp_weights,
-            dropout_rate,
-            num_classes,
+            head: th.nn.Module,
+            dropout_rate=0.0,
             embedding_matrix=None
     ):
         super().__init__()
@@ -35,17 +34,9 @@ class BiLSTM(TextOnlyModel):
 
         self.lstm = LSTMStack(input_size=embedding_dim,
                               lstm_weigths=lstm_weights)
+        self.head = head
 
-        self.pre_classifier = th.nn.Sequential()
-        input_size = lstm_weights[-1] * 2
-        for weight in mlp_weights:
-            self.pre_classifier.append(th.nn.Linear(in_features=input_size,
-                                                    out_features=weight))
-            self.pre_classifier.append(th.nn.LeakyReLU())
-            self.pre_classifier.append(th.nn.Dropout(p=dropout_rate))
-            input_size = weight
-
-        self.classifier = th.nn.Linear(in_features=mlp_weights[-1], out_features=num_classes)
+        self.dropout = th.nn.Dropout(p=dropout_rate)
 
     def forward(
             self,
@@ -54,11 +45,12 @@ class BiLSTM(TextOnlyModel):
         # [bs, N, d]
         tokens_emb = self.embedding(text)
 
+        tokens_emb = self.dropout(tokens_emb)
+
         # [bs, d']
         text_emb = self.lstm(tokens_emb)
 
-        logits = self.pre_classifier(text_emb)
-        logits = self.classifier(logits)
+        logits = self.head(text_emb)
 
         # [bs, #classes]
         return logits

@@ -41,7 +41,10 @@ class MultimodalCollator:
         self.audio_collator = audio_collator
         self.label_collator = label_collator
 
-    def __call__(self, batch):
+    def __call__(
+            self,
+            batch
+    ):
         text_raw, audio_raw, labels = zip(*batch)
         if self.text_collator is None:
             text_collated = text_raw
@@ -58,7 +61,7 @@ class MultimodalCollator:
         else:
             labels_collated = self.label_collator(labels)
 
-        return (*text_collated, *audio_collated), labels_collated
+        return (text_collated, audio_collated), labels_collated
 
 
 class TextCollator:
@@ -146,4 +149,4 @@ class AudioCollator:
             attention_mask = th.ones((features.shape[0]), dtype=th.int32)
             features = features[:, None, :]
 
-        return features, attention_mask
+        return features, attention_mask.to(th.float32)

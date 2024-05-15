@@ -27,7 +27,7 @@ if __name__ == '__main__':
     config = BiLSTMConfig.from_config(key=ConfigKey(dataset='ukdebates',
                                                     input_mode=InputMode.TEXT_ONLY,
                                                     task_name='asd',
-                                                    tags='mancini-et-al-2022'))
+                                                    tags='anonymous'))
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
@@ -66,8 +66,7 @@ if __name__ == '__main__':
                            embedding_dim=config.embedding_dim,
                            dropout_rate=config.dropout_rate,
                            lstm_weights=config.lstm_weights,
-                           mlp_weights=config.mlp_weights,
-                           num_classes=config.num_classes,
+                           head=config.head,
                            embedding_matrix=processor.features_processor.embedding_matrix
                            )
             model = to_lighting_model(model=model,

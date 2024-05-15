@@ -331,7 +331,7 @@ class TextTransformer(ProcessorComponent):
         th.cuda.empty_cache()
 
 
-class AudioTransformer:
+class AudioTransformer(ProcessorComponent):
 
     def __init__(
             self,
@@ -369,7 +369,7 @@ class AudioTransformer:
         for audio_file in tqdm(audio_files, desc='Extracting Audio Features...'):
             if not audio_file.is_file():
                 raise RuntimeError(f'Could not read file {audio_file}')
-            audio, sampling_rate = load(audio_file, sr=None)
+            audio, sampling_rate = load(audio_file)
             if sampling_rate != self.sampling_rate:
                 audio = resample(audio, sampling_rate, self.sampling_rate)
                 audio = th.mean(audio, dim=0, keepdim=True)
@@ -382,14 +382,16 @@ class AudioTransformer:
                                           **self.processor_args)
                 features = features.input_values[0].to(self.device)
                 features = self.model(features, **self.model_args).last_hidden_state[0].unsqueeze(0)
-                features = th.nn.functional.interpolate(features.permute(0, 2, 1),
-                                                        scale_factor=self.downsampling_factor,
-                                                        mode='linear')
-                features = features.permute(0, 2, 1)[0]
-                features = features.detach().cpu().numpy()
+
+                if self.downsampling_factor is not None:
+                    features = th.nn.functional.interpolate(features.permute(0, 2, 1),
+                                                            scale_factor=self.downsampling_factor,
+                                                            mode='linear')
+                    features = features.permute(0, 2, 1)
+                features = features[0].detach().cpu().numpy()
 
             if self.aggregate:
-                features = np.mean(features.squeeze(axis=0), axis=0)
+                features = np.mean(features.squeeze(axis=0), axis=0, keepdims=True)
 
             parsed_audio.append(features)
 
