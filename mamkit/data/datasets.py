@@ -898,7 +898,7 @@ class MMUSED(Loader):
 
         if self.input_mode != InputMode.AUDIO_ONLY and not self.final_path.joinpath('MM-USElecDeb60to16.csv').is_file():
             self.build_from_scratch()
-        elif not self.clips_path.exists() and not any(self.clips_path.iterdir()):
+        elif not self.clips_path.exists():
             self.build_audio()
 
     def _get_text_data(
