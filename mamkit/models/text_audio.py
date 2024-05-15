@@ -1,5 +1,5 @@
 import torch as th
-from transformers import AutoModel
+from transformers import AutoModel, AutoConfig
 
 from mamkit.modules.rnn import LSTMStack
 from mamkit.modules.transformer import MulTA_CrossAttentionBlock, PositionalEncoding
@@ -55,17 +55,17 @@ class BiLSTM(TextAudioModel):
         tokens_emb = self.embedding(text)
         tokens_emb = self.text_dropout(tokens_emb)
 
-        # [bs, d']
+        # [bs, d'_t]
         text_emb = self.text_lstm(tokens_emb)
 
         # [bs, A, d_a]
         audio_features, audio_attention = audio
         audio_features = self.audio_dropout(audio_features)
 
-        # [bs, d']
+        # [bs, d'_a]
         audio_emb = self.audio_lstm(audio_features)
 
-        # [bs, d' * 2]
+        # [bs, d'_t + d'_a]
         concat_emb = th.concat((text_emb, audio_emb), dim=-1)
 
         logits = self.head(concat_emb)
@@ -79,7 +79,7 @@ class MArgNet(TextAudioModel):
 
     def __init__(
             self,
-            transformer_model_card,
+            model_card,
             embedding_dim,
             lstm_weights,
             cnn_info,
@@ -90,7 +90,7 @@ class MArgNet(TextAudioModel):
         super().__init__()
 
         # Text
-        self.transformer = AutoModel.from_pretrained(transformer_model_card)
+        self.transformer = AutoModel.from_pretrained(model_card)
 
         # Audio
         self.lstm = th.nn.Sequential()
@@ -116,12 +116,76 @@ class MArgNet(TextAudioModel):
         self.classifier = th.nn.Linear(in_features=mlp_weights[-1], out_features=num_classes)
 
 
+class MMTransformer(TextAudioModel):
+
+    def __init__(
+            self,
+            model_card,
+            head: th.nn.Module,
+            audio_embedding_dim,
+            lstm_weights,
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
+            is_transformer_trainable: bool = False,
+    ):
+        super().__init__()
+
+        self.model_card = model_card
+        self.model_config = AutoConfig.from_pretrained(model_card)
+        self.model = AutoModel.from_pretrained(model_card)
+
+        if not is_transformer_trainable:
+            for module in self.model.modules():
+                for param in module.parameters():
+                    param.requires_grad = False
+
+        self.audio_lstm = LSTMStack(input_size=audio_embedding_dim,
+                                    lstm_weigths=lstm_weights)
+
+        self.head = head
+        self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
+        self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
+
+    def forward(
+            self,
+            inputs
+    ):
+        text, audio = inputs
+
+        input_ids, attention_mask = text
+
+        # [bs, T, d_t]
+        tokens_emb = self.model(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state
+        tokens_emb = self.text_dropout(tokens_emb)
+
+        # [bs, T, d'_t]
+        text_emb = (tokens_emb * attention_mask[:, :, None]).sum(dim=1)
+        text_emb = text_emb / attention_mask.sum(dim=1)[:, None]
+
+        # [bs, A, d_a]
+        audio_features, audio_attention = audio
+        audio_features = self.audio_dropout(audio_features)
+
+        # [bs, d'_a]
+        audio_emb = self.audio_lstm(audio_features)
+
+        # [bs, d'_t + d'_a]
+        concat_emb = th.concat((text_emb, audio_emb), dim=-1)
+
+        logits = self.head(concat_emb)
+
+        # [bs, #classes]
+        return logits
+
+
 class CSA(TextAudioModel):
     def __init__(
             self,
             transformer,
             head,
-            positional_encoder
+            positional_encoder,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
     ):
         """
         Args:
@@ -132,7 +196,9 @@ class CSA(TextAudioModel):
         super().__init__()
         self.transformer = transformer
         self.head = head
-        self.pos_encoder = positional_encoder
+        self.positional_encoder = positional_encoder
+        self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
+        self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
 
     def forward(
             self,
@@ -148,11 +214,14 @@ class CSA(TextAudioModel):
 
         concatenated_attentions = th.cat((text_attentions, audio_attentions.float()), dim=1)
 
-        audio_features = self.pos_encoder(audio_features)
+        audio_features = self.positional_encoder(audio_features)
 
         concatenated_features = th.cat((tokens_emb, audio_features), dim=1)
 
         transformer_output = self.transformer(concatenated_features, text_attentions, audio_attentions)
+
+        # Dropout and LayerNorm to help training phase
+        transformer_output = self.audio_dropout(transformer_output)
 
         # pooling of transformer output
         transformer_output_sum = (transformer_output * concatenated_attentions.unsqueeze(-1)).sum(dim=1)
@@ -166,21 +235,25 @@ class CSA(TextAudioModel):
 class Ensemble(TextAudioModel):
     def __init__(
             self,
-            text_model,
-            audio_model,
+            text_head: th.nn.Module,
+            audio_head: th.nn.Module,
+            audio_encoder: th.nn.Module,
+            positional_encoder: th.nn.Module,
+            audio_embedding_dim,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
             lower_bound=0.3,
             upper_bound=0.7
     ):
-        """
-        Args:
-            text_model: text model to use
-            audio_model: audio model to use
-            lower_bound: lower bound for the weight
-            upper_bound: upper bound for the weight
-        """
         super().__init__()
-        self.text_model = text_model
-        self.audio_model = audio_model
+        self.text_head = text_head
+        self.audio_head = audio_head
+        self.audio_encoder = audio_encoder
+        self.positional_encoder = positional_encoder
+        self.layer_norm = th.nn.LayerNorm(audio_embedding_dim)
+        self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
+        self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
+
         # weight to balance the two models, 0 because (tanh(0)+1)/2 = 0.5 => equal weight to both models
         self.weight = th.nn.Parameter(th.tensor(0.0))
         self.lower_bound = lower_bound
@@ -191,15 +264,48 @@ class Ensemble(TextAudioModel):
             inputs
     ):
         text, audio = inputs
-        text_logits = self.text_model(text)
-        audio_logits = self.audio_model(audio)
 
+        # Text
+        tokens_emb, text_attentions = text
+
+        tokens_emb = self.text_dropout(tokens_emb)
+
+        # [bs, d_t]
+        text_emb = (tokens_emb * text_attentions[:, :, None]).sum(dim=1)
+        text_emb = text_emb / text_attentions.sum(dim=1)[:, None]
+
+        text_logits = self.text_head(text_emb)
+
+        # Audio
+        audio_features, audio_attentions = audio
+
+        padding_mask = ~audio_attentions.to(th.bool)
+        full_attention_mask = th.zeros((audio_features.shape[1], audio_features.shape[1]), dtype=th.bool).to(
+            audio_features.device)
+
+        audio_features = self.positional_encoder(audio_features)
+
+        transformer_output = self.audio_encoder(audio_features,
+                                                mask=full_attention_mask,
+                                                src_key_padding_mask=padding_mask)
+
+        # Dropout and LayerNorm to help training phase
+        transformer_output = self.audio_dropout(transformer_output)
+        transformer_output = self.layer_norm(audio_features + transformer_output)
+
+        transformer_output_sum = (transformer_output * audio_attentions.unsqueeze(-1)).sum(dim=1)
+        transformer_output_pooled = transformer_output_sum / audio_attentions.sum(dim=1).unsqueeze(-1)
+
+        audio_logits = self.audio_head(transformer_output_pooled)
+
+        # Ensemble
         text_probabilities = th.nn.functional.softmax(text_logits)
         audio_probabilities = th.nn.functional.softmax(audio_logits)
 
         # coefficient to balance the two models based on weight learned
         # (tanh + 1) / 2 to have values in [0,1]
         coefficient = (th.tanh(self.weight) + 1) / 2
+
         # next step is to have values in [lower_bound, upper_bound] to avoid too much imbalance
         coefficient = coefficient * (self.upper_bound - self.lower_bound) + self.lower_bound
 
@@ -217,7 +323,9 @@ class MulTA(TextAudioModel):
             d_ffn,
             n_blocks,
             head,
-            dropout_prob=0.1
+            positional_encoder,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1
     ):
         """
         Args:
@@ -231,16 +339,15 @@ class MulTA(TextAudioModel):
         self.d_ffn = d_ffn
         self.n_blocks = n_blocks
         self.head = head
-        self.dropout_prob = dropout_prob
         self.text_crossmodal_blocks = th.nn.ModuleList([
-            MulTA_CrossAttentionBlock(self.embedding_dim, self.d_ffn, dropout_prob=self.dropout_prob) for _ in
+            MulTA_CrossAttentionBlock(self.embedding_dim, self.d_ffn, dropout_prob=text_dropout_rate) for _ in
             range(self.n_blocks)
         ])
         self.audio_crossmodal_blocks = th.nn.ModuleList([
-            MulTA_CrossAttentionBlock(self.embedding_dim, self.d_ffn, dropout_prob=self.dropout_prob) for _ in
+            MulTA_CrossAttentionBlock(self.embedding_dim, self.d_ffn, dropout_prob=audio_dropout_rate) for _ in
             range(self.n_blocks)
         ])
-        self.pos_encoder = PositionalEncoding(embedding_dim, dual_modality=False)
+        self.positional_encoder = positional_encoder
 
     def forward(
             self,
@@ -250,8 +357,8 @@ class MulTA(TextAudioModel):
         text_features, text_attentions = text
         audio_features, audio_attentions = audio
 
-        text_features = self.pos_encoder(text_features)
-        audio_features = self.pos_encoder(audio_features)
+        text_features = self.positional_encoder(text_features)
+        audio_features = self.positional_encoder(audio_features)
 
         # cross modal attention blocks for text
         # using audio features as key and value and text features as query

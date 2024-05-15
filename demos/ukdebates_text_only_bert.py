@@ -16,10 +16,13 @@ from mamkit.models.text import Transformer
 from mamkit.configs.base import ConfigKey
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model
+from torchmetrics.classification.f_beta import F1Score
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.resolve()
+    save_path = Path(__file__).parent.joinpath('results', 'ukdebates', 'text_only_bert').resolve()
+    if not save_path.exists():
+        save_path.mkdir(parents=True)
 
     loader = UKDebates(task_name='asd',
                        input_mode=InputMode.TEXT_ONLY)
@@ -28,6 +31,12 @@ if __name__ == '__main__':
                                                          task_name='asd',
                                                          input_mode=InputMode.TEXT_ONLY,
                                                          tags={'anonymous', 'bert'}))
+
+    trainer_args = {
+        'accelerator': 'gpu',
+        'accumulate_grad_batches': 3,
+        'max_epochs': 50,
+    }
 
     metrics = {}
     for seed in config.seeds:
@@ -70,11 +79,12 @@ if __name__ == '__main__':
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
+                                      val_metrics={'val_f1': F1Score(task='binary')},
+                                      test_metrics={'test_f1': F1Score(task='binary')},
                                       **config.optimizer_args)
 
-            trainer = L.Trainer(max_epochs=50,
-                                accelerator='gpu',
-                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=3),
+            trainer = L.Trainer(**trainer_args,
+                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=5),
                                            PycharmProgressBar()])
             trainer.fit(model,
                         train_dataloaders=train_dataloader,

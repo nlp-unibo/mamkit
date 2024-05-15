@@ -67,6 +67,7 @@ class MAMKitLightingModel(L.LightningModule):
         self.log_dict({'val_loss': loss}, on_step=True, on_epoch=True, prog_bar=True)
 
         if self.val_metrics is not None:
+            y_hat = th.argmax(y_hat, dim=-1)
             for val_metric_name, val_metric in zip(self.val_metrics_names, self.val_metrics):
                 val_metric(y_hat, y_true)
                 self.log(val_metric_name, val_metric, on_step=False, on_epoch=True, prog_bar=self.log_metrics)
@@ -85,6 +86,7 @@ class MAMKitLightingModel(L.LightningModule):
         self.log_dict({'test_loss': loss}, on_step=False, on_epoch=True, prog_bar=True)
 
         if self.test_metrics is not None:
+            y_hat = th.argmax(y_hat, dim=-1)
             for test_metric_name, test_metric in zip(self.test_metrics_names, self.test_metrics):
                 test_metric(y_hat, y_true)
                 self.log(test_metric_name, test_metric, on_step=False, on_epoch=True)

@@ -64,7 +64,7 @@ class BiLSTMConfig(BaseConfig):
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
             loss_function=th.nn.CrossEntropyLoss(),
-            batch_size=8,
+            batch_size=4,
             num_classes=2
         )
 
@@ -218,10 +218,10 @@ class TransformerConfig(BaseConfig):
                 th.nn.Linear(256, 2)
             ),
             dropout_rate=0.0,
-            seeds=[42, 2024, 666],
+            seeds=[42, 2024, 666, 11, 1492],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            batch_size=8,
+            batch_size=4,
             num_classes=2,
             is_transformer_trainable=False
         )
@@ -238,10 +238,10 @@ class TransformerConfig(BaseConfig):
                 th.nn.Linear(256, 2)
             ),
             dropout_rate=0.0,
-            seeds=[42, 2024, 666],
+            seeds=[42, 2024, 666, 11, 1492],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            batch_size=8,
+            batch_size=4,
             num_classes=2,
             is_transformer_trainable=False
         )
@@ -343,9 +343,9 @@ class TransformerHeadConfig(BaseConfig):
                 th.nn.Linear(256, 2)
             ),
             dropout_rate=0.0,
-            seeds=[42, 2024, 666],
+            seeds=[42, 2024, 666, 11, 1492],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            batch_size=8,
+            batch_size=4,
             num_classes=2
         )

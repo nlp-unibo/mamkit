@@ -315,13 +315,18 @@ class TextTransformer(ProcessorComponent):
         if self.model is None:
             self._init_models()
 
-        tokenized = self.tokenizer(texts,
-                                   padding=True,
-                                   truncation=True,
-                                   return_tensors='pt',
-                                   **self.tokenizer_args).to(self.device)
-        text_features = self.model(**tokenized, **self.model_args).last_hidden_state
-        return text_features.detach().cpu().numpy()
+        text_features = []
+        with th.inference_mode():
+            for text in tqdm(texts, desc='Encoding text...'):
+                tokenized = self.tokenizer([text],
+                                           padding=True,
+                                           return_tensors='pt',
+                                           **self.tokenizer_args).to(self.device)
+                model_output = self.model(**tokenized, **self.model_args)
+                text_emb = model_output.last_hidden_state * tokenized.attention_mask[:, :, None]
+                text_emb = text_emb.detach().cpu().numpy()[0]
+                text_features.append(text_emb)
+        return text_features
 
     def clear(
             self

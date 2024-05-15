@@ -5,7 +5,9 @@ import lightning as L
 import numpy as np
 import torch as th
 from lightning.pytorch import seed_everything
+from lightning.pytorch.callbacks import EarlyStopping
 from torch.utils.data import DataLoader
+from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text import BiLSTMConfig
@@ -13,13 +15,14 @@ from mamkit.data.collators import UnimodalCollator, TextCollator
 from mamkit.data.datasets import UKDebates, InputMode
 from mamkit.data.processing import VocabBuilder, UnimodalProcessor
 from mamkit.models.text import BiLSTM
-from mamkit.utility.model import to_lighting_model
-from lightning.pytorch.callbacks import EarlyStopping
 from mamkit.utility.callbacks import PycharmProgressBar
+from mamkit.utility.model import to_lighting_model
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.resolve()
+    save_path = Path(__file__).parent.joinpath('results', 'ukdebates', 'text_only_lstm').resolve()
+    if not save_path.exists():
+        save_path.mkdir(parents=True)
 
     loader = UKDebates(task_name='asd',
                        input_mode=InputMode.TEXT_ONLY)
@@ -28,6 +31,12 @@ if __name__ == '__main__':
                                                     input_mode=InputMode.TEXT_ONLY,
                                                     task_name='asd',
                                                     tags='anonymous'))
+    trainer_args = {
+        'accelerator': 'gpu',
+        'accumulate_grad_batches': 3,
+        'max_epochs': 100,
+    }
+
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
@@ -73,10 +82,11 @@ if __name__ == '__main__':
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
+                                      val_metrics={'val_f1': F1Score(task='binary')},
+                                      test_metrics={'test_f1': F1Score(task='binary')},
                                       **config.optimizer_args)
 
-            trainer = L.Trainer(max_epochs=200,
-                                accelerator='gpu',
+            trainer = L.Trainer(**trainer_args,
                                 callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=20),
                                            PycharmProgressBar()])
             trainer.fit(model,

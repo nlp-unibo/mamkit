@@ -10,49 +10,51 @@ from torch.utils.data import DataLoader
 from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.base import ConfigKey
-from mamkit.configs.text_audio import BiLSTMConfig
-from mamkit.data.collators import MultimodalCollator, TextCollator, AudioCollator
+from mamkit.configs.text_audio import EnsembleConfig
+from mamkit.data.collators import MultimodalCollator, TextTransformerOutputCollator, AudioCollator
 from mamkit.data.datasets import UKDebates, InputMode
-from mamkit.data.processing import VocabBuilder, MultimodalProcessor, AudioTransformer
-from mamkit.models.text_audio import BiLSTM
+from mamkit.data.processing import MultimodalProcessor, AudioTransformer, TextTransformer
+from mamkit.models.text_audio import Ensemble
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.joinpath('results', 'ukdebates', 'text_audio_lstm').resolve()
+    save_path = Path(__file__).parent.joinpath('results', 'ukdebates', 'text_audio_ensemble').resolve()
     if not save_path.exists():
         save_path.mkdir(parents=True)
 
     loader = UKDebates(task_name='asd',
                        input_mode=InputMode.TEXT_AUDIO)
 
-    config = BiLSTMConfig.from_config(key=ConfigKey(dataset='ukdebates',
-                                                    input_mode=InputMode.TEXT_AUDIO,
-                                                    task_name='asd',
-                                                    tags='anonymous'))
+    config = EnsembleConfig.from_config(key=ConfigKey(dataset='ukdebates',
+                                                      input_mode=InputMode.TEXT_AUDIO,
+                                                      task_name='asd',
+                                                      tags={'anonymous'}))
 
     trainer_args = {
         'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
-        'max_epochs': 100,
+        'max_epochs': 50,
     }
 
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
         for split_info in loader.get_splits(key='mancini-et-al-2022'):
-            processor = MultimodalProcessor(text_processor=VocabBuilder(tokenizer=config.tokenizer,
-                                                                        embedding_model=config.embedding_model,
-                                                                        embedding_dim=config.text_embedding_dim),
-                                            audio_processor=AudioTransformer(
-                                                model_card=config.audio_model_card,
-                                                processor_args=config.processor_args,
-                                                model_args=config.audio_model_args,
-                                                aggregate=config.aggregate,
-                                                downsampling_factor=config.downsampling_factor,
-                                                sampling_rate=config.sampling_rate
-                                            ))
+            processor = MultimodalProcessor(text_processor=TextTransformer(
+                model_card=config.text_model_card,
+                tokenizer_args=config.tokenizer_args,
+                model_args=config.text_model_args
+            ),
+                audio_processor=AudioTransformer(
+                    model_card=config.audio_model_card,
+                    processor_args=config.processor_args,
+                    model_args=config.audio_model_args,
+                    aggregate=config.aggregate,
+                    downsampling_factor=config.downsampling_factor,
+                    sampling_rate=config.sampling_rate
+                ))
             processor.fit(train_data=split_info.train)
 
             split_info.train = processor(split_info.train)
@@ -62,8 +64,7 @@ if __name__ == '__main__':
             processor.clear()
 
             collator = MultimodalCollator(
-                text_collator=TextCollator(tokenizer=config.tokenizer,
-                                           vocab=processor.text_processor.vocab),
+                text_collator=TextTransformerOutputCollator(),
                 audio_collator=AudioCollator(),
                 label_collator=lambda labels: th.tensor(labels)
             )
@@ -81,16 +82,17 @@ if __name__ == '__main__':
                                          shuffle=False,
                                          collate_fn=collator)
 
-            model = BiLSTM(vocab_size=len(processor.text_processor.vocab),
-                           audio_embedding_dim=config.audio_embedding_dim,
-                           text_embedding_dim=config.text_embedding_dim,
-                           text_lstm_weights=config.text_lstm_weights,
-                           audio_lstm_weights=config.audio_lstm_weights,
-                           head=config.head,
-                           text_dropout_rate=config.text_dropout_rate,
-                           audio_dropout_rate=config.audio_dropout_rate,
-                           embedding_matrix=processor.text_processor.embedding_matrix
-                           )
+            model = Ensemble(
+                text_head=config.text_head,
+                audio_head=config.audio_head,
+                audio_encoder=config.audio_encoder,
+                lower_bound=config.lower_bound,
+                upper_bound=config.upper_bound,
+                positional_encoder=config.positional_encoder,
+                audio_embedding_dim=config.audio_embedding_dim,
+                text_dropout_rate=config.text_dropout_rate,
+                audio_dropout_rate=config.audio_dropout_rate,
+            )
             model = to_lighting_model(model=model,
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
@@ -100,7 +102,7 @@ if __name__ == '__main__':
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,
-                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=20),
+                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=5),
                                            PycharmProgressBar()])
             trainer.fit(model,
                         train_dataloaders=train_dataloader,

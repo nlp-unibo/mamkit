@@ -106,6 +106,17 @@ class TextTransformerCollator:
         return tokenized['input_ids'], tokenized['attention_mask']
 
 
+class TextTransformerOutputCollator:
+
+    def __call__(
+            self,
+            texts
+                 ):
+        texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in texts], padding_value=0.0, batch_first=True)
+        attention_mask = texts[:, :, 0] != 0.0
+        return texts, attention_mask.to(th.float32)
+
+
 class AudioTransformerCollator:
 
     def __init__(
