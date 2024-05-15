@@ -226,6 +226,8 @@ class CSAConfig(BaseConfig):
             audio_model_args=None,
             tokenizer_args=None,
             text_model_args=None,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
             **kwargs
     ):
         super().__init__(**kwargs)
@@ -244,6 +246,8 @@ class CSAConfig(BaseConfig):
         self.tokenizer_args = tokenizer_args
         self.text_model_args = text_model_args
         self.head = head
+        self.text_dropout_rate = text_dropout_rate
+        self.audio_dropout_rate = audio_dropout_rate
 
     @classmethod
     def ukdebates_asd_anonymous(
@@ -274,7 +278,9 @@ class CSAConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             text_model_args=None,
-            text_model_card='bert-base-uncased'
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
         )
 
 
