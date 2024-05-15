@@ -20,7 +20,7 @@ from mamkit.utility.callbacks import PycharmProgressBar
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.joinpath('results', 'ukdebates', 'audio_only_transformer').resolve()
+    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'ukdebates', 'audio_only_transformer')
     if not save_path.exists():
         save_path.mkdir(parents=True)
 

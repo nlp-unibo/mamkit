@@ -1,65 +1,60 @@
 import logging
+from pathlib import Path
 
 import lightning as L
 import numpy as np
 import torch as th
 from lightning.pytorch import seed_everything
-from lightning.pytorch.callbacks.early_stopping import EarlyStopping
+from lightning.pytorch.callbacks import EarlyStopping
 from torch.utils.data import DataLoader
-
-from mamkit.configs.audio import BiLSTMTransformerConfig
-from mamkit.configs.base import ConfigKey
-from mamkit.data.collators import AudioCollator, UnimodalCollator
-from mamkit.data.datasets import UKDebates, InputMode
-from mamkit.data.processing import AudioTransformer, UnimodalProcessor
-from mamkit.models.audio import BiLSTM
-from mamkit.utility.model import to_lighting_model
-from pathlib import Path
 from torchmetrics.classification.f_beta import F1Score
+
+from mamkit.configs.base import ConfigKey
+from mamkit.configs.text import BiLSTMConfig
+from mamkit.data.collators import UnimodalCollator, TextCollator
+from mamkit.data.datasets import MMUSED, InputMode
+from mamkit.data.processing import VocabBuilder, UnimodalProcessor
+from mamkit.models.text import BiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
+from mamkit.utility.model import to_lighting_model
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'ukdebates', 'audio_only_lstm')
+    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'mmused', 'asd', 'text_only_lstm')
     if not save_path.exists():
         save_path.mkdir(parents=True)
 
-    loader = UKDebates(task_name='asd',
-                       input_mode=InputMode.AUDIO_ONLY)
+    loader = MMUSED(task_name='asd',
+                    input_mode=InputMode.TEXT_ONLY)
 
-    config = BiLSTMTransformerConfig.from_config(key=ConfigKey(dataset='ukdebates',
-                                                               input_mode=InputMode.AUDIO_ONLY,
-                                                               task_name='asd',
-                                                               tags='anonymous'))
-
+    config = BiLSTMConfig.from_config(key=ConfigKey(dataset='mmused',
+                                                    input_mode=InputMode.TEXT_ONLY,
+                                                    task_name='asd',
+                                                    tags='anonymous'))
     trainer_args = {
         'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
-        'max_epochs': 50,
+        'max_epochs': 100,
     }
 
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
-        for split_info in loader.get_splits(key='mancini-et-al-2022'):
-            processor = UnimodalProcessor(features_processor=AudioTransformer(
-                model_card=config.model_card,
-                processor_args=config.processor_args,
-                model_args=config.model_args,
-                aggregate=config.aggregate,
-                downsampling_factor=config.downsampling_factor,
-                sampling_rate=config.sampling_rate
-            ))
-
-            processor.fit(split_info.train)
+        for split_info in loader.get_splits(key='default'):
+            processor = UnimodalProcessor(features_processor=VocabBuilder(tokenizer=config.tokenizer,
+                                                                          embedding_model=config.embedding_model,
+                                                                          embedding_dim=config.embedding_dim))
+            processor.fit(train_data=split_info.train)
 
             split_info.train = processor(split_info.train)
             split_info.val = processor(split_info.val)
             split_info.test = processor(split_info.test)
+
             processor.clear()
 
             unimodal_collator = UnimodalCollator(
-                features_collator=AudioCollator(),
+                features_collator=TextCollator(tokenizer=config.tokenizer,
+                                               vocab=processor.features_processor.vocab),
                 label_collator=lambda labels: th.tensor(labels)
             )
 
@@ -76,10 +71,13 @@ if __name__ == '__main__':
                                          shuffle=False,
                                          collate_fn=unimodal_collator)
 
-            model = BiLSTM(embedding_dim=config.embedding_dim,
+            model = BiLSTM(vocab_size=len(processor.features_processor.vocab),
+                           embedding_dim=config.embedding_dim,
                            dropout_rate=config.dropout_rate,
                            lstm_weights=config.lstm_weights,
-                           head=config.head)
+                           head=config.head,
+                           embedding_matrix=processor.features_processor.embedding_matrix
+                           )
             model = to_lighting_model(model=model,
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,

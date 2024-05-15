@@ -20,7 +20,7 @@ from mamkit.utility.model import to_lighting_model
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.joinpath('results', 'ukdebates', 'text_audio_ensemble').resolve()
+    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'ukdebates', 'text_audio_ensemble')
     if not save_path.exists():
         save_path.mkdir(parents=True)
 
