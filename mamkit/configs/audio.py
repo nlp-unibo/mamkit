@@ -134,6 +134,8 @@ class BiLSTMTransformerConfig(BaseConfig):
                   tags={'mancini-et-al-2022'}): 'marg_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.AUDIO_ONLY, task_name='asd',
                   tags={'mancini-et-al-2022'}): 'mmused_asd_mancini_2022',
+        ConfigKey(dataset='mmused', input_mode=InputMode.AUDIO_ONLY, task_name='asd',
+                  tags={'anonymous'}): 'mmused_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.AUDIO_ONLY, task_name='acd',
                   tags={'mancini-et-al-2022'}): 'mmused_acd_mancini_2022'
     }
@@ -269,6 +271,34 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=True,
             num_classes=2,
             seeds=[15371, 15372, 15373]
+        )
+
+    @classmethod
+    def mmused_asd_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='facebook/wav2vec2-base-960h',
+            embedding_dim=768,
+            sampling_rate=16000,
+            head=th.nn.Sequential(
+                th.nn.Linear(64, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            optimizer_args={
+                'lr': 0.0002,
+                'weight_decay': 0.001
+            },
+            optimizer=th.optim.Adam,
+            lstm_weights=[64, 32],
+            dropout_rate=0.1,
+            aggregate=False,
+            downsampling_factor=None,
+            num_classes=2,
+            seeds=[42, 2024, 666, 11, 1492],
+            batch_size=4,
+            loss_function=th.nn.CrossEntropyLoss()
         )
 
     @classmethod
