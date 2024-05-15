@@ -24,8 +24,11 @@ if __name__ == '__main__':
     if not save_path.exists():
         save_path.mkdir(parents=True)
 
+    base_data_path = Path(__file__).parent.parent.resolve().joinpath('data')
+
     loader = UKDebates(task_name='asd',
-                       input_mode=InputMode.TEXT_ONLY)
+                       input_mode=InputMode.TEXT_ONLY,
+                       base_data_path=base_data_path)
 
     config = BiLSTMConfig.from_config(key=ConfigKey(dataset='ukdebates',
                                                     input_mode=InputMode.TEXT_ONLY,
