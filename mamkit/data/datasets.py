@@ -361,7 +361,6 @@ class MMUSED(Loader):
 
     def __init__(
             self,
-            force_download=False,
             **kwargs
     ):
         super().__init__(**kwargs)

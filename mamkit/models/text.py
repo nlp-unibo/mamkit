@@ -1,7 +1,7 @@
 import torch as th
+from transformers import AutoModel, AutoConfig
 
 from mamkit.modules.rnn import LSTMStack
-from transformers import AutoModel, AutoConfig
 
 
 class TextOnlyModel(th.nn.Module):
@@ -87,38 +87,6 @@ class Transformer(TextOnlyModel):
 
         tokens_emb = self.model(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state
         tokens_emb = self.dropout(tokens_emb)
-        text_emb = (tokens_emb * attention_mask[:, :, None]).sum(dim=1)
-        text_emb = text_emb / attention_mask.sum(dim=1)[:, None]
-
-        logits = self.head(text_emb)
-        return logits
-
-
-class TransformerHead(TextOnlyModel):
-    """
-    Class for the text-only model
-    """
-
-    def __init__(
-            self,
-            head: th.nn.Module,
-            dropout_rate=0.0
-    ):
-        super().__init__()
-        self.head = head
-        self.dropout = th.nn.Dropout(dropout_rate)
-
-    def forward(
-            self,
-            text
-    ):
-        # tokens_emb     -> [bs, N, d]
-        # attention_mask -> [bs, N]
-        tokens_emb, attention_mask = text
-
-        tokens_emb = self.dropout(tokens_emb)
-
-        # [bs, d]
         text_emb = (tokens_emb * attention_mask[:, :, None]).sum(dim=1)
         text_emb = text_emb / attention_mask.sum(dim=1)[:, None]
 

@@ -18,7 +18,9 @@ class BiLSTMConfig(BaseConfig):
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='asd',
                   tags={'anonymous'}): 'mmused_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
-                  tags={'mancini-et-al-2022'}): 'mmused_acd_mancini_2022'
+                  tags={'mancini-et-al-2022'}): 'mmused_acd_mancini_2022',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
+                  tags={'anonymous'}): 'mmused_acc_anonymous',
     }
 
     def __init__(
@@ -200,6 +202,32 @@ class BiLSTMConfig(BaseConfig):
             loss_function=th.nn.CrossEntropyLoss()
         )
 
+    @classmethod
+    def mmused_acc_anonymous(
+            cls
+    ):
+        return cls(
+            embedding_dim=200,
+            lstm_weights=[128, 32],
+            head=th.nn.Sequential(
+                th.nn.Linear(64, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            dropout_rate=0.0,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 0.0002,
+                'weight_decay': 0.0001
+            },
+            embedding_model='glove.6B.200d',
+            tokenizer=get_tokenizer(tokenizer='basic_english'),
+            loss_function=th.nn.CrossEntropyLoss(),
+            batch_size=4,
+            num_classes=2
+        )
+
 
 class TransformerConfig(BaseConfig):
     configs = {
@@ -216,7 +244,11 @@ class TransformerConfig(BaseConfig):
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
                   tags={'mancini-et-al-2024', 'bert'}): 'mmused_fallacy_afc_bert_mancini_2024',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
-                  tags={'mancini-et-al-2024', 'roberta'}): 'mmused_fallacy_afc_roberta_mancini_2024'
+                  tags={'mancini-et-al-2024', 'roberta'}): 'mmused_fallacy_afc_roberta_mancini_2024',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
+                  tags={'anonymous', 'bert'}): 'mmused_acc_bert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
+                  tags={'anonymous', 'roberta'}): 'mmused_acc_roberta_anonymous'
     }
 
     def __init__(
@@ -338,6 +370,46 @@ class TransformerConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_acc_bert_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='bert-base-uncased',
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            dropout_rate=0.2,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=4,
+            num_classes=2,
+            is_transformer_trainable=False
+        )
+
+    @classmethod
+    def mmused_acc_roberta_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='roberta-base',
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            dropout_rate=0.2,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=4,
+            num_classes=2,
+            is_transformer_trainable=False
+        )
+
+    @classmethod
     def mmused_fallacy_afc_bert_mancini_2024(
             cls
     ):
@@ -377,47 +449,4 @@ class TransformerConfig(BaseConfig):
             tokenizer_args={},
             batch_size=8,
             loss_function=th.nn.CrossEntropyLoss()
-        )
-
-
-class TransformerHeadConfig(BaseConfig):
-    configs = {
-        ConfigKey(dataset='ukdebates', task_name='asd', input_mode=InputMode.TEXT_ONLY,
-                  tags={'anonymous'}): 'ukdebates_anonymous'
-    }
-
-    def __init__(
-            self,
-            model_card,
-            head: th.nn.Module,
-            num_classes,
-            dropout_rate=0.0,
-            tokenizer_args=None,
-            **kwargs
-    ):
-        super().__init__(**kwargs)
-
-        self.model_card = model_card
-        self.head = head
-        self.num_classes = num_classes
-        self.dropout_rate = dropout_rate
-        self.tokenizer_args = tokenizer_args
-
-    @classmethod
-    def ukdebates_anonymous(
-            cls
-    ):
-        return cls(
-            model_card='bert-base-uncased',
-            head=th.nn.Sequential(
-                th.nn.Linear(768, 256),
-                th.nn.ReLU(),
-                th.nn.Linear(256, 2)
-            ),
-            dropout_rate=0.0,
-            seeds=[42, 2024, 666, 11, 1492],
-            optimizer=th.optim.Adam,
-            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            batch_size=4,
-            num_classes=2
         )
