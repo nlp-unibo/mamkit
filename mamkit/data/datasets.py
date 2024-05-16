@@ -944,7 +944,7 @@ class MMUSED(Loader):
                        for document_id, clip_id in zip(df.Document.values, df['idClip'].values)]
         df['audio_paths'] = audio_paths
 
-        if self.task_name == 'acd':
+        if self.task_name == 'acc':
             df = df[df['Component'].isin(['Premise', 'Claim'])]
             df.loc[df.Component == 'Premise', 'Component'] = 0
             df.loc[df.Component == 'Claim', 'Component'] = 1

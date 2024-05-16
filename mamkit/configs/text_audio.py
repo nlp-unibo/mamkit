@@ -136,7 +136,7 @@ class BiLSTMConfig(BaseConfig):
         return cls(
             text_embedding_dim=200,
             text_lstm_weights=[128, 32],
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(128, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
@@ -145,7 +145,7 @@ class BiLSTMConfig(BaseConfig):
             audio_dropout_rate=0.1,
             audio_embedding_dim=768,
             audio_lstm_weights=[64, 32],
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0001,
@@ -158,7 +158,6 @@ class BiLSTMConfig(BaseConfig):
             downsampling_factor=1/5,
             audio_model_args={},
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            loss_function=th.nn.CrossEntropyLoss(),
             batch_size=4,
             num_classes=2,
         )
@@ -441,7 +440,7 @@ class MMTransformerConfig(BaseConfig):
         return cls(
             text_model_card='bert-base-uncased',
             text_embedding_dim=768,
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(832, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
@@ -450,7 +449,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -464,7 +463,6 @@ class MMTransformerConfig(BaseConfig):
             processor_args={},
             tokenizer_args={},
             is_transformer_trainable=False,
-            loss_function=th.nn.CrossEntropyLoss(),
             batch_size=4,
             num_classes=2,
         )
@@ -476,7 +474,7 @@ class MMTransformerConfig(BaseConfig):
         return cls(
             text_model_card='roberta-base',
             text_embedding_dim=768,
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(832, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
@@ -485,7 +483,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -499,7 +497,6 @@ class MMTransformerConfig(BaseConfig):
             processor_args={},
             tokenizer_args={},
             is_transformer_trainable=False,
-            loss_function=th.nn.CrossEntropyLoss(),
             batch_size=4,
             num_classes=2,
         )
@@ -770,20 +767,19 @@ class CSAConfig(BaseConfig):
             cls
     ):
         return cls(
-            transformer=CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
-            head=th.nn.Sequential(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
             ),
-            positional_encoder=PositionalEncoding(768, dual_modality=False),
-            loss_function=th.nn.CrossEntropyLoss(),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
             batch_size=4,
             num_classes=2,
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -1020,29 +1016,29 @@ class EnsembleConfig(BaseConfig):
             cls
     ):
         return cls(
-            audio_encoder=th.nn.TransformerEncoder(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
                 th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
                 num_layers=1
             ),
-            text_head=th.nn.Sequential(
+            text_head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
             ),
-            audio_head=th.nn.Sequential(
+            audio_head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
             ),
-            positional_encoder=PositionalEncoding(d_model=768, dual_modality=False),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
             audio_embedding_dim=768,
-            loss_function=th.nn.NLLLoss(),
+            loss_function=lambda: th.nn.NLLLoss(),
             batch_size=4,
             num_classes=2,
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -1285,7 +1281,7 @@ class MulTAConfig(BaseConfig):
             cls
     ):
         return cls(
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768 * 2, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
@@ -1294,16 +1290,15 @@ class MulTAConfig(BaseConfig):
             n_blocks=4,
             audio_dropout_rate=0.1,
             text_dropout_rate=0.1,
-            positional_encoder=PositionalEncoding(d_model=768, dual_modality=False),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
             audio_embedding_dim=768,
             text_embedding_dim=768,
-            loss_function=th.nn.CrossEntropyLoss(),
             batch_size=4,
             num_classes=2,
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,

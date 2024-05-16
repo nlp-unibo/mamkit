@@ -17,7 +17,7 @@ class MAMKitLightingModel(L.LightningModule):
     ):
         super().__init__()
         self.model = model
-        self.loss_function = loss_function
+        self.loss_function = loss_function()
         self.optimizer_class = optimizer_class
         self.optimizer_kwargs = optimizer_kwargs
         self.num_classes = num_classes
@@ -111,7 +111,7 @@ def to_lighting_model(
         **optimizer_kwargs
 ):
     return MAMKitLightingModel(model=model,
-                               loss_function=loss_function(),
+                               loss_function=loss_function,
                                num_classes=num_classes,
                                optimizer_class=optimizer_class,
                                val_metrics=val_metrics,
