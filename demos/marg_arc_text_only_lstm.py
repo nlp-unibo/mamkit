@@ -11,9 +11,9 @@ from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text import BiLSTMConfig
-from mamkit.data.collators import UnimodalCollator, TextCollator
+from mamkit.data.collators import PairUnimodalCollator, TextCollator
 from mamkit.data.datasets import MArg, InputMode
-from mamkit.data.processing import VocabBuilder, UnimodalProcessor
+from mamkit.data.processing import PairVocabBuilder, PairUnimodalProcessor
 from mamkit.models.text import PairBiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model
@@ -44,10 +44,10 @@ if __name__ == '__main__':
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
-        for split_info in loader.get_splits(key='default'):
-            processor = UnimodalProcessor(features_processor=VocabBuilder(tokenizer=config.tokenizer,
-                                                                          embedding_model=config.embedding_model,
-                                                                          embedding_dim=config.embedding_dim))
+        for split_info in loader.get_splits(key='mancini-et-al-2022'):
+            processor = PairUnimodalProcessor(features_processor=PairVocabBuilder(tokenizer=config.tokenizer,
+                                                                                  embedding_model=config.embedding_model,
+                                                                                  embedding_dim=config.embedding_dim))
             processor.fit(train_data=split_info.train)
 
             split_info.train = processor(split_info.train)
@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
             processor.clear()
 
-            unimodal_collator = UnimodalCollator(
+            unimodal_collator = PairUnimodalCollator(
                 features_collator=TextCollator(tokenizer=config.tokenizer,
                                                vocab=processor.features_processor.vocab),
                 label_collator=lambda labels: th.tensor(labels)

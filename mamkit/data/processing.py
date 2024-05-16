@@ -186,7 +186,7 @@ class PairUnimodalProcessor(Processor):
             data: PairUnimodalDataset
     ):
         if self.features_processor is not None:
-            data.inputs = self.features_processor(data.a_inputs, data.b_inputs)
+            data.a_inputs, data.b_inputs = self.features_processor(data.a_inputs, data.b_inputs)
 
         if self.label_processor is not None:
             data.labels = self.label_processor(data.labels)

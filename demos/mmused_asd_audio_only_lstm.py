@@ -11,7 +11,7 @@ from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.audio import BiLSTMTransformerConfig
 from mamkit.configs.base import ConfigKey
-from mamkit.data.collators import AudioCollator, UnimodalCollator
+from mamkit.data.collators import AudioCollator, UnimodalCollator, AudioTransformerCollator
 from mamkit.data.datasets import MMUSED, InputMode
 from mamkit.data.processing import AudioTransformer, UnimodalProcessor
 from mamkit.models.audio import BiLSTM
@@ -38,21 +38,14 @@ if __name__ == '__main__':
     trainer_args = {
         'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
-        'max_epochs': 50,
+        'max_epochs': 20,
     }
 
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
         for split_info in loader.get_splits(key='default'):
-            processor = UnimodalProcessor(features_processor=AudioTransformer(
-                model_card=config.model_card,
-                processor_args=config.processor_args,
-                model_args=config.model_args,
-                aggregate=config.aggregate,
-                downsampling_factor=config.downsampling_factor,
-                sampling_rate=config.sampling_rate
-            ))
+            processor = UnimodalProcessor()
 
             processor.fit(split_info.train)
 
@@ -62,7 +55,14 @@ if __name__ == '__main__':
             processor.clear()
 
             unimodal_collator = UnimodalCollator(
-                features_collator=AudioCollator(),
+                features_collator=AudioTransformerCollator(
+                    model_card=config.model_card,
+                    processor_args=config.processor_args,
+                    model_args=config.model_args,
+                    aggregate=config.aggregate,
+                    downsampling_factor=config.downsampling_factor,
+                    sampling_rate=config.sampling_rate
+                ),
                 label_collator=lambda labels: th.tensor(labels)
             )
 
@@ -87,12 +87,12 @@ if __name__ == '__main__':
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
-                                      val_metrics={'val_f1': F1Score(task='binary')},
-                                      test_metrics={'test_f1': F1Score(task='binary')},
+                                      val_metrics={'val_f1': F1Score(task='multiclass')},
+                                      test_metrics={'test_f1': F1Score(task='multiclass')},
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,
-                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=20),
+                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=2),
                                            PycharmProgressBar()])
             trainer.fit(model,
                         train_dataloaders=train_dataloader,

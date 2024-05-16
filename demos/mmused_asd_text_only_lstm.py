@@ -37,7 +37,7 @@ if __name__ == '__main__':
     trainer_args = {
         'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
-        'max_epochs': 100,
+        'max_epochs': 20,
     }
 
     metrics = {}
@@ -85,12 +85,12 @@ if __name__ == '__main__':
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
-                                      val_metrics={'val_f1': F1Score(task='binary')},
-                                      test_metrics={'test_f1': F1Score(task='binary')},
+                                      val_metrics={'val_f1': F1Score(task='multiclass')},
+                                      test_metrics={'test_f1': F1Score(task='multiclass')},
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,
-                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=20),
+                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=2),
                                            PycharmProgressBar()])
             trainer.fit(model,
                         train_dataloaders=train_dataloader,

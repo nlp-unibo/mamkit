@@ -680,8 +680,7 @@ class MMUSED(Loader):
 
             # generate clips
             sound = AudioSegment.from_file(full_audio_path)
-            total_len = df.shape[0]
-            for i, row in tqdm(df.iterrows(), total=total_len, position=0):
+            for i, row in df.iterrows():
                 start_time = row['NewBegin']
                 idClip = 'clip_' + str(i)
                 if start_time != 'NOT_FOUND':
@@ -1498,7 +1497,7 @@ class MArg(Loader):
     def build(self):
         if not self.final_path.exists():
             if not any(self.data_path.iterdir()):
-                logging.info('Download M-Arg data...')
+                logging.info('Downloading M-Arg data...')
                 tmp_path = self.data_path.joinpath('data.zip')
                 download(url='https://zenodo.org/api/records/5653504/files-archive',
                          file_path=tmp_path)
@@ -1515,11 +1514,10 @@ class MArg(Loader):
 
                 dl_tmp_path.unlink()
 
-                source_path = self.data_path.joinpath('m-arg_multimodal-argumentation-dataset-v1.0.0',
-                                                      'rafamestre-m-arg_multimodal-argumentation-dataset-851736f')
+                source_path = self.data_path.joinpath('rafamestre-m-arg_multimodal-argumentation-dataset-851736f')
                 copy_tree(source_path.as_posix(), self.data_path.as_posix())
 
-                shutil.rmtree(source_path.parent)
+                shutil.rmtree(source_path)
 
             logging.info('Building M-Arg dataset...')
             self.build_chunks()
@@ -1574,8 +1572,8 @@ class MArg(Loader):
             as_iterator: bool = False
     ) -> Union[List[SplitInfo], SplitInfo]:
         split_info = self.build_info_from_splits(train_df=self.data,
-                                                 val_df=pd.DataFrame.empty,
-                                                 test_df=pd.DataFrame.empty)
+                                                 val_df=pd.DataFrame(columns=self.data.columns),
+                                                 test_df=pd.DataFrame(columns=self.data.columns))
         return [split_info] if as_iterator else split_info
 
     def get_mancini_2022_splits(
