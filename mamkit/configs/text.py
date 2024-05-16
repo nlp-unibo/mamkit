@@ -177,7 +177,7 @@ class BiLSTMConfig(BaseConfig):
             num_classes=2,
             seeds=[15371, 15372, 15373],
             batch_size=4,
-            # TODO loss,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         )
 
     @classmethod
@@ -201,7 +201,7 @@ class BiLSTMConfig(BaseConfig):
             },
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            # TODO loss
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
             batch_size=4,
             num_classes=2
         )
@@ -402,17 +402,18 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='bert-base-uncased',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
             ),
             dropout_rate=0.2,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
             batch_size=4,
             num_classes=2,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
             is_transformer_trainable=False
         )
 
@@ -422,17 +423,18 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='roberta-base',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
             ),
             dropout_rate=0.2,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
             batch_size=4,
             num_classes=2,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
             is_transformer_trainable=False
         )
 
