@@ -124,8 +124,8 @@ class BiLSTMConfig(BaseConfig):
             },
             num_classes=2,
             seeds=[15371, 15372, 15373],
-            batch_size=16,
-            #TODO loss
+            batch_size=8,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         )
 
     @classmethod
@@ -149,8 +149,8 @@ class BiLSTMConfig(BaseConfig):
             },
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            # TODO loss
-            batch_size=16,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
             num_classes=3
         )
 
@@ -177,7 +177,7 @@ class BiLSTMConfig(BaseConfig):
             num_classes=2,
             seeds=[15371, 15372, 15373],
             batch_size=4,
-            #TODO loss,
+            # TODO loss,
         )
 
     @classmethod
@@ -573,8 +573,8 @@ class TransformerConfig(BaseConfig):
             seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.36, 6.20, 27.42])),
-            batch_size=4,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
             num_classes=3,
             is_transformer_trainable=False
         )
@@ -594,8 +594,8 @@ class TransformerConfig(BaseConfig):
             seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.36, 6.20, 27.42])),
-            batch_size=4,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
             num_classes=3,
             is_transformer_trainable=False
         )

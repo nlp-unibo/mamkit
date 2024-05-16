@@ -241,11 +241,12 @@ class BiLSTMTransformerConfig(BaseConfig):
             model_card='facebook/wav2vec2-base-960h',
             embedding_dim=768,
             sampling_rate=16000,
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(128, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2),
             ),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
             optimizer_args={
                 'lr': 0.0002,
                 'weight_decay': 0.001
@@ -255,6 +256,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             dropout_rate=0.3,
             aggregate=True,
             num_classes=2,
+            batch_size=8,
             seeds=[15371, 15372, 15373]
         )
 
@@ -266,7 +268,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             model_card='facebook/wav2vec2-base-960h',
             embedding_dim=768,
             sampling_rate=16000,
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(128, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 3)
@@ -281,9 +283,9 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             num_classes=3,
-            seeds=[42, 2024, 666, 11, 1492],
-            batch_size=4,
-            loss_function=th.nn.CrossEntropyLoss()
+            seeds=[42, 2024, 666],
+            batch_size=8,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
         )
 
     @classmethod
@@ -332,7 +334,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             lstm_weights=[64, 32],
             dropout_rate=0.1,
             aggregate=False,
-            downsampling_factor=1/5,
+            downsampling_factor=1 / 5,
             num_classes=2,
             seeds=[42, 2024, 666, 11, 1492],
             batch_size=4,
@@ -385,7 +387,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             lstm_weights=[64, 32],
             dropout_rate=0.1,
             aggregate=False,
-            downsampling_factor=1/5,
+            downsampling_factor=1 / 5,
             num_classes=2,
             seeds=[42, 2024, 666, 11, 1492],
             batch_size=4,
@@ -413,7 +415,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             lstm_weights=[64, 32],
             dropout_rate=0.1,
             aggregate=False,
-            downsampling_factor=1/5,
+            downsampling_factor=1 / 5,
             num_classes=6,
             seeds=[42],
             batch_size=4,
@@ -514,7 +516,7 @@ class TransformerEncoderConfig(BaseConfig):
             processor_args={},
             model_args={},
             aggregate=False,
-            downsampling_factor=1/5,
+            downsampling_factor=1 / 5,
             sampling_rate=16000,
             batch_size=4,
             optimizer=th.optim.Adam,
@@ -544,7 +546,7 @@ class TransformerEncoderConfig(BaseConfig):
             processor_args={},
             model_args={},
             aggregate=False,
-            downsampling_factor=1/5,
+            downsampling_factor=1 / 5,
             sampling_rate=16000,
             batch_size=4,
             optimizer=th.optim.Adam,
@@ -559,14 +561,14 @@ class TransformerEncoderConfig(BaseConfig):
             cls
     ):
         return cls(
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768 * 2, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 3)
             ),
             model_card='facebook/wav2vec2-base-960h',
             embedding_dim=768,
-            encoder=th.nn.TransformerEncoder(
+            encoder=lambda: th.nn.TransformerEncoder(
                 th.nn.TransformerEncoderLayer(d_model=768, nhead=8, dim_feedforward=100, batch_first=True),
                 num_layers=1
             ),
@@ -580,8 +582,8 @@ class TransformerEncoderConfig(BaseConfig):
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
             dropout_rate=0.2,
-            loss_function=th.nn.CrossEntropyLoss(),
-            seeds=[42, 2024, 666, 11, 1492],
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            seeds=[42, 2024, 666],
         )
 
     @classmethod
@@ -604,7 +606,7 @@ class TransformerEncoderConfig(BaseConfig):
             processor_args={},
             model_args={},
             aggregate=False,
-            downsampling_factor=1/5,
+            downsampling_factor=1 / 5,
             sampling_rate=16000,
             batch_size=4,
             optimizer=th.optim.Adam,
