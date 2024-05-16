@@ -1,6 +1,8 @@
 import torch as th
 from torch.nn.utils.rnn import pad_sequence
-from transformers import AutoTokenizer, AutoProcessor
+from transformers import AutoTokenizer, AutoProcessor, AutoModel
+from torchaudio.backend.soundfile_backend import load
+from torchaudio.functional import resample
 
 
 class UnimodalCollator:
@@ -122,26 +124,58 @@ class AudioTransformerCollator:
     def __init__(
             self,
             model_card,
+            sampling_rate,
+            downsampling_factor=None,
+            aggregate=False,
             processor_args=None,
             model_args=None,
     ):
         self.model_card = model_card
+        self.sampling_rate = sampling_rate
         self.processor_args = processor_args if processor_args is not None else {}
         self.model_args = model_args if model_args is not None else {}
+        self.downsampling_factor = downsampling_factor
+        self.aggregate = aggregate
 
         self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
         self.processor = AutoProcessor.from_pretrained(model_card)
+        self.model = AutoModel.from_pretrained(model_card).to(self.device)
 
     def __call__(
             self,
-            audio
+            audio_files
     ):
-        processed = self.processor(audio,
-                                   padding=True,
-                                   return_tensors='pt',
-                                   return_attention_mask=True,
-                                   **self.processor_args).to(self.device)
-        return processed['input_values'], processed['attention_mask']
+        loaded_audio = []
+        for audio_file in audio_files:
+            if not audio_file.is_file():
+                raise RuntimeError(f'Could not read file {audio_file}')
+            audio, sampling_rate = load(audio_file.as_posix())
+            if sampling_rate != self.sampling_rate:
+                audio = resample(audio, sampling_rate, self.sampling_rate)
+                audio = th.mean(audio, dim=0)
+            loaded_audio.append(audio)
+
+        loaded_audio = pad_sequence(loaded_audio, batch_first=True, padding_value=0.0)
+        with th.inference_mode():
+            features = self.processor(loaded_audio,
+                                      sampling_rate=self.sampling_rate,
+                                      return_tensors='pt',
+                                      return_attention_mask=True,
+                                      **self.processor_args)
+            attention_mask = features.attention_mask
+            features = features.input_values[0].to(self.device)
+            features = self.model(features, **self.model_args).last_hidden_state
+
+            if self.downsampling_factor is not None:
+                features = th.nn.functional.interpolate(features.permute(0, 2, 1),
+                                                        scale_factor=self.downsampling_factor,
+                                                        mode='linear')
+                features = features.permute(0, 2, 1)
+
+        if self.aggregate:
+            features = th.mean(features, dim=1, keepdim=True)
+
+        return features, attention_mask
 
 
 class AudioCollator:
