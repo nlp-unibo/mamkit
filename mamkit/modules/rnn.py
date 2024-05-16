@@ -6,9 +6,12 @@ class LSTMStack(th.nn.Module):
     def __init__(
             self,
             input_size,
-            lstm_weigths
+            lstm_weigths,
+            return_hidden=True
     ):
         super().__init__()
+
+        self.return_hidden = return_hidden
 
         self.lstm = th.nn.ModuleList()
         for weight in lstm_weigths:
@@ -27,6 +30,10 @@ class LSTMStack(th.nn.Module):
         for lstm_module in self.lstm:
             inputs, hidden = lstm_module(inputs)
 
-        # [bs, d * 2]
-        last_hidden = hidden[0]
-        return last_hidden.permute(1, 0, 2).reshape(x.shape[0], -1)
+        if self.return_hidden:
+            # [bs, d * 2]
+            last_hidden = hidden[0]
+            return last_hidden.permute(1, 0, 2).reshape(x.shape[0], -1)
+
+        # [bs, T, d]
+        return inputs

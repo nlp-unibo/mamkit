@@ -120,48 +120,6 @@ class PairBiLSTM(BiLSTM):
         return logits
 
 
-# TODO: fix cnn
-class MArgNet(TextAudioModel):
-
-    def __init__(
-            self,
-            model_card,
-            embedding_dim,
-            lstm_weights,
-            cnn_info,
-            mlp_weights,
-            dropout_rate,
-            num_classes
-    ):
-        super().__init__()
-
-        # Text
-        self.transformer = AutoModel.from_pretrained(model_card)
-
-        # Audio
-        self.lstm = th.nn.Sequential()
-        input_size = embedding_dim
-        for weight in lstm_weights:
-            self.lstm.append(th.nn.LSTM(input_size=input_size,
-                                        hidden_size=weight,
-                                        batch_first=True,
-                                        bidirectional=True))
-            input_size = weight
-
-        self.dropout = th.nn.Dropout(dropout_rate)
-
-        self.pre_classifier = th.nn.Sequential()
-        input_size = lstm_weights[-1] * 2
-        for weight in mlp_weights:
-            self.pre_classifier.append(th.nn.Linear(in_features=input_size,
-                                                    out_features=weight))
-            self.pre_classifier.append(th.nn.LeakyReLU())
-            self.pre_classifier.append(th.nn.Dropout(p=dropout_rate))
-            input_size = weight
-
-        self.classifier = th.nn.Linear(in_features=mlp_weights[-1], out_features=num_classes)
-
-
 class MMTransformer(TextAudioModel):
 
     def __init__(

@@ -111,7 +111,7 @@ class BiLSTMConfig(BaseConfig):
             audio_dropout_rate=0.1,
             audio_embedding_dim=768,
             audio_lstm_weights=[64, 32],
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0001,
@@ -145,7 +145,7 @@ class BiLSTMConfig(BaseConfig):
             audio_dropout_rate=0.1,
             audio_embedding_dim=768,
             audio_lstm_weights=[64, 32],
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0001,
@@ -380,7 +380,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -415,7 +415,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -450,7 +450,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -484,7 +484,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -749,7 +749,7 @@ class CSAConfig(BaseConfig):
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -782,7 +782,7 @@ class CSAConfig(BaseConfig):
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -996,7 +996,7 @@ class EnsembleConfig(BaseConfig):
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -1041,7 +1041,7 @@ class EnsembleConfig(BaseConfig):
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -1265,7 +1265,7 @@ class MulTAConfig(BaseConfig):
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -1301,7 +1301,7 @@ class MulTAConfig(BaseConfig):
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42, 2024, 666],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
