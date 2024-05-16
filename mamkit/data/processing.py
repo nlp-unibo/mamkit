@@ -672,13 +672,17 @@ class AudioTransformer(ProcessorComponent):
                                           return_tensors='pt',
                                           **self.processor_args)
                 features = features.input_values[0].to(self.device)
-                features = self.model(features, **self.model_args).last_hidden_state[0].unsqueeze(0)
+                model_features = self.model(features, **self.model_args).last_hidden_state[0].unsqueeze(0)
 
                 if self.downsampling_factor is not None:
-                    features = th.nn.functional.interpolate(features.permute(0, 2, 1),
-                                                            scale_factor=self.downsampling_factor,
-                                                            mode='linear')
-                    features = features.permute(0, 2, 1)
+                    try:
+                        features = th.nn.functional.interpolate(model_features.permute(0, 2, 1),
+                                                                scale_factor=self.downsampling_factor,
+                                                                mode='linear')
+                        features = features.permute(0, 2, 1)
+                    except RuntimeError:
+                        features = model_features
+
                 features = features[0].detach().cpu().numpy()
 
             if self.aggregate:
@@ -755,13 +759,17 @@ class PairAudioTransformer(ProcessorComponent):
                                           return_tensors='pt',
                                           **self.processor_args)
                 features = features.input_values[0].to(self.device)
-                features = self.model(features, **self.model_args).last_hidden_state
+                model_features = self.model(features, **self.model_args).last_hidden_state
 
                 if self.downsampling_factor is not None:
-                    features = th.nn.functional.interpolate(features.permute(0, 2, 1),
-                                                            scale_factor=self.downsampling_factor,
-                                                            mode='linear')
-                    features = features.permute(0, 2, 1)
+                    try:
+                        features = th.nn.functional.interpolate(model_features.permute(0, 2, 1),
+                                                                scale_factor=self.downsampling_factor,
+                                                                mode='linear')
+                        features = features.permute(0, 2, 1)
+                    except RuntimeError:
+                        features = model_features
+
                 features = features.detach().cpu().numpy()
 
             if self.aggregate:
