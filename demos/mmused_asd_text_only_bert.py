@@ -82,8 +82,8 @@ if __name__ == '__main__':
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
-                                      val_metrics={'val_f1': F1Score(task='multiclass')},
-                                      test_metrics={'test_f1': F1Score(task='multiclass')},
+                                      val_metrics={'val_f1': F1Score(task='multiclass', num_classes=2)},
+                                      test_metrics={'test_f1': F1Score(task='multiclass', num_classes=2)},
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,
