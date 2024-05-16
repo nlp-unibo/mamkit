@@ -39,7 +39,7 @@ if __name__ == '__main__':
     trainer_args = {
         'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
-        'max_epochs': 100,
+        'max_epochs': 20,
     }
 
     metrics = {}
@@ -108,7 +108,7 @@ if __name__ == '__main__':
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,
-                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=20),
+                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=5),
                                            PycharmProgressBar()])
             trainer.fit(model,
                         train_dataloaders=train_dataloader,

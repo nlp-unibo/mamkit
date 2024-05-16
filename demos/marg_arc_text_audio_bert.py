@@ -39,7 +39,7 @@ if __name__ == '__main__':
     trainer_args = {
         'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
-        'max_epochs': 50,
+        'max_epochs': 20,
     }
 
     metrics = {}
