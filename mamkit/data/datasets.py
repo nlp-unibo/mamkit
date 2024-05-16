@@ -973,7 +973,6 @@ class MMUSEDFallacy(Loader):
     def __init__(
             self,
             sample_rate=16000,
-            force_download=False,
             clip_modality='full',
             n_files=None,
             **kwargs
@@ -984,7 +983,6 @@ class MMUSEDFallacy(Loader):
         assert clip_modality in ['full', 'partial']
 
         self.sample_rate = sample_rate
-        self.force_download = force_download
         self.clip_modality = clip_modality
         self.n_files = n_files
         self.folder_name = 'MMUSED-fallacy'
@@ -993,10 +991,10 @@ class MMUSEDFallacy(Loader):
         self.resources_path = self.data_path.joinpath('resources')
         self.audio_path = self.resources_path.joinpath('debates_audio_recordings')
         self.clips_path = self.data_path.joinpath('audio_clips')
+        self.dataset_url = 'https://raw.githubusercontent.com/lt-nlp-lab-unibo/multimodal-am-fallacy/main/local_database/MM-DatasetFallacies/no_duplicates/dataset.csv'
+        self.dataset_path = self.data_path.joinpath('dataset.csv')
 
-        self.clips_path.mkdir(parents=True, exist_ok=True)
-
-        self.df = self.load()
+        self.load()
 
     def generate_clips(
             self,
@@ -1025,13 +1023,10 @@ class MMUSEDFallacy(Loader):
 
             dataset_path_clip_empty = self.resources_path.joinpath('clips_generation', element, folder_id,
                                                                    'dataset.csv')
-            full_audio_path = self.audio_path.joinpath(folder_id, 'full_audio_trim.wav')
+            full_audio_path = self.audio_path.joinpath(folder_id, 'full_audio.wav')
 
             audio_clips_path = main_folder_path.joinpath(folder_id)
-
-            if audio_clips_path.exists():
-                shutil.rmtree(audio_clips_path)
-            audio_clips_path.mkdir(parents=True)
+            audio_clips_path.mkdir(parents=True, exist_ok=True)
 
             df = pd.read_csv(dataset_path_clip_empty, sep='\t')
             if element == 'dial_sent':
@@ -1046,8 +1041,7 @@ class MMUSEDFallacy(Loader):
                     id_clip_dialogues = []
                     if dialogue not in unique_dialogue_rows.keys():
                         for j in range(len(timestamps_dial_begin)):
-                            if timestamps_dial_begin[j].strip() != 'NOT_FOUND' and timestamps_dial_end[
-                                j].strip() != 'NOT_FOUND':
+                            if timestamps_dial_begin[j].strip() != 'NOT_FOUND' and timestamps_dial_end[j].strip() != 'NOT_FOUND':
                                 start_time = float(timestamps_dial_begin[j].strip().replace('\'', '')) * 1000 - 1005
                                 end_time = float(timestamps_dial_end[j].strip().replace('\'', '')) * 1000 + 100
                                 id_clip = 'clip_' + str(idx) + '_' + str(j)
@@ -1115,7 +1109,7 @@ class MMUSEDFallacy(Loader):
             tmp.append(str(x))
         id_mapping = tmp
 
-        id = []
+        ids = []
         links = []
         start_min = []
         start_sec = []
@@ -1124,43 +1118,40 @@ class MMUSEDFallacy(Loader):
 
         for i in range(len(id_links)):
             if id_links[i] in id_mapping:
-                id.append(id_links[i])
+                ids.append(id_links[i])
                 links.append(link[i])
                 start_min.append(start_min_df[i])
                 start_sec.append(start_sec_df[i])
                 end_min.append(end_min_df[i])
                 end_sec.append(end_sec_df[i])
 
-        if self.clip_modality == "full":
-            ids = id
-        elif self.clip_modality == "partial":
+        if self.clip_modality == "partial":
             # if modality is partial, the user must specify the number of files to be downloaded
             # the first n_files in "dictionary.csv" will be downloaded
             if self.n_files is not None:
                 n_files = int(self.n_files)
-                ids = id[:n_files]
+                ids = ids[:n_files]
 
-        # generate clips only if AUDIO_CLIPS_PATH is empty
-        if not any(self.data_path.iterdir()):
-            base_dir_support_datasets = self.resources_path.joinpath("clips_generation")
+        base_dir_support_datasets = self.resources_path.joinpath("clips_generation")
 
-            output_cleaned_dataset_path_csv = os.path.join(base_dir_support_datasets, 'trial_cleaned.csv')
-            output_snippet_dataset_path_csv = os.path.join(base_dir_support_datasets, 'trial_snippet.csv')
+        output_cleaned_dataset_path_csv = os.path.join(base_dir_support_datasets, 'trial_cleaned.csv')
+        output_snippet_dataset_path_csv = os.path.join(base_dir_support_datasets, 'trial_snippet.csv')
 
-            # generate clips for sentences
-            self.generate_clips(element="dial_sent",
-                                ids=ids,
-                                dataset_path=output_cleaned_dataset_path_csv)
+        # generate clips for sentences
+        self.generate_clips(element="dial_sent",
+                            ids=ids,
+                            dataset_path=output_cleaned_dataset_path_csv)
 
-            self.generate_clips(element="snippet",
-                                ids=ids,
-                                dataset_path=output_snippet_dataset_path_csv)
+        self.generate_clips(element="snippet",
+                            ids=ids,
+                            dataset_path=output_snippet_dataset_path_csv)
 
     def load(
             self
     ):
         if not self.resources_path.exists():
-            logging.info('Download MMUSED-fallacy data...')
+            logging.info('Downloading MMUSED-fallacy data...')
+            self.data_path.mkdir(parents=True, exist_ok=True)
             tmp_path = self.data_path.joinpath('data.zip')
             download(url='https://zenodo.org/api/records/11179390/files-archive',
                      file_path=tmp_path)
@@ -1175,23 +1166,19 @@ class MMUSEDFallacy(Loader):
             tmp_path.unlink()
             internal_tmp_path.unlink()
 
-            source_path = self.data_path.joinpath('MMUSED-fallacy')
-            copy_tree(source_path.as_posix(), self.data_path.as_posix())
-            shutil.rmtree(source_path)
-
             logging.info('Download completed!')
 
-        if not self.audio_path.exists():
+        if not self.clips_path.exists():
             logging.info('Building audio clips...')
             self.build_clips()
             logging.info('Build completed!')
 
-        df = pd.read_csv(self.data_path.joinpath('no_duplicates', 'dataset.csv'), sep='\t')
-        audio_paths = [self.clips_path.joinpath('snippet', debate_id, f'{clip_id}.wav')
-                       for debate_id, clip_id in zip(df['Dialogue ID'].values, df['idClipSnippet'].values)]
-        df['audio_paths'] = audio_paths
+            # clear
+            shutil.rmtree(self.audio_path)
 
-        return df
+        if not self.dataset_path.exists():
+            download(self.dataset_url,
+                     file_path=self.dataset_path)
 
     def _get_text_data(
             self,
@@ -1200,35 +1187,60 @@ class MMUSEDFallacy(Loader):
         return UnimodalDataset(inputs=df['SentenceSnippet'].values,
                                labels=df['Fallacy'].values)
 
-    def get_audio_data(
+    def _get_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         return UnimodalDataset(inputs=df['audio_paths'].values,
                                labels=df['Fallacy'].values)
 
-    def get_text_audio_data(
+    def _get_text_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
-        return MultimodalDataset(texts=df.values,
-                                 audio=df.values,
-                                 labels=df.values)
+        return MultimodalDataset(texts=df['SentenceSnippet'].values,
+                                 audio=df['audio_paths'].values,
+                                 labels=df['Fallacy'].values)
 
     @property
     def data(
             self
     ) -> pd.DataFrame:
-        return self.df
+        df = pd.read_csv(self.dataset_path, sep='\t')
+
+        # drop rare samples where audio is empty
+        df = df[df['BeginSnippet'] != df['EndSnippet']]
+
+        audio_paths = [self.clips_path.joinpath('snippet', debate_id, f'{clip_id}.wav')
+                       for debate_id, clip_id in zip(df['Dialogue ID'].values, df['idClipSnippet'].values)]
+        df['audio_paths'] = audio_paths
+
+        if self.task_name == 'afc':
+            df.loc[df.Fallacy == 'AppealtoEmotion', 'Fallacy'] = 0
+            df.loc[df.Fallacy == 'AppealtoAuthority', 'Fallacy'] = 1
+            df.loc[df.Fallacy == 'AdHominem', 'Fallacy'] = 2
+            df.loc[df.Fallacy == 'FalseCause', 'Fallacy'] = 3
+            df.loc[df.Fallacy == 'Slipperyslope', 'Fallacy'] = 4
+            df.loc[df.Fallacy == 'Slogans', 'Fallacy'] = 5
+
+        return df
 
     def get_default_splits(
             self,
             as_iterator: bool = False
     ) -> Union[List[SplitInfo], SplitInfo]:
         split_info = self.build_info_from_splits(train_df=self.data,
-                                                 val_df=pd.DataFrame.empty,
-                                                 test_df=pd.DataFrame.empty)
+                                                 val_df=pd.DataFrame(columns=self.data.columns),
+                                                 test_df=pd.DataFrame(columns=self.data.columns))
         return [split_info] if as_iterator else split_info
+
+    def get_mancini_2024_splits(
+            self
+    ) -> List[SplitInfo]:
+        dialogues = set(self.data['Dialogue ID'].values)
+        for dialogue_id in dialogues:
+            train_df = self.data[~self.data['Dialogue ID'].isin(dialogue_id)]
+            val_df = trai
 
 
 class MArg(Loader):

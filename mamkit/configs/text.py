@@ -22,7 +22,9 @@ class BiLSTMConfig(BaseConfig):
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
                   tags={'mancini-et-al-2022'}): 'marg_arc_mancini_2022',
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
-                  tags={'anonymous'}): 'marg_arc_anonymous'
+                  tags={'anonymous'}): 'marg_arc_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
+                  tags={'anonymous'}): 'mmused_fallacy_afc_anonymous'
     }
 
     def __init__(
@@ -256,6 +258,32 @@ class BiLSTMConfig(BaseConfig):
             num_classes=2
         )
 
+    @classmethod
+    def mmused_fallacy_afc_anonymous(
+            cls
+    ):
+        return cls(
+            embedding_dim=200,
+            lstm_weights=[128, 32],
+            head=th.nn.Sequential(
+                th.nn.Linear(64, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 6)
+            ),
+            dropout_rate=0.0,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 0.0002,
+                'weight_decay': 0.0001
+            },
+            embedding_model='glove.6B.200d',
+            tokenizer=get_tokenizer(tokenizer='basic_english'),
+            loss_function=th.nn.CrossEntropyLoss(),
+            batch_size=4,
+            num_classes=6
+        )
+
 
 class TransformerConfig(BaseConfig):
     configs = {
@@ -273,6 +301,10 @@ class TransformerConfig(BaseConfig):
                   tags={'mancini-et-al-2024', 'bert'}): 'mmused_fallacy_afc_bert_mancini_2024',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
                   tags={'mancini-et-al-2024', 'roberta'}): 'mmused_fallacy_afc_roberta_mancini_2024',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
+                  tags={'anonymous', 'bert'}): 'mmused_fallacy_afc_bert_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
+                  tags={'anonymous', 'roberta'}): 'mmused_fallacy_afc_roberta_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
                   tags={'anonymous', 'bert'}): 'mmused_acc_bert_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
@@ -453,9 +485,9 @@ class TransformerConfig(BaseConfig):
                 th.nn.ReLU(),
                 th.nn.Linear(100, 50),
                 th.nn.ReLU(),
-                th.nn.Linear(50, 2)
+                th.nn.Linear(50, 6)
             ),
-            num_classes=2,
+            num_classes=6,
             dropout_rate=0.1,
             is_transformer_trainable=True,
             tokenizer_args={},
@@ -474,14 +506,54 @@ class TransformerConfig(BaseConfig):
                 th.nn.ReLU(),
                 th.nn.Linear(100, 50),
                 th.nn.ReLU(),
-                th.nn.Linear(50, 2)
+                th.nn.Linear(50, 6)
             ),
-            num_classes=2,
+            num_classes=6,
             dropout_rate=0.1,
             is_transformer_trainable=True,
             tokenizer_args={},
             batch_size=8,
             loss_function=th.nn.CrossEntropyLoss()
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_bert_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='bert-base-uncased',
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            dropout_rate=0.2,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=4,
+            num_classes=6,
+            is_transformer_trainable=False
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_roberta_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='roberta-base',
+            head=th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            dropout_rate=0.2,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=4,
+            num_classes=6,
+            is_transformer_trainable=False
         )
 
     @classmethod

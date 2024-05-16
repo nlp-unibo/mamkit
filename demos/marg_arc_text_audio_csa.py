@@ -7,7 +7,6 @@ import torch as th
 from lightning.pytorch import seed_everything
 from lightning.pytorch.callbacks import EarlyStopping
 from torch.utils.data import DataLoader
-from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text_audio import CSAConfig
@@ -16,6 +15,7 @@ from mamkit.data.datasets import MArg, InputMode
 from mamkit.data.processing import PairMultimodalProcessor, PairAudioTransformer, PairTextTransformer
 from mamkit.models.text_audio import PairCSA
 from mamkit.utility.callbacks import PycharmProgressBar
+from mamkit.utility.metrics import ClassSubsetMulticlassF1Score
 from mamkit.utility.model import to_lighting_model
 
 if __name__ == '__main__':
@@ -97,8 +97,12 @@ if __name__ == '__main__':
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
-                                      val_metrics={'val_f1': F1Score(task='multiclass', num_classes=3, ignore_index=0)},
-                                      test_metrics={'test_f1': F1Score(task='multiclass', num_classes=3, ignore_index=0)},
+                                      val_metrics={
+                                          'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3,
+                                                                                 class_subset=[1, 2])},
+                                      test_metrics={
+                                          'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3,
+                                                                                  class_subset=[1, 2])},
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,

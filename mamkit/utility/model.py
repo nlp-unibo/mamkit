@@ -52,7 +52,7 @@ class MAMKitLightingModel(L.LightningModule):
         y_hat = self.model(inputs)
         loss = self.loss_function(y_hat, y_true)
 
-        self.log_dict({'train_loss': loss}, on_step=True, on_epoch=False, prog_bar=True)
+        self.log_dict({'train_loss': loss}, on_step=False, on_epoch=True, prog_bar=True)
 
         return loss
 
@@ -64,7 +64,7 @@ class MAMKitLightingModel(L.LightningModule):
         inputs, y_true = batch
         y_hat = self.model(inputs)
         loss = self.loss_function(y_hat, y_true)
-        self.log_dict({'val_loss': loss}, on_step=True, on_epoch=True, prog_bar=True)
+        self.log_dict({'val_loss': loss}, on_step=False, on_epoch=True, prog_bar=True)
 
         if self.val_metrics is not None:
             y_hat = th.argmax(y_hat, dim=-1)
