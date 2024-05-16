@@ -277,8 +277,8 @@ class BiLSTMConfig(BaseConfig):
             },
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            # TODO loss
-            batch_size=16,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303 , 4.09689922, 5.18137255])),
+            batch_size=8,
             num_classes=6
         )
 
@@ -482,7 +482,7 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='bert-base-uncased',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 100),
                 th.nn.ReLU(),
                 th.nn.Linear(100, 50),
@@ -494,7 +494,7 @@ class TransformerConfig(BaseConfig):
             is_transformer_trainable=True,
             tokenizer_args={},
             batch_size=8,
-            loss_function=th.nn.CrossEntropyLoss()
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303 , 4.09689922, 5.18137255])),
         )
 
     @classmethod
@@ -503,7 +503,7 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='roberta-base',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 100),
                 th.nn.ReLU(),
                 th.nn.Linear(100, 50),
@@ -515,7 +515,7 @@ class TransformerConfig(BaseConfig):
             is_transformer_trainable=True,
             tokenizer_args={},
             batch_size=8,
-            loss_function=th.nn.CrossEntropyLoss()
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303 , 4.09689922, 5.18137255])),
         )
 
     @classmethod
@@ -524,7 +524,7 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='bert-base-uncased',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 6)
@@ -533,8 +533,10 @@ class TransformerConfig(BaseConfig):
             seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            batch_size=4,
+            batch_size=8,
             num_classes=6,
+            loss_function=lambda: th.nn.CrossEntropyLoss(
+                weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
             is_transformer_trainable=False
         )
 
@@ -544,7 +546,7 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='roberta-base',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 6)
@@ -553,9 +555,11 @@ class TransformerConfig(BaseConfig):
             seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            batch_size=4,
+            batch_size=8,
             num_classes=6,
-            is_transformer_trainable=False
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(
+                weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
         )
 
     @classmethod

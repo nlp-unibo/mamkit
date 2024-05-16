@@ -1035,8 +1035,7 @@ class MMUSEDFallacy(Loader):
             if element == 'dial_sent':
                 unique_dialogue_rows = {}
                 sound = AudioSegment.from_file(full_audio_path)
-                total_len = df.shape[0]
-                for idx, row in tqdm(df.iterrows(), total=total_len, position=0):
+                for idx, row in df.iterrows():
                     timestamps_dial_begin = list(row['DialogueAlignmentBegin'][1:-1].strip().split(','))
                     timestamps_dial_end = list(row['DialogueAlignmentEnd'][1:-1].strip().split(','))
                     dialogue = row['Dialogue']
@@ -1062,8 +1061,7 @@ class MMUSEDFallacy(Loader):
             elif element == 'snippet':
                 unique_snippet_rows = {}
                 sound = AudioSegment.from_file(full_audio_path)
-                total_len = df.shape[0]
-                for idx, row in tqdm(df.iterrows(), total=total_len, position=0):
+                for idx, row in df.iterrows():
                     start_time = row['BeginSnippet']
                     end_time = row['EndSnippet']
                     snippet = row['Snippet']
