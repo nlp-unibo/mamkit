@@ -411,7 +411,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1/5,
             num_classes=6,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42],
             batch_size=4,
             loss_function=th.nn.CrossEntropyLoss()
         )
@@ -607,5 +607,5 @@ class TransformerEncoderConfig(BaseConfig):
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
             dropout_rate=0.2,
             loss_function=th.nn.CrossEntropyLoss(),
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42],
         )

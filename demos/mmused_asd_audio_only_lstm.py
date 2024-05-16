@@ -11,7 +11,7 @@ from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.audio import BiLSTMTransformerConfig
 from mamkit.configs.base import ConfigKey
-from mamkit.data.collators import AudioCollator, UnimodalCollator, AudioTransformerCollator
+from mamkit.data.collators import AudioCollator, UnimodalCollator
 from mamkit.data.datasets import MMUSED, InputMode
 from mamkit.data.processing import AudioTransformer, UnimodalProcessor
 from mamkit.models.audio import BiLSTM
@@ -45,7 +45,14 @@ if __name__ == '__main__':
     for seed in config.seeds:
         seed_everything(seed=seed)
         for split_info in loader.get_splits(key='default'):
-            processor = UnimodalProcessor()
+            processor = UnimodalProcessor(features_processor=AudioTransformer(
+                model_card=config.model_card,
+                processor_args=config.processor_args,
+                model_args=config.model_args,
+                aggregate=config.aggregate,
+                downsampling_factor=config.downsampling_factor,
+                sampling_rate=config.sampling_rate
+            ))
 
             processor.fit(split_info.train)
 
@@ -55,14 +62,7 @@ if __name__ == '__main__':
             processor.clear()
 
             unimodal_collator = UnimodalCollator(
-                features_collator=AudioTransformerCollator(
-                    model_card=config.model_card,
-                    processor_args=config.processor_args,
-                    model_args=config.model_args,
-                    aggregate=config.aggregate,
-                    downsampling_factor=config.downsampling_factor,
-                    sampling_rate=config.sampling_rate
-                ),
+                features_collator=AudioCollator(),
                 label_collator=lambda labels: th.tensor(labels)
             )
 

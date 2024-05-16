@@ -251,7 +251,7 @@ class AudioTransformerCollator:
             audio, sampling_rate = load(audio_file.as_posix())
             if sampling_rate != self.sampling_rate:
                 audio = resample(audio, sampling_rate, self.sampling_rate)
-                audio = th.mean(audio, dim=0)
+            audio = th.mean(audio, dim=0)
             loaded_audio.append(audio)
 
         loaded_audio = pad_sequence(loaded_audio, batch_first=True, padding_value=0.0)

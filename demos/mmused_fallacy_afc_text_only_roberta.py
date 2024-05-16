@@ -5,49 +5,49 @@ import lightning as L
 import numpy as np
 import torch as th
 from lightning.pytorch import seed_everything
-from lightning.pytorch.callbacks import EarlyStopping
+from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from torch.utils.data import DataLoader
+from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text import TransformerConfig
-from mamkit.data.collators import PairUnimodalCollator, PairTextTransformerCollator
-from mamkit.data.datasets import MArg, InputMode
-from mamkit.data.processing import PairUnimodalProcessor
-from mamkit.models.text import PairTransformer
+from mamkit.data.collators import UnimodalCollator, TextTransformerCollator
+from mamkit.data.datasets import MMUSEDFallacy, InputMode
+from mamkit.data.processing import UnimodalProcessor
+from mamkit.models.text import Transformer
 from mamkit.utility.callbacks import PycharmProgressBar
-from mamkit.utility.metrics import ClassSubsetMulticlassF1Score
 from mamkit.utility.model import to_lighting_model
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'marg', 'arc', 'text_only_roberta')
+    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'mmused-fallacy', 'afc', 'text_only_roberta')
     if not save_path.exists():
         save_path.mkdir(parents=True)
 
     base_data_path = Path(__file__).parent.parent.resolve().joinpath('data')
 
-    loader = MArg(task_name='arc',
-                  confidence=0.85,
-                  input_mode=InputMode.TEXT_ONLY,
-                  base_data_path=base_data_path)
+    loader = MMUSEDFallacy(task_name='afc',
+                           input_mode=InputMode.TEXT_ONLY,
+                           base_data_path=base_data_path)
 
-    config = TransformerConfig.from_config(key=ConfigKey(dataset='marg',
+    config = TransformerConfig.from_config(key=ConfigKey(dataset='mmused-fallacy',
+                                                         task_name='afc',
                                                          input_mode=InputMode.TEXT_ONLY,
-                                                         task_name='arc',
                                                          tags={'anonymous', 'roberta'}))
+
     trainer_args = {
         'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
-        'max_epochs': 20,
+        'max_epochs': 50,
     }
 
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
-        for split_info in loader.get_splits(key='mancini-et-al-2022'):
-            processor = PairUnimodalProcessor()
+        for split_info in loader.get_splits(key='mancini-et-al-2024'):
+            processor = UnimodalProcessor()
 
-            processor.fit(train_data=split_info.train)
+            processor.fit(split_info.train)
 
             split_info.train = processor(split_info.train)
             split_info.val = processor(split_info.val)
@@ -55,39 +55,35 @@ if __name__ == '__main__':
 
             processor.clear()
 
-            collator = PairUnimodalCollator(
-                features_collator=PairTextTransformerCollator(model_card=config.model_card,
-                                                              tokenizer_args=config.tokenizer_args),
+            unimodal_collator = UnimodalCollator(
+                features_collator=TextTransformerCollator(model_card=config.model_card,
+                                                          tokenizer_args=config.tokenizer_args),
                 label_collator=lambda labels: th.tensor(labels)
             )
 
             train_dataloader = DataLoader(split_info.train,
                                           batch_size=config.batch_size,
                                           shuffle=True,
-                                          collate_fn=collator)
+                                          collate_fn=unimodal_collator)
             val_dataloader = DataLoader(split_info.val,
                                         batch_size=config.batch_size,
                                         shuffle=False,
-                                        collate_fn=collator)
+                                        collate_fn=unimodal_collator)
             test_dataloader = DataLoader(split_info.test,
                                          batch_size=config.batch_size,
                                          shuffle=False,
-                                         collate_fn=collator)
+                                         collate_fn=unimodal_collator)
 
-            model = PairTransformer(model_card=config.model_card,
-                                    is_transformer_trainable=config.is_transformer_trainable,
-                                    dropout_rate=config.dropout_rate,
-                                    head=config.head)
+            model = Transformer(model_card=config.model_card,
+                                is_transformer_trainable=config.is_transformer_trainable,
+                                dropout_rate=config.dropout_rate,
+                                head=config.head)
             model = to_lighting_model(model=model,
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
-                                      val_metrics={
-                                          'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3,
-                                                                                 class_subset=[1, 2])},
-                                      test_metrics={
-                                          'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3,
-                                                                                  class_subset=[1, 2])},
+                                      val_metrics={'val_f1': F1Score(task='multiclass', num_classes=6)},
+                                      test_metrics={'test_f1': F1Score(task='multiclass', num_classes=6)},
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,

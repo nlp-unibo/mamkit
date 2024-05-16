@@ -17,7 +17,6 @@ from mamkit.data.processing import VocabBuilder, UnimodalProcessor
 from mamkit.models.text import BiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model
-from mamkit.utility.metrics import ClassSubsetMulticlassF1Score
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
@@ -38,13 +37,13 @@ if __name__ == '__main__':
     trainer_args = {
         'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
-        'max_epochs': 100,
+        'max_epochs': 20,
     }
 
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
-        for split_info in loader.get_splits(key='mancini-et-al-2022'):
+        for split_info in loader.get_splits(key='mancini-et-al-2024'):
             processor = UnimodalProcessor(features_processor=VocabBuilder(tokenizer=config.tokenizer,
                                                                           embedding_model=config.embedding_model,
                                                                           embedding_dim=config.embedding_dim))
@@ -91,7 +90,7 @@ if __name__ == '__main__':
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,
-                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=20),
+                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=5),
                                            PycharmProgressBar()])
             trainer.fit(model,
                         train_dataloaders=train_dataloader,

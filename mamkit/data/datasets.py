@@ -996,6 +996,9 @@ class MMUSEDFallacy(Loader):
 
         self.load()
 
+        self.add_splits(method=self.get_mancini_2024_splits,
+                        key='mancini-et-al-2024')
+
     def generate_clips(
             self,
             element,
@@ -1041,7 +1044,8 @@ class MMUSEDFallacy(Loader):
                     id_clip_dialogues = []
                     if dialogue not in unique_dialogue_rows.keys():
                         for j in range(len(timestamps_dial_begin)):
-                            if timestamps_dial_begin[j].strip() != 'NOT_FOUND' and timestamps_dial_end[j].strip() != 'NOT_FOUND':
+                            if timestamps_dial_begin[j].strip() != 'NOT_FOUND' and timestamps_dial_end[
+                                j].strip() != 'NOT_FOUND':
                                 start_time = float(timestamps_dial_begin[j].strip().replace('\'', '')) * 1000 - 1005
                                 end_time = float(timestamps_dial_end[j].strip().replace('\'', '')) * 1000 + 100
                                 id_clip = 'clip_' + str(idx) + '_' + str(j)
@@ -1238,9 +1242,23 @@ class MMUSEDFallacy(Loader):
             self
     ) -> List[SplitInfo]:
         dialogues = set(self.data['Dialogue ID'].values)
+        splits_info = []
         for dialogue_id in dialogues:
-            train_df = self.data[~self.data['Dialogue ID'].isin(dialogue_id)]
-            val_df = trai
+            train_df = self.data[self.data['Dialogue ID'] != dialogue_id]
+            test_df = self.data[self.data['Dialogue ID'] == dialogue_id]
+
+            train_dialogues = set(train_df['Dialogue ID'].values)
+            val_dialogues = np.random.choice(list(train_dialogues), size=4)
+
+            val_df = train_df[train_df['Dialogue ID'].isin(val_dialogues)]
+            train_df = train_df[~train_df['Dialogue ID'].isin(val_dialogues)]
+
+            split_info = self.build_info_from_splits(train_df=train_df,
+                                                     val_df=val_df,
+                                                     test_df=test_df)
+            splits_info.append(split_info)
+
+        return splits_info
 
 
 class MArg(Loader):

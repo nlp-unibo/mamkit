@@ -271,7 +271,7 @@ class BiLSTMConfig(BaseConfig):
                 th.nn.Linear(128, 6)
             ),
             dropout_rate=0.0,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0002,
@@ -528,7 +528,7 @@ class TransformerConfig(BaseConfig):
                 th.nn.Linear(256, 6)
             ),
             dropout_rate=0.2,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
             batch_size=4,
@@ -548,7 +548,7 @@ class TransformerConfig(BaseConfig):
                 th.nn.Linear(256, 6)
             ),
             dropout_rate=0.2,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
             batch_size=4,

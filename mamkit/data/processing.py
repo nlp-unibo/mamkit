@@ -663,7 +663,7 @@ class AudioTransformer(ProcessorComponent):
             audio, sampling_rate = load(audio_file)
             if sampling_rate != self.sampling_rate:
                 audio = resample(audio, sampling_rate, self.sampling_rate)
-                audio = th.mean(audio, dim=0, keepdim=True)
+            audio = th.mean(audio, dim=0, keepdim=True)
 
             with th.inference_mode():
                 features = self.processor(audio,
@@ -738,14 +738,14 @@ class PairAudioTransformer(ProcessorComponent):
             a_audio, a_sampling_rate = load(a_audio_file)
             if a_sampling_rate != self.sampling_rate:
                 a_audio = resample(a_audio, a_sampling_rate, self.sampling_rate)
-                a_audio = th.mean(a_audio, dim=0)
+            a_audio = th.mean(a_audio, dim=0)
 
             if not Path(b_audio_file).is_file():
                 raise RuntimeError(f'Could not read file {b_audio_file}')
             b_audio, b_sampling_rate = load(b_audio_file)
             if b_sampling_rate != self.sampling_rate:
                 b_audio = resample(b_audio, b_sampling_rate, self.sampling_rate)
-                b_audio = th.mean(b_audio, dim=0)
+            b_audio = th.mean(b_audio, dim=0)
 
             pair_audio = pad_sequence([a_audio, b_audio], batch_first=True, padding_value=0.0)
             with th.inference_mode():
