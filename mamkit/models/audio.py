@@ -20,7 +20,7 @@ class BiLSTM(AudioOnlyModel):
             self,
             embedding_dim,
             lstm_weights,
-            head: th.nn.Module,
+            head,
             dropout_rate
     ):
         super().__init__()
@@ -28,7 +28,7 @@ class BiLSTM(AudioOnlyModel):
         self.lstm = LSTMStack(input_size=embedding_dim,
                               lstm_weigths=lstm_weights)
 
-        self.head = head
+        self.head = head()
         self.dropout = th.nn.Dropout(p=dropout_rate)
 
     def forward(
@@ -144,14 +144,14 @@ class TransformerEncoder(AudioOnlyModel):
     def __init__(
             self,
             embedding_dim,
-            encoder: th.nn.Module,
-            head: th.nn.Module,
+            encoder,
+            head,
             dropout_rate=0.0
     ):
         super().__init__()
 
-        self.encoder = encoder
-        self.head = head
+        self.encoder = encoder()
+        self.head = head()
         self.pos_encoder = PositionalEncoding(embedding_dim, dual_modality=False)
         self.layer_norm = th.nn.LayerNorm(embedding_dim)
         self.dropout = th.nn.Dropout(p=dropout_rate)

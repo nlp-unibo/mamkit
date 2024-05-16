@@ -42,6 +42,6 @@ def defining_custom_splits_example():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    # loading_data_example()
+    loading_data_example()
     # loading_predefined_splits()
-    defining_custom_splits_example()
+    # defining_custom_splits_example()

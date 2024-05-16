@@ -79,7 +79,7 @@ if __name__ == '__main__':
                                 dropout_rate=config.dropout_rate,
                                 head=config.head)
             model = to_lighting_model(model=model,
-                                      loss_function=th.nn.CrossEntropyLoss(),
+                                      loss_function=config.loss_function,
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
                                       val_metrics={'val_f1': F1Score(task='binary')},

@@ -111,7 +111,7 @@ def to_lighting_model(
         **optimizer_kwargs
 ):
     return MAMKitLightingModel(model=model,
-                               loss_function=loss_function,
+                               loss_function=loss_function(),
                                num_classes=num_classes,
                                optimizer_class=optimizer_class,
                                val_metrics=val_metrics,

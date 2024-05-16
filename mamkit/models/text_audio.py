@@ -23,7 +23,7 @@ class BiLSTM(TextAudioModel):
             audio_embedding_dim,
             text_lstm_weights,
             audio_lstm_weights,
-            head: th.nn.Module,
+            head,
             text_dropout_rate=0.0,
             audio_dropout_rate=0.0,
             embedding_matrix=None
@@ -40,7 +40,7 @@ class BiLSTM(TextAudioModel):
                                    lstm_weigths=text_lstm_weights)
         self.audio_lstm = LSTMStack(input_size=audio_embedding_dim,
                                     lstm_weigths=audio_lstm_weights)
-        self.head = head
+        self.head = head()
 
         self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
         self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
@@ -167,7 +167,7 @@ class MMTransformer(TextAudioModel):
     def __init__(
             self,
             model_card,
-            head: th.nn.Module,
+            head,
             audio_embedding_dim,
             lstm_weights,
             text_dropout_rate=0.0,
@@ -188,7 +188,7 @@ class MMTransformer(TextAudioModel):
         self.audio_lstm = LSTMStack(input_size=audio_embedding_dim,
                                     lstm_weigths=lstm_weights)
 
-        self.head = head
+        self.head = head()
         self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
         self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
 
@@ -289,9 +289,9 @@ class CSA(TextAudioModel):
             positional_encoder: positional encoder to use
         """
         super().__init__()
-        self.transformer = transformer
-        self.head = head
-        self.positional_encoder = positional_encoder
+        self.transformer = transformer()
+        self.head = head()
+        self.positional_encoder = positional_encoder()
         self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
         self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
 
@@ -379,10 +379,10 @@ class PairCSA(CSA):
 class Ensemble(TextAudioModel):
     def __init__(
             self,
-            text_head: th.nn.Module,
-            audio_head: th.nn.Module,
-            audio_encoder: th.nn.Module,
-            positional_encoder: th.nn.Module,
+            text_head,
+            audio_head,
+            audio_encoder,
+            positional_encoder,
             audio_embedding_dim,
             text_dropout_rate=0.1,
             audio_dropout_rate=0.1,
@@ -390,10 +390,10 @@ class Ensemble(TextAudioModel):
             upper_bound=0.7
     ):
         super().__init__()
-        self.text_head = text_head
-        self.audio_head = audio_head
-        self.audio_encoder = audio_encoder
-        self.positional_encoder = positional_encoder
+        self.text_head = text_head()
+        self.audio_head = audio_head()
+        self.audio_encoder = audio_encoder()
+        self.positional_encoder = positional_encoder()
         self.layer_norm = th.nn.LayerNorm(audio_embedding_dim)
         self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
         self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
@@ -453,7 +453,9 @@ class Ensemble(TextAudioModel):
         # next step is to have values in [lower_bound, upper_bound] to avoid too much imbalance
         coefficient = coefficient * (self.upper_bound - self.lower_bound) + self.lower_bound
 
-        return coefficient * text_probabilities + (1 - coefficient) * audio_probabilities
+        final_prob = coefficient * text_probabilities + (1 - coefficient) * audio_probabilities
+
+        return th.log(final_prob + 1e-08)
 
 
 class PairEnsemble(Ensemble):
@@ -524,7 +526,9 @@ class PairEnsemble(Ensemble):
         # next step is to have values in [lower_bound, upper_bound] to avoid too much imbalance
         coefficient = coefficient * (self.upper_bound - self.lower_bound) + self.lower_bound
 
-        return coefficient * text_probabilities + (1 - coefficient) * audio_probabilities
+        final_prob = coefficient * text_probabilities + (1 - coefficient) * audio_probabilities
+
+        return th.log(final_prob + 1e-08)
 
 
 class MulTA(TextAudioModel):
@@ -553,7 +557,7 @@ class MulTA(TextAudioModel):
         self.embedding_dim = embedding_dim
         self.d_ffn = d_ffn
         self.n_blocks = n_blocks
-        self.head = head
+        self.head = head()
         self.text_crossmodal_blocks = th.nn.ModuleList([
             MulTA_CrossAttentionBlock(self.embedding_dim, self.d_ffn, dropout_prob=text_dropout_rate) for _ in
             range(self.n_blocks)
@@ -562,7 +566,7 @@ class MulTA(TextAudioModel):
             MulTA_CrossAttentionBlock(self.embedding_dim, self.d_ffn, dropout_prob=audio_dropout_rate) for _ in
             range(self.n_blocks)
         ])
-        self.positional_encoder = positional_encoder
+        self.positional_encoder = positional_encoder()
 
     def forward(
             self,

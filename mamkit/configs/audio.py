@@ -4,12 +4,13 @@ from mamkit.configs.base import BaseConfig, ConfigKey
 from mamkit.data.datasets import InputMode
 
 
+# TODO: update
 class BiLSTMMFCCsConfig(BaseConfig):
     configs = {
         ConfigKey(dataset='ukdebates', input_mode=InputMode.AUDIO_ONLY, task_name='asd',
-                  tags={'mancini-et-al-2022'}): 'ukdebates_mancini_2022',
+                  tags={'mancini-et-al-2022'}): 'ukdebates_asd_mancini_2022',
         ConfigKey(dataset='marg', input_mode=InputMode.AUDIO_ONLY, task_name='arc',
-                  tags={'mancini-et-al-2022'}): 'marg_mancini_2022',
+                  tags={'mancini-et-al-2022'}): 'marg_arc_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.AUDIO_ONLY, task_name='asd',
                   tags={'mancini-et-al-2022'}): 'mmused_asd_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.AUDIO_ONLY, task_name='acd',
@@ -39,8 +40,9 @@ class BiLSTMMFCCsConfig(BaseConfig):
         self.remove_energy = remove_energy
         self.embedding_dim = mfccs + 19
 
+    # TODO: update
     @classmethod
-    def ukdebates_mancini_2022(
+    def ukdebates_asd_mancini_2022(
             cls
     ):
         return cls(
@@ -57,7 +59,8 @@ class BiLSTMMFCCsConfig(BaseConfig):
             normalize=True,
             remove_energy=True,
             num_classes=2,
-            seeds=[15371, 15372, 15373]
+            seeds=[15371, 15372, 15373],
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
         )
 
     @classmethod
@@ -129,9 +132,9 @@ class BiLSTMTransformerConfig(BaseConfig):
         ConfigKey(dataset='ukdebates', input_mode=InputMode.AUDIO_ONLY, task_name='asd',
                   tags={'anonymous'}): 'ukdebates_asd_anonymous',
         ConfigKey(dataset='ukdebates', input_mode=InputMode.AUDIO_ONLY, task_name='asd',
-                  tags={'mancini-et-al-2022'}): 'ukdebates_mancini_2022',
+                  tags={'mancini-et-al-2022'}): 'ukdebates_asd_mancini_2022',
         ConfigKey(dataset='marg', input_mode=InputMode.AUDIO_ONLY, task_name='arc',
-                  tags={'mancini-et-al-2022'}): 'marg_mancini_2022',
+                  tags={'mancini-et-al-2022'}): 'marg_arc_mancini_2022',
         ConfigKey(dataset='marg', input_mode=InputMode.AUDIO_ONLY, task_name='arc',
                   tags={'anonymous'}): 'marg_arc_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.AUDIO_ONLY, task_name='asd',
@@ -152,7 +155,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             embedding_dim,
             sampling_rate,
             lstm_weights,
-            head: th.nn.Module,
+            head,
             dropout_rate,
             num_classes,
             aggregate: bool = False,
@@ -182,7 +185,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             model_card='facebook/wav2vec2-base-960h',
             embedding_dim=768,
             sampling_rate=16000,
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(64, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
@@ -197,20 +200,20 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             num_classes=2,
-            seeds=[42, 2024, 666, 11, 1492],
-            batch_size=4,
-            loss_function=th.nn.CrossEntropyLoss()
+            seeds=[42, 2024, 666],
+            batch_size=16,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
         )
 
     @classmethod
-    def ukdebates_mancini_2022(
+    def ukdebates_asd_mancini_2022(
             cls
     ):
         return cls(
             model_card='facebook/wav2vec2-base-960h',
             embedding_dim=768,
             sampling_rate=16000,
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(64, 32),
                 th.nn.ReLU(),
                 th.nn.Linear(32, 32),
@@ -222,6 +225,7 @@ class BiLSTMTransformerConfig(BaseConfig):
                 'weight_decay': 0.001
             },
             optimizer=th.optim.Adam,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
             lstm_weights=[64, 32],
             dropout_rate=0.5,
             aggregate=True,
@@ -435,8 +439,8 @@ class TransformerEncoderConfig(BaseConfig):
             self,
             model_card,
             embedding_dim,
-            encoder: th.nn.Module,
-            head: th.nn.Module,
+            encoder,
+            head,
             num_classes,
             dropout_rate=0.0,
             processor_args=None,
@@ -465,14 +469,14 @@ class TransformerEncoderConfig(BaseConfig):
             cls
     ):
         return cls(
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
             ),
             model_card='facebook/wav2vec2-base-960h',
             embedding_dim=768,
-            encoder=th.nn.TransformerEncoder(
+            encoder=lambda: th.nn.TransformerEncoder(
                 th.nn.TransformerEncoderLayer(d_model=768, nhead=8, dim_feedforward=100, batch_first=True),
                 num_layers=1
             ),
@@ -482,12 +486,12 @@ class TransformerEncoderConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             sampling_rate=16000,
-            batch_size=4,
+            batch_size=16,
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
             dropout_rate=0.0,
-            loss_function=th.nn.CrossEntropyLoss(),
-            seeds=[42, 2024, 666, 11, 1492],
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            seeds=[42, 2024, 666],
         )
 
     @classmethod

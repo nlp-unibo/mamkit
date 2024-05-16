@@ -62,7 +62,7 @@ class BaseConfig:
             seeds,
             optimizer=th.optim.Adam,
             batch_size=8,
-            loss_function=th.nn.CrossEntropyLoss(),
+            loss_function=lambda: th.nn.CrossEntropyLoss,
             optimizer_args=None
     ):
         self.optimizer = optimizer

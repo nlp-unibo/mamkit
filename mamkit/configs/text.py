@@ -8,15 +8,15 @@ from mamkit.data.datasets import InputMode
 class BiLSTMConfig(BaseConfig):
     configs = {
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_ONLY, task_name='asd',
-                  tags={'anonymous'}): 'ukdebates_anonymous',
+                  tags={'anonymous'}): 'ukdebates_asd_anonymous',
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_ONLY, task_name='asd',
-                  tags={'mancini-et-al-2022'}): 'ukdebates_mancini_2022',
+                  tags={'mancini-et-al-2022'}): 'ukdebates_asd_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='asd',
                   tags={'mancini-et-al-2022'}): 'mmused_asd_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='asd',
                   tags={'anonymous'}): 'mmused_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
-                  tags={'mancini-et-al-2022'}): 'mmused_acd_mancini_2022',
+                  tags={'mancini-et-al-2022'}): 'mmused_acc_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
@@ -31,7 +31,7 @@ class BiLSTMConfig(BaseConfig):
             self,
             embedding_dim,
             lstm_weights,
-            head: th.nn.Module,
+            head,
             dropout_rate,
             num_classes,
             tokenizer,
@@ -51,19 +51,19 @@ class BiLSTMConfig(BaseConfig):
         self.tokenization_args = tokenization_args
 
     @classmethod
-    def ukdebates_anonymous(
+    def ukdebates_asd_anonymous(
             cls
     ):
         return cls(
             embedding_dim=200,
             lstm_weights=[128, 32],
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(64, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
             ),
             dropout_rate=0.0,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0001,
@@ -71,17 +71,17 @@ class BiLSTMConfig(BaseConfig):
             },
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            loss_function=th.nn.CrossEntropyLoss(),
-            batch_size=4,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=16,
             num_classes=2
         )
 
     @classmethod
-    def ukdebates_mancini_2022(
+    def ukdebates_asd_mancini_2022(
             cls
     ):
         return cls(
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(64, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
@@ -99,7 +99,7 @@ class BiLSTMConfig(BaseConfig):
             num_classes=2,
             seeds=[15371, 15372, 15373],
             batch_size=16,
-            loss_function=th.nn.CrossEntropyLoss(),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         )
 
     @classmethod
@@ -107,7 +107,7 @@ class BiLSTMConfig(BaseConfig):
             cls
     ):
         return cls(
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(256, 64),
                 th.nn.ReLU(),
                 th.nn.Linear(64, 2)
@@ -125,7 +125,7 @@ class BiLSTMConfig(BaseConfig):
             num_classes=2,
             seeds=[15371, 15372, 15373],
             batch_size=16,
-            loss_function=th.nn.CrossEntropyLoss()
+            #TODO loss
         )
 
     @classmethod
@@ -135,13 +135,13 @@ class BiLSTMConfig(BaseConfig):
         return cls(
             embedding_dim=200,
             lstm_weights=[128, 32],
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(128, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 3)
             ),
             dropout_rate=0.0,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0002,
@@ -149,8 +149,8 @@ class BiLSTMConfig(BaseConfig):
             },
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            loss_function=th.nn.CrossEntropyLoss(),
-            batch_size=4,
+            # TODO loss
+            batch_size=16,
             num_classes=3
         )
 
@@ -159,7 +159,7 @@ class BiLSTMConfig(BaseConfig):
             cls
     ):
         return cls(
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(128, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
@@ -176,8 +176,8 @@ class BiLSTMConfig(BaseConfig):
             },
             num_classes=2,
             seeds=[15371, 15372, 15373],
-            batch_size=16,
-            loss_function=th.nn.CrossEntropyLoss()
+            batch_size=4,
+            #TODO loss,
         )
 
     @classmethod
@@ -187,13 +187,13 @@ class BiLSTMConfig(BaseConfig):
         return cls(
             embedding_dim=200,
             lstm_weights=[128, 32],
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(64, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
             ),
             dropout_rate=0.0,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0002,
@@ -201,17 +201,17 @@ class BiLSTMConfig(BaseConfig):
             },
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            loss_function=th.nn.CrossEntropyLoss(),
+            # TODO loss
             batch_size=4,
             num_classes=2
         )
 
     @classmethod
-    def mmused_acd_mancini_2022(
+    def mmused_acc_mancini_2022(
             cls
     ):
         return cls(
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(64, 64),
                 th.nn.ReLU(),
                 th.nn.Linear(64, 2)
@@ -228,8 +228,8 @@ class BiLSTMConfig(BaseConfig):
             },
             num_classes=2,
             seeds=[15371, 15372, 15373],
-            batch_size=16,
-            loss_function=th.nn.CrossEntropyLoss()
+            batch_size=4,
+            # TODO loss
         )
 
     @classmethod
@@ -239,13 +239,13 @@ class BiLSTMConfig(BaseConfig):
         return cls(
             embedding_dim=200,
             lstm_weights=[128, 32],
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(64, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
             ),
             dropout_rate=0.0,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0002,
@@ -253,7 +253,7 @@ class BiLSTMConfig(BaseConfig):
             },
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            loss_function=th.nn.CrossEntropyLoss(),
+            # TODO loss
             batch_size=4,
             num_classes=2
         )
@@ -265,7 +265,7 @@ class BiLSTMConfig(BaseConfig):
         return cls(
             embedding_dim=200,
             lstm_weights=[128, 32],
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(64, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 6)
@@ -279,8 +279,8 @@ class BiLSTMConfig(BaseConfig):
             },
             embedding_model='glove.6B.200d',
             tokenizer=get_tokenizer(tokenizer='basic_english'),
-            loss_function=th.nn.CrossEntropyLoss(),
-            batch_size=4,
+            # TODO loss
+            batch_size=16,
             num_classes=6
         )
 
@@ -319,7 +319,7 @@ class TransformerConfig(BaseConfig):
     def __init__(
             self,
             model_card,
-            head: th.nn.Module,
+            head,
             num_classes,
             dropout_rate=0.0,
             is_transformer_trainable: bool = False,
@@ -341,17 +341,18 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='bert-base-uncased',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
             ),
             dropout_rate=0.0,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            batch_size=4,
+            batch_size=16,
             num_classes=2,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
             is_transformer_trainable=False
         )
 
@@ -361,7 +362,7 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='roberta-base',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 2)
@@ -370,8 +371,9 @@ class TransformerConfig(BaseConfig):
             seeds=[42, 2024, 666, 11, 1492],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
-            batch_size=4,
+            batch_size=16,
             num_classes=2,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
             is_transformer_trainable=False
         )
 
@@ -381,7 +383,7 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='bert-base-uncased',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
@@ -390,8 +392,8 @@ class TransformerConfig(BaseConfig):
             dropout_rate=0.0,
             is_transformer_trainable=True,
             tokenizer_args={},
-            batch_size=8,
-            loss_function=th.nn.CrossEntropyLoss()
+            batch_size=16,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
         )
 
     @classmethod
@@ -562,15 +564,16 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='bert-base-uncased',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768 * 2, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 3)
             ),
             dropout_rate=0.2,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.36, 6.20, 27.42])),
             batch_size=4,
             num_classes=3,
             is_transformer_trainable=False
@@ -582,15 +585,16 @@ class TransformerConfig(BaseConfig):
     ):
         return cls(
             model_card='roberta-base',
-            head=th.nn.Sequential(
+            head=lambda: th.nn.Sequential(
                 th.nn.Linear(768 * 2, 256),
                 th.nn.ReLU(),
                 th.nn.Linear(256, 3)
             ),
             dropout_rate=0.2,
-            seeds=[42, 2024, 666, 11, 1492],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.36, 6.20, 27.42])),
             batch_size=4,
             num_classes=3,
             is_transformer_trainable=False

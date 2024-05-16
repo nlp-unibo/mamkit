@@ -84,7 +84,7 @@ if __name__ == '__main__':
                            lstm_weights=config.lstm_weights,
                            head=config.head)
             model = to_lighting_model(model=model,
-                                      loss_function=th.nn.CrossEntropyLoss(),
+                                      loss_function=config.loss_function,
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
                                       val_metrics={'val_f1': F1Score(task='multiclass', num_classes=2)},

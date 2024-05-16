@@ -20,7 +20,7 @@ class BiLSTM(TextOnlyModel):
             vocab_size,
             embedding_dim,
             lstm_weights,
-            head: th.nn.Module,
+            head,
             dropout_rate=0.0,
             embedding_matrix=None
     ):
@@ -34,7 +34,7 @@ class BiLSTM(TextOnlyModel):
 
         self.lstm = LSTMStack(input_size=embedding_dim,
                               lstm_weigths=lstm_weights)
-        self.head = head
+        self.head = head()
 
         self.dropout = th.nn.Dropout(p=dropout_rate)
 
@@ -92,7 +92,7 @@ class Transformer(TextOnlyModel):
     def __init__(
             self,
             model_card,
-            head: th.nn.Module,
+            head,
             dropout_rate=0.0,
             is_transformer_trainable: bool = False,
     ):
@@ -107,7 +107,7 @@ class Transformer(TextOnlyModel):
                 for param in module.parameters():
                     param.requires_grad = False
 
-        self.head = head
+        self.head = head()
         self.dropout = th.nn.Dropout(p=dropout_rate)
 
     def forward(
