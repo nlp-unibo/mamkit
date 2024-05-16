@@ -132,6 +132,8 @@ class BiLSTMTransformerConfig(BaseConfig):
                   tags={'mancini-et-al-2022'}): 'ukdebates_mancini_2022',
         ConfigKey(dataset='marg', input_mode=InputMode.AUDIO_ONLY, task_name='arc',
                   tags={'mancini-et-al-2022'}): 'marg_mancini_2022',
+        ConfigKey(dataset='marg', input_mode=InputMode.AUDIO_ONLY, task_name='arc',
+                  tags={'anonymous'}): 'marg_arc_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.AUDIO_ONLY, task_name='asd',
                   tags={'mancini-et-al-2022'}): 'mmused_asd_mancini_2022',
         ConfigKey(dataset='mmused', input_mode=InputMode.AUDIO_ONLY, task_name='asd',
@@ -251,6 +253,34 @@ class BiLSTMTransformerConfig(BaseConfig):
         )
 
     @classmethod
+    def marg_arc_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='facebook/wav2vec2-base-960h',
+            embedding_dim=768,
+            sampling_rate=16000,
+            head=th.nn.Sequential(
+                th.nn.Linear(128, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 3)
+            ),
+            optimizer_args={
+                'lr': 0.0002,
+                'weight_decay': 0.001
+            },
+            optimizer=th.optim.Adam,
+            lstm_weights=[64, 32],
+            dropout_rate=0.1,
+            aggregate=False,
+            downsampling_factor=None,
+            num_classes=3,
+            seeds=[42, 2024, 666, 11, 1492],
+            batch_size=4,
+            loss_function=th.nn.CrossEntropyLoss()
+        )
+
+    @classmethod
     def mmused_asd_mancini_2022(
             cls
     ):
@@ -365,6 +395,8 @@ class TransformerEncoderConfig(BaseConfig):
                   tags={'anonymous'}): 'mmused_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.AUDIO_ONLY, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.AUDIO_ONLY, task_name='arc',
+                  tags={'anonymous'}): 'marg_arc_anonymous',
     }
 
     def __init__(
@@ -473,6 +505,36 @@ class TransformerEncoderConfig(BaseConfig):
                 num_layers=1
             ),
             num_classes=2,
+            processor_args={},
+            model_args={},
+            aggregate=False,
+            downsampling_factor=None,
+            sampling_rate=16000,
+            batch_size=4,
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            dropout_rate=0.2,
+            loss_function=th.nn.CrossEntropyLoss(),
+            seeds=[42, 2024, 666, 11, 1492],
+        )
+
+    @classmethod
+    def marg_arc_anonymous(
+            cls
+    ):
+        return cls(
+            head=th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            model_card='facebook/wav2vec2-base-960h',
+            embedding_dim=768,
+            encoder=th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=8, dim_feedforward=100, batch_first=True),
+                num_layers=1
+            ),
+            num_classes=3,
             processor_args={},
             model_args={},
             aggregate=False,

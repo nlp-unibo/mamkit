@@ -123,3 +123,32 @@ class Transformer(TextOnlyModel):
 
         logits = self.head(text_emb)
         return logits
+
+
+class PairTransformer(Transformer):
+
+    def encode_text(
+            self,
+            text
+    ):
+        input_ids, attention_mask = text
+
+        tokens_emb = self.model(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state
+        tokens_emb = self.dropout(tokens_emb)
+        text_emb = (tokens_emb * attention_mask[:, :, None]).sum(dim=1)
+        text_emb = text_emb / attention_mask.sum(dim=1)[:, None]
+
+        return text_emb
+
+    def forward(
+            self,
+            text
+    ):
+        a_text, b_text = text
+
+        a_text_emb = self.encode_text(text=a_text)
+        b_text_emb = self.encode_text(text=b_text)
+
+        concat_emb = th.concat((a_text_emb, b_text_emb), dim=-1)
+        logits = self.head(concat_emb)
+        return logits

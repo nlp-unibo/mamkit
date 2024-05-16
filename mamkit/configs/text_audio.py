@@ -13,7 +13,9 @@ class BiLSTMConfig(BaseConfig):
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous'}): 'mmused_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
-                  tags={'anonymous'}): 'mmused_acc_anonymous'
+                  tags={'anonymous'}): 'mmused_acc_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous'}): 'marg_arc_anonymous'
     }
 
     def __init__(
@@ -159,6 +161,40 @@ class BiLSTMConfig(BaseConfig):
             num_classes=2,
         )
 
+    @classmethod
+    def marg_arc_anonymous(
+            cls
+    ):
+        return cls(
+            text_embedding_dim=200,
+            text_lstm_weights=[128, 32],
+            head=th.nn.Sequential(
+                th.nn.Linear(256, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 3)
+            ),
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+            audio_embedding_dim=768,
+            audio_lstm_weights=[64, 32],
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 0.0001,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            embedding_model='glove.6B.200d',
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            tokenizer=get_tokenizer(tokenizer='basic_english'),
+            loss_function=th.nn.CrossEntropyLoss(),
+            batch_size=4,
+            num_classes=3,
+        )
+
 
 class MMTransformerConfig(BaseConfig):
     configs = {
@@ -173,7 +209,11 @@ class MMTransformerConfig(BaseConfig):
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous', 'bert', 'wav2vec'}): 'mmused_acc_bert_wav2vec_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
-                  tags={'anonymous', 'roberta', 'wav2vec'}): 'mmused_acc_roberta_wav2vec_anonymous'
+                  tags={'anonymous', 'roberta', 'wav2vec'}): 'mmused_acc_roberta_wav2vec_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'bert', 'wav2vec'}): 'marg_arc_bert_wav2vec_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'roberta', 'wav2vec'}): 'marg_arc_roberta_wav2vec_anonymous'
     }
 
     def __init__(
@@ -424,6 +464,76 @@ class MMTransformerConfig(BaseConfig):
             num_classes=2,
         )
 
+    @classmethod
+    def marg_arc_bert_wav2vec_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=th.nn.Sequential(
+                th.nn.Linear(832 * 2, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 3)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=th.nn.CrossEntropyLoss(),
+            batch_size=4,
+            num_classes=3,
+        )
+
+    @classmethod
+    def marg_arc_roberta_wav2vec_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=th.nn.Sequential(
+                th.nn.Linear(832 * 2, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 3)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=th.nn.CrossEntropyLoss(),
+            batch_size=4,
+            num_classes=3,
+        )
+
 
 class CSAConfig(BaseConfig):
     configs = {
@@ -433,6 +543,8 @@ class CSAConfig(BaseConfig):
                   tags={'anonymous'}): 'mmused_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous'}): 'marg_arc_anonymous',
     }
 
     def __init__(
@@ -575,6 +687,40 @@ class CSAConfig(BaseConfig):
             audio_dropout_rate=0.1,
         )
 
+    @classmethod
+    def marg_arc_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            positional_encoder=PositionalEncoding(768, dual_modality=False),
+            loss_function=th.nn.CrossEntropyLoss(),
+            batch_size=4,
+            num_classes=3,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+        )
+
 
 class EnsembleConfig(BaseConfig):
     configs = {
@@ -582,6 +728,8 @@ class EnsembleConfig(BaseConfig):
                   tags={'anonymous'}): 'ukdebates_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous'}): 'marg_arc_anonymous',
     }
 
     def __init__(
@@ -764,6 +912,51 @@ class EnsembleConfig(BaseConfig):
             audio_dropout_rate=0.1
         )
 
+    @classmethod
+    def marg_arc_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            audio_head=th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            positional_encoder=PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=th.nn.NLLLoss(),
+            batch_size=4,
+            num_classes=3,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
+        )
+
 
 class MulTAConfig(BaseConfig):
     configs = {
@@ -771,6 +964,8 @@ class MulTAConfig(BaseConfig):
                   tags={'anonymous'}): 'ukdebates_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous'}): 'marg_arc_anonymous',
     }
 
     def __init__(
@@ -910,6 +1105,43 @@ class MulTAConfig(BaseConfig):
             loss_function=th.nn.CrossEntropyLoss(),
             batch_size=4,
             num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
+    def marg_arc_anonymous(
+            cls
+    ):
+        return cls(
+            head=th.nn.Sequential(
+                th.nn.Linear(768 * 4, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            d_ffn=2048,
+            n_blocks=4,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1,
+            positional_encoder=PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            loss_function=th.nn.CrossEntropyLoss(),
+            batch_size=4,
+            num_classes=3,
             audio_model_args={},
             processor_args={},
             tokenizer_args={},

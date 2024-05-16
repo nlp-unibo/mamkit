@@ -1,8 +1,8 @@
 import torch as th
 from torch.nn.utils.rnn import pad_sequence
-from transformers import AutoTokenizer, AutoProcessor, AutoModel
 from torchaudio.backend.soundfile_backend import load
 from torchaudio.functional import resample
+from transformers import AutoTokenizer, AutoProcessor, AutoModel
 
 
 class UnimodalCollator:
@@ -42,7 +42,7 @@ class PairUnimodalCollator(UnimodalCollator):
         if self.features_collator is None:
             features_collated = (a_features, b_features)
         else:
-            features_collated = self.features_collator(a_features, b_features)
+            features_collated = self.features_collator((a_features, b_features))
 
         if self.label_collator is None:
             labels_collated = labels
@@ -96,12 +96,12 @@ class PairMultimodalCollator(MultimodalCollator):
         if self.text_collator is None:
             text_collated = (a_text, b_text)
         else:
-            text_collated = self.text_collator(a_text, b_text)
+            text_collated = self.text_collator((a_text, b_text))
 
         if self.audio_collator is None:
             audio_collated = (a_audio, b_audio)
         else:
-            audio_collated = self.audio_collator(a_audio, b_audio)
+            audio_collated = self.audio_collator((a_audio, b_audio))
 
         if self.label_collator is None:
             labels_collated = labels
@@ -130,6 +130,22 @@ class TextCollator:
         return texts
 
 
+class PairTextCollator(TextCollator):
+
+    def __call__(
+            self,
+            texts
+    ):
+        a_texts, b_texts = texts
+        a_texts = [th.tensor(self.vocab(self.tokenizer(text))) for text in a_texts]
+        a_texts = pad_sequence(a_texts, padding_value=0, batch_first=True)
+
+        b_texts = [th.tensor(self.vocab(self.tokenizer(text))) for text in b_texts]
+        b_texts = pad_sequence(b_texts, padding_value=0, batch_first=True)
+
+        return a_texts, b_texts
+
+
 class TextTransformerCollator:
     def __init__(
             self,
@@ -153,15 +169,53 @@ class TextTransformerCollator:
         return tokenized['input_ids'], tokenized['attention_mask']
 
 
+class PairTextTransformerCollator(TextTransformerCollator):
+
+    def __call__(
+            self,
+            texts
+    ):
+        a_texts, b_texts = texts
+        a_tokenized = self.tokenizer(a_texts,
+                                     padding=True,
+                                     return_tensors='pt',
+                                     **self.tokenizer_args).to(self.device)
+        b_tokenized = self.tokenizer(b_texts,
+                                     padding=True,
+                                     return_tensors='pt',
+                                     **self.tokenizer_args).to(self.device)
+        return (a_tokenized['input_ids'], a_tokenized['attention_mask']), \
+            (b_tokenized['input_ids'], b_tokenized['attention_mask'])
+
+
 class TextTransformerOutputCollator:
 
     def __call__(
             self,
             texts
-                 ):
+    ):
         texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in texts], padding_value=0.0, batch_first=True)
         attention_mask = texts[:, :, 0] != 0.0
         return texts, attention_mask.to(th.float32)
+
+
+class PairTextTransformerOutputCollator(TextTransformerOutputCollator):
+
+    def __call__(
+            self,
+            texts
+    ):
+        a_texts, b_texts = texts
+
+        a_texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in a_texts], padding_value=0.0,
+                               batch_first=True)
+        a_attention_mask = a_texts[:, :, 0] != 0.0
+
+        b_texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in b_texts], padding_value=0.0,
+                               batch_first=True)
+        b_attention_mask = b_texts[:, :, 0] != 0.0
+
+        return (a_texts, a_attention_mask.to(th.float32)), (b_texts, b_attention_mask.to(th.float32))
 
 
 class AudioTransformerCollator:
@@ -240,3 +294,33 @@ class AudioCollator:
             features = features[:, None, :]
 
         return features, attention_mask.to(th.float32)
+
+
+class PairAudioCollator(AudioCollator):
+
+    def _parse_features(
+            self,
+            features
+    ):
+        features = [th.tensor(feature_set, dtype=th.float32) for feature_set in features]
+        features = pad_sequence(features, batch_first=True, padding_value=float('-inf'))
+        features[(features == float('-inf'))] = 0
+
+        if len(features.shape) == 3:
+            attention_mask = features[:, :, 0] != float('-inf')
+        else:
+            attention_mask = th.ones((features.shape[0]), dtype=th.int32)
+            features = features[:, None, :]
+
+        return features, attention_mask.to(th.float32)
+
+    def __call__(
+            self,
+            features
+    ):
+        a_features, b_features = features
+
+        a_features, a_attention_mask = self._parse_features(a_features)
+        b_features, b_attention_mask = self._parse_features(b_features)
+
+        return (a_features, a_attention_mask), (b_features, b_attention_mask)

@@ -10,17 +10,17 @@ from torch.utils.data import DataLoader
 from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.base import ConfigKey
-from mamkit.configs.text import BiLSTMConfig
-from mamkit.data.collators import PairUnimodalCollator, PairTextCollator
+from mamkit.configs.audio import BiLSTMTransformerConfig
+from mamkit.data.collators import PairUnimodalCollator, PairAudioCollator
 from mamkit.data.datasets import MArg, InputMode
-from mamkit.data.processing import PairVocabBuilder, PairUnimodalProcessor
-from mamkit.models.text import PairBiLSTM
+from mamkit.data.processing import PairUnimodalProcessor, PairAudioTransformer
+from mamkit.models.audio import PairBiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'marg', 'arc', 'text_only_lstm')
+    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'marg', 'arc', 'audio_only_lstm')
     if not save_path.exists():
         save_path.mkdir(parents=True)
 
@@ -28,13 +28,13 @@ if __name__ == '__main__':
 
     loader = MArg(task_name='arc',
                   confidence=0.85,
-                  input_mode=InputMode.TEXT_ONLY,
+                  input_mode=InputMode.AUDIO_ONLY,
                   base_data_path=base_data_path)
 
-    config = BiLSTMConfig.from_config(key=ConfigKey(dataset='marg',
-                                                    input_mode=InputMode.TEXT_ONLY,
-                                                    task_name='arc',
-                                                    tags='anonymous'))
+    config = BiLSTMTransformerConfig.from_config(key=ConfigKey(dataset='marg',
+                                                               input_mode=InputMode.AUDIO_ONLY,
+                                                               task_name='arc',
+                                                               tags={'anonymous'}))
     trainer_args = {
         'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
@@ -45,9 +45,17 @@ if __name__ == '__main__':
     for seed in config.seeds:
         seed_everything(seed=seed)
         for split_info in loader.get_splits(key='mancini-et-al-2022'):
-            processor = PairUnimodalProcessor(features_processor=PairVocabBuilder(tokenizer=config.tokenizer,
-                                                                                  embedding_model=config.embedding_model,
-                                                                                  embedding_dim=config.embedding_dim))
+            processor = PairUnimodalProcessor(
+                features_processor=PairAudioTransformer(
+                    model_card=config.model_card,
+                    processor_args=config.processor_args,
+                    model_args=config.model_args,
+                    aggregate=config.aggregate,
+                    downsampling_factor=config.downsampling_factor,
+                    sampling_rate=config.sampling_rate
+                )
+            )
+
             processor.fit(train_data=split_info.train)
 
             split_info.train = processor(split_info.train)
@@ -56,32 +64,28 @@ if __name__ == '__main__':
 
             processor.clear()
 
-            unimodal_collator = PairUnimodalCollator(
-                features_collator=PairTextCollator(tokenizer=config.tokenizer,
-                                                   vocab=processor.features_processor.vocab),
+            collator = PairUnimodalCollator(
+                features_collator=PairAudioCollator(),
                 label_collator=lambda labels: th.tensor(labels)
             )
 
             train_dataloader = DataLoader(split_info.train,
                                           batch_size=config.batch_size,
                                           shuffle=True,
-                                          collate_fn=unimodal_collator)
+                                          collate_fn=collator)
             val_dataloader = DataLoader(split_info.val,
                                         batch_size=config.batch_size,
                                         shuffle=False,
-                                        collate_fn=unimodal_collator)
+                                        collate_fn=collator)
             test_dataloader = DataLoader(split_info.test,
                                          batch_size=config.batch_size,
                                          shuffle=False,
-                                         collate_fn=unimodal_collator)
+                                         collate_fn=collator)
 
-            model = PairBiLSTM(vocab_size=len(processor.features_processor.vocab),
-                               embedding_dim=config.embedding_dim,
+            model = PairBiLSTM(embedding_dim=config.embedding_dim,
                                dropout_rate=config.dropout_rate,
                                lstm_weights=config.lstm_weights,
-                               head=config.head,
-                               embedding_matrix=processor.features_processor.embedding_matrix
-                               )
+                               head=config.head)
             model = to_lighting_model(model=model,
                                       loss_function=th.nn.CrossEntropyLoss(),
                                       num_classes=config.num_classes,
@@ -91,7 +95,7 @@ if __name__ == '__main__':
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,
-                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=20),
+                                callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=5),
                                            PycharmProgressBar()])
             trainer.fit(model,
                         train_dataloaders=train_dataloader,

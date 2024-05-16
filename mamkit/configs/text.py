@@ -134,9 +134,9 @@ class BiLSTMConfig(BaseConfig):
             embedding_dim=200,
             lstm_weights=[128, 32],
             head=th.nn.Sequential(
-                th.nn.Linear(64, 128),
+                th.nn.Linear(128, 128),
                 th.nn.ReLU(),
-                th.nn.Linear(128, 2)
+                th.nn.Linear(128, 3)
             ),
             dropout_rate=0.0,
             seeds=[42, 2024, 666, 11, 1492],
@@ -149,7 +149,7 @@ class BiLSTMConfig(BaseConfig):
             tokenizer=get_tokenizer(tokenizer='basic_english'),
             loss_function=th.nn.CrossEntropyLoss(),
             batch_size=4,
-            num_classes=2
+            num_classes=3
         )
 
     @classmethod
@@ -276,7 +276,12 @@ class TransformerConfig(BaseConfig):
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
                   tags={'anonymous', 'bert'}): 'mmused_acc_bert_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
-                  tags={'anonymous', 'roberta'}): 'mmused_acc_roberta_anonymous'
+                  tags={'anonymous', 'roberta'}): 'mmused_acc_roberta_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
+                  tags={'anonymous', 'bert'}): 'marg_arc_bert_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
+                  tags={'anonymous', 'roberta'}): 'marg_arc_roberta_anonymous'
+
     }
 
     def __init__(
@@ -477,4 +482,44 @@ class TransformerConfig(BaseConfig):
             tokenizer_args={},
             batch_size=8,
             loss_function=th.nn.CrossEntropyLoss()
+        )
+
+    @classmethod
+    def marg_arc_bert_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='bert-base-uncased',
+            head=th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            dropout_rate=0.2,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=4,
+            num_classes=3,
+            is_transformer_trainable=False
+        )
+
+    @classmethod
+    def marg_arc_roberta_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='roberta-base',
+            head=th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            dropout_rate=0.2,
+            seeds=[42, 2024, 666, 11, 1492],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=4,
+            num_classes=3,
+            is_transformer_trainable=False
         )

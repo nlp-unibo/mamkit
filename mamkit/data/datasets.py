@@ -1337,7 +1337,8 @@ class MArg(Loader):
 
         self.data_path.mkdir(parents=True, exist_ok=True)
 
-        self.df = self.build()
+        if not self.final_path.exists():
+            self.build()
 
         self.add_splits(method=self.get_mancini_2022_splits,
                         key='mancini-et-al-2022')
@@ -1495,45 +1496,40 @@ class MArg(Loader):
         big_df.to_csv(filepath_topic.joinpath('full_feature_extraction_dataset.csv'), index=False)
 
     def build(self):
-        if not self.final_path.exists():
-            if not any(self.data_path.iterdir()):
-                logging.info('Downloading M-Arg data...')
-                tmp_path = self.data_path.joinpath('data.zip')
-                download(url='https://zenodo.org/api/records/5653504/files-archive',
-                         file_path=tmp_path)
-                logging.info('Download completed...')
+        if not any(self.data_path.iterdir()):
+            logging.info('Downloading M-Arg data...')
+            tmp_path = self.data_path.joinpath('data.zip')
+            download(url='https://zenodo.org/api/records/5653504/files-archive',
+                     file_path=tmp_path)
+            logging.info('Download completed...')
 
-                with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
-                    loaded_zip.extractall(self.data_path)
+            with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
+                loaded_zip.extractall(self.data_path)
 
-                tmp_path.unlink()
+            tmp_path.unlink()
 
-                dl_tmp_path = self.data_path.joinpath('rafamestre', 'm-arg_multimodal-argumentation-dataset-v1.0.0.zip')
-                with zipfile.ZipFile(dl_tmp_path, 'r') as loaded_zip:
-                    loaded_zip.extractall(self.data_path)
+            dl_tmp_path = self.data_path.joinpath('rafamestre', 'm-arg_multimodal-argumentation-dataset-v1.0.0.zip')
+            with zipfile.ZipFile(dl_tmp_path, 'r') as loaded_zip:
+                loaded_zip.extractall(self.data_path)
 
-                dl_tmp_path.unlink()
+            dl_tmp_path.unlink()
 
-                source_path = self.data_path.joinpath('rafamestre-m-arg_multimodal-argumentation-dataset-851736f')
-                copy_tree(source_path.as_posix(), self.data_path.as_posix())
+            source_path = self.data_path.joinpath('rafamestre-m-arg_multimodal-argumentation-dataset-851736f')
+            copy_tree(source_path.as_posix(), self.data_path.as_posix())
 
-                shutil.rmtree(source_path)
+            shutil.rmtree(source_path)
 
-            logging.info('Building M-Arg dataset...')
-            self.build_chunks()
-            feature_df = pd.read_csv(self.feature_path)
-            aggregated_df = pd.read_csv(self.aggregated_path)
-            train_df = self._build_complete_dataset(feature_df=feature_df,
-                                                    aggregated_df=aggregated_df)
+        logging.info('Building M-Arg dataset...')
+        self.build_chunks()
+        feature_df = pd.read_csv(self.feature_path)
+        aggregated_df = pd.read_csv(self.aggregated_path)
+        train_df = self._build_complete_dataset(feature_df=feature_df,
+                                                aggregated_df=aggregated_df)
 
-            # Add index for cv routine
-            train_df['index'] = np.arange(train_df.shape[0])
+        # Add index for cv routine
+        train_df['index'] = np.arange(train_df.shape[0])
 
-            train_df.to_csv(self.final_path, index=False)
-        else:
-            train_df = pd.read_csv(self.final_path)
-
-        return train_df
+        train_df.to_csv(self.final_path, index=False)
 
     def _get_text_data(
             self,
@@ -1565,7 +1561,14 @@ class MArg(Loader):
     def data(
             self
     ) -> pd.DataFrame:
-        return self.df
+        df = pd.read_csv(self.final_path)
+
+        if self.task_name == 'arc':
+            df.loc[df.relation == 'neither', 'relation'] = 0
+            df.loc[df.relation == 'support', 'relation'] = 1
+            df.loc[df.relation == 'attack', 'relation'] = 2
+
+        return df
 
     def get_default_splits(
             self,

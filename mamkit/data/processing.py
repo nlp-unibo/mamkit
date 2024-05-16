@@ -1,20 +1,22 @@
 import logging
 import pickle
 from pathlib import Path
-from typing import Optional, Iterable, Dict
+from typing import Optional, Iterable, Dict, List
 
 import librosa
-from librosa import feature
 import numpy as np
 import torch as th
+from librosa import feature
 from skimage.measure import block_reduce
+from torch.nn.utils.rnn import pad_sequence
 from torchaudio.backend.soundfile_backend import load
 from torchaudio.functional import resample
 from torchtext.vocab import pretrained_aliases, build_vocab_from_iterator
 from tqdm import tqdm
 from transformers import AutoModel, AutoProcessor, AutoTokenizer
 
-from mamkit.data.datasets import UnimodalDataset, MultimodalDataset, MAMDataset, PairUnimodalDataset, PairMultimodalDataset
+from mamkit.data.datasets import UnimodalDataset, MultimodalDataset, MAMDataset, PairUnimodalDataset, \
+    PairMultimodalDataset
 
 
 class Processor:
@@ -656,9 +658,9 @@ class AudioTransformer(ProcessorComponent):
 
         parsed_audio = []
         for audio_file in tqdm(audio_files, desc='Extracting Audio Features...'):
-            if not audio_file.is_file():
+            if not Path(audio_file).is_file():
                 raise RuntimeError(f'Could not read file {audio_file}')
-            audio, sampling_rate = load(audio_file.as_posix())
+            audio, sampling_rate = load(audio_file)
             if sampling_rate != self.sampling_rate:
                 audio = resample(audio, sampling_rate, self.sampling_rate)
                 audio = th.mean(audio, dim=0, keepdim=True)
@@ -723,30 +725,31 @@ class PairAudioTransformer(ProcessorComponent):
 
     def __call__(
             self,
-            a_audio_files: Iterable[Path],
-            b_audio_files: Iterable[Path]
+            a_audio_files: List[Path],
+            b_audio_files: List[Path]
     ):
         if self.model is None:
             self._init_models()
 
         a_parsed_audio, b_parsed_audio = [], []
-        for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), desc='Extracting Audio Features...'):
-            if not a_audio_file.is_file():
+        for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), total=len(a_audio_files), desc='Extracting Audio Features...'):
+            if not Path(a_audio_file).is_file():
                 raise RuntimeError(f'Could not read file {a_audio_file}')
-            a_audio, a_sampling_rate = load(a_audio_file.as_posix())
+            a_audio, a_sampling_rate = load(a_audio_file)
             if a_sampling_rate != self.sampling_rate:
                 a_audio = resample(a_audio, a_sampling_rate, self.sampling_rate)
-                a_audio = th.mean(a_audio, dim=0, keepdim=True)
+                a_audio = th.mean(a_audio, dim=0)
 
-            if not b_audio_file.is_file():
+            if not Path(b_audio_file).is_file():
                 raise RuntimeError(f'Could not read file {b_audio_file}')
-            b_audio, b_sampling_rate = load(b_audio_file.as_posix())
+            b_audio, b_sampling_rate = load(b_audio_file)
             if b_sampling_rate != self.sampling_rate:
                 b_audio = resample(b_audio, b_sampling_rate, self.sampling_rate)
-                b_audio = th.mean(b_audio, dim=0, keepdim=True)
+                b_audio = th.mean(b_audio, dim=0)
 
+            pair_audio = pad_sequence([a_audio, b_audio], batch_first=True, padding_value=0.0)
             with th.inference_mode():
-                features = self.processor([a_audio, b_audio],
+                features = self.processor(pair_audio,
                                           sampling_rate=self.sampling_rate,
                                           padding=True,
                                           return_tensors='pt',
