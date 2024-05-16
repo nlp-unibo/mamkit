@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Optional, Iterable, Dict
 
 import librosa
+from librosa import feature
 import numpy as np
 import torch as th
 from skimage.measure import block_reduce

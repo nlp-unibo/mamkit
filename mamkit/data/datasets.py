@@ -406,7 +406,7 @@ class MMUSED(Loader):
         for idx in tqdm(range(len(debate_ids)), desc='Trimming audio files...'):
             db_folder_id = debate_ids[idx]
 
-            export_filename = self.audio_path.joinpath(db_folder_id, 'full_audio.wav')
+            export_filename = self.audio_path.joinpath(db_folder_id, 'full_audio_trim.wav')
             import_filename = self.audio_path.joinpath(db_folder_id, 'full_audio.wav')
 
             # importing file from location by giving its path
@@ -429,6 +429,9 @@ class MMUSED(Loader):
             extract = sound[db_start_time:db_end_time]
             # Saving file in required location
             extract.export(export_filename, format="wav")  # wav conversion is faster than mp3 conversion
+
+            # clear
+            import_filename.unlink()
 
     def copy_transcripts(
             self,
@@ -490,7 +493,7 @@ class MMUSED(Loader):
         """
         for debate_id in tqdm(range(len(debate_ids)), desc='Generating audio chunks...'):
             folder_id = debate_ids[debate_id]
-            filename = self.audio_path.joinpath(folder_id, 'full_audio.wav')
+            filename = self.audio_path.joinpath(folder_id, 'full_audio_trim.wav')
             chunks_folder = self.audio_path.joinpath(folder_id, 'splits')
             chunks_folder.mkdir(parents=True, exist_ok=True)
 
@@ -668,7 +671,7 @@ class MMUSED(Loader):
             folder_id = debate_ids[debate_id]
             dataset_path = self.datasets_path.joinpath(folder_id, 'dataset.csv')
             dataset_clip_path = self.datasets_path.joinpath(folder_id, 'dataset_clip.csv')
-            full_audio_path = self.audio_path.joinpath(folder_id, 'full_audio.wav')
+            full_audio_path = self.audio_path.joinpath(folder_id, 'full_audio_trim.wav')
             audio_clips_path = self.clips_path.joinpath(folder_id)
             audio_clips_path.mkdir(parents=True, exist_ok=True)
 
@@ -689,8 +692,14 @@ class MMUSED(Loader):
                     extract.export(clip_name, format="wav")
                     df.at[i, "idClip"] = idClip
 
+            # clear
+            full_audio_path.unlink()
+
             # save new csv
             df.to_csv(dataset_clip_path)
+
+        # clear
+        shutil.rmtree(self.audio_path)
 
     def remove_duplicates(
             self,
@@ -874,7 +883,7 @@ class MMUSED(Loader):
             self
     ):
         if not self.files_path.exists():
-            logging.info('Download MMUSED data...')
+            logging.info('Downloading MMUSED data...This might take several minutes, enjoy a coffee ;)')
             tmp_path = self.data_path.joinpath('data.zip')
             download(url='https://zenodo.org/api/records/11179380/files-archive',
                      file_path=tmp_path)
@@ -929,6 +938,9 @@ class MMUSED(Loader):
     ) -> pd.DataFrame:
         df = pd.read_csv(self.final_path.joinpath('MM-USElecDeb60to16.csv'))
 
+        # drop rare samples where audio is empty
+        df = df[df['NewBegin'] != df['NewEnd']]
+
         audio_paths = [self.clips_path.joinpath(document_id, f'{clip_id}.wav')
                        for document_id, clip_id in zip(df.Document.values, df['idClip'].values)]
         df['audio_paths'] = audio_paths
@@ -937,6 +949,9 @@ class MMUSED(Loader):
             df = df[df['Component'].isin(['Premise', 'Claim'])]
             df.loc[df.Component == 'Premise', 'Component'] = 0
             df.loc[df.Component == 'Claim', 'Component'] = 1
+
+            # drop rows where Component is Other
+            df = df[df['Component'] != 'O']
         else:
             df.loc[df['Component'].isin(['Premise', 'Claim']), 'Component'] = 'Arg'
             df.loc[df.Component != 'Arg', 'Component'] = 0
