@@ -5,7 +5,7 @@ import lightning as L
 import numpy as np
 import torch as th
 from lightning.pytorch import seed_everything
-from lightning.pytorch.callbacks import EarlyStopping
+from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from torch.utils.data import DataLoader
 from torchmetrics.classification.f_beta import F1Score
 
@@ -104,13 +104,14 @@ if __name__ == '__main__':
 
             trainer = L.Trainer(**trainer_args,
                                 callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=5),
+                                           ModelCheckpoint(monitor='val_loss', mode='min'),
                                            PycharmProgressBar()])
             trainer.fit(model,
                         train_dataloaders=train_dataloader,
                         val_dataloaders=val_dataloader)
 
-            val_metrics = trainer.test(model, val_dataloader)[0]
-            test_metrics = trainer.test(model, test_dataloader)[0]
+            val_metrics = trainer.test(ckpt_path='best', dataloaders=val_dataloader)[0]
+            test_metrics = trainer.test(ckpt_path='best', dataloaders=test_dataloader)[0]
             logging.info(f'Validation metrics: {val_metrics}')
             logging.info(f'Test metrics: {test_metrics}')
 

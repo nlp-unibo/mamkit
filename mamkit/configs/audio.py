@@ -337,7 +337,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             num_classes=2,
-            seeds=[42],
+            seeds=[42, 2024, 666],
             batch_size=4,
             loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
         )
@@ -390,7 +390,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             num_classes=2,
-            seeds=[42],
+            seeds=[42, 2024, 666],
             batch_size=4
         )
 
@@ -524,7 +524,7 @@ class TransformerEncoderConfig(BaseConfig):
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
             dropout_rate=0.2,
             loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
-            seeds=[42],
+            seeds=[42, 2024, 666],
         )
 
     @classmethod
@@ -553,7 +553,7 @@ class TransformerEncoderConfig(BaseConfig):
             optimizer=th.optim.Adam,
             optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
             dropout_rate=0.2,
-            seeds=[42]
+            seeds=[42, 2024, 666],
         )
 
     @classmethod

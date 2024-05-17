@@ -111,7 +111,7 @@ class BiLSTMConfig(BaseConfig):
             audio_dropout_rate=0.1,
             audio_embedding_dim=768,
             audio_lstm_weights=[64, 32],
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0001,
@@ -145,7 +145,7 @@ class BiLSTMConfig(BaseConfig):
             audio_dropout_rate=0.1,
             audio_embedding_dim=768,
             audio_lstm_weights=[64, 32],
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 0.0001,
@@ -380,7 +380,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -415,7 +415,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -450,7 +450,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -484,7 +484,7 @@ class MMTransformerConfig(BaseConfig):
             audio_dropout_rate=0.2,
             audio_embedding_dim=768,
             lstm_weights=[64, 32],
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-03,
@@ -749,7 +749,7 @@ class CSAConfig(BaseConfig):
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -782,7 +782,7 @@ class CSAConfig(BaseConfig):
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -871,6 +871,8 @@ class EnsembleConfig(BaseConfig):
     configs = {
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous'}): 'ukdebates_asd_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous'}): 'mmused_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
@@ -991,12 +993,12 @@ class EnsembleConfig(BaseConfig):
             positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
             audio_embedding_dim=768,
             loss_function=lambda: th.nn.NLLLoss(weight=th.Tensor([2.15385234, 0.65116223])),
-            batch_size=2,
+            batch_size=4,
             num_classes=2,
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -1036,12 +1038,12 @@ class EnsembleConfig(BaseConfig):
             positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
             audio_embedding_dim=768,
             loss_function=lambda: th.nn.NLLLoss(),
-            batch_size=2,
+            batch_size=4,
             num_classes=2,
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -1154,6 +1156,8 @@ class MulTAConfig(BaseConfig):
     configs = {
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous'}): 'ukdebates_asd_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous'}): 'mmused_asd_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
@@ -1260,12 +1264,12 @@ class MulTAConfig(BaseConfig):
             audio_embedding_dim=768,
             text_embedding_dim=768,
             loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
-            batch_size=2,
+            batch_size=4,
             num_classes=2,
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
@@ -1301,7 +1305,7 @@ class MulTAConfig(BaseConfig):
             audio_model_args={},
             processor_args={},
             tokenizer_args={},
-            seeds=[42],
+            seeds=[42, 2024, 666],
             optimizer=th.optim.Adam,
             optimizer_args={
                 'lr': 1e-04,
