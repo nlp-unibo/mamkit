@@ -36,7 +36,8 @@ if __name__ == '__main__':
                                                            tags={'anonymous', 'bert', 'wav2vec'}))
 
     trainer_args = {
-        'accelerator': 'gpu',
+        'accelerator': 'auto',
+        'devices': 1,
         'accumulate_grad_batches': 3,
         'max_epochs': 20,
     }

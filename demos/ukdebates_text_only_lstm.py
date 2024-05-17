@@ -35,7 +35,8 @@ if __name__ == '__main__':
                                                     task_name='asd',
                                                     tags='anonymous'))
     trainer_args = {
-        'accelerator': 'gpu',
+        'accelerator': 'auto',
+        'devices': 1,
         'accumulate_grad_batches': 3,
         'max_epochs': 100,
     }
