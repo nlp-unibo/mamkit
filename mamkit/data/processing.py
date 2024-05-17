@@ -682,6 +682,8 @@ class AudioTransformer(ProcessorComponent):
                         features = features.permute(0, 2, 1)
                     except RuntimeError:
                         features = model_features
+                else:
+                    features = model_features
 
                 features = features[0].detach().cpu().numpy()
 
@@ -769,6 +771,8 @@ class PairAudioTransformer(ProcessorComponent):
                         features = features.permute(0, 2, 1)
                     except RuntimeError:
                         features = model_features
+                else:
+                    features = model_features
 
                 features = features.detach().cpu().numpy()
 
