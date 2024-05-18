@@ -10,12 +10,16 @@ if __name__ == '__main__':
         test_name = results_file.parent.name
 
         metrics = np.load(results_file, allow_pickle=True).item()
-        f1_score = metrics['test']['avg_test_f1']
+
+        # for MMUSED-fallacy we have only one seed since it is a long LOO test
+        if 'mmused-fallacy' in results_file.as_posix():
+            f1_score = metrics['test']['per_seed_avg_test_f1']
+        else:
+            f1_score = metrics['test']['avg_test_f1']
         f1_score = f'{f1_score[0]:.4f} +/- {f1_score[1]:.4f}'
 
-        results.setdefault(dataset_name, {}).setdefault(test_name, f1_score)
+        results[f'{dataset_name}_{test_name}'] = f1_score
 
-    for dataset_name in results:
-        for test_name in results[dataset_name]:
-            f1_score = results[dataset_name][test_name]
-            print(f'Dataset {dataset_name} - Test name {test_name} - F1 {f1_score}')
+    results = sorted(results.items())
+    for item in results:
+        print(f'Test - {item[0]} - F1 {item[1]}')
