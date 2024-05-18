@@ -51,7 +51,7 @@ if __name__ == '__main__':
                 tokenizer_args=config.tokenizer_args,
                 model_args=config.text_model_args
             ),
-                audio_processor=AudioTransformer(
+                audio_processor=AudioTransformerExtractor(
                     model_card=config.audio_model_card,
                     processor_args=config.processor_args,
                     model_args=config.audio_model_args,
