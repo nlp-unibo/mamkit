@@ -10,17 +10,18 @@ from torch.utils.data import DataLoader
 from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.base import ConfigKey
-from mamkit.configs.text_audio import BiLSTMTransformerConfig
+from mamkit.configs.text_audio import BiLSTMMFCCsConfig
 from mamkit.data.collators import MultimodalCollator, TextCollator, AudioCollator
 from mamkit.data.datasets import MMUSEDFallacy, InputMode
-from mamkit.data.processing import VocabBuilder, MultimodalProcessor, AudioTransformerExtractor
+from mamkit.data.processing import VocabBuilder, MultimodalProcessor, MFCCExtractor
 from mamkit.models.text_audio import BiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'mmused-fallacy', 'afc', 'text_audio_lstm_hubert')
+    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'mmused-fallacy', 'afc',
+                                                                'text_audio_lstm_mfcc')
     if not save_path.exists():
         save_path.mkdir(parents=True)
 
@@ -30,10 +31,10 @@ if __name__ == '__main__':
                            input_mode=InputMode.TEXT_AUDIO,
                            base_data_path=base_data_path)
 
-    config = BiLSTMTransformerConfig.from_config(key=ConfigKey(dataset='mmused-fallacy',
-                                                               input_mode=InputMode.TEXT_AUDIO,
-                                                               task_name='afc',
-                                                               tags={'anonymous', 'hubert'}))
+    config = BiLSTMMFCCsConfig.from_config(key=ConfigKey(dataset='mmused-fallacy',
+                                                         input_mode=InputMode.TEXT_AUDIO,
+                                                         task_name='afc',
+                                                         tags='anonymous'))
 
     trainer_args = {
         'accelerator': 'auto',
@@ -49,13 +50,12 @@ if __name__ == '__main__':
             processor = MultimodalProcessor(text_processor=VocabBuilder(tokenizer=config.tokenizer,
                                                                         embedding_model=config.embedding_model,
                                                                         embedding_dim=config.text_embedding_dim),
-                                            audio_processor=AudioTransformerExtractor(
-                                                model_card=config.audio_model_card,
-                                                processor_args=config.processor_args,
-                                                model_args=config.audio_model_args,
-                                                aggregate=config.aggregate,
-                                                downsampling_factor=config.downsampling_factor,
-                                                sampling_rate=config.sampling_rate
+                                            audio_processor=MFCCExtractor(
+                                                sampling_rate=config.sampling_rate,
+                                                normalize=config.normalize,
+                                                remove_energy=config.remove_energy,
+                                                pooling_sizes=config.pooling_sizes,
+                                                mfccs=config.mfccs
                                             ))
             processor.fit(train_data=split_info.train)
 

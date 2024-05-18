@@ -9,7 +9,7 @@ from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from torch.utils.data import DataLoader
 
 from mamkit.configs.base import ConfigKey
-from mamkit.configs.text_audio import BiLSTMConfig
+from mamkit.configs.text_audio import BiLSTMTransformerConfig
 from mamkit.data.collators import PairMultimodalCollator, PairTextCollator, PairAudioCollator
 from mamkit.data.datasets import MArg, InputMode
 from mamkit.data.processing import PairVocabBuilder, PairMultimodalProcessor, PairAudioTransformer
@@ -31,10 +31,10 @@ if __name__ == '__main__':
                   input_mode=InputMode.TEXT_AUDIO,
                   base_data_path=base_data_path)
 
-    config = BiLSTMConfig.from_config(key=ConfigKey(dataset='marg',
-                                                    input_mode=InputMode.TEXT_AUDIO,
-                                                    task_name='arc',
-                                                    tags={'anonymous', 'wavlm'}))
+    config = BiLSTMTransformerConfig.from_config(key=ConfigKey(dataset='marg',
+                                                               input_mode=InputMode.TEXT_AUDIO,
+                                                               task_name='arc',
+                                                               tags={'anonymous', 'wavlm'}))
 
     trainer_args = {
         'accelerator': 'gpu',

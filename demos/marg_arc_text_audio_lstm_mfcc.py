@@ -7,37 +7,37 @@ import torch as th
 from lightning.pytorch import seed_everything
 from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from torch.utils.data import DataLoader
-from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.base import ConfigKey
-from mamkit.configs.text_audio import BiLSTMTransformerConfig
-from mamkit.data.collators import MultimodalCollator, TextCollator, AudioCollator
-from mamkit.data.datasets import MMUSEDFallacy, InputMode
-from mamkit.data.processing import VocabBuilder, MultimodalProcessor, AudioTransformerExtractor
-from mamkit.models.text_audio import BiLSTM
+from mamkit.configs.text_audio import BiLSTMMFCCsConfig
+from mamkit.data.collators import PairMultimodalCollator, PairTextCollator, PairAudioCollator
+from mamkit.data.datasets import MArg, InputMode
+from mamkit.data.processing import PairVocabBuilder, PairMultimodalProcessor, PairMFCCExtractor
+from mamkit.models.text_audio import PairBiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
+from mamkit.utility.metrics import ClassSubsetMulticlassF1Score
 from mamkit.utility.model import to_lighting_model
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'mmused-fallacy', 'afc', 'text_audio_lstm_hubert')
+    save_path = Path(__file__).parent.parent.resolve().joinpath('results', 'marg', 'arc', 'text_audio_lstm_mfcc')
     if not save_path.exists():
         save_path.mkdir(parents=True)
 
     base_data_path = Path(__file__).parent.parent.resolve().joinpath('data')
 
-    loader = MMUSEDFallacy(task_name='afc',
-                           input_mode=InputMode.TEXT_AUDIO,
-                           base_data_path=base_data_path)
+    loader = MArg(task_name='arc',
+                  confidence=0.85,
+                  input_mode=InputMode.TEXT_AUDIO,
+                  base_data_path=base_data_path)
 
-    config = BiLSTMTransformerConfig.from_config(key=ConfigKey(dataset='mmused-fallacy',
-                                                               input_mode=InputMode.TEXT_AUDIO,
-                                                               task_name='afc',
-                                                               tags={'anonymous', 'hubert'}))
+    config = BiLSTMMFCCsConfig.from_config(key=ConfigKey(dataset='marg',
+                                                         input_mode=InputMode.TEXT_AUDIO,
+                                                         task_name='arc',
+                                                         tags='anonymous'))
 
     trainer_args = {
-        'accelerator': 'auto',
-        'devices': 1,
+        'accelerator': 'gpu',
         'accumulate_grad_batches': 3,
         'max_epochs': 20,
     }
@@ -45,18 +45,17 @@ if __name__ == '__main__':
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)
-        for split_info in loader.get_splits(key='mancini-et-al-2024'):
-            processor = MultimodalProcessor(text_processor=VocabBuilder(tokenizer=config.tokenizer,
-                                                                        embedding_model=config.embedding_model,
-                                                                        embedding_dim=config.text_embedding_dim),
-                                            audio_processor=AudioTransformerExtractor(
-                                                model_card=config.audio_model_card,
-                                                processor_args=config.processor_args,
-                                                model_args=config.audio_model_args,
-                                                aggregate=config.aggregate,
-                                                downsampling_factor=config.downsampling_factor,
-                                                sampling_rate=config.sampling_rate
-                                            ))
+        for split_info in loader.get_splits(key='mancini-et-al-2022'):
+            processor = PairMultimodalProcessor(text_processor=PairVocabBuilder(tokenizer=config.tokenizer,
+                                                                                embedding_model=config.embedding_model,
+                                                                                embedding_dim=config.text_embedding_dim),
+                                                audio_processor=PairMFCCExtractor(
+                                                    sampling_rate=config.sampling_rate,
+                                                    normalize=config.normalize,
+                                                    remove_energy=config.remove_energy,
+                                                    pooling_sizes=config.pooling_sizes,
+                                                    mfccs=config.mfccs
+                                                ))
             processor.fit(train_data=split_info.train)
 
             split_info.train = processor(split_info.train)
@@ -65,10 +64,10 @@ if __name__ == '__main__':
 
             processor.clear()
 
-            collator = MultimodalCollator(
-                text_collator=TextCollator(tokenizer=config.tokenizer,
-                                           vocab=processor.text_processor.vocab),
-                audio_collator=AudioCollator(),
+            collator = PairMultimodalCollator(
+                text_collator=PairTextCollator(tokenizer=config.tokenizer,
+                                               vocab=processor.text_processor.vocab),
+                audio_collator=PairAudioCollator(),
                 label_collator=lambda labels: th.tensor(labels)
             )
 
@@ -85,22 +84,26 @@ if __name__ == '__main__':
                                          shuffle=False,
                                          collate_fn=collator)
 
-            model = BiLSTM(vocab_size=len(processor.text_processor.vocab),
-                           audio_embedding_dim=config.audio_embedding_dim,
-                           text_embedding_dim=config.text_embedding_dim,
-                           text_lstm_weights=config.text_lstm_weights,
-                           audio_lstm_weights=config.audio_lstm_weights,
-                           head=config.head,
-                           text_dropout_rate=config.text_dropout_rate,
-                           audio_dropout_rate=config.audio_dropout_rate,
-                           embedding_matrix=processor.text_processor.embedding_matrix
-                           )
+            model = PairBiLSTM(vocab_size=len(processor.text_processor.vocab),
+                               audio_embedding_dim=config.audio_embedding_dim,
+                               text_embedding_dim=config.text_embedding_dim,
+                               text_lstm_weights=config.text_lstm_weights,
+                               audio_lstm_weights=config.audio_lstm_weights,
+                               head=config.head,
+                               text_dropout_rate=config.text_dropout_rate,
+                               audio_dropout_rate=config.audio_dropout_rate,
+                               embedding_matrix=processor.text_processor.embedding_matrix
+                               )
             model = to_lighting_model(model=model,
                                       loss_function=config.loss_function,
                                       num_classes=config.num_classes,
                                       optimizer_class=config.optimizer,
-                                      val_metrics={'val_f1': F1Score(task='multiclass', num_classes=6)},
-                                      test_metrics={'test_f1': F1Score(task='multiclass', num_classes=6)},
+                                      val_metrics={
+                                          'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3,
+                                                                                 class_subset=[1, 2])},
+                                      test_metrics={
+                                          'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3,
+                                                                                  class_subset=[1, 2])},
                                       **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,

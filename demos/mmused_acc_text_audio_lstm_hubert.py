@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.base import ConfigKey
-from mamkit.configs.text_audio import BiLSTMConfig
+from mamkit.configs.text_audio import BiLSTMTransformerConfig
 from mamkit.data.collators import MultimodalCollator, TextCollator, AudioCollator
 from mamkit.data.datasets import MMUSED, InputMode
 from mamkit.data.processing import VocabBuilder, MultimodalProcessor, AudioTransformerExtractor
@@ -30,10 +30,10 @@ if __name__ == '__main__':
                     input_mode=InputMode.TEXT_AUDIO,
                     base_data_path=base_data_path)
 
-    config = BiLSTMConfig.from_config(key=ConfigKey(dataset='mmused',
-                                                    input_mode=InputMode.TEXT_AUDIO,
-                                                    task_name='acc',
-                                                    tags={'anonymous', 'hubert'}))
+    config = BiLSTMTransformerConfig.from_config(key=ConfigKey(dataset='mmused',
+                                                               input_mode=InputMode.TEXT_AUDIO,
+                                                               task_name='acc',
+                                                               tags={'anonymous', 'hubert'}))
 
     trainer_args = {
         'accelerator': 'gpu',
