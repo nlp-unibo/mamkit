@@ -13,7 +13,7 @@ from torchaudio.backend.soundfile_backend import load
 from torchaudio.functional import resample
 from torchtext.vocab import pretrained_aliases, build_vocab_from_iterator
 from tqdm import tqdm
-from transformers import AutoModel, AutoProcessor, AutoTokenizer
+from transformers import AutoModel, AutoProcessor, AutoTokenizer, AutoFeatureExtractor
 
 from mamkit.data.datasets import UnimodalDataset, MultimodalDataset, MAMDataset, PairUnimodalDataset, \
     PairMultimodalDataset
@@ -651,7 +651,7 @@ class AudioTransformer(ProcessorComponent):
 
     def __call__(
             self,
-            audio_files: Iterable[Path]
+            audio_files: Iterable[str]
     ):
         if self.model is None:
             self._init_models()
@@ -699,6 +699,86 @@ class AudioTransformer(ProcessorComponent):
     ):
         self.model = None
         self.processor = None
+        th.cuda.empty_cache()
+
+
+class AudioTransformerExtractor(ProcessorComponent):
+
+    def __init__(
+            self,
+            model_card,
+            sampling_rate,
+            downsampling_factor=None,
+            aggregate: bool = False,
+            processor_args=None,
+            model_args=None
+    ):
+        self.model_card = model_card
+        self.sampling_rate = sampling_rate
+        self.downsampling_factor = downsampling_factor
+        self.aggregate = aggregate
+        self.processor_args = processor_args if processor_args is not None else {}
+        self.model_args = model_args if model_args is not None else {}
+        self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
+        self.processor = None
+        self.model = None
+
+    def _init_models(
+            self
+    ):
+        self.processor = AutoFeatureExtractor.from_pretrained(self.model_card)
+        self.model = AutoModel.from_pretrained(self.model_card).to(self.device)
+
+    def __call__(
+            self,
+            audio_files: Iterable[str]
+    ):
+        if self.model is None:
+            self._init_models()
+
+        parsed_audio = []
+        for audio_file in tqdm(audio_files, desc='Extracting Audio Features...'):
+            if not Path(audio_file).is_file():
+                raise RuntimeError(f'Could not read file {audio_file}')
+            audio, sampling_rate = load(audio_file)
+            if sampling_rate != self.sampling_rate:
+                audio = resample(audio, sampling_rate, self.sampling_rate)
+            audio = th.mean(audio, dim=0, keepdim=True)
+
+            with th.inference_mode():
+                features = self.processor(audio,
+                                          sampling_rate=self.sampling_rate,
+                                          padding=True,
+                                          return_tensors='pt',
+                                          **self.processor_args)
+                features = features.input_values[0].to(self.device)
+                model_features = self.model(features, **self.model_args).last_hidden_state[0].unsqueeze(0)
+
+                if self.downsampling_factor is not None:
+                    try:
+                        features = th.nn.functional.interpolate(model_features.permute(0, 2, 1),
+                                                                scale_factor=self.downsampling_factor,
+                                                                mode='linear')
+                        features = features.permute(0, 2, 1)
+                    except RuntimeError:
+                        features = model_features
+                else:
+                    features = model_features
+
+                features = features[0].detach().cpu().numpy()
+
+            if self.aggregate:
+                features = np.mean(features.squeeze(axis=0), axis=0, keepdims=True)
+
+            parsed_audio.append(features)
+
+        return parsed_audio
+
+    def clear(
+            self
+    ):
+        self.model = None
+        self.extractor = None
         th.cuda.empty_cache()
 
 

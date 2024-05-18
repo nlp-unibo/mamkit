@@ -237,23 +237,72 @@ class MMTransformerConfig(BaseConfig):
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous', 'bert', 'wav2vec'}): 'ukdebates_asd_bert_wav2vec_anonymous',
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'bert', 'hubert'}): 'ukdebates_asd_bert_hubert_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'bert', 'wavlm'}): 'ukdebates_asd_bert_wavlm_anonymous',
+
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous', 'roberta', 'wav2vec'}): 'ukdebates_asd_roberta_wav2vec_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'roberta', 'hubert'}): 'ukdebates_asd_roberta_hubert_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'roberta', 'wavlm'}): 'ukdebates_asd_roberta_wavlm_anonymous',
+
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous', 'bert', 'wav2vec'}): 'mmused_asd_bert_wav2vec_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'bert', 'hubert'}): 'mmused_asd_bert_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'bert', 'wavlm'}): 'mmused_asd_bert_wavlm_anonymous',
+
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous', 'roberta', 'wav2vec'}): 'mmused_asd_roberta_wav2vec_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'roberta', 'hubert'}): 'mmused_asd_roberta_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'roberta', 'wavlm'}): 'mmused_asd_roberta_wavlm_anonymous',
+
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous', 'bert', 'wav2vec'}): 'mmused_acc_bert_wav2vec_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'bert', 'hubert'}): 'mmused_acc_bert_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'bert', 'wavlm'}): 'mmused_acc_bert_wavlm_anonymous',
+
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous', 'roberta', 'wav2vec'}): 'mmused_acc_roberta_wav2vec_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'roberta', 'hubert'}): 'mmused_acc_roberta_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'roberta', 'wavlm'}): 'mmused_acc_roberta_wavlm_anonymous',
+
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
                   tags={'anonymous', 'bert', 'wav2vec'}): 'mmused_fallacy_afc_bert_wav2vec_anonymous',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'bert', 'hubert'}): 'mmused_fallacy_afc_bert_hubert_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'bert', 'wavlm'}): 'mmused_fallacy_afc_bert_wavlm_anonymous',
+
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
                   tags={'anonymous', 'roberta', 'wav2vec'}): 'mmused_fallacy_afc_roberta_wav2vec_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'roberta', 'hubert'}): 'mmused_fallacy_afc_roberta_hubert_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'roberta', 'wavlm'}): 'mmused_fallacy_afc_roberta_wavlm_anonymous',
+
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
                   tags={'anonymous', 'bert', 'wav2vec'}): 'marg_arc_bert_wav2vec_anonymous',
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
-                  tags={'anonymous', 'roberta', 'wav2vec'}): 'marg_arc_roberta_wav2vec_anonymous'
+                  tags={'anonymous', 'bert', 'hubert'}): 'marg_arc_bert_hubert_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'bert', 'wavlm'}): 'marg_arc_bert_wavlm_anonymous',
+
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'roberta', 'wav2vec'}): 'marg_arc_roberta_wav2vec_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'roberta', 'hubert'}): 'marg_arc_roberta_hubert_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'roberta', 'wavlm'}): 'marg_arc_roberta_wavlm_anonymous'
     }
 
     def __init__(
@@ -330,6 +379,76 @@ class MMTransformerConfig(BaseConfig):
         )
 
     @classmethod
+    def ukdebates_asd_bert_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=16,
+            num_classes=2,
+        )
+
+    @classmethod
+    def ukdebates_asd_bert_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=16,
+            num_classes=2,
+        )
+
+    @classmethod
     def ukdebates_asd_roberta_wav2vec_anonymous(
             cls
     ):
@@ -352,6 +471,76 @@ class MMTransformerConfig(BaseConfig):
                 'weight_decay': 0.0005
             },
             audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=16,
+            num_classes=2,
+        )
+
+    @classmethod
+    def ukdebates_asd_roberta_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=16,
+            num_classes=2,
+        )
+
+    @classmethod
+    def ukdebates_asd_roberta_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
             sampling_rate=16000,
             aggregate=False,
             downsampling_factor=None,
@@ -400,6 +589,77 @@ class MMTransformerConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_asd_bert_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+        )
+
+    @classmethod
+    def mmused_asd_bert_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+        )
+
+
+    @classmethod
     def mmused_asd_roberta_wav2vec_anonymous(
             cls
     ):
@@ -422,6 +682,76 @@ class MMTransformerConfig(BaseConfig):
                 'weight_decay': 0.0005
             },
             audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+        )
+
+    @classmethod
+    def mmused_asd_roberta_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+        )
+
+    @classmethod
+    def mmused_asd_roberta_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
             sampling_rate=16000,
             aggregate=False,
             downsampling_factor=1 / 5,
@@ -469,6 +799,74 @@ class MMTransformerConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_acc_bert_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            batch_size=4,
+            num_classes=2,
+        )
+
+    @classmethod
+    def mmused_acc_bert_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            batch_size=4,
+            num_classes=2,
+        )
+
+    @classmethod
     def mmused_acc_roberta_wav2vec_anonymous(
             cls
     ):
@@ -503,6 +901,74 @@ class MMTransformerConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_acc_roberta_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            batch_size=4,
+            num_classes=2,
+        )
+
+    @classmethod
+    def mmused_acc_roberta_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            batch_size=4,
+            num_classes=2,
+        )
+
+    @classmethod
     def mmused_fallacy_afc_bert_wav2vec_anonymous(
             cls
     ):
@@ -525,6 +991,78 @@ class MMTransformerConfig(BaseConfig):
                 'weight_decay': 0.0005
             },
             audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(
+                weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+            batch_size=8,
+            num_classes=6,
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_bert_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 6)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(
+                weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+            batch_size=8,
+            num_classes=6,
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_bert_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 6)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
             sampling_rate=16000,
             aggregate=False,
             downsampling_factor=1 / 5,
@@ -575,6 +1113,78 @@ class MMTransformerConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_fallacy_afc_roberta_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 6)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(
+                weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+            batch_size=8,
+            num_classes=6,
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_roberta_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 6)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(
+                weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+            batch_size=8,
+            num_classes=6,
+        )
+
+    @classmethod
     def marg_arc_bert_wav2vec_anonymous(
             cls
     ):
@@ -597,6 +1207,76 @@ class MMTransformerConfig(BaseConfig):
                 'weight_decay': 0.0005
             },
             audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
+            num_classes=3,
+        )
+
+    @classmethod
+    def marg_arc_bert_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832 * 2, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 3)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
+            num_classes=3,
+        )
+
+    @classmethod
+    def marg_arc_bert_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832 * 2, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 3)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
             sampling_rate=16000,
             aggregate=False,
             downsampling_factor=None,
@@ -644,19 +1324,113 @@ class MMTransformerConfig(BaseConfig):
             num_classes=3,
         )
 
+    @classmethod
+    def marg_arc_roberta_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832 * 2, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 3)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
+            num_classes=3,
+        )
+
+    @classmethod
+    def marg_arc_roberta_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='roberta-base',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832 * 2, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 3)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
+            num_classes=3,
+        )
+
 
 class CSAConfig(BaseConfig):
     configs = {
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous'}): 'ukdebates_asd_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'hubert'}): 'ukdebates_asd_hubert_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'wavlm'}): 'ukdebates_asd_wavlm_anonymous',
+
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous'}): 'mmused_asd_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'hubert'}): 'mmused_asd_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'wavlm'}): 'mmused_asd_wavlm_anonymous',
+
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'hubert'}): 'mmused_acc_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'wavlm'}): 'mmused_acc_wavlm_anonymous',
+
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
                   tags={'anonymous'}): 'mmused_fallacy_afc_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'hubert'}): 'mmused_fallacy_afc_hubert_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'wavlm'}): 'mmused_fallacy_afc_wavlm_anonymous',
+
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
                   tags={'anonymous'}): 'marg_arc_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'hubert'}): 'marg_arc_hubert_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'wavlm'}): 'marg_arc_wavlm_anonymous',
     }
 
     def __init__(
@@ -732,6 +1506,74 @@ class CSAConfig(BaseConfig):
         )
 
     @classmethod
+    def ukdebates_asd_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=16,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
+        )
+
+    @classmethod
+    def ukdebates_asd_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=16,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
+        )
+
+    @classmethod
     def mmused_asd_anonymous(
             cls
     ):
@@ -766,6 +1608,74 @@ class CSAConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_asd_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+        )
+
+    @classmethod
+    def mmused_asd_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+        )
+
+    @classmethod
     def mmused_acc_anonymous(
             cls
     ):
@@ -789,6 +1699,72 @@ class CSAConfig(BaseConfig):
                 'weight_decay': 1e-03
             },
             audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+        )
+
+    @classmethod
+    def mmused_acc_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+        )
+
+    @classmethod
+    def mmused_acc_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
             sampling_rate=16000,
             aggregate=False,
             downsampling_factor=1 / 5,
@@ -833,6 +1809,74 @@ class CSAConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_fallacy_afc_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303 , 4.09689922, 5.18137255])),
+            batch_size=8,
+            num_classes=6,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303 , 4.09689922, 5.18137255])),
+            batch_size=8,
+            num_classes=6,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+        )
+
+    @classmethod
     def marg_arc_anonymous(
             cls
     ):
@@ -866,19 +1910,111 @@ class CSAConfig(BaseConfig):
             audio_dropout_rate=0.1,
         )
 
+    @classmethod
+    def marg_arc_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
+            num_classes=3,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+        )
+
+    @classmethod
+    def marg_arc_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            transformer=lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1),
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            positional_encoder=lambda: PositionalEncoding(768, dual_modality=False),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
+            num_classes=3,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1,
+        )
+
 
 class EnsembleConfig(BaseConfig):
     configs = {
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous'}): 'ukdebates_asd_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'hubert'}): 'ukdebates_asd_hubert_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'wavlm'}): 'ukdebates_asd_wavlm_anonymous',
+
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous'}): 'mmused_asd_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'hubert'}): 'mmused_asd_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'wavlm'}): 'mmused_asd_wavlm_anonymous',
+
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'hubert'}): 'mmused_acc_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'wavlm'}): 'mmused_acc_wavlm_anonymous',
+
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
                   tags={'anonymous'}): 'mmused_fallacy_afc_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'hubert'}): 'mmused_fallacy_afc_hubert_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'wavlm'}): 'mmused_fallacy_afc_wavlm_anonymous',
+
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
                   tags={'anonymous'}): 'marg_arc_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'hubert'}): 'marg_arc_hubert_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'wavlm'}): 'marg_arc_wavlm_anonymous',
     }
 
     def __init__(
@@ -972,6 +2108,96 @@ class EnsembleConfig(BaseConfig):
         )
 
     @classmethod
+    def ukdebates_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0
+        )
+
+    @classmethod
+    def ukdebates_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0
+        )
+
+    @classmethod
     def mmused_asd_anonymous(
             cls
     ):
@@ -1005,6 +2231,96 @@ class EnsembleConfig(BaseConfig):
                 'weight_decay': 1e-03
             },
             audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
+        )
+
+    @classmethod
+    def mmused_asd_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
+        )
+
+    @classmethod
+    def mmused_asd_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
             sampling_rate=16000,
             aggregate=False,
             downsampling_factor=1 / 5,
@@ -1062,6 +2378,96 @@ class EnsembleConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_acc_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
+        )
+
+    @classmethod
+    def mmused_acc_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
+        )
+
+    @classmethod
     def mmused_fallacy_afc_anonymous(
             cls
     ):
@@ -1095,6 +2501,96 @@ class EnsembleConfig(BaseConfig):
                 'weight_decay': 1e-03
             },
             audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+            batch_size=8,
+            num_classes=6,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+            batch_size=8,
+            num_classes=6,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
             sampling_rate=16000,
             aggregate=False,
             downsampling_factor=1 / 5,
@@ -1151,19 +2647,133 @@ class EnsembleConfig(BaseConfig):
             audio_dropout_rate=0.1
         )
 
+    @classmethod
+    def marg_arc_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
+            num_classes=3,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
+        )
+
+    @classmethod
+    def marg_arc_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            audio_encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
+                num_layers=1
+            ),
+            text_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            audio_head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            loss_function=lambda: th.nn.NLLLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=8,
+            num_classes=3,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+            lower_bound=0.3,
+            upper_bound=0.7,
+            text_dropout_rate=0.1,
+            audio_dropout_rate=0.1
+        )
+
 
 class MulTAConfig(BaseConfig):
     configs = {
         ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous'}): 'ukdebates_asd_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'hubert'}): 'ukdebates_asd_hubert_anonymous',
+        ConfigKey(dataset='ukdebates', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'wavlm'}): 'ukdebates_asd_wavlm_anonymous',
+
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
                   tags={'anonymous'}): 'mmused_asd_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'hubert'}): 'mmused_asd_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='asd',
+                  tags={'anonymous', 'wavlm'}): 'mmused_asd_wavlm_anonymous',
+
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
                   tags={'anonymous'}): 'mmused_acc_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'hubert'}): 'mmused_acc_hubert_anonymous',
+        ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_AUDIO, task_name='acc',
+                  tags={'anonymous', 'wavlm'}): 'mmused_acc_wavlm_anonymous',
+
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
                   tags={'anonymous'}): 'mmused_fallacy_afc_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'hubert'}): 'mmused_fallacy_afc_hubert_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
+                  tags={'anonymous', 'wavlm'}): 'mmused_fallacy_afc_wavlm_anonymous',
+
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
                   tags={'anonymous'}): 'marg_arc_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'hubert'}): 'marg_arc_hubert_anonymous',
+        ConfigKey(dataset='marg', input_mode=InputMode.TEXT_AUDIO, task_name='arc',
+                  tags={'anonymous', 'wavlm'}): 'marg_arc_wavlm_anonymous',
     }
 
     def __init__(
@@ -1247,6 +2857,80 @@ class MulTAConfig(BaseConfig):
         )
 
     @classmethod
+    def ukdebates_asd_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            d_ffn=2048,
+            n_blocks=4,
+            audio_dropout_rate=0.0,
+            text_dropout_rate=0.0,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
+    def ukdebates_asd_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            d_ffn=2048,
+            n_blocks=4,
+            audio_dropout_rate=0.0,
+            text_dropout_rate=0.0,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
     def mmused_asd_anonymous(
             cls
     ):
@@ -1276,6 +2960,80 @@ class MulTAConfig(BaseConfig):
                 'weight_decay': 1e-03
             },
             audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
+    def mmused_asd_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            d_ffn=2048,
+            n_blocks=4,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
+    def mmused_asd_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            d_ffn=2048,
+            n_blocks=4,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223])),
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
             sampling_rate=16000,
             aggregate=False,
             downsampling_factor=1 / 5,
@@ -1320,6 +3078,79 @@ class MulTAConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_acc_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            d_ffn=2048,
+            n_blocks=2,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
+    def mmused_acc_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            d_ffn=2048,
+            n_blocks=2,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            batch_size=4,
+            num_classes=2,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+
+    @classmethod
     def mmused_fallacy_afc_anonymous(
             cls
     ):
@@ -1358,6 +3189,82 @@ class MulTAConfig(BaseConfig):
         )
 
     @classmethod
+    def mmused_fallacy_afc_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            d_ffn=2048,
+            n_blocks=4,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            loss_function=lambda: th.nn.CrossEntropyLoss(
+                weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+            batch_size=4,
+            num_classes=6,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
+    def mmused_fallacy_afc_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 2, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 6)
+            ),
+            d_ffn=2048,
+            n_blocks=4,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            loss_function=lambda: th.nn.CrossEntropyLoss(
+                weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+            batch_size=4,
+            num_classes=6,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
     def marg_arc_anonymous(
             cls
     ):
@@ -1387,6 +3294,80 @@ class MulTAConfig(BaseConfig):
                 'weight_decay': 1e-03
             },
             audio_model_card='facebook/wav2vec2-base-960h',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
+    def marg_arc_hubert_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 4, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            d_ffn=2048,
+            n_blocks=4,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=4,
+            num_classes=3,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='facebook/hubert-base-ls960',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=None,
+            text_model_args=None,
+            text_model_card='bert-base-uncased',
+        )
+
+    @classmethod
+    def marg_arc_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768 * 4, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 3)
+            ),
+            d_ffn=2048,
+            n_blocks=4,
+            audio_dropout_rate=0.1,
+            text_dropout_rate=0.1,
+            positional_encoder=lambda: PositionalEncoding(d_model=768, dual_modality=False),
+            audio_embedding_dim=768,
+            text_embedding_dim=768,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])),
+            batch_size=4,
+            num_classes=3,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            seeds=[42, 2024, 666],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
             sampling_rate=16000,
             aggregate=False,
             downsampling_factor=None,
