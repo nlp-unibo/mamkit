@@ -41,7 +41,6 @@ if __name__ == '__main__':
         'accumulate_grad_batches': 3,
         'max_epochs': 20,
     }
-
     metrics = {}
     for seed in config.seeds:
         seed_everything(seed=seed)

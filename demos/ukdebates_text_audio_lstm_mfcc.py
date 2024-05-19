@@ -39,7 +39,7 @@ if __name__ == '__main__':
         'accelerator': 'auto',
         'devices': 1,
         'accumulate_grad_batches': 3,
-        'max_epochs': 100,
+        'max_epochs': 50,
     }
 
     metrics = {}

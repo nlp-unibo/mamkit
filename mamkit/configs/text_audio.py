@@ -1244,7 +1244,6 @@ class MMTransformerConfig(BaseConfig):
             num_classes=2,
         )
 
-
     @classmethod
     def mmused_asd_roberta_wav2vec_anonymous(
             cls
@@ -1979,7 +1978,6 @@ class MMTransformerConfig(BaseConfig):
             batch_size=8,
             num_classes=3,
         )
-
 
 
 class CSAConfig(BaseConfig):

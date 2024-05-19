@@ -424,7 +424,7 @@ class MFCCExtractor(ProcessorComponent):
         for audio_file in tqdm(audio_files, desc='Extracting MFCCs'):
             assert audio_file.is_file(), f'Could not find file {audio_file}'
 
-            if preloaded_mfccs[audio_file.as_posix()]:
+            if audio_file.as_posix() in preloaded_mfccs:
                 audio_features = preloaded_mfccs[audio_file.as_posix()]
             else:
                 audio_features = self.parse_audio(audio_file=audio_file)
@@ -507,7 +507,7 @@ class PairMFCCExtractor(ProcessorComponent):
             assert a_audio_file.is_file(), f'Could not find file {a_audio_file}'
             assert b_audio_file.is_file(), f'Could not find file {b_audio_file}'
 
-            if preloaded_mfccs[a_audio_file.as_posix()]:
+            if a_audio_file.as_posix() in preloaded_mfccs:
                 a_audio_features = preloaded_mfccs[a_audio_file.as_posix()]
             else:
                 a_audio_features = self.parse_audio(audio_file=a_audio_file)
@@ -515,7 +515,7 @@ class PairMFCCExtractor(ProcessorComponent):
 
             a_features.append(a_audio_features)
 
-            if preloaded_mfccs[b_audio_file.as_posix()]:
+            if b_audio_file.as_posix() in preloaded_mfccs:
                 b_audio_features = preloaded_mfccs[b_audio_file.as_posix()]
             else:
                 b_audio_features = self.parse_audio(audio_file=b_audio_file)
