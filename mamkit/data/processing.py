@@ -366,13 +366,15 @@ class MFCCExtractor(ProcessorComponent):
             sampling_rate=16000,
             pooling_sizes: Optional[Iterable[int]] = None,
             remove_energy: bool = True,
-            normalize: bool = True
+            normalize: bool = True,
+            serialization_path: Path = None
     ):
         self.mfccs = mfccs
         self.sampling_rate = sampling_rate
         self.pooling_sizes = pooling_sizes
         self.remove_energy = remove_energy
         self.normalize = normalize
+        self.serialization_path = serialization_path if serialization_path is not None else Path('mfccs.pkl')
 
     def parse_audio(
             self,
@@ -411,13 +413,28 @@ class MFCCExtractor(ProcessorComponent):
             self,
             audio_files: Iterable[Path]
     ):
+        preloaded_mfccs: Dict = {}
+        preloaded_length = 0
+        if self.serialization_path.exists():
+            with self.serialization_path.open('rb') as f:
+                preloaded_mfccs: Dict = pickle.load(f)
+                preloaded_length = len(preloaded_mfccs)
 
         features = []
         for audio_file in tqdm(audio_files, desc='Extracting MFCCs'):
             assert audio_file.is_file(), f'Could not find file {audio_file}'
 
-            audio_features = self.parse_audio(audio_file=audio_file)
+            if preloaded_mfccs[audio_file.as_posix()]:
+                audio_features = preloaded_mfccs[audio_file.as_posix()]
+            else:
+                audio_features = self.parse_audio(audio_file=audio_file)
+                preloaded_mfccs[audio_file.as_posix()] = audio_features
+
             features.append(audio_features)
+
+        if len(preloaded_mfccs) != preloaded_length:
+            with self.serialization_path.open('wb') as f:
+                pickle.dump(preloaded_mfccs, f)
 
         return features
 
@@ -430,13 +447,15 @@ class PairMFCCExtractor(ProcessorComponent):
             sampling_rate=16000,
             pooling_sizes: Optional[Iterable[int]] = None,
             remove_energy: bool = True,
-            normalize: bool = True
+            normalize: bool = True,
+            serialization_path: Path = None
     ):
         self.mfccs = mfccs
         self.sampling_rate = sampling_rate
         self.pooling_sizes = pooling_sizes
         self.remove_energy = remove_energy
         self.normalize = normalize
+        self.serialization_path = serialization_path if serialization_path is not None else Path('mfccs.pkl')
 
     def parse_audio(
             self,
@@ -476,16 +495,37 @@ class PairMFCCExtractor(ProcessorComponent):
             a_audio_files: Iterable[Path],
             b_audio_files: Iterable[Path]
     ):
+        preloaded_mfccs: Dict = {}
+        preloaded_length = 0
+        if self.serialization_path.exists():
+            with self.serialization_path.open('rb') as f:
+                preloaded_mfccs: Dict = pickle.load(f)
+                preloaded_length = len(preloaded_mfccs)
+
         a_features, b_features = [], []
         for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), desc='Extracting MFCCs'):
             assert a_audio_file.is_file(), f'Could not find file {a_audio_file}'
             assert b_audio_file.is_file(), f'Could not find file {b_audio_file}'
 
-            a_audio_features = self.parse_audio(audio_file=a_audio_file)
+            if preloaded_mfccs[a_audio_file.as_posix()]:
+                a_audio_features = preloaded_mfccs[a_audio_file.as_posix()]
+            else:
+                a_audio_features = self.parse_audio(audio_file=a_audio_file)
+                preloaded_mfccs[a_audio_file.as_posix()] = a_audio_features
+
             a_features.append(a_audio_features)
 
-            b_audio_features = self.parse_audio(audio_file=b_audio_file)
+            if preloaded_mfccs[b_audio_file.as_posix()]:
+                b_audio_features = preloaded_mfccs[b_audio_file.as_posix()]
+            else:
+                b_audio_features = self.parse_audio(audio_file=b_audio_file)
+                preloaded_mfccs[b_audio_file.as_posix()] = b_audio_features
+
             b_features.append(b_audio_features)
+
+        if len(preloaded_mfccs) != preloaded_length:
+            with self.serialization_path.open('wb') as f:
+                pickle.dump(preloaded_mfccs, f)
 
         return a_features, b_features
 
