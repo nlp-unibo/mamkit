@@ -140,7 +140,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             audio_lstm_weights=[64, 32],
             sampling_rate=16000,
             head=lambda: th.nn.Sequential(
-                th.nn.Linear(64, 128),
+                th.nn.Linear(128, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
             ),
@@ -173,7 +173,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             audio_lstm_weights=[64, 32],
             sampling_rate=16000,
             head=lambda: th.nn.Sequential(
-                th.nn.Linear(64, 128),
+                th.nn.Linear(128, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 2)
             ),
@@ -207,7 +207,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             audio_lstm_weights=[64, 32],
             sampling_rate=16000,
             head=lambda: th.nn.Sequential(
-                th.nn.Linear(64, 128),
+                th.nn.Linear(128, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 6)
             ),
