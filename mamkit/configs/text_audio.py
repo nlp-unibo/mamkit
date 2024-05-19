@@ -2698,7 +2698,7 @@ class EnsembleConfig(BaseConfig):
         )
 
     @classmethod
-    def ukdebates_hubert_anonymous(
+    def ukdebates_asd_hubert_anonymous(
             cls
     ):
         return cls(
@@ -2743,7 +2743,7 @@ class EnsembleConfig(BaseConfig):
         )
 
     @classmethod
-    def ukdebates_wavlm_anonymous(
+    def ukdebates_asd_wavlm_anonymous(
             cls
     ):
         return cls(
