@@ -422,6 +422,7 @@ class MFCCExtractor(ProcessorComponent):
 
         features = []
         for audio_file in tqdm(audio_files, desc='Extracting MFCCs'):
+            audio_file = Path(audio_file) if type(audio_file) != Path else audio_file
             assert audio_file.is_file(), f'Could not find file {audio_file}'
 
             if audio_file.as_posix() in preloaded_mfccs:
@@ -504,6 +505,8 @@ class PairMFCCExtractor(ProcessorComponent):
 
         a_features, b_features = [], []
         for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), desc='Extracting MFCCs'):
+            a_audio_file = Path(a_audio_file) if type(a_audio_file) != Path else a_audio_file
+            b_audio_file = Path(b_audio_file) if type(b_audio_file) != Path else b_audio_file
             assert a_audio_file.is_file(), f'Could not find file {a_audio_file}'
             assert b_audio_file.is_file(), f'Could not find file {b_audio_file}'
 
