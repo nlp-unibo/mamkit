@@ -103,7 +103,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             text_lstm_weights=[128, 32],
             sampling_rate=16000,
             head=lambda: th.nn.Sequential(
-                th.nn.Linear(128, 128),
+                th.nn.Linear(256, 128),
                 th.nn.ReLU(),
                 th.nn.Linear(128, 3)
             ),
