@@ -182,8 +182,6 @@ class BiLSTMMFCCsConfig(BaseConfig):
                 'weight_decay': 0.001
             },
             optimizer=th.optim.Adam,
-            lstm_weights=[64, 32],
-            dropout_rate=0.1,
             mfccs=25,
             pooling_sizes=[5],
             normalize=True,
