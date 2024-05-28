@@ -1,5 +1,5 @@
 # MAMKit: Multimodal Argument Mining Toolkit
-Multimodal Argument Mining Toolkit
+A Comprehensive Multimodal Argument Mining Toolkit. 
 
 
 ## Table of Contents 
@@ -221,7 +221,7 @@ For any questions or suggestions, please contact us at [TBA](TBA).
 If you use MAMKit in your research, please cite the following paper:
 ```
 @inproceedings{TBAmamkit,
-  title={MAMKit: Multimodal Argument Mining Toolkit},
+  title={MAMKit: A Comprehensive Multimodal Argument Mining Toolkit},
   author={TBA},
   booktitle={TBA},
   year={TBA}
