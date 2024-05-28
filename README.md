@@ -6,6 +6,15 @@ A Comprehensive Multimodal Argument Mining Toolkit.
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Data](#data)
+    - [Load a Dataset](#load-a-dataset)
+    - [Add a New Dataset](#add-a-new-dataset)
+  - [Modelling](#modelling)
+    - [Load a Model](#load-a-model)
+    - [Custom Model Definition](#custom-model-definition)
+    
+  - [Training](#training)
+  - [Benchmarking](#benchmarking)
 - [Structure](#structure)
 - [Documentation](#documentation)
 - [Contact Us](#contact-us)
@@ -98,28 +107,6 @@ The new class should be placed in the `mamkit.data.datasets` module.
 The toolkit provides a modular interface for defining models, allowing users to compose models from pre-defined components or define custom models.
 In particular, MAMkit offers a simple method for both defining custom models and leveraging models from the literature. 
 
-#### Custom Model Definition 
-The example below illustrates that defining a custom model is straightforward. It entails creating the model within the `models` package, specifically by extending either the `AudioOnlyModel`, `TextOnlyModel`, or `TextAudioModel` classes in the `models.audio`, `models.text`, or `models.text_audio` modules, respectively, depending on the input modality handled by the model.
-```python
-class Transformer(TextOnlyModel):
-
-    def __init__(
-            self,
-            model_card,
-            head,
-            dropout_rate=0.0,
-            is_transformer_trainable: bool = False,
-    ): ...
-
-```
-
-```python
-from mamkit.models.text import Transformer
-
-model = Transformer(
-          model_card='bert-base-uncased',
-          dropout_rate=0.1, ...)
-```
 #### Load a Model
 The following example demonstrates how to instantiate a model with a configuration found in the literature.
 This configuration is identified by a key, `ConfigKey`, containing all the defining information.
@@ -144,6 +131,30 @@ model = Transformer(
          dropout_rate=config.dropout_rate
          ...)
 ```
+
+#### Custom Model Definition 
+The example below illustrates that defining a custom model is straightforward. It entails creating the model within the `models` package, specifically by extending either the `AudioOnlyModel`, `TextOnlyModel`, or `TextAudioModel` classes in the `models.audio`, `models.text`, or `models.text_audio` modules, respectively, depending on the input modality handled by the model.
+```python
+class Transformer(TextOnlyModel):
+
+    def __init__(
+            self,
+            model_card,
+            head,
+            dropout_rate=0.0,
+            is_transformer_trainable: bool = False,
+    ): ...
+
+```
+
+```python
+from mamkit.models.text import Transformer
+
+model = Transformer(
+          model_card='bert-base-uncased',
+          dropout_rate=0.1, ...)
+```
+
 
 ### Training
 Our models are designed to be encapsulated into a PyTorch `LightningModule`, which can be trained using PyTorch Lightning's `Trainer` class.
