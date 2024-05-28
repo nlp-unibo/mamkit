@@ -220,7 +220,7 @@ For any questions or suggestions, please contact us at [TBA](TBA).
 ## Citation
 If you use MAMKit in your research, please cite the following paper:
 ```
-@inproceedings{mancini2022mamkit,
+@inproceedings{TBAmamkit,
   title={MAMKit: Multimodal Argument Mining Toolkit},
   author={TBA},
   booktitle={TBA},
