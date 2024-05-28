@@ -17,6 +17,7 @@ A Comprehensive Multimodal Argument Mining Toolkit.
   - [Benchmarking](#benchmarking)
 - [Structure](#structure)
 - [Documentation](#documentation)
+- [Contributing](#contributing)
 - [Contact Us](#contact-us)
 - [Citation](#citation)
 
@@ -24,7 +25,7 @@ A Comprehensive Multimodal Argument Mining Toolkit.
 MAMKit is an open-source, publicly available PyTorch toolkit designed to access and develop 
 datasets, models, and benchmarks for Multimodal Argument Mining (MAM).
 It provides a flexible interface for accessing and integrating datasets, models, and preprocessing strategies through 
-composition &or; custom definition. 
+composition or custom definition. 
 MAMKit is designed to be extendible, ensure replicability, and provide a shared interface as a common foundation for
 experimentation in the field.
 
@@ -224,6 +225,9 @@ The figure below illustrates the toolkit's structure.
 
 ## Documentation 
 The documentation is available at [TBA](https://TBA).
+
+## Contributing 
+We welcome contributions to MAMKit. Please refer to the [contributing guidelines](CONTRIBUTING.md) for more information. (TBA)
 
 ## Contact Us
 For any questions or suggestions, please contact us at [TBA](TBA).
