@@ -160,3 +160,10 @@ cython_debug/
 #.idea/
 
 lightning_logs
+
+.idea
+marg.sh
+mmused_asd.sh
+mmused_acc.sh
+mmused_fallacy_afc.sh
+ukdebates.sh
