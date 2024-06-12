@@ -1,5 +1,12 @@
+<p align="center">
+    <br>
+    <img src="figures/logo.png" width="400"/>
+    <br>
+<p>
+
 # MAMKit: Multimodal Argument Mining Toolkit
 A Comprehensive Multimodal Argument Mining Toolkit. 
+
 
 
 ## Table of Contents 
