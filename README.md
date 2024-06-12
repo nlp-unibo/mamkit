@@ -1,6 +1,6 @@
 <p align="center">
     <br>
-    <img src="figures/logo.png" width="400"/>
+    <img src="figures/mamkit-logo-image.png" width="500"/>
     <br>
 <p>
 
