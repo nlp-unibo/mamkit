@@ -47,6 +47,8 @@ class UnimodalDataset(Dataset):
 
     def __len__(self):
         return len(self.labels)
+    
+
 
 
 class PairUnimodalDataset(Dataset):
@@ -1258,6 +1260,148 @@ class MMUSEDFallacy(Loader):
 
         return splits_info
 
+
+
+class MMUSEDFallacyContext(MMUSEDFallacy):
+    def __init__(
+            self,
+            sample_rate=16000,
+            clip_modality='full',
+            n_files=None,
+            context='3-before',  # New parameter for context (default value)
+            **kwargs
+    ):
+        super().__init__(sample_rate, clip_modality, n_files, **kwargs)
+        self.context = context  # Initialize the context
+
+    def parse_context(self):
+        """
+        Parse the context string to determine the left and right context sizes.
+        Returns:
+            tuple: A tuple of (left_context, right_context)
+        """
+        parts = self.context.split('-')
+        if len(parts) == 2:
+            if 'before' in parts[1]:
+                return int(parts[0]), 0
+            elif 'after' in parts[1]:
+                return 0, int(parts[0])
+        elif len(parts) == 4:
+            left_context = int(parts[0])
+            right_context = int(parts[2])
+            return left_context, right_context
+        return 0, 0  # Default to no context
+
+    def _get_text_data(
+            self,
+            df: pd.DataFrame
+    ) -> UnimodalDataset:
+        """
+        Constructs text data by including context based on the specified parameters.
+        Args:
+            df: DataFrame containing the data.
+        Returns:
+            UnimodalDataset: Dataset with context-aware text data.
+        """
+        left_context, right_context = self.parse_context()
+        dialogue_contexts = []
+        snippets = []
+
+        for idx, row in df.iterrows():
+            dialogue_sentences = eval(row['DialogueSentences'])
+            snippet_indices = eval(row['IndexReferenceSentencesSnippet'])
+            
+            start_idx = max(0, snippet_indices[0] - left_context)
+            end_idx = min(len(dialogue_sentences), snippet_indices[-1] + right_context + 1)
+            
+            if start_idx == 0: # If the snippet is at the beginning of the dialogue
+                context_sentences = [row['SentenceSnippet']] + dialogue_sentences[snippet_indices[-1] + 1:end_idx]
+            elif end_idx == len(dialogue_sentences): # If the snippet is at the end of the dialogue
+                context_sentences = dialogue_sentences[start_idx:snippet_indices[0]] + [row['SentenceSnippet']]
+            else: # If the snippet is in the middle of the dialogue
+                context_sentences = dialogue_sentences[start_idx:snippet_indices[0]] + [row['SentenceSnippet']] + dialogue_sentences[snippet_indices[-1] + 1:end_idx]
+    
+            
+            dialogue_contexts.append(' '.join(context_sentences))
+            snippets.append(row['SentenceSnippet'])
+        
+
+        return UnimodalDataset(inputs=dialogue_contexts,
+                               labels=df['Fallacy'].values)
+
+    def _get_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> UnimodalDataset:
+        """
+        Constructs audio data paths by including context based on the specified parameters.
+        Args:
+            df: DataFrame containing the data.
+        Returns:
+            UnimodalDataset: Dataset with context-aware audio data.
+        """
+        left_context, right_context = self.parse_context()
+        audio_context_paths = []
+
+        for idx, row in df.iterrows():
+            dialogue_id = row['Dialogue ID']
+            dialogue_sentences = eval(row['DialogueSentences'])
+            snippet_indices = eval(row['IndexReferenceSentencesSnippet'])
+
+            start_idx = max(0, snippet_indices[0] - left_context)
+            end_idx = min(len(dialogue_sentences), snippet_indices[-1] + right_context + 1)
+
+            audio_clip_paths = [
+                self.clips_path.joinpath('dial_sent', dialogue_id, f'clip_{i}.wav')
+                for i in range(start_idx, end_idx)
+            ]
+
+            audio_context_paths.append([str(path) for path in audio_clip_paths])
+
+        return UnimodalDataset(inputs=audio_context_paths,
+                               labels=df['Fallacy'].values)
+
+    def _get_text_audio_data(
+            self,
+            df: pd.DataFrame
+    ) -> MultimodalDataset:
+        """
+        Constructs multimodal data (text and audio) by including context based on the specified parameters.
+        Args:
+            df: DataFrame containing the data.
+        Returns:
+            MultimodalDataset: Dataset with context-aware text and audio data.
+        """
+        left_context, right_context = self.parse_context()
+        text_contexts = []
+        audio_context_paths = []
+
+        for idx, row in df.iterrows():
+            dialogue_id = row['Dialogue ID']
+            dialogue_sentences = eval(row['DialogueSentences'])
+            snippet_indices = eval(row['IndexReferenceSentencesSnippet'])
+
+            start_idx = max(0, snippet_indices[0] - left_context) # this ensures that the starting index for the context does not fall below 0, avoiding out-of-bound indices
+            end_idx = min(len(dialogue_sentences), snippet_indices[-1] + right_context + 1) # this ensures that the ending index does not exceed the total number of dialogue sentences
+
+            if start_idx == 0: # If the snippet is at the beginning of the dialogue
+                context_sentences = [row['SentenceSnippet']] + dialogue_sentences[snippet_indices[-1] + 1:end_idx]
+            elif end_idx == len(dialogue_sentences): # If the snippet is at the end of the dialogue
+                context_sentences = dialogue_sentences[start_idx:snippet_indices[0]] + [row['SentenceSnippet']]
+            else: # If the snippet is in the middle of the dialogue
+                context_sentences = dialogue_sentences[start_idx:snippet_indices[0]] + [row['SentenceSnippet']] + dialogue_sentences[snippet_indices[-1] + 1:end_idx]
+
+            audio_clip_paths = [
+                self.clips_path.joinpath('dial_sent', dialogue_id, f'clip_{i}.wav')
+                for i in range(start_idx, end_idx)
+            ]
+
+            text_contexts.append(' '.join(context_sentences))
+            audio_context_paths.append([str(path) for path in audio_clip_paths])
+
+        return MultimodalDataset(texts=text_contexts,
+                                 audio=audio_context_paths,
+                                 labels=df['Fallacy'].values)
 
 class MArg(Loader):
 

@@ -162,7 +162,7 @@ class TextTransformerCollator:
             self,
             text
     ):
-        tokenized = self.tokenizer(text,
+        tokenized = self.tokenizer(list(text),
                                    padding=True,
                                    return_tensors='pt',
                                    **self.tokenizer_args).to(self.device)

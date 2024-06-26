@@ -1,6 +1,6 @@
 httpx==0.27.0
 librosa==0.9.1
-lightning==1.9.0
+lightning>=1.9.0
 nltk==3.7
 numpy==1.21.6
 packaging==21.3
@@ -9,9 +9,10 @@ pydub==0.25.1
 resampy==0.2.2
 scikit_image==0.19.2
 simplejson==3.17.6
-torch==1.13.1+cu116
-torchmetrics==0.11.4
-torchtext==0.14.0
+#torch==1.13.1+cu116
+torchmetrics>=0.11.4
+torchtext>=0.14.0
+torchaudio>=0.13.1
 tqdm==4.64.0
 transformers==4.18.0
 yt_dlp==2023.11.16
