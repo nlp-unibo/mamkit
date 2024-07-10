@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>cinnamon_core package &#8212; Cinnamon Core</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cinnamon_core';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cinnamon_core.core package" href="cinnamon_core.core.html" />
+    <link rel="prev" title="Data" href="data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Cinnamon Core</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="registration.html">
+                        Registration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="dependencies.html">
+                        Code Organization
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="configuration.html">
+                        Configuration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="component.html">
+                        Component
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="data.html">
+                        Data
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        cinnamon-core
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="registration.html">
+                        Registration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="dependencies.html">
+                        Code Organization
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="configuration.html">
+                        Configuration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="component.html">
+                        Component
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="data.html">
+                        Data
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        cinnamon-core
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="cinnamon_core.core.html">cinnamon_core.core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cinnamon_core.utility.html">cinnamon_core.utility package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">cinnamon_core package</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="cinnamon-core-package">
+<h1>cinnamon_core package<a class="headerlink" href="#cinnamon-core-package" title="Permalink to this heading">#</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cinnamon_core.core.html">cinnamon_core.core package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.core.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.core.html#module-cinnamon_core.core.component">cinnamon_core.core.component module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component"><code class="docutils literal notranslate"><span class="pre">Component</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.build_component"><code class="docutils literal notranslate"><span class="pre">Component.build_component()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.build_component_from_key"><code class="docutils literal notranslate"><span class="pre">Component.build_component_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.clear"><code class="docutils literal notranslate"><span class="pre">Component.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.find"><code class="docutils literal notranslate"><span class="pre">Component.find()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.get_delta_copy"><code class="docutils literal notranslate"><span class="pre">Component.get_delta_copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.load"><code class="docutils literal notranslate"><span class="pre">Component.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.prepare_save_data"><code class="docutils literal notranslate"><span class="pre">Component.prepare_save_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.retrieve_component_instance"><code class="docutils literal notranslate"><span class="pre">Component.retrieve_component_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.retrieve_component_instance_from_key"><code class="docutils literal notranslate"><span class="pre">Component.retrieve_component_instance_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.run"><code class="docutils literal notranslate"><span class="pre">Component.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.component.Component.save"><code class="docutils literal notranslate"><span class="pre">Component.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.core.html#module-cinnamon_core.core.configuration">cinnamon_core.core.configuration module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration"><code class="docutils literal notranslate"><span class="pre">Configuration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.add"><code class="docutils literal notranslate"><span class="pre">Configuration.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.children"><code class="docutils literal notranslate"><span class="pre">Configuration.children</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.fully_validate"><code class="docutils literal notranslate"><span class="pre">Configuration.fully_validate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_default"><code class="docutils literal notranslate"><span class="pre">Configuration.get_default()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_delta_class_copy"><code class="docutils literal notranslate"><span class="pre">Configuration.get_delta_class_copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_delta_copy"><code class="docutils literal notranslate"><span class="pre">Configuration.get_delta_copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_serialization_parameters"><code class="docutils literal notranslate"><span class="pre">Configuration.get_serialization_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_variants_combinations"><code class="docutils literal notranslate"><span class="pre">Configuration.get_variants_combinations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.post_build"><code class="docutils literal notranslate"><span class="pre">Configuration.post_build()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.show"><code class="docutils literal notranslate"><span class="pre">Configuration.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.to_value_dict"><code class="docutils literal notranslate"><span class="pre">Configuration.to_value_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.validate"><code class="docutils literal notranslate"><span class="pre">Configuration.validate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.configuration.ValidationFailureException"><code class="docutils literal notranslate"><span class="pre">ValidationFailureException</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.core.html#module-cinnamon_core.core.data">cinnamon_core.core.data module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.Field"><code class="docutils literal notranslate"><span class="pre">Field</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.Field.__eq__"><code class="docutils literal notranslate"><span class="pre">Field.__eq__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.Field.long_repr"><code class="docutils literal notranslate"><span class="pre">Field.long_repr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.Field.short_repr"><code class="docutils literal notranslate"><span class="pre">Field.short_repr()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict"><code class="docutils literal notranslate"><span class="pre">FieldDict</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.add"><code class="docutils literal notranslate"><span class="pre">FieldDict.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.add_condition"><code class="docutils literal notranslate"><span class="pre">FieldDict.add_condition()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.search_by_name"><code class="docutils literal notranslate"><span class="pre">FieldDict.search_by_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.search_by_tag"><code class="docutils literal notranslate"><span class="pre">FieldDict.search_by_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.to_value_dict"><code class="docutils literal notranslate"><span class="pre">FieldDict.to_value_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.validate"><code class="docutils literal notranslate"><span class="pre">FieldDict.validate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.InconsistentTypeException"><code class="docutils literal notranslate"><span class="pre">InconsistentTypeException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.OutOfRangeParameterValueException"><code class="docutils literal notranslate"><span class="pre">OutOfRangeParameterValueException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.Parameter.in_allowed_range"><code class="docutils literal notranslate"><span class="pre">Parameter.in_allowed_range()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.Parameter.long_repr"><code class="docutils literal notranslate"><span class="pre">Parameter.long_repr()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.ValidationFailureException"><code class="docutils literal notranslate"><span class="pre">ValidationFailureException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.ValidationResult"><code class="docutils literal notranslate"><span class="pre">ValidationResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.ValidationResult.error_message"><code class="docutils literal notranslate"><span class="pre">ValidationResult.error_message</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.data.ValidationResult.passed"><code class="docutils literal notranslate"><span class="pre">ValidationResult.passed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.core.html#module-cinnamon_core.core.registry">cinnamon_core.core.registry module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.AlreadyBoundException"><code class="docutils literal notranslate"><span class="pre">AlreadyBoundException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.AlreadyRegisteredException"><code class="docutils literal notranslate"><span class="pre">AlreadyRegisteredException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.ConfigurationInfo"><code class="docutils literal notranslate"><span class="pre">ConfigurationInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.ConfigurationInfo.class_type"><code class="docutils literal notranslate"><span class="pre">ConfigurationInfo.class_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.ConfigurationInfo.constructor"><code class="docutils literal notranslate"><span class="pre">ConfigurationInfo.constructor</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.ConfigurationInfo.kwargs"><code class="docutils literal notranslate"><span class="pre">ConfigurationInfo.kwargs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.DisconnectedGraphException"><code class="docutils literal notranslate"><span class="pre">DisconnectedGraphException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.InvalidConfigurationTypeException"><code class="docutils literal notranslate"><span class="pre">InvalidConfigurationTypeException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.NotADAGException"><code class="docutils literal notranslate"><span class="pre">NotADAGException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.NotBoundException"><code class="docutils literal notranslate"><span class="pre">NotBoundException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.NotRegisteredException"><code class="docutils literal notranslate"><span class="pre">NotRegisteredException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey"><code class="docutils literal notranslate"><span class="pre">RegistrationKey</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.ATTRIBUTE_SEPARATOR"><code class="docutils literal notranslate"><span class="pre">RegistrationKey.ATTRIBUTE_SEPARATOR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.KEY_VALUE_SEPARATOR"><code class="docutils literal notranslate"><span class="pre">RegistrationKey.KEY_VALUE_SEPARATOR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.from_string"><code class="docutils literal notranslate"><span class="pre">RegistrationKey.from_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.parse"><code class="docutils literal notranslate"><span class="pre">RegistrationKey.parse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.partial_match"><code class="docutils literal notranslate"><span class="pre">RegistrationKey.partial_match()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry"><code class="docutils literal notranslate"><span class="pre">Registry</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.BINDINGS"><code class="docutils literal notranslate"><span class="pre">Registry.BINDINGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.BUILT_REGISTRY"><code class="docutils literal notranslate"><span class="pre">Registry.BUILT_REGISTRY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.DEPENDENCY_DAG"><code class="docutils literal notranslate"><span class="pre">Registry.DEPENDENCY_DAG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.MODULE_SCOPE"><code class="docutils literal notranslate"><span class="pre">Registry.MODULE_SCOPE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTERED_NAMESPACES"><code class="docutils literal notranslate"><span class="pre">Registry.REGISTERED_NAMESPACES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTER_SCOPE"><code class="docutils literal notranslate"><span class="pre">Registry.REGISTER_SCOPE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTRATION_METHODS"><code class="docutils literal notranslate"><span class="pre">Registry.REGISTRATION_METHODS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTRATION_REGISTRY"><code class="docutils literal notranslate"><span class="pre">Registry.REGISTRATION_REGISTRY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTRY"><code class="docutils literal notranslate"><span class="pre">Registry.REGISTRY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.ROOT_KEY"><code class="docutils literal notranslate"><span class="pre">Registry.ROOT_KEY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.add_and_bind"><code class="docutils literal notranslate"><span class="pre">Registry.add_and_bind()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.add_and_bind_variants"><code class="docutils literal notranslate"><span class="pre">Registry.add_and_bind_variants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.add_configuration"><code class="docutils literal notranslate"><span class="pre">Registry.add_configuration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.add_configuration_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.add_configuration_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.bind"><code class="docutils literal notranslate"><span class="pre">Registry.bind()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.bind_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.bind_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.build_component"><code class="docutils literal notranslate"><span class="pre">Registry.build_component()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.build_component_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.build_component_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.build_configuration"><code class="docutils literal notranslate"><span class="pre">Registry.build_configuration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.build_configuration_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.build_configuration_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.check_registration_graph"><code class="docutils literal notranslate"><span class="pre">Registry.check_registration_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.clear"><code class="docutils literal notranslate"><span class="pre">Registry.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.expand_and_resolve_registration"><code class="docutils literal notranslate"><span class="pre">Registry.expand_and_resolve_registration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.import_and_load_registrations"><code class="docutils literal notranslate"><span class="pre">Registry.import_and_load_registrations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.is_in_graph"><code class="docutils literal notranslate"><span class="pre">Registry.is_in_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.is_in_graph_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.is_in_graph_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.is_in_registry"><code class="docutils literal notranslate"><span class="pre">Registry.is_in_registry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.load_registrations"><code class="docutils literal notranslate"><span class="pre">Registry.load_registrations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_and_bind"><code class="docutils literal notranslate"><span class="pre">Registry.register_and_bind()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_and_bind_variants"><code class="docutils literal notranslate"><span class="pre">Registry.register_and_bind_variants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_built_component_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.register_built_component_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_component_instance"><code class="docutils literal notranslate"><span class="pre">Registry.register_component_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_configuration"><code class="docutils literal notranslate"><span class="pre">Registry.register_configuration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_configuration_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.register_configuration_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_component"><code class="docutils literal notranslate"><span class="pre">Registry.retrieve_component()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_component_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.retrieve_component_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_component_instance"><code class="docutils literal notranslate"><span class="pre">Registry.retrieve_component_instance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_component_instance_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.retrieve_component_instance_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_configurations"><code class="docutils literal notranslate"><span class="pre">Registry.retrieve_configurations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_configurations_from_key"><code class="docutils literal notranslate"><span class="pre">Registry.retrieve_configurations_from_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.show_dependencies"><code class="docutils literal notranslate"><span class="pre">Registry.show_dependencies()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.try_resolve_module_from_namespace"><code class="docutils literal notranslate"><span class="pre">Registry.try_resolve_module_from_namespace()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.core.html#cinnamon_core.core.registry.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.core.html#module-cinnamon_core.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cinnamon_core.utility.html">cinnamon_core.utility package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.utility.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.utility.html#module-cinnamon_core.utility.json_utility">cinnamon_core.utility.json_utility module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.json_utility.from_json"><code class="docutils literal notranslate"><span class="pre">from_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.json_utility.load_json"><code class="docutils literal notranslate"><span class="pre">load_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.json_utility.save_json"><code class="docutils literal notranslate"><span class="pre">save_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.json_utility.to_json"><code class="docutils literal notranslate"><span class="pre">to_json()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.utility.html#module-cinnamon_core.utility.logging_utility">cinnamon_core.utility.logging_utility module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.logging_utility.build_logger"><code class="docutils literal notranslate"><span class="pre">build_logger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.logging_utility.set_logging_path"><code class="docutils literal notranslate"><span class="pre">set_logging_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.logging_utility.update_logger"><code class="docutils literal notranslate"><span class="pre">update_logger()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.utility.html#module-cinnamon_core.utility.pickle_utility">cinnamon_core.utility.pickle_utility module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.pickle_utility.load_pickle"><code class="docutils literal notranslate"><span class="pre">load_pickle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.pickle_utility.save_pickle"><code class="docutils literal notranslate"><span class="pre">save_pickle()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.utility.html#module-cinnamon_core.utility.printing_utility">cinnamon_core.utility.printing_utility module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.printing_utility.float_formatter"><code class="docutils literal notranslate"><span class="pre">float_formatter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.printing_utility.general_formatter"><code class="docutils literal notranslate"><span class="pre">general_formatter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.printing_utility.prettify_statistics"><code class="docutils literal notranslate"><span class="pre">prettify_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.printing_utility.prettify_value"><code class="docutils literal notranslate"><span class="pre">prettify_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.utility.html#module-cinnamon_core.utility.python_utility">cinnamon_core.utility.python_utility module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.python_utility.get_dict_values_combinations"><code class="docutils literal notranslate"><span class="pre">get_dict_values_combinations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.python_utility.get_function_arguments"><code class="docutils literal notranslate"><span class="pre">get_function_arguments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cinnamon_core.utility.html#cinnamon_core.utility.python_utility.get_function_signature"><code class="docutils literal notranslate"><span class="pre">get_function_signature()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cinnamon_core.utility.html#module-cinnamon_core.utility">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-cinnamon_core">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cinnamon_core" title="Permalink to this heading">#</a></h2>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cinnamon_core.core.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">cinnamon_core.core package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-cinnamon_core">Module contents</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="_sources/cinnamon_core.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2023, Federico Ruggeri.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

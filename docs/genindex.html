@@ -1,0 +1,974 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; Cinnamon Core</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Cinnamon Core</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="registration.html">
+                        Registration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="dependencies.html">
+                        Code Organization
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="configuration.html">
+                        Configuration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="component.html">
+                        Component
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="data.html">
+                        Data
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="cinnamon_core.html">
+                        cinnamon-core
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="registration.html">
+                        Registration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="dependencies.html">
+                        Code Organization
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="configuration.html">
+                        Configuration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="component.html">
+                        Component
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="data.html">
+                        Data
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="cinnamon_core.html">
+                        cinnamon-core
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.Field.__eq__">__eq__() (cinnamon_core.core.data.Field method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.add">add() (cinnamon_core.core.configuration.Configuration method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.add">(cinnamon_core.core.data.FieldDict method)</a>
+</li>
+      </ul></li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.add_and_bind">add_and_bind() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.add_and_bind_variants">add_and_bind_variants() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.add_condition">add_condition() (cinnamon_core.core.data.FieldDict method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.add_configuration">add_configuration() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.add_configuration_from_key">add_configuration_from_key() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.AlreadyBoundException">AlreadyBoundException</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.AlreadyRegisteredException">AlreadyRegisteredException</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.ATTRIBUTE_SEPARATOR">ATTRIBUTE_SEPARATOR (cinnamon_core.core.registry.RegistrationKey attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.bind">bind() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.bind_from_key">bind_from_key() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.BINDINGS">BINDINGS (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.build_component">build_component() (cinnamon_core.core.component.Component class method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.build_component">(cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.build_component_from_key">build_component_from_key() (cinnamon_core.core.component.Component class method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.build_component_from_key">(cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      </ul></li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.build_configuration">build_configuration() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.build_configuration_from_key">build_configuration_from_key() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.logging_utility.build_logger">build_logger() (in module cinnamon_core.utility.logging_utility)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.BUILT_REGISTRY">BUILT_REGISTRY (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.check_registration_graph">check_registration_graph() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.children">children (cinnamon_core.core.configuration.Configuration property)</a>
+</li>
+      <li>
+    cinnamon_core
+
+      <ul>
+        <li><a href="cinnamon_core.html#module-cinnamon_core">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.core
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.core.component
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core.component">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.core.configuration
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core.configuration">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.core.data
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core.data">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.core.registry
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core.registry">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.utility
+
+      <ul>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    cinnamon_core.utility.json_utility
+
+      <ul>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.json_utility">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.utility.logging_utility
+
+      <ul>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.logging_utility">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.utility.pickle_utility
+
+      <ul>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.pickle_utility">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.utility.printing_utility
+
+      <ul>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.printing_utility">module</a>
+</li>
+      </ul></li>
+      <li>
+    cinnamon_core.utility.python_utility
+
+      <ul>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.python_utility">module</a>
+</li>
+      </ul></li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.ConfigurationInfo.class_type">class_type (cinnamon_core.core.registry.ConfigurationInfo attribute)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.clear">clear() (cinnamon_core.core.component.Component method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.clear">(cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      </ul></li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component">Component (class in cinnamon_core.core.component)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration">Configuration (class in cinnamon_core.core.configuration)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.ConfigurationInfo">ConfigurationInfo (class in cinnamon_core.core.registry)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.ConfigurationInfo.constructor">constructor (cinnamon_core.core.registry.ConfigurationInfo attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.DEPENDENCY_DAG">DEPENDENCY_DAG (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.DisconnectedGraphException">DisconnectedGraphException</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.ValidationResult.error_message">error_message (cinnamon_core.core.data.ValidationResult attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.expand_and_resolve_registration">expand_and_resolve_registration() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.Field">Field (class in cinnamon_core.core.data)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict">FieldDict (class in cinnamon_core.core.data)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.find">find() (cinnamon_core.core.component.Component method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.printing_utility.float_formatter">float_formatter() (in module cinnamon_core.utility.printing_utility)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.json_utility.from_json">from_json() (in module cinnamon_core.utility.json_utility)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.from_string">from_string() (cinnamon_core.core.registry.RegistrationKey class method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.fully_validate">fully_validate() (cinnamon_core.core.configuration.Configuration method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.printing_utility.general_formatter">general_formatter() (in module cinnamon_core.utility.printing_utility)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_default">get_default() (cinnamon_core.core.configuration.Configuration class method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_delta_class_copy">get_delta_class_copy() (cinnamon_core.core.configuration.Configuration class method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.get_delta_copy">get_delta_copy() (cinnamon_core.core.component.Component method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_delta_copy">(cinnamon_core.core.configuration.Configuration method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.python_utility.get_dict_values_combinations">get_dict_values_combinations() (in module cinnamon_core.utility.python_utility)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.python_utility.get_function_arguments">get_function_arguments() (in module cinnamon_core.utility.python_utility)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.python_utility.get_function_signature">get_function_signature() (in module cinnamon_core.utility.python_utility)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_serialization_parameters">get_serialization_parameters() (cinnamon_core.core.configuration.Configuration method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.get_variants_combinations">get_variants_combinations() (cinnamon_core.core.configuration.Configuration method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.import_and_load_registrations">import_and_load_registrations() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.Parameter.in_allowed_range">in_allowed_range() (cinnamon_core.core.data.Parameter method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.InconsistentTypeException">InconsistentTypeException</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.InvalidConfigurationTypeException">InvalidConfigurationTypeException</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.is_in_graph">is_in_graph() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.is_in_graph_from_key">is_in_graph_from_key() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.is_in_registry">is_in_registry() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.KEY_VALUE_SEPARATOR">KEY_VALUE_SEPARATOR (cinnamon_core.core.registry.RegistrationKey attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.ConfigurationInfo.kwargs">kwargs (cinnamon_core.core.registry.ConfigurationInfo attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.load">load() (cinnamon_core.core.component.Component method)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.json_utility.load_json">load_json() (in module cinnamon_core.utility.json_utility)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.pickle_utility.load_pickle">load_pickle() (in module cinnamon_core.utility.pickle_utility)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.load_registrations">load_registrations() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.Field.long_repr">long_repr() (cinnamon_core.core.data.Field method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.Parameter.long_repr">(cinnamon_core.core.data.Parameter method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    module
+
+      <ul>
+        <li><a href="cinnamon_core.html#module-cinnamon_core">cinnamon_core</a>
+</li>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core">cinnamon_core.core</a>
+</li>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core.component">cinnamon_core.core.component</a>
+</li>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core.configuration">cinnamon_core.core.configuration</a>
+</li>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core.data">cinnamon_core.core.data</a>
+</li>
+        <li><a href="cinnamon_core.core.html#module-cinnamon_core.core.registry">cinnamon_core.core.registry</a>
+</li>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility">cinnamon_core.utility</a>
+</li>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.json_utility">cinnamon_core.utility.json_utility</a>
+</li>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.logging_utility">cinnamon_core.utility.logging_utility</a>
+</li>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.pickle_utility">cinnamon_core.utility.pickle_utility</a>
+</li>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.printing_utility">cinnamon_core.utility.printing_utility</a>
+</li>
+        <li><a href="cinnamon_core.utility.html#module-cinnamon_core.utility.python_utility">cinnamon_core.utility.python_utility</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.MODULE_SCOPE">MODULE_SCOPE (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.NotADAGException">NotADAGException</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.NotBoundException">NotBoundException</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.NotRegisteredException">NotRegisteredException</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.OutOfRangeParameterValueException">OutOfRangeParameterValueException</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.Parameter">Parameter (class in cinnamon_core.core.data)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.parse">parse() (cinnamon_core.core.registry.RegistrationKey class method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey.partial_match">partial_match() (cinnamon_core.core.registry.RegistrationKey method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.ValidationResult.passed">passed (cinnamon_core.core.data.ValidationResult attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.post_build">post_build() (cinnamon_core.core.configuration.Configuration method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.prepare_save_data">prepare_save_data() (cinnamon_core.core.component.Component method)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.printing_utility.prettify_statistics">prettify_statistics() (in module cinnamon_core.utility.printing_utility)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.printing_utility.prettify_value">prettify_value() (in module cinnamon_core.utility.printing_utility)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.register">register() (in module cinnamon_core.core.registry)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_and_bind">register_and_bind() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_and_bind_variants">register_and_bind_variants() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_built_component_from_key">register_built_component_from_key() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_component_instance">register_component_instance() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_configuration">register_configuration() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.register_configuration_from_key">register_configuration_from_key() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTER_SCOPE">REGISTER_SCOPE (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTERED_NAMESPACES">REGISTERED_NAMESPACES (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTRATION_METHODS">REGISTRATION_METHODS (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTRATION_REGISTRY">REGISTRATION_REGISTRY (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.RegistrationKey">RegistrationKey (class in cinnamon_core.core.registry)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.REGISTRY">REGISTRY (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry">Registry (class in cinnamon_core.core.registry)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_component">retrieve_component() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_component_from_key">retrieve_component_from_key() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.retrieve_component_instance">retrieve_component_instance() (cinnamon_core.core.component.Component class method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_component_instance">(cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      </ul></li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.retrieve_component_instance_from_key">retrieve_component_instance_from_key() (cinnamon_core.core.component.Component class method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_component_instance_from_key">(cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      </ul></li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_configurations">retrieve_configurations() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.retrieve_configurations_from_key">retrieve_configurations_from_key() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.ROOT_KEY">ROOT_KEY (cinnamon_core.core.registry.Registry attribute)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.run">run() (cinnamon_core.core.component.Component method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.component.Component.save">save() (cinnamon_core.core.component.Component method)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.json_utility.save_json">save_json() (in module cinnamon_core.utility.json_utility)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.pickle_utility.save_pickle">save_pickle() (in module cinnamon_core.utility.pickle_utility)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.search_by_name">search_by_name() (cinnamon_core.core.data.FieldDict method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.search_by_tag">search_by_tag() (cinnamon_core.core.data.FieldDict method)</a>
+</li>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.logging_utility.set_logging_path">set_logging_path() (in module cinnamon_core.utility.logging_utility)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.Field.short_repr">short_repr() (cinnamon_core.core.data.Field method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.show">show() (cinnamon_core.core.configuration.Configuration method)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.show_dependencies">show_dependencies() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.json_utility.to_json">to_json() (in module cinnamon_core.utility.json_utility)</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.to_value_dict">to_value_dict() (cinnamon_core.core.configuration.Configuration method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.to_value_dict">(cinnamon_core.core.data.FieldDict method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.registry.Registry.try_resolve_module_from_namespace">try_resolve_module_from_namespace() (cinnamon_core.core.registry.Registry static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.utility.html#cinnamon_core.utility.logging_utility.update_logger">update_logger() (in module cinnamon_core.utility.logging_utility)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.Configuration.validate">validate() (cinnamon_core.core.configuration.Configuration method)</a>
+
+      <ul>
+        <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.FieldDict.validate">(cinnamon_core.core.data.FieldDict method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.configuration.ValidationFailureException">ValidationFailureException</a>, <a href="cinnamon_core.core.html#cinnamon_core.core.data.ValidationFailureException">[1]</a>
+</li>
+      <li><a href="cinnamon_core.core.html#cinnamon_core.core.data.ValidationResult">ValidationResult (class in cinnamon_core.core.data)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2023, Federico Ruggeri.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
