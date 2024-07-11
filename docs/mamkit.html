@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>mamkit package &#8212; MAMKIT</title>
   
@@ -19,28 +18,26 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=359c27e9"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'mamkit';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -56,6 +53,15 @@
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -96,12 +102,15 @@
     <span class="fa-solid fa-bars"></span>
   </label>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
   
 
 <a class="navbar-brand logo" href="index.html">
+  
   
   
   
@@ -113,12 +122,12 @@
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
+        <div class="navbar-item">
+<nav class="navbar-nav">
   <p class="sidebar-header-items__title"
      role="heading"
      aria-level="1"
@@ -161,20 +170,20 @@
                       </a>
                     </li>
                 
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links" class="dropdown-menu">
                     
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                      <a class="nav-link dropdown-item nav-internal" href="#">
                         mamkit
                       </a>
                     </li>
                 
-                </div>
-            </div>
+                </ul>
+            </li>
             
   </ul>
 </nav></div>
@@ -186,23 +195,27 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -213,18 +226,21 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
     </label>
   
@@ -244,7 +260,8 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
+          <div class="navbar-item">
+<nav class="navbar-nav">
   <p class="sidebar-header-items__title"
      role="heading"
      aria-level="1"
@@ -287,20 +304,20 @@ document.write(`
                       </a>
                     </li>
                 
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
                     
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                      <a class="nav-link dropdown-item nav-internal" href="#">
                         mamkit
                       </a>
                     </li>
                 
-                </div>
-            </div>
+                </ul>
+            </li>
             
   </ul>
 </nav></div>
@@ -312,12 +329,13 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -327,7 +345,8 @@ document.write(`
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
@@ -365,8 +384,8 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
@@ -398,631 +417,43 @@ document.write(`
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="mamkit.configs.html">mamkit.configs package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#module-mamkit.configs.audio">mamkit.configs.audio module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.configs"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.marg_arc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.marg_arc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.marg_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.marg_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.mmused_acc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.mmused_acc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.mmused_acc_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.mmused_acc_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.mmused_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.mmused_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.mmused_asd_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.mmused_asd_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.mmused_fallacy_afc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.mmused_fallacy_afc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.ukdebates_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.ukdebates_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMMFCCsConfig.ukdebates_asd_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.ukdebates_asd_mancini_2022()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.configs"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.marg_arc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.marg_arc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.marg_arc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.marg_arc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.marg_arc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.marg_arc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.marg_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.marg_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_acc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_acc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_acc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_acc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_acc_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_acc_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_acc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_acc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_asd_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_asd_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_asd_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_fallacy_afc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_fallacy_afc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_fallacy_afc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_fallacy_afc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.mmused_fallacy_afc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_fallacy_afc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.ukdebates_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.ukdebates_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.ukdebates_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.ukdebates_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.ukdebates_asd_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.ukdebates_asd_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.BiLSTMTransformerConfig.ukdebates_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.ukdebates_asd_wavlm_anonymous()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.configs"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.marg_arc_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.marg_arc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.marg_arc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.marg_arc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.marg_arc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.marg_arc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.mmused_acc_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.mmused_acc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.mmused_acc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.mmused_acc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.mmused_acc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.mmused_acc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.mmused_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.mmused_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.mmused_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.mmused_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.mmused_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.mmused_asd_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.mmused_fallacy_afc_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.mmused_fallacy_afc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.mmused_fallacy_afc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.mmused_fallacy_afc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.mmused_fallacy_afc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.mmused_fallacy_afc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.ukdebates_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.ukdebates_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.ukdebates_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.ukdebates_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.audio.TransformerEncoderConfig.ukdebates_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerEncoderConfig.ukdebates_asd_wavlm_anonymous()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#module-mamkit.configs.base">mamkit.configs.base module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.base.BaseConfig"><code class="docutils literal notranslate"><span class="pre">BaseConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.base.BaseConfig.add_config"><code class="docutils literal notranslate"><span class="pre">BaseConfig.add_config()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.base.BaseConfig.configs"><code class="docutils literal notranslate"><span class="pre">BaseConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.base.BaseConfig.from_config"><code class="docutils literal notranslate"><span class="pre">BaseConfig.from_config()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.base.ConfigKey"><code class="docutils literal notranslate"><span class="pre">ConfigKey</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#module-mamkit.configs.text">mamkit.configs.text module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.configs"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.marg_arc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.marg_arc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.marg_arc_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.marg_arc_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.mmused_acc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.mmused_acc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.mmused_acc_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.mmused_acc_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.mmused_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.mmused_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.mmused_asd_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.mmused_asd_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.mmused_fallacy_afc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.mmused_fallacy_afc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.ukdebates_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.ukdebates_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.BiLSTMConfig.ukdebates_asd_mancini_2022"><code class="docutils literal notranslate"><span class="pre">BiLSTMConfig.ukdebates_asd_mancini_2022()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig"><code class="docutils literal notranslate"><span class="pre">TransformerConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.configs"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.marg_arc_bert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.marg_arc_bert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.marg_arc_roberta_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.marg_arc_roberta_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.mmused_acc_bert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.mmused_acc_bert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.mmused_acc_roberta_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.mmused_acc_roberta_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.mmused_asd_bert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.mmused_asd_bert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.mmused_asd_roberta_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.mmused_asd_roberta_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.mmused_fallacy_afc_bert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.mmused_fallacy_afc_bert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.mmused_fallacy_afc_bert_mancini_2024"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.mmused_fallacy_afc_bert_mancini_2024()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.mmused_fallacy_afc_roberta_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.mmused_fallacy_afc_roberta_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.mmused_fallacy_afc_roberta_mancini_2024"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.mmused_fallacy_afc_roberta_mancini_2024()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.ukdebates_asd_bert_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.ukdebates_asd_bert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.ukdebates_asd_mancini_2022"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.ukdebates_asd_mancini_2022()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text.TransformerConfig.ukdebates_asd_roberta_anonymous"><code class="docutils literal notranslate"><span class="pre">TransformerConfig.ukdebates_asd_roberta_anonymous()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#module-mamkit.configs.text_audio">mamkit.configs.text_audio module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMMFCCsConfig"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMMFCCsConfig.configs"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMMFCCsConfig.marg_arc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.marg_arc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMMFCCsConfig.mmused_acc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.mmused_acc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMMFCCsConfig.mmused_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.mmused_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMMFCCsConfig.mmused_fallacy_afc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.mmused_fallacy_afc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMMFCCsConfig.ukdebates_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMMFCCsConfig.ukdebates_asd_anonymous()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.configs"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.marg_arc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.marg_arc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.marg_arc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.marg_arc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.marg_arc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.marg_arc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.mmused_acc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_acc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.mmused_acc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_acc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.mmused_acc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_acc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.mmused_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.mmused_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.mmused_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_asd_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.mmused_fallacy_afc_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_fallacy_afc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.mmused_fallacy_afc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_fallacy_afc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.mmused_fallacy_afc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.mmused_fallacy_afc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.ukdebates_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.ukdebates_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.ukdebates_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.ukdebates_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.BiLSTMTransformerConfig.ukdebates_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">BiLSTMTransformerConfig.ukdebates_asd_wavlm_anonymous()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig"><code class="docutils literal notranslate"><span class="pre">CSAConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.configs"><code class="docutils literal notranslate"><span class="pre">CSAConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.marg_arc_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.marg_arc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.marg_arc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.marg_arc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.marg_arc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.marg_arc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.mmused_acc_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.mmused_acc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.mmused_acc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.mmused_acc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.mmused_acc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.mmused_acc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.mmused_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.mmused_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.mmused_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.mmused_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.mmused_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.mmused_asd_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.mmused_fallacy_afc_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.mmused_fallacy_afc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.mmused_fallacy_afc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.mmused_fallacy_afc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.mmused_fallacy_afc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.mmused_fallacy_afc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.ukdebates_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.ukdebates_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.ukdebates_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.ukdebates_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.CSAConfig.ukdebates_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">CSAConfig.ukdebates_asd_wavlm_anonymous()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.configs"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.marg_arc_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.marg_arc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.marg_arc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.marg_arc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.marg_arc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.marg_arc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.mmused_acc_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.mmused_acc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.mmused_acc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.mmused_acc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.mmused_acc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.mmused_acc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.mmused_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.mmused_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.mmused_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.mmused_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.mmused_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.mmused_asd_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.mmused_fallacy_afc_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.mmused_fallacy_afc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.mmused_fallacy_afc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.mmused_fallacy_afc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.mmused_fallacy_afc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.mmused_fallacy_afc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.ukdebates_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.ukdebates_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.ukdebates_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.ukdebates_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.EnsembleConfig.ukdebates_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">EnsembleConfig.ukdebates_asd_wavlm_anonymous()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.configs"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.marg_arc_bert_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.marg_arc_bert_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.marg_arc_bert_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.marg_arc_bert_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.marg_arc_bert_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.marg_arc_bert_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.marg_arc_roberta_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.marg_arc_roberta_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.marg_arc_roberta_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.marg_arc_roberta_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.marg_arc_roberta_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.marg_arc_roberta_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_acc_bert_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_acc_bert_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_acc_bert_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_acc_bert_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_acc_bert_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_acc_bert_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_acc_roberta_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_acc_roberta_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_acc_roberta_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_acc_roberta_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_acc_roberta_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_acc_roberta_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_asd_bert_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_asd_bert_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_asd_bert_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_asd_bert_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_asd_bert_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_asd_bert_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_asd_roberta_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_asd_roberta_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_asd_roberta_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_asd_roberta_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_asd_roberta_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_asd_roberta_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_fallacy_afc_bert_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_fallacy_afc_bert_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_fallacy_afc_bert_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_fallacy_afc_bert_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_fallacy_afc_bert_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_fallacy_afc_bert_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_fallacy_afc_roberta_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_fallacy_afc_roberta_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_fallacy_afc_roberta_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_fallacy_afc_roberta_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.mmused_fallacy_afc_roberta_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.mmused_fallacy_afc_roberta_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.ukdebates_asd_bert_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.ukdebates_asd_bert_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.ukdebates_asd_bert_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.ukdebates_asd_bert_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.ukdebates_asd_bert_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.ukdebates_asd_bert_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.ukdebates_asd_roberta_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.ukdebates_asd_roberta_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.ukdebates_asd_roberta_wav2vec_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.ukdebates_asd_roberta_wav2vec_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MMTransformerConfig.ukdebates_asd_roberta_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MMTransformerConfig.ukdebates_asd_roberta_wavlm_anonymous()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig"><code class="docutils literal notranslate"><span class="pre">MulTAConfig</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.configs"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.configs</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.marg_arc_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.marg_arc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.marg_arc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.marg_arc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.marg_arc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.marg_arc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.mmused_acc_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.mmused_acc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.mmused_acc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.mmused_acc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.mmused_acc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.mmused_acc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.mmused_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.mmused_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.mmused_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.mmused_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.mmused_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.mmused_asd_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.mmused_fallacy_afc_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.mmused_fallacy_afc_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.mmused_fallacy_afc_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.mmused_fallacy_afc_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.mmused_fallacy_afc_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.mmused_fallacy_afc_wavlm_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.ukdebates_asd_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.ukdebates_asd_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.ukdebates_asd_hubert_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.ukdebates_asd_hubert_anonymous()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.configs.html#mamkit.configs.text_audio.MulTAConfig.ukdebates_asd_wavlm_anonymous"><code class="docutils literal notranslate"><span class="pre">MulTAConfig.ukdebates_asd_wavlm_anonymous()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#mamkit-configs-audio-module">mamkit.configs.audio module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#mamkit-configs-base-module">mamkit.configs.base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#mamkit-configs-text-module">mamkit.configs.text module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#mamkit-configs-text-audio-module">mamkit.configs.text_audio module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.configs.html#module-mamkit.configs">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mamkit.data.html">mamkit.data package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.data.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.data.html#module-mamkit.data.collators">mamkit.data.collators module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.AudioCollator"><code class="docutils literal notranslate"><span class="pre">AudioCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.AudioTransformerCollator"><code class="docutils literal notranslate"><span class="pre">AudioTransformerCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.MultimodalCollator"><code class="docutils literal notranslate"><span class="pre">MultimodalCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.PairAudioCollator"><code class="docutils literal notranslate"><span class="pre">PairAudioCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.PairMultimodalCollator"><code class="docutils literal notranslate"><span class="pre">PairMultimodalCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.PairTextCollator"><code class="docutils literal notranslate"><span class="pre">PairTextCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.PairTextTransformerCollator"><code class="docutils literal notranslate"><span class="pre">PairTextTransformerCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.PairTextTransformerOutputCollator"><code class="docutils literal notranslate"><span class="pre">PairTextTransformerOutputCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.PairUnimodalCollator"><code class="docutils literal notranslate"><span class="pre">PairUnimodalCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.TextCollator"><code class="docutils literal notranslate"><span class="pre">TextCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.TextTransformerCollator"><code class="docutils literal notranslate"><span class="pre">TextTransformerCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.TextTransformerOutputCollator"><code class="docutils literal notranslate"><span class="pre">TextTransformerOutputCollator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.collators.UnimodalCollator"><code class="docutils literal notranslate"><span class="pre">UnimodalCollator</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.data.html#module-mamkit.data.datasets">mamkit.data.datasets module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.InputMode"><code class="docutils literal notranslate"><span class="pre">InputMode</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.InputMode.AUDIO_ONLY"><code class="docutils literal notranslate"><span class="pre">InputMode.AUDIO_ONLY</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.InputMode.TEXT_AUDIO"><code class="docutils literal notranslate"><span class="pre">InputMode.TEXT_AUDIO</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.InputMode.TEXT_ONLY"><code class="docutils literal notranslate"><span class="pre">InputMode.TEXT_ONLY</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.Loader"><code class="docutils literal notranslate"><span class="pre">Loader</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.Loader.add_splits"><code class="docutils literal notranslate"><span class="pre">Loader.add_splits()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.Loader.build_info_from_splits"><code class="docutils literal notranslate"><span class="pre">Loader.build_info_from_splits()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.Loader.data"><code class="docutils literal notranslate"><span class="pre">Loader.data</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.Loader.get_default_splits"><code class="docutils literal notranslate"><span class="pre">Loader.get_default_splits()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.Loader.get_splits"><code class="docutils literal notranslate"><span class="pre">Loader.get_splits()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MArg"><code class="docutils literal notranslate"><span class="pre">MArg</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MArg.build"><code class="docutils literal notranslate"><span class="pre">MArg.build()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MArg.build_chunks"><code class="docutils literal notranslate"><span class="pre">MArg.build_chunks()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MArg.data"><code class="docutils literal notranslate"><span class="pre">MArg.data</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MArg.get_default_splits"><code class="docutils literal notranslate"><span class="pre">MArg.get_default_splits()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MArg.get_mancini_2022_splits"><code class="docutils literal notranslate"><span class="pre">MArg.get_mancini_2022_splits()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED"><code class="docutils literal notranslate"><span class="pre">MMUSED</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.build_audio"><code class="docutils literal notranslate"><span class="pre">MMUSED.build_audio()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.build_from_scratch"><code class="docutils literal notranslate"><span class="pre">MMUSED.build_from_scratch()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.copy_final_csv"><code class="docutils literal notranslate"><span class="pre">MMUSED.copy_final_csv()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.copy_transcripts"><code class="docutils literal notranslate"><span class="pre">MMUSED.copy_transcripts()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.create_plain_text"><code class="docutils literal notranslate"><span class="pre">MMUSED.create_plain_text()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.data"><code class="docutils literal notranslate"><span class="pre">MMUSED.data</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.generate_chunks"><code class="docutils literal notranslate"><span class="pre">MMUSED.generate_chunks()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.generate_clips"><code class="docutils literal notranslate"><span class="pre">MMUSED.generate_clips()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.generate_dataset"><code class="docutils literal notranslate"><span class="pre">MMUSED.generate_dataset()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.generate_empty_transcript_files"><code class="docutils literal notranslate"><span class="pre">MMUSED.generate_empty_transcript_files()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.get_default_splits"><code class="docutils literal notranslate"><span class="pre">MMUSED.get_default_splits()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.load"><code class="docutils literal notranslate"><span class="pre">MMUSED.load()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.remove_duplicates"><code class="docutils literal notranslate"><span class="pre">MMUSED.remove_duplicates()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.remove_not_found"><code class="docutils literal notranslate"><span class="pre">MMUSED.remove_not_found()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.run_aeneas"><code class="docutils literal notranslate"><span class="pre">MMUSED.run_aeneas()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.trim_audio"><code class="docutils literal notranslate"><span class="pre">MMUSED.trim_audio()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSED.unify_datasets_debates"><code class="docutils literal notranslate"><span class="pre">MMUSED.unify_datasets_debates()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSEDFallacy"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSEDFallacy.build_clips"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.build_clips()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSEDFallacy.data"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.data</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSEDFallacy.generate_clips"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.generate_clips()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSEDFallacy.get_default_splits"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.get_default_splits()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSEDFallacy.get_mancini_2024_splits"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.get_mancini_2024_splits()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MMUSEDFallacy.load"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.load()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.MultimodalDataset"><code class="docutils literal notranslate"><span class="pre">MultimodalDataset</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.PairMultimodalDataset"><code class="docutils literal notranslate"><span class="pre">PairMultimodalDataset</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.PairUnimodalDataset"><code class="docutils literal notranslate"><span class="pre">PairUnimodalDataset</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.SplitInfo"><code class="docutils literal notranslate"><span class="pre">SplitInfo</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.SplitInfo.test"><code class="docutils literal notranslate"><span class="pre">SplitInfo.test</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.SplitInfo.train"><code class="docutils literal notranslate"><span class="pre">SplitInfo.train</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.SplitInfo.val"><code class="docutils literal notranslate"><span class="pre">SplitInfo.val</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.UKDebates"><code class="docutils literal notranslate"><span class="pre">UKDebates</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.UKDebates.data"><code class="docutils literal notranslate"><span class="pre">UKDebates.data</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.UKDebates.get_default_splits"><code class="docutils literal notranslate"><span class="pre">UKDebates.get_default_splits()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.UKDebates.get_mancini_2022_splits"><code class="docutils literal notranslate"><span class="pre">UKDebates.get_mancini_2022_splits()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.UKDebates.load"><code class="docutils literal notranslate"><span class="pre">UKDebates.load()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.UKDebates.parse_all_annotations"><code class="docutils literal notranslate"><span class="pre">UKDebates.parse_all_annotations()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.UKDebates.parse_speaker_annotations"><code class="docutils literal notranslate"><span class="pre">UKDebates.parse_speaker_annotations()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.datasets.UnimodalDataset"><code class="docutils literal notranslate"><span class="pre">UnimodalDataset</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.data.html#module-mamkit.data.processing">mamkit.data.processing module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.AudioTransformer"><code class="docutils literal notranslate"><span class="pre">AudioTransformer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.AudioTransformer.clear"><code class="docutils literal notranslate"><span class="pre">AudioTransformer.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.AudioTransformerExtractor"><code class="docutils literal notranslate"><span class="pre">AudioTransformerExtractor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.AudioTransformerExtractor.clear"><code class="docutils literal notranslate"><span class="pre">AudioTransformerExtractor.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.MFCCExtractor"><code class="docutils literal notranslate"><span class="pre">MFCCExtractor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.MFCCExtractor.parse_audio"><code class="docutils literal notranslate"><span class="pre">MFCCExtractor.parse_audio()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.MultimodalProcessor"><code class="docutils literal notranslate"><span class="pre">MultimodalProcessor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.MultimodalProcessor.clear"><code class="docutils literal notranslate"><span class="pre">MultimodalProcessor.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.MultimodalProcessor.fit"><code class="docutils literal notranslate"><span class="pre">MultimodalProcessor.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairAudioTransformer"><code class="docutils literal notranslate"><span class="pre">PairAudioTransformer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairAudioTransformer.clear"><code class="docutils literal notranslate"><span class="pre">PairAudioTransformer.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairAudioTransformerExtractor"><code class="docutils literal notranslate"><span class="pre">PairAudioTransformerExtractor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairAudioTransformerExtractor.clear"><code class="docutils literal notranslate"><span class="pre">PairAudioTransformerExtractor.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairMFCCExtractor"><code class="docutils literal notranslate"><span class="pre">PairMFCCExtractor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairMFCCExtractor.parse_audio"><code class="docutils literal notranslate"><span class="pre">PairMFCCExtractor.parse_audio()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairMultimodalProcessor"><code class="docutils literal notranslate"><span class="pre">PairMultimodalProcessor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairMultimodalProcessor.clear"><code class="docutils literal notranslate"><span class="pre">PairMultimodalProcessor.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairMultimodalProcessor.fit"><code class="docutils literal notranslate"><span class="pre">PairMultimodalProcessor.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairTextTransformer"><code class="docutils literal notranslate"><span class="pre">PairTextTransformer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairTextTransformer.clear"><code class="docutils literal notranslate"><span class="pre">PairTextTransformer.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairUnimodalProcessor"><code class="docutils literal notranslate"><span class="pre">PairUnimodalProcessor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairUnimodalProcessor.clear"><code class="docutils literal notranslate"><span class="pre">PairUnimodalProcessor.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairUnimodalProcessor.fit"><code class="docutils literal notranslate"><span class="pre">PairUnimodalProcessor.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairVocabBuilder"><code class="docutils literal notranslate"><span class="pre">PairVocabBuilder</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairVocabBuilder.clear"><code class="docutils literal notranslate"><span class="pre">PairVocabBuilder.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairVocabBuilder.fit"><code class="docutils literal notranslate"><span class="pre">PairVocabBuilder.fit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.PairVocabBuilder.reset"><code class="docutils literal notranslate"><span class="pre">PairVocabBuilder.reset()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.Processor"><code class="docutils literal notranslate"><span class="pre">Processor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.Processor.clear"><code class="docutils literal notranslate"><span class="pre">Processor.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.Processor.fit"><code class="docutils literal notranslate"><span class="pre">Processor.fit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.Processor.reset"><code class="docutils literal notranslate"><span class="pre">Processor.reset()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.ProcessorComponent"><code class="docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.ProcessorComponent.clear"><code class="docutils literal notranslate"><span class="pre">ProcessorComponent.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.ProcessorComponent.fit"><code class="docutils literal notranslate"><span class="pre">ProcessorComponent.fit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.ProcessorComponent.reset"><code class="docutils literal notranslate"><span class="pre">ProcessorComponent.reset()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.TextTransformer"><code class="docutils literal notranslate"><span class="pre">TextTransformer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.TextTransformer.clear"><code class="docutils literal notranslate"><span class="pre">TextTransformer.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.UnimodalProcessor"><code class="docutils literal notranslate"><span class="pre">UnimodalProcessor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.UnimodalProcessor.clear"><code class="docutils literal notranslate"><span class="pre">UnimodalProcessor.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.UnimodalProcessor.fit"><code class="docutils literal notranslate"><span class="pre">UnimodalProcessor.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.VocabBuilder"><code class="docutils literal notranslate"><span class="pre">VocabBuilder</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.VocabBuilder.clear"><code class="docutils literal notranslate"><span class="pre">VocabBuilder.clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.VocabBuilder.fit"><code class="docutils literal notranslate"><span class="pre">VocabBuilder.fit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.data.html#mamkit.data.processing.VocabBuilder.reset"><code class="docutils literal notranslate"><span class="pre">VocabBuilder.reset()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.data.html#mamkit-data-collators-module">mamkit.data.collators module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.data.html#mamkit-data-datasets-module">mamkit.data.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.data.html#mamkit-data-processing-module">mamkit.data.processing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.data.html#module-mamkit.data">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mamkit.models.html">mamkit.models package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.models.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.models.html#module-mamkit.models.audio">mamkit.models.audio module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.AudioOnlyModel"><code class="docutils literal notranslate"><span class="pre">AudioOnlyModel</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.AudioOnlyModel.forward"><code class="docutils literal notranslate"><span class="pre">AudioOnlyModel.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.AudioOnlyModel.training"><code class="docutils literal notranslate"><span class="pre">AudioOnlyModel.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.BiLSTM"><code class="docutils literal notranslate"><span class="pre">BiLSTM</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.BiLSTM.forward"><code class="docutils literal notranslate"><span class="pre">BiLSTM.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.BiLSTM.training"><code class="docutils literal notranslate"><span class="pre">BiLSTM.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.PairBiLSTM"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.PairBiLSTM.encode_audio"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM.encode_audio()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.PairBiLSTM.forward"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.PairBiLSTM.training"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.PairTransformerEncoder"><code class="docutils literal notranslate"><span class="pre">PairTransformerEncoder</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.PairTransformerEncoder.encode_audio"><code class="docutils literal notranslate"><span class="pre">PairTransformerEncoder.encode_audio()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.PairTransformerEncoder.forward"><code class="docutils literal notranslate"><span class="pre">PairTransformerEncoder.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.PairTransformerEncoder.training"><code class="docutils literal notranslate"><span class="pre">PairTransformerEncoder.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.TransformerEncoder"><code class="docutils literal notranslate"><span class="pre">TransformerEncoder</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.TransformerEncoder.forward"><code class="docutils literal notranslate"><span class="pre">TransformerEncoder.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.audio.TransformerEncoder.training"><code class="docutils literal notranslate"><span class="pre">TransformerEncoder.training</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.models.html#module-mamkit.models.text">mamkit.models.text module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.BiLSTM"><code class="docutils literal notranslate"><span class="pre">BiLSTM</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.BiLSTM.forward"><code class="docutils literal notranslate"><span class="pre">BiLSTM.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.BiLSTM.training"><code class="docutils literal notranslate"><span class="pre">BiLSTM.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.PairBiLSTM"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.PairBiLSTM.forward"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.PairBiLSTM.training"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.PairTransformer"><code class="docutils literal notranslate"><span class="pre">PairTransformer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.PairTransformer.encode_text"><code class="docutils literal notranslate"><span class="pre">PairTransformer.encode_text()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.PairTransformer.forward"><code class="docutils literal notranslate"><span class="pre">PairTransformer.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.PairTransformer.training"><code class="docutils literal notranslate"><span class="pre">PairTransformer.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.TextOnlyModel"><code class="docutils literal notranslate"><span class="pre">TextOnlyModel</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.TextOnlyModel.forward"><code class="docutils literal notranslate"><span class="pre">TextOnlyModel.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.TextOnlyModel.training"><code class="docutils literal notranslate"><span class="pre">TextOnlyModel.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.Transformer"><code class="docutils literal notranslate"><span class="pre">Transformer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.Transformer.forward"><code class="docutils literal notranslate"><span class="pre">Transformer.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text.Transformer.training"><code class="docutils literal notranslate"><span class="pre">Transformer.training</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.models.html#module-mamkit.models.text_audio">mamkit.models.text_audio module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.BiLSTM"><code class="docutils literal notranslate"><span class="pre">BiLSTM</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.BiLSTM.forward"><code class="docutils literal notranslate"><span class="pre">BiLSTM.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.BiLSTM.training"><code class="docutils literal notranslate"><span class="pre">BiLSTM.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.CSA"><code class="docutils literal notranslate"><span class="pre">CSA</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.CSA.forward"><code class="docutils literal notranslate"><span class="pre">CSA.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.CSA.training"><code class="docutils literal notranslate"><span class="pre">CSA.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.Ensemble"><code class="docutils literal notranslate"><span class="pre">Ensemble</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.Ensemble.forward"><code class="docutils literal notranslate"><span class="pre">Ensemble.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.Ensemble.training"><code class="docutils literal notranslate"><span class="pre">Ensemble.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.MMTransformer"><code class="docutils literal notranslate"><span class="pre">MMTransformer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.MMTransformer.forward"><code class="docutils literal notranslate"><span class="pre">MMTransformer.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.MMTransformer.training"><code class="docutils literal notranslate"><span class="pre">MMTransformer.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.MulTA"><code class="docutils literal notranslate"><span class="pre">MulTA</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.MulTA.forward"><code class="docutils literal notranslate"><span class="pre">MulTA.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.MulTA.training"><code class="docutils literal notranslate"><span class="pre">MulTA.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairBiLSTM"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairBiLSTM.encode_input"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM.encode_input()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairBiLSTM.forward"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairBiLSTM.training"><code class="docutils literal notranslate"><span class="pre">PairBiLSTM.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairCSA"><code class="docutils literal notranslate"><span class="pre">PairCSA</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairCSA.encode_inputs"><code class="docutils literal notranslate"><span class="pre">PairCSA.encode_inputs()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairCSA.forward"><code class="docutils literal notranslate"><span class="pre">PairCSA.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairCSA.training"><code class="docutils literal notranslate"><span class="pre">PairCSA.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairEnsemble"><code class="docutils literal notranslate"><span class="pre">PairEnsemble</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairEnsemble.encode_audio"><code class="docutils literal notranslate"><span class="pre">PairEnsemble.encode_audio()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairEnsemble.encode_text"><code class="docutils literal notranslate"><span class="pre">PairEnsemble.encode_text()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairEnsemble.forward"><code class="docutils literal notranslate"><span class="pre">PairEnsemble.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairEnsemble.training"><code class="docutils literal notranslate"><span class="pre">PairEnsemble.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairMMTransformer"><code class="docutils literal notranslate"><span class="pre">PairMMTransformer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairMMTransformer.encode_inputs"><code class="docutils literal notranslate"><span class="pre">PairMMTransformer.encode_inputs()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairMMTransformer.forward"><code class="docutils literal notranslate"><span class="pre">PairMMTransformer.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairMMTransformer.training"><code class="docutils literal notranslate"><span class="pre">PairMMTransformer.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairMulTA"><code class="docutils literal notranslate"><span class="pre">PairMulTA</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairMulTA.encode_inputs"><code class="docutils literal notranslate"><span class="pre">PairMulTA.encode_inputs()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairMulTA.forward"><code class="docutils literal notranslate"><span class="pre">PairMulTA.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.PairMulTA.training"><code class="docutils literal notranslate"><span class="pre">PairMulTA.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.TextAudioModel"><code class="docutils literal notranslate"><span class="pre">TextAudioModel</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.TextAudioModel.forward"><code class="docutils literal notranslate"><span class="pre">TextAudioModel.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.models.html#mamkit.models.text_audio.TextAudioModel.training"><code class="docutils literal notranslate"><span class="pre">TextAudioModel.training</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.models.html#mamkit-models-audio-module">mamkit.models.audio module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.models.html#mamkit-models-text-module">mamkit.models.text module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.models.html#mamkit-models-text-audio-module">mamkit.models.text_audio module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.models.html#module-mamkit.models">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mamkit.modules.html">mamkit.modules package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.modules.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.modules.html#module-mamkit.modules.rnn">mamkit.modules.rnn module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.rnn.LSTMStack"><code class="docutils literal notranslate"><span class="pre">LSTMStack</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.rnn.LSTMStack.forward"><code class="docutils literal notranslate"><span class="pre">LSTMStack.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.rnn.LSTMStack.training"><code class="docutils literal notranslate"><span class="pre">LSTMStack.training</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.modules.html#module-mamkit.modules.transformer">mamkit.modules.transformer module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomEncoder"><code class="docutils literal notranslate"><span class="pre">CustomEncoder</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomEncoder.forward"><code class="docutils literal notranslate"><span class="pre">CustomEncoder.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomEncoder.training"><code class="docutils literal notranslate"><span class="pre">CustomEncoder.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomEncoderLayer"><code class="docutils literal notranslate"><span class="pre">CustomEncoderLayer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomEncoderLayer.forward"><code class="docutils literal notranslate"><span class="pre">CustomEncoderLayer.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomEncoderLayer.training"><code class="docutils literal notranslate"><span class="pre">CustomEncoderLayer.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomMultiHeadAttention"><code class="docutils literal notranslate"><span class="pre">CustomMultiHeadAttention</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomMultiHeadAttention.concat"><code class="docutils literal notranslate"><span class="pre">CustomMultiHeadAttention.concat()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomMultiHeadAttention.forward"><code class="docutils literal notranslate"><span class="pre">CustomMultiHeadAttention.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomMultiHeadAttention.split"><code class="docutils literal notranslate"><span class="pre">CustomMultiHeadAttention.split()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomMultiHeadAttention.training"><code class="docutils literal notranslate"><span class="pre">CustomMultiHeadAttention.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomScaleDotProductAttention"><code class="docutils literal notranslate"><span class="pre">CustomScaleDotProductAttention</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomScaleDotProductAttention.forward"><code class="docutils literal notranslate"><span class="pre">CustomScaleDotProductAttention.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.CustomScaleDotProductAttention.training"><code class="docutils literal notranslate"><span class="pre">CustomScaleDotProductAttention.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.LayerNorm"><code class="docutils literal notranslate"><span class="pre">LayerNorm</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.LayerNorm.forward"><code class="docutils literal notranslate"><span class="pre">LayerNorm.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.LayerNorm.training"><code class="docutils literal notranslate"><span class="pre">LayerNorm.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.MulTA_CrossAttentionBlock"><code class="docutils literal notranslate"><span class="pre">MulTA_CrossAttentionBlock</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.MulTA_CrossAttentionBlock.forward"><code class="docutils literal notranslate"><span class="pre">MulTA_CrossAttentionBlock.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.MulTA_CrossAttentionBlock.training"><code class="docutils literal notranslate"><span class="pre">MulTA_CrossAttentionBlock.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.PositionalEncoding"><code class="docutils literal notranslate"><span class="pre">PositionalEncoding</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.PositionalEncoding.forward"><code class="docutils literal notranslate"><span class="pre">PositionalEncoding.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.PositionalEncoding.training"><code class="docutils literal notranslate"><span class="pre">PositionalEncoding.training</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.PositionwiseFeedForward"><code class="docutils literal notranslate"><span class="pre">PositionwiseFeedForward</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.PositionwiseFeedForward.forward"><code class="docutils literal notranslate"><span class="pre">PositionwiseFeedForward.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.modules.html#mamkit.modules.transformer.PositionwiseFeedForward.training"><code class="docutils literal notranslate"><span class="pre">PositionwiseFeedForward.training</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.modules.html#mamkit-modules-rnn-module">mamkit.modules.rnn module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.modules.html#mamkit-modules-transformer-module">mamkit.modules.transformer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.modules.html#module-mamkit.modules">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mamkit.utility.html">mamkit.utility package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#module-mamkit.utility.callbacks">mamkit.utility.callbacks module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.callbacks.PycharmProgressBar"><code class="docutils literal notranslate"><span class="pre">PycharmProgressBar</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.callbacks.PycharmProgressBar.init_predict_tqdm"><code class="docutils literal notranslate"><span class="pre">PycharmProgressBar.init_predict_tqdm()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.callbacks.PycharmProgressBar.init_test_tqdm"><code class="docutils literal notranslate"><span class="pre">PycharmProgressBar.init_test_tqdm()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.callbacks.PycharmProgressBar.init_validation_tqdm"><code class="docutils literal notranslate"><span class="pre">PycharmProgressBar.init_validation_tqdm()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#module-mamkit.utility.config">mamkit.utility.config module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.config.extract_from_class"><code class="docutils literal notranslate"><span class="pre">extract_from_class()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.config.extract_from_method"><code class="docutils literal notranslate"><span class="pre">extract_from_method()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#module-mamkit.utility.data">mamkit.utility.data module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.data.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.data.youtube_download"><code class="docutils literal notranslate"><span class="pre">youtube_download()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#module-mamkit.utility.metrics">mamkit.utility.metrics module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.metrics.ClassSubsetMulticlassF1Score"><code class="docutils literal notranslate"><span class="pre">ClassSubsetMulticlassF1Score</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.metrics.ClassSubsetMulticlassF1Score.compute"><code class="docutils literal notranslate"><span class="pre">ClassSubsetMulticlassF1Score.compute()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#module-mamkit.utility.model">mamkit.utility.model module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.model.MAMKitLightingModel"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.model.MAMKitLightingModel.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.configure_optimizers()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.model.MAMKitLightingModel.forward"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.forward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.model.MAMKitLightingModel.test_step"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.test_step()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.model.MAMKitLightingModel.training_step"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.training_step()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.model.MAMKitLightingModel.validation_step"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.validation_step()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mamkit.utility.html#mamkit.utility.model.to_lighting_model"><code class="docutils literal notranslate"><span class="pre">to_lighting_model()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#mamkit-utility-callbacks-module">mamkit.utility.callbacks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#mamkit-utility-config-module">mamkit.utility.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#mamkit-utility-data-module">mamkit.utility.data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#mamkit-utility-metrics-module">mamkit.utility.metrics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#mamkit-utility-model-module">mamkit.utility.model module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mamkit.utility.html#module-mamkit.utility">Module contents</a></li>
 </ul>
 </li>
@@ -1084,11 +515,10 @@ versions: alpha &lt; beta &lt; rc.</p>
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="contribute.html"
@@ -1108,10 +538,7 @@ versions: alpha &lt; beta &lt; rc.</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -1121,6 +548,7 @@ versions: alpha &lt; beta &lt; rc.</p>
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
   <div class="sidebar-secondary-item">
+
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
@@ -1140,6 +568,7 @@ versions: alpha &lt; beta &lt; rc.</p>
   </nav></div>
 
   <div class="sidebar-secondary-item">
+
   <div class="tocsection sourcelink">
     <a href="_sources/mamkit.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
@@ -1160,8 +589,8 @@ versions: alpha &lt; beta &lt; rc.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1169,6 +598,7 @@ versions: alpha &lt; beta &lt; rc.</p>
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright 2024, LT-NLP-lab UniBO.
@@ -1178,8 +608,9 @@ versions: alpha &lt; beta &lt; rc.</p>
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
     <br/>
   </p>
 </div>
@@ -1187,10 +618,12 @@ versions: alpha &lt; beta &lt; rc.</p>
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
 </p></div>
       
     </div>

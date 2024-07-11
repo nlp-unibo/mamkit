@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>mamkit.data package &#8212; MAMKIT</title>
   
@@ -19,28 +18,26 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=359c27e9"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'mamkit.data';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -56,6 +53,15 @@
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -96,12 +102,15 @@
     <span class="fa-solid fa-bars"></span>
   </label>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
   
 
 <a class="navbar-brand logo" href="index.html">
+  
   
   
   
@@ -113,12 +122,12 @@
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
+        <div class="navbar-item">
+<nav class="navbar-nav">
   <p class="sidebar-header-items__title"
      role="heading"
      aria-level="1"
@@ -161,20 +170,20 @@
                       </a>
                     </li>
                 
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links" class="dropdown-menu">
                     
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="mamkit.html">
+                      <a class="nav-link dropdown-item nav-internal" href="mamkit.html">
                         mamkit
                       </a>
                     </li>
                 
-                </div>
-            </div>
+                </ul>
+            </li>
             
   </ul>
 </nav></div>
@@ -186,23 +195,27 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -213,18 +226,21 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
     </label>
   
@@ -244,7 +260,8 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
+          <div class="navbar-item">
+<nav class="navbar-nav">
   <p class="sidebar-header-items__title"
      role="heading"
      aria-level="1"
@@ -287,20 +304,20 @@ document.write(`
                       </a>
                     </li>
                 
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
                     
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="mamkit.html">
+                      <a class="nav-link dropdown-item nav-internal" href="mamkit.html">
                         mamkit
                       </a>
                     </li>
                 
-                </div>
-            </div>
+                </ul>
+            </li>
             
   </ul>
 </nav></div>
@@ -312,12 +329,13 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -327,7 +345,8 @@ document.write(`
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
@@ -365,8 +384,8 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
@@ -398,803 +417,14 @@ document.write(`
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
 </section>
-<section id="module-mamkit.data.collators">
-<span id="mamkit-data-collators-module"></span><h2>mamkit.data.collators module<a class="headerlink" href="#module-mamkit.data.collators" title="Permalink to this heading">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.AudioCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">AudioCollator</span></span><a class="headerlink" href="#mamkit.data.collators.AudioCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.AudioTransformerCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">AudioTransformerCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.collators.AudioTransformerCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.MultimodalCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">MultimodalCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_collator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_collator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_collator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.collators.MultimodalCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.PairAudioCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">PairAudioCollator</span></span><a class="headerlink" href="#mamkit.data.collators.PairAudioCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.collators.AudioCollator" title="mamkit.data.collators.AudioCollator"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioCollator</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.PairMultimodalCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">PairMultimodalCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_collator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_collator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_collator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.collators.PairMultimodalCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.collators.MultimodalCollator" title="mamkit.data.collators.MultimodalCollator"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultimodalCollator</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.PairTextCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">PairTextCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vocab</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.collators.PairTextCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.collators.TextCollator" title="mamkit.data.collators.TextCollator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextCollator</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.PairTextTransformerCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">PairTextTransformerCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.collators.PairTextTransformerCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.collators.TextTransformerCollator" title="mamkit.data.collators.TextTransformerCollator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextTransformerCollator</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.PairTextTransformerOutputCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">PairTextTransformerOutputCollator</span></span><a class="headerlink" href="#mamkit.data.collators.PairTextTransformerOutputCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.collators.TextTransformerOutputCollator" title="mamkit.data.collators.TextTransformerOutputCollator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextTransformerOutputCollator</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.PairUnimodalCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">PairUnimodalCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features_collator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_collator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.collators.PairUnimodalCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.collators.UnimodalCollator" title="mamkit.data.collators.UnimodalCollator"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnimodalCollator</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.TextCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">TextCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vocab</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.collators.TextCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.TextTransformerCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">TextTransformerCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.collators.TextTransformerCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.TextTransformerOutputCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">TextTransformerOutputCollator</span></span><a class="headerlink" href="#mamkit.data.collators.TextTransformerOutputCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.collators.UnimodalCollator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.collators.</span></span><span class="sig-name descname"><span class="pre">UnimodalCollator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features_collator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_collator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.collators.UnimodalCollator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
+<section id="mamkit-data-collators-module">
+<h2>mamkit.data.collators module<a class="headerlink" href="#mamkit-data-collators-module" title="Permalink to this heading">#</a></h2>
 </section>
-<section id="module-mamkit.data.datasets">
-<span id="mamkit-data-datasets-module"></span><h2>mamkit.data.datasets module<a class="headerlink" href="#module-mamkit.data.datasets" title="Permalink to this heading">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.InputMode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">InputMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.InputMode" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
-<p>An enumeration.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="mamkit.data.datasets.InputMode.AUDIO_ONLY">
-<span class="sig-name descname"><span class="pre">AUDIO_ONLY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'audio-only'</span></em><a class="headerlink" href="#mamkit.data.datasets.InputMode.AUDIO_ONLY" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="mamkit.data.datasets.InputMode.TEXT_AUDIO">
-<span class="sig-name descname"><span class="pre">TEXT_AUDIO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'text-audio'</span></em><a class="headerlink" href="#mamkit.data.datasets.InputMode.TEXT_AUDIO" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="mamkit.data.datasets.InputMode.TEXT_ONLY">
-<span class="sig-name descname"><span class="pre">TEXT_ONLY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'text-only'</span></em><a class="headerlink" href="#mamkit.data.datasets.InputMode.TEXT_ONLY" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.Loader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">Loader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.Loader" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.Loader.add_splits">
-<span class="sig-name descname"><span class="pre">add_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.Loader.add_splits" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.Loader.build_info_from_splits">
-<span class="sig-name descname"><span class="pre">build_info_from_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.Loader.build_info_from_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mamkit.data.datasets.Loader.data">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataFrame</span></em><a class="headerlink" href="#mamkit.data.datasets.Loader.data" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.Loader.get_default_splits">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_default_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_iterator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.Loader.get_default_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>], <a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.Loader.get_splits">
-<span class="sig-name descname"><span class="pre">get_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.Loader.get_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MArg">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">MArg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confidence</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MArg" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.datasets.Loader" title="mamkit.data.datasets.Loader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loader</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MArg.build">
-<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MArg.build" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MArg.build_chunks">
-<span class="sig-name descname"><span class="pre">build_chunks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MArg.build_chunks" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MArg.data">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataFrame</span></em><a class="headerlink" href="#mamkit.data.datasets.MArg.data" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MArg.get_default_splits">
-<span class="sig-name descname"><span class="pre">get_default_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_iterator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MArg.get_default_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>], <a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MArg.get_mancini_2022_splits">
-<span class="sig-name descname"><span class="pre">get_mancini_2022_splits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MArg.get_mancini_2022_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">MMUSED</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.datasets.Loader" title="mamkit.data.datasets.Loader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loader</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.build_audio">
-<span class="sig-name descname"><span class="pre">build_audio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.build_audio" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.build_from_scratch">
-<span class="sig-name descname"><span class="pre">build_from_scratch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.build_from_scratch" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.copy_final_csv">
-<span class="sig-name descname"><span class="pre">copy_final_csv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.copy_final_csv" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None. The function copies the generated dataset into the official ‘MM-USElecDeb60to16’ folder,
-renaming the file to ‘MM-USElecDeb60to16.csv’</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.copy_transcripts">
-<span class="sig-name descname"><span class="pre">copy_transcripts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.copy_transcripts" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The function copies transcripts from the original dataset folder to the ‘files/transcripts’ folder.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.create_plain_text">
-<span class="sig-name descname"><span class="pre">create_plain_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.create_plain_text" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None. The function creates the plain version of each transcript, saving a new version ‘_plain.txt’
-in the subdirectory of the corresponding debate. The function creates the plain version of each
-transcript, saving a new version ‘_plain.txt’ in the subdirectory of the corresponding debate.
-In the plain version, speaker information is removed and the text is tokenized by sentences.
-The plain text thus contains one sentence per line.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.data">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataFrame</span></em><a class="headerlink" href="#mamkit.data.datasets.MMUSED.data" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.generate_chunks">
-<span class="sig-name descname"><span class="pre">generate_chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.generate_chunks" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None. The function generates the 20-minute chunks for each debate and saves them in the ‘split’
-sub-folders of each debate in ‘files/debates_audio_recordings’</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.generate_clips">
-<span class="sig-name descname"><span class="pre">generate_clips</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.generate_clips" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The function generates, for each debate, the audio clips corresponding to each sentence in the
-dataset. The audio files are saved in ‘files/audio_clips’ in subfolders corresponding to each debate.
-For each debate it creates a new dataset in which the column corresponding to the debate_ids of the clips
-is filled with the debate_ids of the corresponding generated clip.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.generate_dataset">
-<span class="sig-name descname"><span class="pre">generate_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.generate_dataset" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The function generates a new dataset ‘.csv’ for each debate from the original dataset.
-Each new dataset contains 3 new columns corresponding to the new start and end timestamps calculated
-through the alignment with ‘aeneas’ and the debate_ids of the clip corresponding to each sentence.
-The function also saves a ‘duplicates.txt’ file for each debate, containing the duplicated
-sentences and the number of occurrences.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.generate_empty_transcript_files">
-<span class="sig-name descname"><span class="pre">generate_empty_transcript_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.generate_empty_transcript_files" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None. The function generates as many empty ‘.txt’ files as there are chunks generated for each debate and
-saves them in the ‘splits’ subdirectory of each debate in the ‘files/transcripts’ folder</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.get_default_splits">
-<span class="sig-name descname"><span class="pre">get_default_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_iterator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.get_default_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>], <a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.load" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.remove_duplicates">
-<span class="sig-name descname"><span class="pre">remove_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.remove_duplicates" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The function removes duplicates in the dataset</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.remove_not_found">
-<span class="sig-name descname"><span class="pre">remove_not_found</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.remove_not_found" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The function removes samples marked ‘NOT_FOUND’, i.e. sentences for which a match with the alignment
-results was not found.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.run_aeneas">
-<span class="sig-name descname"><span class="pre">run_aeneas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.run_aeneas" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None. For each debate it executes the script to perform the alignment of audio and text.
-The ‘.json’ files resulting from the alignment come in ‘files/alignment_results’.
-A subfolder for each debate.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.trim_audio">
-<span class="sig-name descname"><span class="pre">trim_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_sec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_sec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.trim_audio" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p></li>
-<li><p><strong>start_min</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing the number of minutes to be cut from the beginning of the file</p></li>
-<li><p><strong>start_sec</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing the number of seconds to be cut from the beginning of the file</p></li>
-<li><p><strong>end_min</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing the number of minutes to be cut from the end of the file</p></li>
-<li><p><strong>end_sec</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing the number of seconds to be cut from the end of the file</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return None<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The function removes from the original audio file the portions of audio corresponding
-to the specified seconds and minutes and saves a new version of the file ‘_trim.wav’ in
-‘files/debates_audio_recordings’ (in the corresponding debate’s sub folder).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSED.unify_datasets_debates">
-<span class="sig-name descname"><span class="pre">unify_datasets_debates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debate_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSED.unify_datasets_debates" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>debate_ids</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>) – list of strings representing debates IDs</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The function combines the datasets created for each debate to create the new dataset MM-ElecDeb60to16</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSEDFallacy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">MMUSEDFallacy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_modality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSEDFallacy" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.datasets.Loader" title="mamkit.data.datasets.Loader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loader</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSEDFallacy.build_clips">
-<span class="sig-name descname"><span class="pre">build_clips</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSEDFallacy.build_clips" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSEDFallacy.data">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataFrame</span></em><a class="headerlink" href="#mamkit.data.datasets.MMUSEDFallacy.data" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSEDFallacy.generate_clips">
-<span class="sig-name descname"><span class="pre">generate_clips</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSEDFallacy.generate_clips" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSEDFallacy.get_default_splits">
-<span class="sig-name descname"><span class="pre">get_default_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_iterator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSEDFallacy.get_default_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>], <a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSEDFallacy.get_mancini_2024_splits">
-<span class="sig-name descname"><span class="pre">get_mancini_2024_splits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSEDFallacy.get_mancini_2024_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MMUSEDFallacy.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MMUSEDFallacy.load" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.MultimodalDataset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">MultimodalDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.MultimodalDataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.PairMultimodalDataset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">PairMultimodalDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_texts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_texts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_audio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_audio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.PairMultimodalDataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.PairUnimodalDataset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">PairUnimodalDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.PairUnimodalDataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.SplitInfo">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">SplitInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.SplitInfo" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="mamkit.data.datasets.SplitInfo.test">
-<span class="sig-name descname"><span class="pre">test</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code><span class="pre">[</span><a class="reference internal" href="#mamkit.data.datasets.UnimodalDataset" title="mamkit.data.datasets.UnimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnimodalDataset</span></code></a><span class="pre">,</span> <a class="reference internal" href="#mamkit.data.datasets.PairUnimodalDataset" title="mamkit.data.datasets.PairUnimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">PairUnimodalDataset</span></code></a><span class="pre">,</span> <a class="reference internal" href="#mamkit.data.datasets.MultimodalDataset" title="mamkit.data.datasets.MultimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultimodalDataset</span></code></a><span class="pre">,</span> <a class="reference internal" href="#mamkit.data.datasets.PairMultimodalDataset" title="mamkit.data.datasets.PairMultimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">PairMultimodalDataset</span></code></a><span class="pre">,</span> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code><span class="pre">]</span></em><a class="headerlink" href="#mamkit.data.datasets.SplitInfo.test" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="mamkit.data.datasets.SplitInfo.train">
-<span class="sig-name descname"><span class="pre">train</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code><span class="pre">[</span><a class="reference internal" href="#mamkit.data.datasets.UnimodalDataset" title="mamkit.data.datasets.UnimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnimodalDataset</span></code></a><span class="pre">,</span> <a class="reference internal" href="#mamkit.data.datasets.PairUnimodalDataset" title="mamkit.data.datasets.PairUnimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">PairUnimodalDataset</span></code></a><span class="pre">,</span> <a class="reference internal" href="#mamkit.data.datasets.MultimodalDataset" title="mamkit.data.datasets.MultimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultimodalDataset</span></code></a><span class="pre">,</span> <a class="reference internal" href="#mamkit.data.datasets.PairMultimodalDataset" title="mamkit.data.datasets.PairMultimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">PairMultimodalDataset</span></code></a><span class="pre">]</span></em><a class="headerlink" href="#mamkit.data.datasets.SplitInfo.train" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="mamkit.data.datasets.SplitInfo.val">
-<span class="sig-name descname"><span class="pre">val</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code><span class="pre">[</span><a class="reference internal" href="#mamkit.data.datasets.UnimodalDataset" title="mamkit.data.datasets.UnimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnimodalDataset</span></code></a><span class="pre">,</span> <a class="reference internal" href="#mamkit.data.datasets.PairUnimodalDataset" title="mamkit.data.datasets.PairUnimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">PairUnimodalDataset</span></code></a><span class="pre">,</span> <a class="reference internal" href="#mamkit.data.datasets.MultimodalDataset" title="mamkit.data.datasets.MultimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultimodalDataset</span></code></a><span class="pre">,</span> <a class="reference internal" href="#mamkit.data.datasets.PairMultimodalDataset" title="mamkit.data.datasets.PairMultimodalDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">PairMultimodalDataset</span></code></a><span class="pre">,</span> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code><span class="pre">]</span></em><a class="headerlink" href="#mamkit.data.datasets.SplitInfo.val" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.UKDebates">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">UKDebates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.UKDebates" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.datasets.Loader" title="mamkit.data.datasets.Loader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loader</span></code></a></p>
-<dl class="py property">
-<dt class="sig sig-object py" id="mamkit.data.datasets.UKDebates.data">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataFrame</span></em><a class="headerlink" href="#mamkit.data.datasets.UKDebates.data" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.UKDebates.get_default_splits">
-<span class="sig-name descname"><span class="pre">get_default_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_iterator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.UKDebates.get_default_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>], <a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.UKDebates.get_mancini_2022_splits">
-<span class="sig-name descname"><span class="pre">get_mancini_2022_splits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.UKDebates.get_mancini_2022_splits" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#mamkit.data.datasets.SplitInfo" title="mamkit.data.datasets.SplitInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">SplitInfo</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.UKDebates.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.UKDebates.load" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.UKDebates.parse_all_annotations">
-<span class="sig-name descname"><span class="pre">parse_all_annotations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.UKDebates.parse_all_annotations" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.datasets.UKDebates.parse_speaker_annotations">
-<span class="sig-name descname"><span class="pre">parse_speaker_annotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speaker</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.UKDebates.parse_speaker_annotations" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.datasets.UnimodalDataset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.datasets.</span></span><span class="sig-name descname"><span class="pre">UnimodalDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.datasets.UnimodalDataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
-</dd></dl>
-
+<section id="mamkit-data-datasets-module">
+<h2>mamkit.data.datasets module<a class="headerlink" href="#mamkit-data-datasets-module" title="Permalink to this heading">#</a></h2>
 </section>
-<section id="module-mamkit.data.processing">
-<span id="mamkit-data-processing-module"></span><h2>mamkit.data.processing module<a class="headerlink" href="#module-mamkit.data.processing" title="Permalink to this heading">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.AudioTransformer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">AudioTransformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.AudioTransformer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.AudioTransformer.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.AudioTransformer.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.AudioTransformerExtractor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">AudioTransformerExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.AudioTransformerExtractor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.AudioTransformerExtractor.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.AudioTransformerExtractor.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.MFCCExtractor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">MFCCExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mfccs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pooling_sizes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serialization_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.MFCCExtractor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.MFCCExtractor.parse_audio">
-<span class="sig-name descname"><span class="pre">parse_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.MFCCExtractor.parse_audio" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.MultimodalProcessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">MultimodalProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.MultimodalProcessor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.Processor" title="mamkit.data.processing.Processor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Processor</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.MultimodalProcessor.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.MultimodalProcessor.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.MultimodalProcessor.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.MultimodalProcessor.fit" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairAudioTransformer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">PairAudioTransformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairAudioTransformer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairAudioTransformer.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairAudioTransformer.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairAudioTransformerExtractor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">PairAudioTransformerExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsampling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairAudioTransformerExtractor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairAudioTransformerExtractor.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairAudioTransformerExtractor.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairMFCCExtractor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">PairMFCCExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mfccs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pooling_sizes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serialization_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairMFCCExtractor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairMFCCExtractor.parse_audio">
-<span class="sig-name descname"><span class="pre">parse_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairMFCCExtractor.parse_audio" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairMultimodalProcessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">PairMultimodalProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairMultimodalProcessor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.Processor" title="mamkit.data.processing.Processor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Processor</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairMultimodalProcessor.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairMultimodalProcessor.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairMultimodalProcessor.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairMultimodalProcessor.fit" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairTextTransformer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">PairTextTransformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairTextTransformer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairTextTransformer.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairTextTransformer.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairUnimodalProcessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">PairUnimodalProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairUnimodalProcessor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.Processor" title="mamkit.data.processing.Processor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Processor</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairUnimodalProcessor.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairUnimodalProcessor.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairUnimodalProcessor.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairUnimodalProcessor.fit" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairVocabBuilder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">PairVocabBuilder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenization_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairVocabBuilder" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairVocabBuilder.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairVocabBuilder.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairVocabBuilder.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_texts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_texts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairVocabBuilder.fit" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.PairVocabBuilder.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.PairVocabBuilder.reset" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.Processor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">Processor</span></span><a class="headerlink" href="#mamkit.data.processing.Processor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.Processor.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.Processor.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.Processor.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.Processor.fit" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.Processor.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.Processor.reset" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.ProcessorComponent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">ProcessorComponent</span></span><a class="headerlink" href="#mamkit.data.processing.ProcessorComponent" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.ProcessorComponent.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.ProcessorComponent.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.ProcessorComponent.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.ProcessorComponent.fit" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.ProcessorComponent.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.ProcessorComponent.reset" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.TextTransformer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">TextTransformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.TextTransformer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.TextTransformer.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.TextTransformer.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.UnimodalProcessor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">UnimodalProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_processor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.UnimodalProcessor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.Processor" title="mamkit.data.processing.Processor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Processor</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.UnimodalProcessor.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.UnimodalProcessor.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.UnimodalProcessor.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.UnimodalProcessor.fit" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="mamkit.data.processing.VocabBuilder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mamkit.data.processing.</span></span><span class="sig-name descname"><span class="pre">VocabBuilder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenization_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.VocabBuilder" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#mamkit.data.processing.ProcessorComponent" title="mamkit.data.processing.ProcessorComponent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.VocabBuilder.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.VocabBuilder.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.VocabBuilder.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.VocabBuilder.fit" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="mamkit.data.processing.VocabBuilder.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.data.processing.VocabBuilder.reset" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<section id="mamkit-data-processing-module">
+<h2>mamkit.data.processing module<a class="headerlink" href="#mamkit-data-processing-module" title="Permalink to this heading">#</a></h2>
 </section>
 <section id="module-mamkit.data">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mamkit.data" title="Permalink to this heading">#</a></h2>
@@ -1206,11 +436,10 @@ to the specified seconds and minutes and saves a new version of the file ‘_tri
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="mamkit.configs.html"
@@ -1230,10 +459,7 @@ to the specified seconds and minutes and saves a new version of the file ‘_tri
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -1243,185 +469,22 @@ to the specified seconds and minutes and saves a new version of the file ‘_tri
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
   <div class="sidebar-secondary-item">
+
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-mamkit.data.collators">mamkit.data.collators module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.AudioCollator"><code class="docutils literal notranslate"><span class="pre">AudioCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.AudioTransformerCollator"><code class="docutils literal notranslate"><span class="pre">AudioTransformerCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.MultimodalCollator"><code class="docutils literal notranslate"><span class="pre">MultimodalCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.PairAudioCollator"><code class="docutils literal notranslate"><span class="pre">PairAudioCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.PairMultimodalCollator"><code class="docutils literal notranslate"><span class="pre">PairMultimodalCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.PairTextCollator"><code class="docutils literal notranslate"><span class="pre">PairTextCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.PairTextTransformerCollator"><code class="docutils literal notranslate"><span class="pre">PairTextTransformerCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.PairTextTransformerOutputCollator"><code class="docutils literal notranslate"><span class="pre">PairTextTransformerOutputCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.PairUnimodalCollator"><code class="docutils literal notranslate"><span class="pre">PairUnimodalCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.TextCollator"><code class="docutils literal notranslate"><span class="pre">TextCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.TextTransformerCollator"><code class="docutils literal notranslate"><span class="pre">TextTransformerCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.TextTransformerOutputCollator"><code class="docutils literal notranslate"><span class="pre">TextTransformerOutputCollator</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.collators.UnimodalCollator"><code class="docutils literal notranslate"><span class="pre">UnimodalCollator</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-mamkit.data.datasets">mamkit.data.datasets module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.InputMode"><code class="docutils literal notranslate"><span class="pre">InputMode</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.InputMode.AUDIO_ONLY"><code class="docutils literal notranslate"><span class="pre">InputMode.AUDIO_ONLY</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.InputMode.TEXT_AUDIO"><code class="docutils literal notranslate"><span class="pre">InputMode.TEXT_AUDIO</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.InputMode.TEXT_ONLY"><code class="docutils literal notranslate"><span class="pre">InputMode.TEXT_ONLY</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.Loader"><code class="docutils literal notranslate"><span class="pre">Loader</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.Loader.add_splits"><code class="docutils literal notranslate"><span class="pre">Loader.add_splits()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.Loader.build_info_from_splits"><code class="docutils literal notranslate"><span class="pre">Loader.build_info_from_splits()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.Loader.data"><code class="docutils literal notranslate"><span class="pre">Loader.data</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.Loader.get_default_splits"><code class="docutils literal notranslate"><span class="pre">Loader.get_default_splits()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.Loader.get_splits"><code class="docutils literal notranslate"><span class="pre">Loader.get_splits()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MArg"><code class="docutils literal notranslate"><span class="pre">MArg</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MArg.build"><code class="docutils literal notranslate"><span class="pre">MArg.build()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MArg.build_chunks"><code class="docutils literal notranslate"><span class="pre">MArg.build_chunks()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MArg.data"><code class="docutils literal notranslate"><span class="pre">MArg.data</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MArg.get_default_splits"><code class="docutils literal notranslate"><span class="pre">MArg.get_default_splits()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MArg.get_mancini_2022_splits"><code class="docutils literal notranslate"><span class="pre">MArg.get_mancini_2022_splits()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED"><code class="docutils literal notranslate"><span class="pre">MMUSED</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.build_audio"><code class="docutils literal notranslate"><span class="pre">MMUSED.build_audio()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.build_from_scratch"><code class="docutils literal notranslate"><span class="pre">MMUSED.build_from_scratch()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.copy_final_csv"><code class="docutils literal notranslate"><span class="pre">MMUSED.copy_final_csv()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.copy_transcripts"><code class="docutils literal notranslate"><span class="pre">MMUSED.copy_transcripts()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.create_plain_text"><code class="docutils literal notranslate"><span class="pre">MMUSED.create_plain_text()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.data"><code class="docutils literal notranslate"><span class="pre">MMUSED.data</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.generate_chunks"><code class="docutils literal notranslate"><span class="pre">MMUSED.generate_chunks()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.generate_clips"><code class="docutils literal notranslate"><span class="pre">MMUSED.generate_clips()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.generate_dataset"><code class="docutils literal notranslate"><span class="pre">MMUSED.generate_dataset()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.generate_empty_transcript_files"><code class="docutils literal notranslate"><span class="pre">MMUSED.generate_empty_transcript_files()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.get_default_splits"><code class="docutils literal notranslate"><span class="pre">MMUSED.get_default_splits()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.load"><code class="docutils literal notranslate"><span class="pre">MMUSED.load()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.remove_duplicates"><code class="docutils literal notranslate"><span class="pre">MMUSED.remove_duplicates()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.remove_not_found"><code class="docutils literal notranslate"><span class="pre">MMUSED.remove_not_found()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.run_aeneas"><code class="docutils literal notranslate"><span class="pre">MMUSED.run_aeneas()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.trim_audio"><code class="docutils literal notranslate"><span class="pre">MMUSED.trim_audio()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSED.unify_datasets_debates"><code class="docutils literal notranslate"><span class="pre">MMUSED.unify_datasets_debates()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSEDFallacy"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSEDFallacy.build_clips"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.build_clips()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSEDFallacy.data"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.data</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSEDFallacy.generate_clips"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.generate_clips()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSEDFallacy.get_default_splits"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.get_default_splits()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSEDFallacy.get_mancini_2024_splits"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.get_mancini_2024_splits()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MMUSEDFallacy.load"><code class="docutils literal notranslate"><span class="pre">MMUSEDFallacy.load()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.MultimodalDataset"><code class="docutils literal notranslate"><span class="pre">MultimodalDataset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.PairMultimodalDataset"><code class="docutils literal notranslate"><span class="pre">PairMultimodalDataset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.PairUnimodalDataset"><code class="docutils literal notranslate"><span class="pre">PairUnimodalDataset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.SplitInfo"><code class="docutils literal notranslate"><span class="pre">SplitInfo</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.SplitInfo.test"><code class="docutils literal notranslate"><span class="pre">SplitInfo.test</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.SplitInfo.train"><code class="docutils literal notranslate"><span class="pre">SplitInfo.train</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.SplitInfo.val"><code class="docutils literal notranslate"><span class="pre">SplitInfo.val</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.UKDebates"><code class="docutils literal notranslate"><span class="pre">UKDebates</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.UKDebates.data"><code class="docutils literal notranslate"><span class="pre">UKDebates.data</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.UKDebates.get_default_splits"><code class="docutils literal notranslate"><span class="pre">UKDebates.get_default_splits()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.UKDebates.get_mancini_2022_splits"><code class="docutils literal notranslate"><span class="pre">UKDebates.get_mancini_2022_splits()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.UKDebates.load"><code class="docutils literal notranslate"><span class="pre">UKDebates.load()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.UKDebates.parse_all_annotations"><code class="docutils literal notranslate"><span class="pre">UKDebates.parse_all_annotations()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.UKDebates.parse_speaker_annotations"><code class="docutils literal notranslate"><span class="pre">UKDebates.parse_speaker_annotations()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.datasets.UnimodalDataset"><code class="docutils literal notranslate"><span class="pre">UnimodalDataset</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-mamkit.data.processing">mamkit.data.processing module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.AudioTransformer"><code class="docutils literal notranslate"><span class="pre">AudioTransformer</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.AudioTransformer.clear"><code class="docutils literal notranslate"><span class="pre">AudioTransformer.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.AudioTransformerExtractor"><code class="docutils literal notranslate"><span class="pre">AudioTransformerExtractor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.AudioTransformerExtractor.clear"><code class="docutils literal notranslate"><span class="pre">AudioTransformerExtractor.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.MFCCExtractor"><code class="docutils literal notranslate"><span class="pre">MFCCExtractor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.MFCCExtractor.parse_audio"><code class="docutils literal notranslate"><span class="pre">MFCCExtractor.parse_audio()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.MultimodalProcessor"><code class="docutils literal notranslate"><span class="pre">MultimodalProcessor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.MultimodalProcessor.clear"><code class="docutils literal notranslate"><span class="pre">MultimodalProcessor.clear()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.MultimodalProcessor.fit"><code class="docutils literal notranslate"><span class="pre">MultimodalProcessor.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairAudioTransformer"><code class="docutils literal notranslate"><span class="pre">PairAudioTransformer</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairAudioTransformer.clear"><code class="docutils literal notranslate"><span class="pre">PairAudioTransformer.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairAudioTransformerExtractor"><code class="docutils literal notranslate"><span class="pre">PairAudioTransformerExtractor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairAudioTransformerExtractor.clear"><code class="docutils literal notranslate"><span class="pre">PairAudioTransformerExtractor.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairMFCCExtractor"><code class="docutils literal notranslate"><span class="pre">PairMFCCExtractor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairMFCCExtractor.parse_audio"><code class="docutils literal notranslate"><span class="pre">PairMFCCExtractor.parse_audio()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairMultimodalProcessor"><code class="docutils literal notranslate"><span class="pre">PairMultimodalProcessor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairMultimodalProcessor.clear"><code class="docutils literal notranslate"><span class="pre">PairMultimodalProcessor.clear()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairMultimodalProcessor.fit"><code class="docutils literal notranslate"><span class="pre">PairMultimodalProcessor.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairTextTransformer"><code class="docutils literal notranslate"><span class="pre">PairTextTransformer</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairTextTransformer.clear"><code class="docutils literal notranslate"><span class="pre">PairTextTransformer.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairUnimodalProcessor"><code class="docutils literal notranslate"><span class="pre">PairUnimodalProcessor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairUnimodalProcessor.clear"><code class="docutils literal notranslate"><span class="pre">PairUnimodalProcessor.clear()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairUnimodalProcessor.fit"><code class="docutils literal notranslate"><span class="pre">PairUnimodalProcessor.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairVocabBuilder"><code class="docutils literal notranslate"><span class="pre">PairVocabBuilder</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairVocabBuilder.clear"><code class="docutils literal notranslate"><span class="pre">PairVocabBuilder.clear()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairVocabBuilder.fit"><code class="docutils literal notranslate"><span class="pre">PairVocabBuilder.fit()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.PairVocabBuilder.reset"><code class="docutils literal notranslate"><span class="pre">PairVocabBuilder.reset()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.Processor"><code class="docutils literal notranslate"><span class="pre">Processor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.Processor.clear"><code class="docutils literal notranslate"><span class="pre">Processor.clear()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.Processor.fit"><code class="docutils literal notranslate"><span class="pre">Processor.fit()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.Processor.reset"><code class="docutils literal notranslate"><span class="pre">Processor.reset()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.ProcessorComponent"><code class="docutils literal notranslate"><span class="pre">ProcessorComponent</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.ProcessorComponent.clear"><code class="docutils literal notranslate"><span class="pre">ProcessorComponent.clear()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.ProcessorComponent.fit"><code class="docutils literal notranslate"><span class="pre">ProcessorComponent.fit()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.ProcessorComponent.reset"><code class="docutils literal notranslate"><span class="pre">ProcessorComponent.reset()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.TextTransformer"><code class="docutils literal notranslate"><span class="pre">TextTransformer</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.TextTransformer.clear"><code class="docutils literal notranslate"><span class="pre">TextTransformer.clear()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.UnimodalProcessor"><code class="docutils literal notranslate"><span class="pre">UnimodalProcessor</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.UnimodalProcessor.clear"><code class="docutils literal notranslate"><span class="pre">UnimodalProcessor.clear()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.UnimodalProcessor.fit"><code class="docutils literal notranslate"><span class="pre">UnimodalProcessor.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.VocabBuilder"><code class="docutils literal notranslate"><span class="pre">VocabBuilder</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.VocabBuilder.clear"><code class="docutils literal notranslate"><span class="pre">VocabBuilder.clear()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.VocabBuilder.fit"><code class="docutils literal notranslate"><span class="pre">VocabBuilder.fit()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.data.processing.VocabBuilder.reset"><code class="docutils literal notranslate"><span class="pre">VocabBuilder.reset()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit-data-collators-module">mamkit.data.collators module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit-data-datasets-module">mamkit.data.datasets module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit-data-processing-module">mamkit.data.processing module</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-mamkit.data">Module contents</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
+
   <div class="tocsection sourcelink">
     <a href="_sources/mamkit.data.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
@@ -1442,8 +505,8 @@ to the specified seconds and minutes and saves a new version of the file ‘_tri
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1451,6 +514,7 @@ to the specified seconds and minutes and saves a new version of the file ‘_tri
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright 2024, LT-NLP-lab UniBO.
@@ -1460,8 +524,9 @@ to the specified seconds and minutes and saves a new version of the file ‘_tri
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
     <br/>
   </p>
 </div>
@@ -1469,10 +534,12 @@ to the specified seconds and minutes and saves a new version of the file ‘_tri
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
 </p></div>
       
     </div>
