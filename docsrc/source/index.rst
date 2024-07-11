@@ -17,8 +17,7 @@ The toolkit is organized into five main components: `configs`, `data`, `models`,
 In addition to that, the toolkit provides a `demos` directory for running all the experiments presented in the paper.
 The figure below illustrates the toolkit's structure.
 
-.. image:: img/mamkit2.png
-    :scale: 60%
+.. image:: img/mamkit2-resized.png
     :align: center
 
 
