@@ -24,18 +24,38 @@ from mamkit.utility.data import download, youtube_download
 
 
 class InputMode(Enum):
+    """
+    Enum class for the input modes of the dataset.
+
+    TEXT_ONLY: only text data
+    AUDIO_ONLY: only audio data
+    TEXT_AUDIO: both text and audio data
+
+    """
     TEXT_ONLY = 'text-only'
     AUDIO_ONLY = 'audio-only'
     TEXT_AUDIO = 'text-audio'
 
 
 class UnimodalDataset(Dataset):
+    """
+    Dataset class for unimodal data.
+
+    """
 
     def __init__(
             self,
             inputs,
             labels
     ):
+        """
+        ``UnimodalDataset`` constructor.
+
+        Args:
+            inputs: list of inputs
+            labels: list of labels
+
+        """
         self.inputs = inputs
         self.labels = labels
 
@@ -43,6 +63,16 @@ class UnimodalDataset(Dataset):
             self,
             idx
     ):
+        """
+        Get item method.
+
+        Args:
+            idx: index of the item to retrieve
+
+        Returns:
+            tuple: input, label
+
+        """
         return self.inputs[idx], self.labels[idx]
 
     def __len__(self):
