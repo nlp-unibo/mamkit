@@ -32,8 +32,7 @@ def model_from_config():
 
 
 def training_from_config():
-    config_key = ConfigKey(dataset='mmused', task_name='asd', input_mode=InputMode.TEXT_ONLY,
-                           tags={'mancini-et-al-2022'})
+    config_key = ConfigKey(dataset='mmused', task_name='asd', input_mode=InputMode.TEXT_ONLY, tags={'anonymous', 'bert'})
     config = TransformerConfig.from_config(key=config_key)
     model_args = extract_from_class(config=config, class_name=Transformer)
     model = Transformer(**model_args)

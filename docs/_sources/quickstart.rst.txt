@@ -3,22 +3,31 @@
 Quickstart
 *********************************************
 
-TODO
 
-MAMKit provides a modular interface for defining datasets or allowing users to load datasets from the literature.
+MAMKit provides a modular interface for defining datasets, allowing users to load datasets from the literature,  defining models, allowing users to compose models from pre-defined components or define custom models.
 
-The toolkit provides a modular interface for defining models, allowing users to compose models from pre-defined components or define custom models.
-In particular, MAMkit offers a simple method for both defining custom models and leveraging models from the literature.
+Moreover, the package provides benchmarking capabilities, enabling users to reproduce results from previous works.
+
+The package also provides a structured interface for training models, enabling users to train models using PyTorch
+Lightning.
+
+The following sections we show how to install the packahe and provide a brief overview of the package's functionalities, including loading/adding datasets,
+models, and training models.
+
 
 *********************************************
 Loading a Dataset
 *********************************************
 
-In the example that follows, illustrates how to load a dataset.
-In this case, a dataset is loaded using the `MMUSED` class from `mamkit.data.datasets`, which extends the `Loader` interface and implements specific functionalities for data loading and retrieval.
-Users can specify task and input mode (`text-only`, `audio-only`, or `text-audio`) when loading the data, with options to use default splits or load splits from previous works. The example uses splits from `Mancini et al. (2022) <https://aclanthology.org/2022.argmining-1.15)>`_.
+The example that follows illustrates how to load a dataset.
+In this case, a dataset is loaded using the ``MMUSED`` class from ``mamkit.data.datasets``, which extends the ``Loader``
+interface and implements specific functionalities for data loading and retrieval.
+Users can specify task and input mode (``text-only``, ``audio-only``, or ``text-audio``) when loading the data, with options
+to use default splits or load splits from previous works. The example uses splits from `Mancini et al. (2022) <https://aclanthology.org/2022.argmining-1.15>`_.
 
-The `get_splits` method of the `loader` returns data splits in the form of a `data.datasets.SplitInfo`. The latter wraps split-specific data, each implementing PyTorch's `Dataset` interface and compliant to the specified input modality (i.e., `text-only`).
+The ``get_splits`` method of the ``loader`` returns data splits in the form of a ``data.datasets.SplitInfo``.
+The latter wraps split-specific data, each implementing PyTorch's ``Dataset`` interface and compliant to the
+specified input modality (i.e., ``text-only``).
 
 
 .. code-block:: python
@@ -34,7 +43,7 @@ The `get_splits` method of the `loader` returns data splits in the form of a `da
     split_info = loader.get_splits('mancini-et-al-2022')
 
 
-The `Loader` interface also allows users to integrate methods defining custom splits as follows:
+The ``Loader`` interface also allows users to integrate methods defining custom splits as follows:
 
 .. code-block:: python
 
@@ -56,17 +65,21 @@ The `Loader` interface also allows users to integrate methods defining custom sp
 Adding a new Dataset
 *********************************************
 
-To add a new dataset, users need to create a new class that extends the `Loader` interface and implements the required functionalities for data loading and retrieval.
-The new class should be placed in the `mamkit.data.datasets` module.
+To add a new dataset, users need to create a new class that extends the ``Loader`` interface and implements the
+required functionalities for data loading and retrieval.
+The new class should be placed in the ``mamkit.data.datasets`` module.
 
 *********************************************
 Loading a Model
 *********************************************
 
-The following example demonstrates how to instantiate a model with a configuration found in the literature.
-This configuration is identified by a key, `ConfigKey`, containing all the defining information.
-The key is used to fetch the precise configuration of the model from the `configs` package.
-Subsequently, the model is retrieved from the `models` package and configured with the specific parameters outlined in the configuration.
+The following example shows how to instantiate a model with a configuration found in the literature.
+This configuration is identified by a key, ``ConfigKey``, containing all the defining information.
+The key is used to fetch the precise configuration of the model from the ``configs`` package.
+In particular, each model's configuration class in ``configs`` contains a dictionary of configuration parameters that
+matches the ``ConfigKey``'s attributes and that links to the model's specific parameters.
+Subsequently, the model is retrieved from the ``models`` package and configured with the specific parameters
+outlined in the configuration.
 
 
 .. code-block:: python
@@ -79,7 +92,7 @@ Subsequently, the model is retrieved from the `models` package and configured wi
                   dataset='mmused',
                   task_name='asd',
                   input_mode=InputMode.TEXT_ONLY,
-                  tags={'mancini-et-al-2022'})
+                  tags={'anonymous', 'bert'})
 
     config = TransformerConfig.from_config(
                                key=config_key)
@@ -96,7 +109,7 @@ Defining a custom Model
 *********************************************
 
 The example below illustrates that defining a custom model is straightforward.
-It entails creating the model within the `models` package, specifically by extending either the `AudioOnlyModel`, `TextOnlyModel`, or `TextAudioModel` classes in the `models.audio`, `models.text`, or `models.text_audio` modules, respectively, depending on the input modality handled by the model.
+It entails creating the model within the `models` package, specifically by extending either the ``AudioOnlyModel``, ``TextOnlyModel``, or ``TextAudioModel`` classes in the ``models.audio``, ``models.text``, or ``models.text_audio`` modules, respectively, depending on the input modality handled by the model.
 
 .. code-block:: python
 
@@ -122,7 +135,7 @@ It entails creating the model within the `models` package, specifically by exten
 Training a Model
 *********************************************
 
-Our models are designed to be encapsulated into a PyTorch `LightningModule`, which can be trained using PyTorch Lightning's `Trainer` class.
+Our models are designed to be encapsulated into a PyTorch ``LightningModule``, which can be trained using PyTorch Lightning's `Trainer` class.
 The following example demonstrates how to wrap and train a model using PyTorch Lightning.
 
 .. code-block:: python
@@ -146,7 +159,7 @@ The following example demonstrates how to wrap and train a model using PyTorch L
 Benchmarking
 *********************************************
 
-The `mamkit.configs` package simplifies reproducing literature results in a structured manner.
+The ``mamkit.configs`` package simplifies reproducing literature results in a structured manner.
 Upon loading the dataset, experiment-specific configurations can be easily retrieved via a configuration key.
 This enables instantiating a processor using the same features processor employed in the experiment.
 

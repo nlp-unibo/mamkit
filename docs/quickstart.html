@@ -395,16 +395,22 @@ document.write(`
                   
   <section id="quickstart">
 <span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading">#</a></h1>
-<p>TODO</p>
-<p>MAMKit provides a modular interface for defining datasets or allowing users to load datasets from the literature.</p>
-<p>The toolkit provides a modular interface for defining models, allowing users to compose models from pre-defined components or define custom models.
-In particular, MAMkit offers a simple method for both defining custom models and leveraging models from the literature.</p>
+<p>MAMKit provides a modular interface for defining datasets, allowing users to load datasets from the literature,  defining models, allowing users to compose models from pre-defined components or define custom models.</p>
+<p>Moreover, the package provides benchmarking capabilities, enabling users to reproduce results from previous works.</p>
+<p>The package also provides a structured interface for training models, enabling users to train models using PyTorch
+Lightning.</p>
+<p>The following sections we show how to install the packahe and provide a brief overview of the package’s functionalities, including loading/adding datasets,
+models, and training models.</p>
 <section id="loading-a-dataset">
 <h2>Loading a Dataset<a class="headerlink" href="#loading-a-dataset" title="Permalink to this heading">#</a></h2>
-<p>In the example that follows, illustrates how to load a dataset.
-In this case, a dataset is loaded using the <cite>MMUSED</cite> class from <cite>mamkit.data.datasets</cite>, which extends the <cite>Loader</cite> interface and implements specific functionalities for data loading and retrieval.
-Users can specify task and input mode (<cite>text-only</cite>, <cite>audio-only</cite>, or <cite>text-audio</cite>) when loading the data, with options to use default splits or load splits from previous works. The example uses splits from <a class="reference external" href="https://aclanthology.org/2022.argmining-1.15)">Mancini et al. (2022)</a>.</p>
-<p>The <cite>get_splits</cite> method of the <cite>loader</cite> returns data splits in the form of a <cite>data.datasets.SplitInfo</cite>. The latter wraps split-specific data, each implementing PyTorch’s <cite>Dataset</cite> interface and compliant to the specified input modality (i.e., <cite>text-only</cite>).</p>
+<p>The example that follows illustrates how to load a dataset.
+In this case, a dataset is loaded using the <code class="docutils literal notranslate"><span class="pre">MMUSED</span></code> class from <code class="docutils literal notranslate"><span class="pre">mamkit.data.datasets</span></code>, which extends the <code class="docutils literal notranslate"><span class="pre">Loader</span></code>
+interface and implements specific functionalities for data loading and retrieval.
+Users can specify task and input mode (<code class="docutils literal notranslate"><span class="pre">text-only</span></code>, <code class="docutils literal notranslate"><span class="pre">audio-only</span></code>, or <code class="docutils literal notranslate"><span class="pre">text-audio</span></code>) when loading the data, with options
+to use default splits or load splits from previous works. The example uses splits from <a class="reference external" href="https://aclanthology.org/2022.argmining-1.15">Mancini et al. (2022)</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">get_splits</span></code> method of the <code class="docutils literal notranslate"><span class="pre">loader</span></code> returns data splits in the form of a <code class="docutils literal notranslate"><span class="pre">data.datasets.SplitInfo</span></code>.
+The latter wraps split-specific data, each implementing PyTorch’s <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> interface and compliant to the
+specified input modality (i.e., <code class="docutils literal notranslate"><span class="pre">text-only</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mamkit.data.datasets</span> <span class="kn">import</span> <span class="n">UKDebates</span><span class="p">,</span> <span class="n">InputMode</span>
 
 <span class="n">loader</span> <span class="o">=</span> <span class="n">UKDebates</span><span class="p">(</span>
@@ -416,7 +422,7 @@ Users can specify task and input mode (<cite>text-only</cite>, <cite>audio-only<
 <span class="n">split_info</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_splits</span><span class="p">(</span><span class="s1">&#39;mancini-et-al-2022&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <cite>Loader</cite> interface also allows users to integrate methods defining custom splits as follows:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Loader</span></code> interface also allows users to integrate methods defining custom splits as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mamkit.data.datasets</span> <span class="kn">import</span> <span class="n">SplitInfo</span>
 
 <span class="k">def</span> <span class="nf">custom_splits</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SplitInfo</span><span class="p">]:</span>
@@ -435,15 +441,19 @@ Users can specify task and input mode (<cite>text-only</cite>, <cite>audio-only<
 </section>
 <section id="adding-a-new-dataset">
 <h2>Adding a new Dataset<a class="headerlink" href="#adding-a-new-dataset" title="Permalink to this heading">#</a></h2>
-<p>To add a new dataset, users need to create a new class that extends the <cite>Loader</cite> interface and implements the required functionalities for data loading and retrieval.
-The new class should be placed in the <cite>mamkit.data.datasets</cite> module.</p>
+<p>To add a new dataset, users need to create a new class that extends the <code class="docutils literal notranslate"><span class="pre">Loader</span></code> interface and implements the
+required functionalities for data loading and retrieval.
+The new class should be placed in the <code class="docutils literal notranslate"><span class="pre">mamkit.data.datasets</span></code> module.</p>
 </section>
 <section id="loading-a-model">
 <h2>Loading a Model<a class="headerlink" href="#loading-a-model" title="Permalink to this heading">#</a></h2>
-<p>The following example demonstrates how to instantiate a model with a configuration found in the literature.
-This configuration is identified by a key, <cite>ConfigKey</cite>, containing all the defining information.
-The key is used to fetch the precise configuration of the model from the <cite>configs</cite> package.
-Subsequently, the model is retrieved from the <cite>models</cite> package and configured with the specific parameters outlined in the configuration.</p>
+<p>The following example shows how to instantiate a model with a configuration found in the literature.
+This configuration is identified by a key, <code class="docutils literal notranslate"><span class="pre">ConfigKey</span></code>, containing all the defining information.
+The key is used to fetch the precise configuration of the model from the <code class="docutils literal notranslate"><span class="pre">configs</span></code> package.
+In particular, each model’s configuration class in <code class="docutils literal notranslate"><span class="pre">configs</span></code> contains a dictionary of configuration parameters that
+matches the <code class="docutils literal notranslate"><span class="pre">ConfigKey</span></code>’s attributes and that links to the model’s specific parameters.
+Subsequently, the model is retrieved from the <code class="docutils literal notranslate"><span class="pre">models</span></code> package and configured with the specific parameters
+outlined in the configuration.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mamkit.configs.base</span> <span class="kn">import</span> <span class="n">ConfigKey</span>
 <span class="kn">from</span> <span class="nn">mamkit.configs.text</span> <span class="kn">import</span> <span class="n">TransformerConfig</span>
 <span class="kn">from</span> <span class="nn">mamkit.data.datasets</span> <span class="kn">import</span> <span class="n">InputMode</span>
@@ -452,7 +462,7 @@ Subsequently, the model is retrieved from the <cite>models</cite> package and co
               <span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;mmused&#39;</span><span class="p">,</span>
               <span class="n">task_name</span><span class="o">=</span><span class="s1">&#39;asd&#39;</span><span class="p">,</span>
               <span class="n">input_mode</span><span class="o">=</span><span class="n">InputMode</span><span class="o">.</span><span class="n">TEXT_ONLY</span><span class="p">,</span>
-              <span class="n">tags</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;mancini-et-al-2022&#39;</span><span class="p">})</span>
+              <span class="n">tags</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anonymous&#39;</span><span class="p">,</span> <span class="s1">&#39;bert&#39;</span><span class="p">})</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">TransformerConfig</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span>
                            <span class="n">key</span><span class="o">=</span><span class="n">config_key</span><span class="p">)</span>
@@ -467,7 +477,7 @@ Subsequently, the model is retrieved from the <cite>models</cite> package and co
 <section id="defining-a-custom-model">
 <h2>Defining a custom Model<a class="headerlink" href="#defining-a-custom-model" title="Permalink to this heading">#</a></h2>
 <p>The example below illustrates that defining a custom model is straightforward.
-It entails creating the model within the <cite>models</cite> package, specifically by extending either the <cite>AudioOnlyModel</cite>, <cite>TextOnlyModel</cite>, or <cite>TextAudioModel</cite> classes in the <cite>models.audio</cite>, <cite>models.text</cite>, or <cite>models.text_audio</cite> modules, respectively, depending on the input modality handled by the model.</p>
+It entails creating the model within the <cite>models</cite> package, specifically by extending either the <code class="docutils literal notranslate"><span class="pre">AudioOnlyModel</span></code>, <code class="docutils literal notranslate"><span class="pre">TextOnlyModel</span></code>, or <code class="docutils literal notranslate"><span class="pre">TextAudioModel</span></code> classes in the <code class="docutils literal notranslate"><span class="pre">models.audio</span></code>, <code class="docutils literal notranslate"><span class="pre">models.text</span></code>, or <code class="docutils literal notranslate"><span class="pre">models.text_audio</span></code> modules, respectively, depending on the input modality handled by the model.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Transformer</span><span class="p">(</span><span class="n">TextOnlyModel</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -489,7 +499,7 @@ It entails creating the model within the <cite>models</cite> package, specifical
 </section>
 <section id="training-a-model">
 <h2>Training a Model<a class="headerlink" href="#training-a-model" title="Permalink to this heading">#</a></h2>
-<p>Our models are designed to be encapsulated into a PyTorch <cite>LightningModule</cite>, which can be trained using PyTorch Lightning’s <cite>Trainer</cite> class.
+<p>Our models are designed to be encapsulated into a PyTorch <code class="docutils literal notranslate"><span class="pre">LightningModule</span></code>, which can be trained using PyTorch Lightning’s <cite>Trainer</cite> class.
 The following example demonstrates how to wrap and train a model using PyTorch Lightning.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mamkit.utility.model</span> <span class="kn">import</span> <span class="n">to_lighting_model</span>
 <span class="kn">import</span> <span class="nn">lightning</span>
@@ -510,7 +520,7 @@ The following example demonstrates how to wrap and train a model using PyTorch L
 </section>
 <section id="benchmarking">
 <h2>Benchmarking<a class="headerlink" href="#benchmarking" title="Permalink to this heading">#</a></h2>
-<p>The <cite>mamkit.configs</cite> package simplifies reproducing literature results in a structured manner.
+<p>The <code class="docutils literal notranslate"><span class="pre">mamkit.configs</span></code> package simplifies reproducing literature results in a structured manner.
 Upon loading the dataset, experiment-specific configurations can be easily retrieved via a configuration key.
 This enables instantiating a processor using the same features processor employed in the experiment.</p>
 <p>In the example below, we adopt a configuration akin to <a class="reference external" href="https://aclanthology.org/2022.argmining-1.15">Mancini et al. (2022)</a>, employing a BiLSTM model with audio encoded with MFCCs features. Hence, we define a <cite>MFCCExtractor</cite> processor using configuration parameters.</p>
