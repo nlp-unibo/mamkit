@@ -4,6 +4,11 @@
     <br>
 <p>
 
+<div align="center">
+
+| 🌐 [Website](https://lt-nlp-lab-unibo.github.io/mamkit/) | 📚 [Documentation](https://lt-nlp-lab-unibo.github.io/mamkit/mamkit.html) | 🤝 [Contributing](https://lt-nlp-lab-unibo.github.io/mamkit/contribute.html) | 
+</div>
+
 # MAMKit: Multimodal Argument Mining Toolkit
 A Comprehensive Multimodal Argument Mining Toolkit. 
 
