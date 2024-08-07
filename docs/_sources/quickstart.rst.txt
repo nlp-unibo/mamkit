@@ -11,7 +11,7 @@ Moreover, the package provides benchmarking capabilities, enabling users to repr
 The package also provides a structured interface for training models, enabling users to train models using PyTorch
 Lightning.
 
-The following sections we show how to install the packahe and provide a brief overview of the package's functionalities, including loading/adding datasets,
+The following sections provide a brief overview of the package's functionalities, including loading/adding datasets,
 models, and training models.
 
 

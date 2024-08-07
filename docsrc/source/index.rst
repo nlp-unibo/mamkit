@@ -13,8 +13,8 @@ Currently, MAMKit offers 4 datasets, 4 tasks and 6 distinct model architectures,
 Structure
 ================================================
 
-The toolkit is organized into five main components: `configs`, `data`, `models`,  `modules` and `utility`.
-In addition to that, the toolkit provides a `demos` directory for running all the experiments presented in the paper.
+The toolkit is organized into five main components: ``configs``, ``data``, ``models``,  ``modules`` and ``utility``.
+In addition to that, the toolkit provides a ``demos`` directory for running all the experiments presented in the paper.
 The figure below illustrates the toolkit's structure.
 
 .. image:: img/mamkit2-resized.png
@@ -40,7 +40,8 @@ git
 Contribute
 ===============================================
 
-Feel free to submit a merge request!
+Feel free to submit a pull request!
+We welcome new datasets, models, and any other contribution that can improve the toolkit!
 
 MAMKit is meant to be a community project :)
 
