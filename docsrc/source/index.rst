@@ -36,7 +36,7 @@ git
       git clone https://github.com/lt-nlp-lab-unibo/mamkit
 
 
-===============================================
+
 Contribute
 ===============================================
 
@@ -45,7 +45,7 @@ We welcome new datasets, models, and any other contribution that can improve the
 
 MAMKit is meant to be a community project :)
 
-===============================================
+
 Contact
 ===============================================
 
@@ -55,7 +55,7 @@ Don't hesitate to contact:
 
 for questions/doubts/issues!
 
-===============================================
+
 Citing
 ===============================================
 
