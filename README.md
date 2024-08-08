@@ -62,7 +62,7 @@ processing capabilities, organized in 5 main components.
 | Mul_TA     | BERT              | (Wav2Vec2 &or; HuBERT &or; WavLM) + Transformer | Cross        |
 
 
-## Installation
+## 🔧 Installation
 Clone the repository and install the requirements:
 ```bash
 git clone git@github.com:TBA_AFTER_ACCEPTANCE/mamkit.git
@@ -70,7 +70,7 @@ cd MAMKit
 pip install -r requirements.txt
 ```
 
-## Usage
+## ⚙️ Usage
 ### Data 
 MAMKit provides a modular interface for defining datasets or allowing users to load datasets from the literature. 
 
@@ -227,7 +227,7 @@ for split_info in loader.get_splits(
                     config.embedding_dim, ...)
 ```
 
-## Structure
+## 🧠 Structure
 The toolkit is organized into five main components: `configs`, `data`, `models`,  `modules` and `utility`. 
 In addition to that, the toolkit provides a `demos` directory for running all the experiments presented in the paper.
 The figure below illustrates the toolkit's structure.
@@ -235,16 +235,16 @@ The figure below illustrates the toolkit's structure.
 ![Toolkit Structure](figures/mamkit2.png)
 
 
-## Documentation 
-The documentation is available at [TBA](https://TBA).
+## 📚 Documentation 
+The documentation is available [here](https://lt-nlp-lab-unibo.github.io/mamkit/mamkit.html).
 
-## Contributing 
-We welcome contributions to MAMKit. Please refer to the [contributing guidelines](CONTRIBUTING.md) for more information. (TBA)
+## 🤝 Contributing 
+We welcome contributions to MAMKit!  Please refer to the [contributing guidelines](https://lt-nlp-lab-unibo.github.io/mamkit/contribute.html) for more information.
 
-## Contact Us
-For any questions or suggestions, please contact us at [TBA](TBA).
+## 📧 Contact Us
+For any questions or suggestions, don't hesitate to contactp lease contact us at [TBA](TBA).
 
-## Citation
+## 📖 Citation
 If you use MAMKit in your research, please cite the following paper:
 ```
 @inproceedings{TBAmamkit,
