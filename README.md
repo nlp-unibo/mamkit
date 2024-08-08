@@ -235,14 +235,19 @@ The figure below illustrates the toolkit's structure.
 ![Toolkit Structure](figures/mamkit2.png)
 
 
-## 📚 Documentation 
+## 📚 Website and Documentation 
 The documentation is available [here](https://lt-nlp-lab-unibo.github.io/mamkit/mamkit.html).
+
+The website is available [here](https://lt-nlp-lab-unibo.github.io/mamkit/).
+
+Our website provides a comprehensive overview of the toolkit, including installation instructions, usage examples, and a detailed description of the toolkit's components.
+Moreover, the website provides a detailed description of the datasets, tasks, and models available in the toolkit, together with a leaderboard of the results obtained on the datasets with the current models.
 
 ## 🤝 Contributing 
 We welcome contributions to MAMKit!  Please refer to the [contributing guidelines](https://lt-nlp-lab-unibo.github.io/mamkit/contribute.html) for more information.
 
 ## 📧 Contact Us
-For any questions or suggestions, don't hesitate to contactp lease contact us at [TBA](TBA).
+For any questions or suggestions, don't hesitate to contact  us: [Eleonora Mancini](mailto:e.mancini@unibo.it), [Federico Ruggeri](mailto:federico.ruggeri6@unibo.it).
 
 ## 📖 Citation
 If you use MAMKit in your research, please cite the following paper:
