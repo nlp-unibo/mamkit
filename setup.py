@@ -7,7 +7,7 @@ readme_path = Path(__file__).absolute().parent.joinpath('README.md')
 with readme_path.open('r', encoding='utf-8') as fh:
     long_description = fh.read()
 
-requirements_path = Path(__file__).absolute().parent.joinpath('mamkit/requirements.txt')
+requirements_path = Path(__file__).absolute().parent.joinpath('requirements.txt')
 
 with requirements_path.open('r') as f:
     requirements = f.readlines()
@@ -16,7 +16,7 @@ with requirements_path.open('r') as f:
 
 setup(
     name='mamkit',
-    version='1.0.1',
+    version='1.0.post1',
     author='Eleonora Mancini, Federico Ruggeri',
     author_email='e.mancini@unibo.it',
     description='A Comprehensive Multimodal Argument Mining Toolkit. ',
