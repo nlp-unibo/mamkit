@@ -16,7 +16,7 @@ with requirements_path.open('r') as f:
 
 setup(
     name='mamkit',
-    version='1.0.post1',
+    version='1.0.post3',
     author='Eleonora Mancini, Federico Ruggeri',
     author_email='e.mancini@unibo.it',
     description='A Comprehensive Multimodal Argument Mining Toolkit. ',
