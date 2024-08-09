@@ -63,12 +63,32 @@ processing capabilities, organized in 5 main components.
 
 
 ## 🔧 Installation
-Clone the repository and install the requirements:
+### Install via PyPi
+
+1. Install MAMKit using PyPi:
 ```bash
-git clone git@github.com:TBA_AFTER_ACCEPTANCE/mamkit.git
-cd MAMKit
+pip install mamkit 
+
+```
+2. Access MAMKit in your Python code: 
+```bash
+import mamkit 
+```
+
+### Install from GitHub
+This installation is recommended for users who wish to conduct experiments and customize the toolkit according to their needs.
+
+1. Clone the repository and install the requirements:
+```bash
+git clone git@github.com:lt-nlp-lab-unibo/mamkit.git
+cd mamkit
 pip install -r requirements.txt
 ```
+2. Access MAMKit in your Python code: 
+```bash
+import mamkit 
+```
+
 
 ## ⚙️ Usage
 ### Data 
