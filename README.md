@@ -272,7 +272,7 @@ For any questions or suggestions, don't hesitate to contact  us: [Eleonora Manci
 ## 📖 Citation
 If you use MAMKit in your research, please cite the following paper:
 ```
-@inproceedings@inproceedings{mancini-etal-2024-mamkit,
+@inproceedings{mancini-etal-2024-mamkit,
     title = "{MAMK}it: A Comprehensive Multimodal Argument Mining Toolkit",
     author = "Mancini, Eleonora  and
       Ruggeri, Federico  and
