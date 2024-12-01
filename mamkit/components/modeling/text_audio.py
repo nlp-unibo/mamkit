@@ -3,9 +3,10 @@ from transformers import AutoModel, AutoConfig
 
 from mamkit.modules.rnn import LSTMStack
 from mamkit.modules.transformer import MulTA_CrossAttentionBlock
+from cinnamon.component import Component
 
 
-class TextAudioModel(th.nn.Module):
+class TextAudioModel(th.nn.Module, Component):
 
     def forward(
             self,

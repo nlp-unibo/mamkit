@@ -11,9 +11,9 @@ from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.audio import BiLSTMMFCCsConfig
 from mamkit.configs.base import ConfigKey
-from mamkit.data.collators import UnimodalCollator, AudioCollator
-from mamkit.data.datasets import MMUSEDFallacy, InputMode
-from mamkit.data.processing import UnimodalProcessor, MFCCExtractor
+from mamkit.components.collators import UnimodalCollator, AudioCollator
+from mamkit.components.data import MMUSEDFallacy, InputMode
+from mamkit.components.data import UnimodalProcessor, MFCCExtractor
 from mamkit.models.audio import BiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model

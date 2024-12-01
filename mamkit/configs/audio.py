@@ -1,7 +1,7 @@
 import torch as th
 
 from mamkit.configs.base import BaseConfig, ConfigKey
-from mamkit.data.datasets import InputMode
+from mamkit.components.data import InputMode
 
 
 class BiLSTMMFCCsConfig(BaseConfig):

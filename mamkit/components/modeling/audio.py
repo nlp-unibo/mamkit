@@ -2,9 +2,10 @@ import torch as th
 
 from mamkit.modules.rnn import LSTMStack
 from mamkit.modules.transformer import PositionalEncoding
+from cinnamon.component import Component
 
 
-class AudioOnlyModel(th.nn.Module):
+class AudioOnlyModel(th.nn.Module, Component):
 
     def forward(
             self,

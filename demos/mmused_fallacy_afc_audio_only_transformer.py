@@ -11,9 +11,9 @@ from torchmetrics.classification.f_beta import F1Score
 
 from mamkit.configs.audio import TransformerEncoderConfig
 from mamkit.configs.base import ConfigKey
-from mamkit.data.collators import AudioCollator, UnimodalCollator
-from mamkit.data.datasets import MMUSEDFallacy, InputMode
-from mamkit.data.processing import AudioTransformer, UnimodalProcessor
+from mamkit.components.collators import AudioCollator, UnimodalCollator
+from mamkit.components.data import MMUSEDFallacy, InputMode
+from mamkit.components.data import AudioTransformer, UnimodalProcessor
 from mamkit.models.audio import TransformerEncoder
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model

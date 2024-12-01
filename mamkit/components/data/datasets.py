@@ -15,12 +15,28 @@ from typing import Optional, List, Callable, Union, Dict
 import numpy as np
 import pandas as pd
 import simplejson as sj
+from cinnamon.component import Component
 from nltk.tokenize import sent_tokenize
 from pydub import AudioSegment
 from torch.utils.data import Dataset
 from tqdm import tqdm
 
 from mamkit.utility.data import download, youtube_download
+
+__all__ = [
+    'InputMode',
+    'UnimodalDataset',
+    'PairUnimodalDataset',
+    'MultimodalDataset',
+    'PairMultimodalDataset',
+    'MAMDataset',
+    'SplitInfo',
+    'Loader',
+    'UKDebates',
+    'MMUSED',
+    'MMUSEDFallacy',
+    'MArg'
+]
 
 
 class InputMode(Enum):
@@ -159,7 +175,7 @@ class SplitInfo:
     test: Optional[MAMDataset]
 
 
-class Loader(abc.ABC):
+class Loader(Component, abc.ABC):
 
     def __init__(
             self,

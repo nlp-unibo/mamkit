@@ -5,22 +5,41 @@ from typing import Optional, Iterable, Dict, List
 
 import librosa
 import numpy as np
+import resampy
 import torch as th
-from librosa import feature
+from cinnamon.component import Component
 from skimage.measure import block_reduce
 from torch.nn.utils.rnn import pad_sequence
 from torchaudio.backend.soundfile_backend import load
 from torchaudio.functional import resample
-import resampy
 from torchtext.vocab import pretrained_aliases, build_vocab_from_iterator
 from tqdm import tqdm
 from transformers import AutoModel, AutoProcessor, AutoTokenizer, AutoFeatureExtractor
 
-from mamkit.data.datasets import UnimodalDataset, MultimodalDataset, MAMDataset, PairUnimodalDataset, \
+from mamkit.components.data.datasets import UnimodalDataset, MultimodalDataset, MAMDataset, PairUnimodalDataset, \
     PairMultimodalDataset
 
+__all__ = [
+    'Processor',
+    'ProcessorComponent',
+    'UnimodalProcessor',
+    'MultimodalProcessor',
+    'PairUnimodalProcessor',
+    'PairMultimodalProcessor',
+    'VocabBuilder',
+    'PairVocabBuilder',
+    'MFCCExtractor',
+    'PairMFCCExtractor',
+    'TextTransformer',
+    'PairTextTransformer',
+    'AudioTransformer',
+    'PairAudioTransformer',
+    'AudioTransformerExtractor',
+    'PairAudioTransformerExtractor'
+]
 
-class Processor:
+
+class Processor(Component):
 
     def fit(
             self,
@@ -45,7 +64,7 @@ class Processor:
         return data
 
 
-class ProcessorComponent:
+class ProcessorComponent(Component):
 
     def fit(
             self,
@@ -830,7 +849,8 @@ class PairAudioTransformer(ProcessorComponent):
             self._init_models()
 
         a_parsed_audio, b_parsed_audio = [], []
-        for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), total=len(a_audio_files), desc='Extracting Audio Features...'):
+        for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), total=len(a_audio_files),
+                                               desc='Extracting Audio Features...'):
             if not Path(a_audio_file).is_file():
                 raise RuntimeError(f'Could not read file {a_audio_file}')
             a_audio, a_sampling_rate = load(a_audio_file)
@@ -920,7 +940,8 @@ class PairAudioTransformerExtractor(ProcessorComponent):
             self._init_models()
 
         a_parsed_audio, b_parsed_audio = [], []
-        for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), total=len(a_audio_files), desc='Extracting Audio Features...'):
+        for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), total=len(a_audio_files),
+                                               desc='Extracting Audio Features...'):
             if not Path(a_audio_file).is_file():
                 raise RuntimeError(f'Could not read file {a_audio_file}')
             a_audio, a_sampling_rate = load(a_audio_file)
@@ -972,4 +993,3 @@ class PairAudioTransformerExtractor(ProcessorComponent):
         self.model = None
         self.processor = None
         th.cuda.empty_cache()
-

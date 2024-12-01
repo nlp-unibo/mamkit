@@ -10,9 +10,9 @@ from torch.utils.data import DataLoader
 
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text_audio import BiLSTMTransformerConfig
-from mamkit.data.collators import PairMultimodalCollator, PairTextCollator, PairAudioCollator
-from mamkit.data.datasets import MArg, InputMode
-from mamkit.data.processing import PairVocabBuilder, PairMultimodalProcessor, PairAudioTransformerExtractor
+from mamkit.components.collators import PairMultimodalCollator, PairTextCollator, PairAudioCollator
+from mamkit.components.data import MArg, InputMode
+from mamkit.components.data import PairVocabBuilder, PairMultimodalProcessor, PairAudioTransformerExtractor
 from mamkit.models.text_audio import PairBiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.metrics import ClassSubsetMulticlassF1Score

@@ -101,23 +101,21 @@ Users can specify task and input mode (`text-only`, `audio-only`, or `text-audio
 
 The `get_splits` method of the `loader` returns data splits in the form of a `data.datasets.SplitInfo`. The latter wraps split-specific data, each implementing PyTorch's `Dataset` interface and compliant to the specified input modality (i.e., `text-only`).
 
-
-
 ```python
-from mamkit.data.datasets import UKDebates, InputMode
+from mamkit.components.data import UKDebates, InputMode
 
 loader = UKDebates(
-          task_name='asd',
-          input_mode=InputMode.TEXT_ONLY,
-          base_data_path=base_data_path)
-
+    task_name='asd',
+    input_mode=InputMode.TEXT_ONLY,
+    base_data_path=base_data_path)
 
 split_info = loader.get_splits('mancini-et-al-2022')
 ```
 The `Loader` interface also allows users to integrate methods defining custom splits as follows:
 
 ```python
-from mamkit.data.datasets import SplitInfo
+from mamkit.components.data import SplitInfo
+
 
 def custom_splits(self) -> List[SplitInfo]:
     train_df = self.data.iloc[:50]
@@ -125,7 +123,8 @@ def custom_splits(self) -> List[SplitInfo]:
     test_df = self.data.iloc[100:]
     fold_info = self.build_info_from_splits(train_df=...)
     return [fold_info]
-              
+
+
 loader.add_splits(method=custom_splits,
                   key='custom')
 
@@ -145,24 +144,25 @@ The following example demonstrates how to instantiate a model with a configurati
 This configuration is identified by a key, `ConfigKey`, containing all the defining information.
 The key is used to fetch the precise configuration of the model from the `configs` package.
 Subsequently, the model is retrieved from the `models` package and configured with the specific parameters outlined in the configuration.
+
 ```python
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text import TransformerConfig
-from mamkit.data.datasets import InputMode
+from mamkit.components.data import InputMode
 
 config_key = ConfigKey(
-              dataset='mmused', 
-              task_name='asd',
-              input_mode=InputMode.TEXT_ONLY,
-              tags={'mancini-et-al-2022'})
+    dataset='mmused',
+    task_name='asd',
+    input_mode=InputMode.TEXT_ONLY,
+    tags={'mancini-et-al-2022'})
 
 config = TransformerConfig.from_config(
-                           key=config_key)
-    
+    key=config_key)
+
 model = Transformer(
-         model_card=config.model_card,
-         dropout_rate=config.dropout_rate
-         ...)
+    model_card=config.model_card,
+    dropout_rate=config.dropout_rate
+    ...)
 ```
 
 #### Custom Model Definition 
@@ -181,26 +181,26 @@ class Transformer(TextOnlyModel):
 ```
 
 ```python
-from mamkit.models.text import Transformer
+from mamkit.components.modeling.text import Transformer
 
 model = Transformer(
-          model_card='bert-base-uncased',
-          dropout_rate=0.1, ...)
+    model_card='bert-base-uncased',
+    dropout_rate=0.1, ...)
 ```
 
 
 ### Training
 Our models are designed to be encapsulated into a PyTorch `LightningModule`, which can be trained using PyTorch Lightning's `Trainer` class.
-The following example demonstrates how to wrap and train a model using PyTorch Lightning. 
+The following example demonstrates how to wrap and train a model using PyTorch Lightning.
 
 ```python
-from mamkit.utility.model import to_lighting_model
+from mamkit.components.model import to_lighting_model
 import lightning
 
-model = to_lighting_model(model=model, 
-        num_classes=config.num_classes,
-        loss_function=...,
-        optimizer_class=...)
+model = to_lighting_model(model=model,
+                          num_classes=config.num_classes,
+                          loss_function=...,
+                          optimizer_class=...)
 
 trainer = lightning.Trainer(max_epochs=100,
                             accelerator='gpu',
@@ -220,31 +220,30 @@ In the example below, we adopt a configuration akin to [Mancini et al. (2022)](h
 ```python
 from mamkit.configs.audio import BiLSTMMFCCsConfig
 from mamkit.configs.base import ConfigKey
-from mamkit.data.datasets import UKDebates, InputMode
-from mamkit.data.processing import MFCCExtractor, UnimodalProcessor
-from mamkit.models.audio import BiLSTM
+from mamkit.components.data import UKDebates, InputMode
+from mamkit.components.data import MFCCExtractor, UnimodalProcessor
+from mamkit.components.modeling.audio import BiLSTM
 
 loader = UKDebates(task_name='asd',
-           input_mode=InputMode.AUDIO_ONLY)
+                   input_mode=InputMode.AUDIO_ONLY)
 
 config = BiLSTMMFCCsConfig.from_config(
-                key=ConfigKey(dataset='ukdebates',
+  key=ConfigKey(dataset='ukdebates',
                 input_mode=InputMode.AUDIO_ONLY,
                 task_name='asd',
                 tags='mancini-et-al-2022'))
 
-
 for split_info in loader.get_splits(
-                         key='mancini-et-al-2022'):
-    processor = 
-        UnimodalProcessor(
-            features_processor=MFCCExtractor(
-                mfccs=config.mfccs, ...))
+        key='mancini-et-al-2022'):
+  processor =
+  UnimodalProcessor(
+    features_processor=MFCCExtractor(
+      mfccs=config.mfccs, ...))
 
-    split_info.train = processor(split_info.train)
-    ...
-    model = BiLSTM(embedding_dim=
-                    config.embedding_dim, ...)
+split_info.train = processor(split_info.train)
+...
+model = BiLSTM(embedding_dim=
+               config.embedding_dim, ...)
 ```
 
 ## 🧠 Structure

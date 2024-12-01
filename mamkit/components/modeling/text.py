@@ -1,10 +1,12 @@
 import torch as th
+from cinnamon.component import Component
 from transformers import AutoModel, AutoConfig
 
+from mamkit.components.modeling.base import MAMKitModule
 from mamkit.modules.rnn import LSTMStack
 
 
-class TextOnlyModel(th.nn.Module):
+class TextOnlyModel(MAMKitModule, Component):
 
     def forward(
             self,
@@ -27,7 +29,7 @@ class BiLSTM(TextOnlyModel):
         super().__init__()
 
         self.embedding = th.nn.Embedding(num_embeddings=vocab_size,
-                                         embedding_dim=embedding_dim,
+                                         embedding_dim=self.embedding_dim,
                                          padding_idx=0)
         if embedding_matrix is not None:
             self.embedding.weight.data = embedding_matrix

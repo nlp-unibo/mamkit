@@ -3,7 +3,7 @@ import logging
 from mamkit.models.text import Transformer
 from mamkit.configs.text import TransformerConfig
 from mamkit.configs.base import ConfigKey
-from mamkit.data.datasets import InputMode
+from mamkit.components.data import InputMode
 from mamkit.utility.model import to_lighting_model
 from mamkit.utility.config import extract_from_class, extract_from_method
 import lightning

@@ -1,11 +1,38 @@
 import torch as th
+from cinnamon.component import Component
 from torch.nn.utils.rnn import pad_sequence
 from torchaudio.backend.soundfile_backend import load
 from torchaudio.functional import resample
 from transformers import AutoTokenizer, AutoProcessor, AutoModel
 
+__all__ = [
+    'DataCollator',
+    'UnimodalCollator',
+    'PairUnimodalCollator',
+    'MultimodalCollator',
+    'PairMultimodalCollator',
+    'TextCollator',
+    'PairTextCollator',
+    'TextTransformerCollator',
+    'PairTextTransformerCollator',
+    'TextTransformerOutputCollator',
+    'PairTextTransformerOutputCollator',
+    'AudioTransformerCollator',
+    'AudioCollator',
+    'PairAudioCollator'
+]
 
-class UnimodalCollator:
+
+class DataCollator(Component):
+
+    def __call__(
+            self,
+            batch
+    ):
+        return batch
+
+
+class UnimodalCollator(DataCollator):
     def __init__(
             self,
             features_collator,
@@ -52,7 +79,7 @@ class PairUnimodalCollator(UnimodalCollator):
         return features_collated, labels_collated
 
 
-class MultimodalCollator:
+class MultimodalCollator(DataCollator):
     def __init__(
             self,
             text_collator,
@@ -111,7 +138,7 @@ class PairMultimodalCollator(MultimodalCollator):
         return (text_collated, audio_collated), labels_collated
 
 
-class TextCollator:
+class TextCollator(DataCollator):
 
     def __init__(
             self,
@@ -123,20 +150,20 @@ class TextCollator:
 
     def __call__(
             self,
-            texts
+            batch
     ):
-        texts = [th.tensor(self.vocab(self.tokenizer(text))) for text in texts]
-        texts = pad_sequence(texts, padding_value=0, batch_first=True)
-        return texts
+        batch = [th.tensor(self.vocab(self.tokenizer(text))) for text in batch]
+        batch = pad_sequence(batch, padding_value=0, batch_first=True)
+        return batch
 
 
 class PairTextCollator(TextCollator):
 
     def __call__(
             self,
-            texts
+            batch
     ):
-        a_texts, b_texts = texts
+        a_texts, b_texts = batch
         a_texts = [th.tensor(self.vocab(self.tokenizer(text))) for text in a_texts]
         a_texts = pad_sequence(a_texts, padding_value=0, batch_first=True)
 
@@ -146,7 +173,7 @@ class PairTextCollator(TextCollator):
         return a_texts, b_texts
 
 
-class TextTransformerCollator:
+class TextTransformerCollator(DataCollator):
     def __init__(
             self,
             model_card,
@@ -160,9 +187,9 @@ class TextTransformerCollator:
 
     def __call__(
             self,
-            text
+            batch
     ):
-        tokenized = self.tokenizer(text,
+        tokenized = self.tokenizer(batch,
                                    padding=True,
                                    return_tensors='pt',
                                    **self.tokenizer_args).to(self.device)
@@ -173,9 +200,9 @@ class PairTextTransformerCollator(TextTransformerCollator):
 
     def __call__(
             self,
-            texts
+            batch
     ):
-        a_texts, b_texts = texts
+        a_texts, b_texts = batch
         a_tokenized = self.tokenizer(a_texts,
                                      padding=True,
                                      return_tensors='pt',
@@ -188,24 +215,24 @@ class PairTextTransformerCollator(TextTransformerCollator):
             (b_tokenized['input_ids'], b_tokenized['attention_mask'])
 
 
-class TextTransformerOutputCollator:
+class TextTransformerOutputCollator(DataCollator):
 
     def __call__(
             self,
-            texts
+            batch
     ):
-        texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in texts], padding_value=0.0, batch_first=True)
-        attention_mask = texts[:, :, 0] != 0.0
-        return texts, attention_mask.to(th.float32)
+        batch = pad_sequence([th.tensor(text, dtype=th.float32) for text in batch], padding_value=0.0, batch_first=True)
+        attention_mask = batch[:, :, 0] != 0.0
+        return batch, attention_mask.to(th.float32)
 
 
 class PairTextTransformerOutputCollator(TextTransformerOutputCollator):
 
     def __call__(
             self,
-            texts
+            batch
     ):
-        a_texts, b_texts = texts
+        a_texts, b_texts = batch
 
         a_texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in a_texts], padding_value=0.0,
                                batch_first=True)
@@ -218,7 +245,7 @@ class PairTextTransformerOutputCollator(TextTransformerOutputCollator):
         return (a_texts, a_attention_mask.to(th.float32)), (b_texts, b_attention_mask.to(th.float32))
 
 
-class AudioTransformerCollator:
+class AudioTransformerCollator(DataCollator):
 
     def __init__(
             self,
@@ -242,10 +269,10 @@ class AudioTransformerCollator:
 
     def __call__(
             self,
-            audio_files
+            batch
     ):
         loaded_audio = []
-        for audio_file in audio_files:
+        for audio_file in batch:
             if not audio_file.is_file():
                 raise RuntimeError(f'Could not read file {audio_file}')
             audio, sampling_rate = load(audio_file.as_posix())
@@ -277,23 +304,23 @@ class AudioTransformerCollator:
         return features, attention_mask
 
 
-class AudioCollator:
+class AudioCollator(DataCollator):
 
     def __call__(
             self,
-            features
+            batch
     ):
-        features = [th.tensor(feature_set, dtype=th.float32) for feature_set in features]
-        features = pad_sequence(features, batch_first=True, padding_value=float('-inf'))
-        features[(features == float('-inf'))] = 0
+        batch = [th.tensor(feature_set, dtype=th.float32) for feature_set in batch]
+        batch = pad_sequence(batch, batch_first=True, padding_value=float('-inf'))
+        batch[(batch == float('-inf'))] = 0
 
-        if len(features.shape) == 3:
-            attention_mask = features[:, :, 0] != float('-inf')
+        if len(batch.shape) == 3:
+            attention_mask = batch[:, :, 0] != float('-inf')
         else:
-            attention_mask = th.ones((features.shape[0]), dtype=th.int32)
-            features = features[:, None, :]
+            attention_mask = th.ones((batch.shape[0]), dtype=th.int32)
+            batch = batch[:, None, :]
 
-        return features, attention_mask.to(th.float32)
+        return batch, attention_mask.to(th.float32)
 
 
 class PairAudioCollator(AudioCollator):
@@ -316,9 +343,9 @@ class PairAudioCollator(AudioCollator):
 
     def __call__(
             self,
-            features
+            batch
     ):
-        a_features, b_features = features
+        a_features, b_features = batch
 
         a_features, a_attention_mask = self._parse_features(a_features)
         b_features, b_attention_mask = self._parse_features(b_features)

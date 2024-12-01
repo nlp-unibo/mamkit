@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 from typing import List
 
-from mamkit.data.datasets import SplitInfo, UKDebates, MMUSEDFallacy, InputMode
+from mamkit.components.data import SplitInfo, UKDebates, MMUSEDFallacy, InputMode
 
 
 def loading_data_example():

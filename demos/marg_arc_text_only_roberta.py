@@ -10,9 +10,9 @@ from torch.utils.data import DataLoader
 
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text import TransformerConfig
-from mamkit.data.collators import PairUnimodalCollator, PairTextTransformerCollator
-from mamkit.data.datasets import MArg, InputMode
-from mamkit.data.processing import PairUnimodalProcessor
+from mamkit.components.collators import PairUnimodalCollator, PairTextTransformerCollator
+from mamkit.components.data import MArg, InputMode
+from mamkit.components.data import PairUnimodalProcessor
 from mamkit.models.text import PairTransformer
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.metrics import ClassSubsetMulticlassF1Score

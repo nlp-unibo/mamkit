@@ -10,9 +10,9 @@ from torch.utils.data import DataLoader
 
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text import TransformerConfig
-from mamkit.data.collators import UnimodalCollator, TextTransformerCollator
-from mamkit.data.datasets import MMUSED, InputMode
-from mamkit.data.processing import UnimodalProcessor
+from mamkit.components.collators import UnimodalCollator, TextTransformerCollator
+from mamkit.components.data import MMUSED, InputMode
+from mamkit.components.data import UnimodalProcessor
 from mamkit.models.text import Transformer
 from mamkit.utility.callbacks import PycharmProgressBar
 from mamkit.utility.model import to_lighting_model

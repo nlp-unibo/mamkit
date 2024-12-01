@@ -9,9 +9,9 @@ from torch.utils.data import DataLoader
 
 from mamkit.configs.audio import TransformerEncoderConfig
 from mamkit.configs.base import ConfigKey
-from mamkit.data.collators import AudioCollator, UnimodalCollator
-from mamkit.data.datasets import UKDebates, InputMode
-from mamkit.data.processing import AudioTransformerExtractor, UnimodalProcessor
+from mamkit.components.collators import AudioCollator, UnimodalCollator
+from mamkit.components.data import UKDebates, InputMode
+from mamkit.components.data import AudioTransformerExtractor, UnimodalProcessor
 from mamkit.models.audio import TransformerEncoder
 from mamkit.utility.model import to_lighting_model
 from pathlib import Path

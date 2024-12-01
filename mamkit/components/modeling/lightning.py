@@ -1,26 +1,27 @@
+from typing import Dict, Any
+
 import lightning as L
 import torch as th
-from typing import Dict
+from cinnamon.component import Component
+from mamkit.components.modeling.base import MAMKitModule
 
 
-class MAMKitLightingModel(L.LightningModule):
+class MAMKitModel(L.LightningModule, Component):
     def __init__(
             self,
-            model: th.nn.Module,
+            model: MAMKitModule,
             loss_function,
-            num_classes: int,
             optimizer_class,
             val_metrics: Dict = None,
             test_metrics: Dict = None,
             log_metrics: bool = True,
-            **optimizer_kwargs
+            optimizer_kwargs: Dict[str, Any] = None
     ):
         super().__init__()
         self.model = model
         self.loss_function = loss_function()
         self.optimizer_class = optimizer_class
-        self.optimizer_kwargs = optimizer_kwargs
-        self.num_classes = num_classes
+        self.optimizer_kwargs = optimizer_kwargs if optimizer_kwargs is not None else {}
         self.log_metrics = log_metrics
 
         if val_metrics is not None:
@@ -39,9 +40,9 @@ class MAMKitLightingModel(L.LightningModule):
 
     def forward(
             self,
-            x
+            inputs
     ):
-        return self.model(x)
+        return self.model(inputs)
 
     def training_step(
             self,
@@ -98,23 +99,3 @@ class MAMKitLightingModel(L.LightningModule):
             self
     ):
         return self.optimizer_class(self.model.parameters(), **self.optimizer_kwargs)
-
-
-def to_lighting_model(
-        model: th.nn.Module,
-        loss_function,
-        num_classes,
-        optimizer_class,
-        val_metrics: Dict = None,
-        test_metrics: Dict = None,
-        log_metrics: bool = True,
-        **optimizer_kwargs
-):
-    return MAMKitLightingModel(model=model,
-                               loss_function=loss_function,
-                               num_classes=num_classes,
-                               optimizer_class=optimizer_class,
-                               val_metrics=val_metrics,
-                               test_metrics=test_metrics,
-                               log_metrics=log_metrics,
-                               **optimizer_kwargs)
