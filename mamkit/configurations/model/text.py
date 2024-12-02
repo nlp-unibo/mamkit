@@ -1,7 +1,9 @@
-from cinnamon.registry import Registry, register
-from cinnamon.configuration import Configuration, C
 from typing import Type, List, Callable
+
 import torch as th
+from cinnamon.configuration import Configuration, C
+from cinnamon.registry import register_method
+
 from mamkit.components.modeling.text import BiLSTM
 
 
@@ -33,6 +35,10 @@ class BiLSTMConfig(Configuration):
         return config
 
     @classmethod
+    @register_method(name='model',
+                     tags={'data:ukdebates', 'task:asd', 'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
     def ukdebates_asd_mancini_2024(
             cls: Type[C]
     ) -> C:
@@ -50,6 +56,10 @@ class BiLSTMConfig(Configuration):
         return config
 
     @classmethod
+    @register_method(name='model',
+                     tags={'data:ukdebates', 'task:asd', 'mancini-2022-argmining'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
     def ukdebates_asd_mancini_2022(
             cls: Type[C]
     ) -> C:
@@ -67,6 +77,10 @@ class BiLSTMConfig(Configuration):
         return config
 
     @classmethod
+    @register_method(name='model',
+                     tags={'data:marg', 'task:arc', 'mancini-2022-argmining'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
     def marg_arc_mancini_2022(
             cls: Type[C]
     ) -> C:
@@ -84,6 +98,10 @@ class BiLSTMConfig(Configuration):
         return config
 
     @classmethod
+    @register_method(name='model',
+                     tags={'data:marg', 'task:arc', 'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
     def marg_arc_mancini_2024(
             cls: Type[C]
     ) -> C:
@@ -101,6 +119,10 @@ class BiLSTMConfig(Configuration):
         return config
 
     @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused', 'task:asd', 'mancini-2022-argmining'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
     def mmused_asd_mancini_2022(
             cls: Type[C]
     ) -> C:
@@ -118,6 +140,10 @@ class BiLSTMConfig(Configuration):
         return config
 
     @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused', 'task:asd', 'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
     def mmused_asd_mancini_2024(
             cls: Type[C]
     ) -> C:
@@ -135,6 +161,10 @@ class BiLSTMConfig(Configuration):
         return config
 
     @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused', 'task:acc', 'mancini-2022-argmining'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
     def mmused_acc_mancini_2022(
             cls: Type[C]
     ) -> C:
@@ -152,6 +182,10 @@ class BiLSTMConfig(Configuration):
         return config
 
     @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused', 'task:acc', 'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
     def mmused_acc_mancini_2024(
             cls: Type[C]
     ) -> C:
@@ -169,6 +203,10 @@ class BiLSTMConfig(Configuration):
         return config
 
     @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused-fallacy', 'task:afc', 'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
     def mmused_fallacy_afc_mancini_2024(
             cls: Type[C]
     ) -> C:
@@ -184,69 +222,3 @@ class BiLSTMConfig(Configuration):
         config.dropout_rate = 0.0
 
         return config
-
-
-@register
-def register_configurations():
-    Registry.register_configuration(config_class=BiLSTMConfig,
-                                    config_constructor=BiLSTMConfig.ukdebates_asd_mancini_2022,
-                                    component_class=BiLSTM,
-                                    name='model',
-                                    tags={'data:ukdebates', 'task:asd', 'mancini-2024-mamkit'},
-                                    namespace='mamkit')
-
-    Registry.register_configuration(config_class=BiLSTMConfig,
-                                    config_constructor=BiLSTMConfig.ukdebates_asd_mancini_2022,
-                                    component_class=BiLSTM,
-                                    name='model',
-                                    tags={'data:ukdebates', 'task:asd', 'mancini-2022-argmining'},
-                                    namespace='mamkit')
-
-    Registry.register_configuration(config_class=BiLSTMConfig,
-                                    config_constructor=BiLSTMConfig.marg_arc_mancini_2022,
-                                    component_class=BiLSTM,
-                                    name='model',
-                                    tags={'data:marg', 'task:arc', 'mancini-2022-argmining'},
-                                    namespace='mamkit')
-
-    Registry.register_configuration(config_class=BiLSTMConfig,
-                                    config_constructor=BiLSTMConfig.marg_arc_mancini_2024,
-                                    component_class=BiLSTM,
-                                    name='model',
-                                    tags={'data:marg', 'task:arc', 'mancini-2024-mamkit'},
-                                    namespace='mamkit')
-
-    Registry.register_configuration(config_class=BiLSTMConfig,
-                                    config_constructor=BiLSTMConfig.mmused_asd_mancini_2022,
-                                    component_class=BiLSTM,
-                                    name='model',
-                                    tags={'data:mmused', 'task:asd', 'mancini-2022-argmining'},
-                                    namespace='mamkit')
-
-    Registry.register_configuration(config_class=BiLSTMConfig,
-                                    config_constructor=BiLSTMConfig.mmused_asd_mancini_2024,
-                                    component_class=BiLSTM,
-                                    name='model',
-                                    tags={'data:mmused', 'task:asd', 'mancini-2024-mamkit'},
-                                    namespace='mamkit')
-
-    Registry.register_configuration(config_class=BiLSTMConfig,
-                                    config_constructor=BiLSTMConfig.mmused_acc_mancini_2022,
-                                    component_class=BiLSTM,
-                                    name='model',
-                                    tags={'data:mmused', 'task:acc', 'mancini-2022-argmining'},
-                                    namespace='mamkit')
-
-    Registry.register_configuration(config_class=BiLSTMConfig,
-                                    config_constructor=BiLSTMConfig.mmused_acc_mancini_2024,
-                                    component_class=BiLSTM,
-                                    name='model',
-                                    tags={'data:mmused', 'task:acc', 'mancini-2024-mamkit'},
-                                    namespace='mamkit')
-
-    Registry.register_configuration(config_class=BiLSTMConfig,
-                                    config_constructor=BiLSTMConfig.mmused_fallacy_afc_mancini_2024,
-                                    component_class=BiLSTM,
-                                    name='model',
-                                    tags={'data:mmused-fallacy', 'task:afc', 'mancini-2024-mamkit'},
-                                    namespace='mamkit')
