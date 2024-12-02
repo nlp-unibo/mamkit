@@ -4,6 +4,14 @@ from mamkit.modules.rnn import LSTMStack
 from mamkit.modules.transformer import PositionalEncoding
 from cinnamon.component import Component
 
+__all__ = [
+    'AudioOnlyModel',
+    'BiLSTM',
+    'PairBiLSTM',
+    'TransformerEncoder',
+    'PairTransformerEncoder'
+]
+
 
 class AudioOnlyModel(th.nn.Module, Component):
 

@@ -5,6 +5,14 @@ from transformers import AutoModel, AutoConfig
 from mamkit.components.modeling.base import MAMKitModule
 from mamkit.modules.rnn import LSTMStack
 
+__all__ = [
+    'TextOnlyModel',
+    'BiLSTM',
+    'PairBiLSTM',
+    'Transformer',
+    'PairTransformer'
+]
+
 
 class TextOnlyModel(MAMKitModule, Component):
 
