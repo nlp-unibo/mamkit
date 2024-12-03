@@ -1019,18 +1019,13 @@ class MMUSEDFallacy(Loader):
     def __init__(
             self,
             sample_rate=16000,
-            clip_modality='full',
-            n_files=None,
             **kwargs
     ):
         super().__init__(**kwargs)
 
         assert self.task_name in ['afc']
-        assert clip_modality in ['full', 'partial']
 
         self.sample_rate = sample_rate
-        self.clip_modality = clip_modality
-        self.n_files = n_files
         self.folder_name = 'MMUSED-fallacy'
 
         self.data_path = Path(self.base_data_path, self.folder_name).resolve()
@@ -1058,8 +1053,7 @@ class MMUSEDFallacy(Loader):
         # sample_rate is the sample rate of the audio clips to be generated
 
         df = pd.read_csv(dataset_path, sep='\t')
-        if self.clip_modality == 'full':
-            ids = df.id_map.unique()
+        ids = df.id_map.unique()
 
         main_folder_path = self.clips_path.joinpath(element)
         if main_folder_path.exists():
@@ -1172,13 +1166,6 @@ class MMUSEDFallacy(Loader):
                 start_sec.append(start_sec_df[i])
                 end_min.append(end_min_df[i])
                 end_sec.append(end_sec_df[i])
-
-        if self.clip_modality == "partial":
-            # if modality is partial, the user must specify the number of files to be downloaded
-            # the first n_files in "dictionary.csv" will be downloaded
-            if self.n_files is not None:
-                n_files = int(self.n_files)
-                ids = ids[:n_files]
 
         base_dir_support_datasets = self.resources_path.joinpath("clips_generation")
 

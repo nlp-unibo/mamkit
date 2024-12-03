@@ -36,7 +36,7 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'bilstm', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'bilstm', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def ukdebates_asd_mancini_2024(
@@ -57,7 +57,7 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'bilstm', 'mancini-2022-argmining'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'bilstm', 'mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def ukdebates_asd_mancini_2022(
@@ -78,7 +78,7 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'bilstm', 'mancini-2022-argmining'},
+                     tags={'data:marg', 'task:arc', 'mode:text-only', 'bilstm', 'mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=PairBiLSTM)
     def marg_arc_mancini_2022(
@@ -99,7 +99,7 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'bilstm', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mode:text-only', 'bilstm', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairBiLSTM)
     def marg_arc_mancini_2024(
@@ -120,7 +120,7 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'bilstm', 'mancini-2022-argmining'},
+                     tags={'data:mmused', 'task:asd', 'mode:text-only', 'bilstm', 'mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_asd_mancini_2022(
@@ -141,7 +141,7 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'bilstm', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'mode:text-only', 'bilstm', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_asd_mancini_2024(
@@ -162,7 +162,7 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'bilstm', 'mancini-2022-argmining'},
+                     tags={'data:mmused', 'task:acc', 'mode:text-only', 'bilstm', 'mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_acc_mancini_2022(
@@ -183,7 +183,7 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'bilstm', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'mode:text-only', 'bilstm', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_acc_mancini_2024(
@@ -204,7 +204,7 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'bilstm', 'mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'bilstm', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_fallacy_afc_mancini_2024(
@@ -254,7 +254,7 @@ class TransformerConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'transformer', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=Transformer)
     def ukdebates_asd_mancini_2024_mamkit(
@@ -273,7 +273,7 @@ class TransformerConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mancini-2022-argmining'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'transformer', 'mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=Transformer)
     def ukdebates_asd_mancini_2022(
@@ -292,7 +292,7 @@ class TransformerConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'mode:text-only', 'transformer', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=Transformer)
     def mmused_asd_mancini_2024_mamkit(
@@ -311,7 +311,7 @@ class TransformerConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'mode:text-only', 'transformer', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=Transformer)
     def mmused_acc_mancini_2024_mamkit(
@@ -330,7 +330,7 @@ class TransformerConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mancini-2024-eacl'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'transformer', 'mancini-2024-eacl'},
                      namespace='mamkit',
                      component_class=Transformer)
     def mmused_fallacy_afc_mancini_2024_eacl(
@@ -351,7 +351,7 @@ class TransformerConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'transformer', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=Transformer)
     def mmused_fallacy_afc_mancini_2024_mamkit(
@@ -370,7 +370,7 @@ class TransformerConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mode:text-only', 'transformer', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairTransformer)
     def marg_arc_mancini_2024_mamkit(

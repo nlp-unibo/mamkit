@@ -8,8 +8,8 @@ __all__ = [
     'AudioOnlyModel',
     'BiLSTM',
     'PairBiLSTM',
-    'TransformerEncoder',
-    'PairTransformerEncoder'
+    'Transformer',
+    'PairTransformer'
 ]
 
 
@@ -89,7 +89,7 @@ class PairBiLSTM(BiLSTM):
         return logits
 
 
-class TransformerEncoder(AudioOnlyModel):
+class Transformer(AudioOnlyModel):
 
     def __init__(
             self,
@@ -132,7 +132,7 @@ class TransformerEncoder(AudioOnlyModel):
         return self.head(transformer_output_pooled)
 
 
-class PairTransformerEncoder(TransformerEncoder):
+class PairTransformer(Transformer):
 
     def encode_audio(
             self,
