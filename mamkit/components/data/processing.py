@@ -809,7 +809,7 @@ class AudioTransformerExtractor(ProcessorComponent):
             self
     ):
         self.model = None
-        self.extractor = None
+        self.processor = None
         th.cuda.empty_cache()
 
 
