@@ -12,6 +12,55 @@ __all__ = [
 ]
 
 
+class AudioCollator(DataCollator):
+
+    def __call__(
+            self,
+            batch
+    ):
+        batch = [th.tensor(feature_set, dtype=th.float32) for feature_set in batch]
+        batch = pad_sequence(batch, batch_first=True, padding_value=float('-inf'))
+        batch[(batch == float('-inf'))] = 0
+
+        if len(batch.shape) == 3:
+            attention_mask = batch[:, :, 0] != float('-inf')
+        else:
+            attention_mask = th.ones((batch.shape[0]), dtype=th.int32)
+            batch = batch[:, None, :]
+
+        return batch, attention_mask.to(th.float32)
+
+
+class PairAudioCollator(AudioCollator):
+
+    def _parse_features(
+            self,
+            features
+    ):
+        features = [th.tensor(feature_set, dtype=th.float32) for feature_set in features]
+        features = pad_sequence(features, batch_first=True, padding_value=float('-inf'))
+        features[(features == float('-inf'))] = 0
+
+        if len(features.shape) == 3:
+            attention_mask = features[:, :, 0] != float('-inf')
+        else:
+            attention_mask = th.ones((features.shape[0]), dtype=th.int32)
+            features = features[:, None, :]
+
+        return features, attention_mask.to(th.float32)
+
+    def __call__(
+            self,
+            batch
+    ):
+        a_features, b_features = batch
+
+        a_features, a_attention_mask = self._parse_features(a_features)
+        b_features, b_attention_mask = self._parse_features(b_features)
+
+        return (a_features, a_attention_mask), (b_features, b_attention_mask)
+
+
 class AudioTransformerCollator(DataCollator):
 
     def __init__(
@@ -69,52 +118,3 @@ class AudioTransformerCollator(DataCollator):
             features = th.mean(features, dim=1, keepdim=True)
 
         return features, attention_mask
-
-
-class AudioCollator(DataCollator):
-
-    def __call__(
-            self,
-            batch
-    ):
-        batch = [th.tensor(feature_set, dtype=th.float32) for feature_set in batch]
-        batch = pad_sequence(batch, batch_first=True, padding_value=float('-inf'))
-        batch[(batch == float('-inf'))] = 0
-
-        if len(batch.shape) == 3:
-            attention_mask = batch[:, :, 0] != float('-inf')
-        else:
-            attention_mask = th.ones((batch.shape[0]), dtype=th.int32)
-            batch = batch[:, None, :]
-
-        return batch, attention_mask.to(th.float32)
-
-
-class PairAudioCollator(AudioCollator):
-
-    def _parse_features(
-            self,
-            features
-    ):
-        features = [th.tensor(feature_set, dtype=th.float32) for feature_set in features]
-        features = pad_sequence(features, batch_first=True, padding_value=float('-inf'))
-        features[(features == float('-inf'))] = 0
-
-        if len(features.shape) == 3:
-            attention_mask = features[:, :, 0] != float('-inf')
-        else:
-            attention_mask = th.ones((features.shape[0]), dtype=th.int32)
-            features = features[:, None, :]
-
-        return features, attention_mask.to(th.float32)
-
-    def __call__(
-            self,
-            batch
-    ):
-        a_features, b_features = batch
-
-        a_features, a_attention_mask = self._parse_features(a_features)
-        b_features, b_attention_mask = self._parse_features(b_features)
-
-        return (a_features, a_attention_mask), (b_features, b_attention_mask)

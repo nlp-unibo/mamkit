@@ -1,3 +1,4 @@
+import gc
 import logging
 from pathlib import Path
 from typing import List
@@ -25,21 +26,16 @@ class EvaluationPipeline(Component):
             self,
             save_path: Path,
             loader: RegistrationKey,
-            processor: RegistrationKey,
-            collator: RegistrationKey,
             model: RegistrationKey,
             trainer_args: RegistrationKey,
             early_stopping_args: RegistrationKey,
             model_checkpoint_args: RegistrationKey,
             seeds: List[int],
             data_split_key: str,
-            batch_size: int
     ):
         self.save_path = save_path
 
         self.loader = loader
-        self.processor = processor
-        self.collator = collator
         self.model = model
         self.trainer_args = trainer_args
 
@@ -48,7 +44,6 @@ class EvaluationPipeline(Component):
 
         self.seeds = seeds
         self.data_split_key = data_split_key
-        self.batch_size = batch_size
 
     def run(
             self
@@ -60,32 +55,31 @@ class EvaluationPipeline(Component):
         for seed in self.seeds:
             seed_everything(seed=seed)
 
-            processor = Processor.build_component(registration_key=self.processor)
-            collator = DataCollator.build_component(registration_key=self.collator)
-
             for split_info in loader.get_splits(key=self.data_split_key):
-                processor.fit(train_data=split_info.train)
-
-                split_info.train = processor(split_info.train)
-                split_info.val = processor(split_info.val)
-                split_info.test = processor(split_info.test)
-
-                processor.clear()
-
-                train_dataloader = DataLoader(split_info.train,
-                                              batch_size=self.batch_size,
-                                              shuffle=True,
-                                              collate_fn=collator)
-                val_dataloader = DataLoader(split_info.val,
-                                            batch_size=self.batch_size,
-                                            shuffle=False,
-                                            collate_fn=collator)
-                test_dataloader = DataLoader(split_info.test,
-                                             batch_size=self.batch_size,
-                                             shuffle=False,
-                                             collate_fn=collator)
-
                 model = MAMKitModel.build_component(registration_key=self.model)
+
+                model.build_processor()
+                model.processor.fit(train_data=split_info.train)
+
+                split_info.train = model.processor(split_info.train)
+                split_info.val = model.processor(split_info.val)
+                split_info.test = model.processor(split_info.test)
+
+                model.processor.clear()
+
+                model.build_collator()
+                train_dataloader = DataLoader(split_info.train,
+                                              batch_size=model.batch_size,
+                                              shuffle=True,
+                                              collate_fn=model.collator)
+                val_dataloader = DataLoader(split_info.val,
+                                            batch_size=model.batch_size,
+                                            shuffle=False,
+                                            collate_fn=model.collator)
+                test_dataloader = DataLoader(split_info.test,
+                                             batch_size=model.batch_size,
+                                             shuffle=False,
+                                             collate_fn=model.collator)
 
                 trainer_config = Registry.build_configuration(registration_key=self.trainer_args)
                 es_config = Registry.build_configuration(registration_key=self.early_stopping_args)
@@ -110,8 +104,8 @@ class EvaluationPipeline(Component):
                 for metric_name, metric_value in test_metrics.items():
                     metrics.setdefault('test', {}).setdefault(metric_name, []).append(metric_value)
 
-                # reset
-                processor.reset()
+                del model
+                gc.collect()
 
         # Averaging
         metric_names = list(metrics['validation'].keys())

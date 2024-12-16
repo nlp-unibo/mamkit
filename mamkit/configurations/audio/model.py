@@ -48,6 +48,7 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}

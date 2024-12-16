@@ -3,13 +3,18 @@ from typing import Dict, Any
 import lightning as L
 import torch as th
 from cinnamon.component import Component
+from cinnamon.registry import RegistrationKey
 
+from mamkit.components.collators import DataCollator
 from mamkit.components.processing import Processor
 
 
 class MAMKitModel(L.LightningModule, Component):
+
     def __init__(
             self,
+            processor: RegistrationKey,
+            collator: RegistrationKey,
             loss_function,
             optimizer_class,
             val_metrics: Dict = None,
@@ -18,6 +23,10 @@ class MAMKitModel(L.LightningModule, Component):
             optimizer_kwargs: Dict[str, Any] = None
     ):
         super().__init__()
+
+        self.processor = processor
+        self.collator = collator
+
         self.loss_function = loss_function()
         self.optimizer_class = optimizer_class
         self.optimizer_kwargs = optimizer_kwargs if optimizer_kwargs is not None else {}
@@ -37,11 +46,17 @@ class MAMKitModel(L.LightningModule, Component):
             self.test_metrics_names = None
             self.test_metrics = None
 
-    def setup(
-            self,
-            processor: Processor
+    def build_processor(
+            self
     ):
-        pass
+        self.processor: Processor = Processor.build_component(registration_key=self.processor)
+
+    def build_collator(
+            self
+    ):
+        collator_args = self.processor.get_collator_args()
+        self.collator: DataCollator = DataCollator.build_component(registration_key=self.collator,
+                                                                   **collator_args)
 
     def training_step(
             self,

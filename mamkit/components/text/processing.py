@@ -1,9 +1,10 @@
 import logging
 from typing import Optional
+
 import torch as th
 from torchtext.vocab import pretrained_aliases, build_vocab_from_iterator
 from tqdm import tqdm
-from transformers import AutoModel, AutoProcessor, AutoTokenizer, AutoFeatureExtractor
+from transformers import AutoModel, AutoTokenizer
 
 from mamkit.components.processing import ProcessorComponent
 
@@ -58,10 +59,12 @@ class VocabBuilder(ProcessorComponent):
     ):
         self.embedding_model = None
 
-    def reset(
+    def get_collator_args(
             self
     ):
-        self.embedding_matrix = None
+        return {
+            'vocab': self.vocab
+        }
 
 
 class PairVocabBuilder(ProcessorComponent):
@@ -109,10 +112,12 @@ class PairVocabBuilder(ProcessorComponent):
     ):
         self.embedding_model = None
 
-    def reset(
+    def get_collator_args(
             self
     ):
-        self.embedding_matrix = None
+        return {
+            'vocab': self.vocab
+        }
 
 
 class TextTransformer(ProcessorComponent):
@@ -214,4 +219,3 @@ class PairTextTransformer(ProcessorComponent):
         self.tokenizer = None
         self.model = None
         th.cuda.empty_cache()
-
