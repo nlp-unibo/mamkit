@@ -1,13 +1,74 @@
 from typing import Type, Dict
 
 from cinnamon.configuration import Configuration, C
-from cinnamon.registry import register_method
+from cinnamon.registry import register_method, RegistrationKey
 
 from mamkit.components.audio.collators import (
     AudioCollator,
     AudioTransformerCollator,
     PairAudioCollator
 )
+from mamkit.components.collators import UnimodalCollator, PairUnimodalCollator
+
+
+class UnimodalCollatorConfig(Configuration):
+
+    @classmethod
+    def default(
+            cls: Type[C]
+    ) -> C:
+        config = super().default()
+
+        config.add(name='feature_collator',
+                   type_hint=RegistrationKey,
+                   description='Feature collator.')
+        config.add(name='label_collator',
+                   value=RegistrationKey(name='collator',
+                                         tags={'label'},
+                                         namespace='mamkit'),
+                   type_hint=RegistrationKey,
+                   description='Label collator.')
+
+        return config
+
+    @classmethod
+    @register_method(name='collator',
+                     tags={'mode:audio-only'},
+                     namespace='mamkit',
+                     component_class=UnimodalCollator)
+    def audio_only(
+            cls
+    ):
+        config = cls.default()
+
+        config.get('feature_collator').variants = [
+            RegistrationKey(name='collator',
+                            tags={'audio'},
+                            namespace='mamkit'),
+            RegistrationKey(name='collator',
+                            tags={'audio-transformer'},
+                            namespace='mamkit'),
+        ]
+
+        return config
+
+    @classmethod
+    @register_method(name='collator',
+                     tags={'mode:audio-only'},
+                     namespace='mamkit',
+                     component_class=PairUnimodalCollator)
+    def pair_audio_only(
+            cls
+    ):
+        config = cls.default()
+
+        config.get('feature_collator').variants = [
+            RegistrationKey(name='collator',
+                            tags={'audio', 'pair'},
+                            namespace='mamkit')
+        ]
+
+        return config
 
 
 class AudioCollatorConfig(Configuration):

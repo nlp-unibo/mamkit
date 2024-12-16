@@ -1,4 +1,5 @@
 from cinnamon.component import Component
+import torch as th
 
 __all__ = [
     'DataCollator',
@@ -6,6 +7,7 @@ __all__ = [
     'PairUnimodalCollator',
     'MultimodalCollator',
     'PairMultimodalCollator',
+    'LabelCollator'
 ]
 
 
@@ -122,3 +124,12 @@ class PairMultimodalCollator(MultimodalCollator):
             labels_collated = self.label_collator(labels)
 
         return (text_collated, audio_collated), labels_collated
+
+
+class LabelCollator(DataCollator):
+
+    def __call__(
+            self,
+            batch
+    ):
+        return th.tensor(batch)

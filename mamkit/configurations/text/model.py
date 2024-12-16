@@ -52,8 +52,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text'},
+                                          namespace='mamkit')
         config.processor = RegistrationKey(name='processor',
-                                           tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'vocab-builder', 'mancini-2024-mamkit'},
+                                           tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'vocab-builder',
+                                                 'mancini-2024-mamkit'},
                                            namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
@@ -62,6 +66,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             'lr': 0.0001,
             'weight_decay': 0.0005
         }
+        config.batch_size = 16
         config.embedding_dim = 200
         config.lstm_weights = [128, 32]
         config.head = lambda: th.nn.Sequential(
@@ -83,6 +88,9 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text'},
+                                          namespace='mamkit')
         config.processor = RegistrationKey(name='processor',
                                            tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'vocab-builder',
                                                  'mancini-2022-argmining'},
@@ -94,6 +102,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             'lr': 0.0001,
             'weight_decay': 0.0005
         }
+        config.batch_size = 16
         config.embedding_dim = 200
         config.lstm_weights = [128, 32]
         config.head = lambda: th.nn.Sequential(
@@ -115,8 +124,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text'},
+                                          namespace='mamkit')
         config.processor = RegistrationKey(name='processor',
-                                           tags={'data:mmused', 'task:asd', 'mode:text-only', 'vocab-builder', 'mancini-2024-mamkit'},
+                                           tags={'data:mmused', 'task:asd', 'mode:text-only', 'vocab-builder',
+                                                 'mancini-2024-mamkit'},
                                            namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
@@ -125,6 +138,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             'lr': 0.0002,
             'weight_decay': 0.0001
         }
+        config.batch_size = 4
         config.embedding_dim = 200
         config.lstm_weights = [128, 32]
         config.head = lambda: th.nn.Sequential(
@@ -146,8 +160,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text'},
+                                          namespace='mamkit')
         config.processor = RegistrationKey(name='processor',
-                                           tags={'data:mmused', 'task:asd', 'mode:text-only', 'vocab-builder', 'mancini-2022-argmining'},
+                                           tags={'data:mmused', 'task:asd', 'mode:text-only', 'vocab-builder',
+                                                 'mancini-2022-argmining'},
                                            namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
@@ -156,6 +174,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             'lr': 0.0002,
             'weight_decay': 0.0001
         }
+        config.batch_size = 4
         config.embedding_dim = 100
         config.lstm_weights = [64, 64]
         config.head = lambda: th.nn.Sequential(
@@ -177,8 +196,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text'},
+                                          namespace='mamkit')
         config.processor = RegistrationKey(name='processor',
-                                           tags={'data:mmused', 'task:acc', 'mode:text-only', 'vocab-builder', 'mancini-2024-mamkit'},
+                                           tags={'data:mmused', 'task:acc', 'mode:text-only', 'vocab-builder',
+                                                 'mancini-2024-mamkit'},
                                            namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
@@ -187,6 +210,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             'lr': 0.0002,
             'weight_decay': 0.0001
         }
+        config.batch_size = 4
         config.embedding_dim = 200
         config.lstm_weights = [128, 32]
         config.head = lambda: th.nn.Sequential(
@@ -208,8 +232,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text'},
+                                          namespace='mamkit')
         config.processor = RegistrationKey(name='processor',
-                                           tags={'data:mmused', 'task:acc', 'mode:text-only', 'vocab-builder', 'mancini-2022-argmining'},
+                                           tags={'data:mmused', 'task:acc', 'mode:text-only', 'vocab-builder',
+                                                 'mancini-2022-argmining'},
                                            namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
@@ -218,6 +246,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             'lr': 0.001,
             'weight_decay': 0.0005
         }
+        config.batch_size = 4
         config.embedding_dim = 100
         config.lstm_weights = [64, 32]
         config.head = lambda: th.nn.Sequential(
@@ -239,6 +268,9 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text'},
+                                          namespace='mamkit')
         config.processor = RegistrationKey(name='processor',
                                            tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'vocab-builder',
                                                  'mancini-2024-mamkit'},
@@ -251,6 +283,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             'lr': 0.0002,
             'weight_decay': 0.0001
         }
+        config.batch_size = 8
         config.embedding_dim = 200
         config.lstm_weights = [128, 32]
         config.head = lambda: th.nn.Sequential(
@@ -272,8 +305,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text', 'pair'},
+                                          namespace='mamkit')
         config.processor = RegistrationKey(name='processor',
-                                           tags={'data:marg', 'task:arc', 'mode:text-only', 'vocab-builder', 'mancini-2024-mamkit'},
+                                           tags={'data:marg', 'task:arc', 'mode:text-only', 'vocab-builder',
+                                                 'mancini-2024-mamkit'},
                                            namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
@@ -284,6 +321,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             'lr': 0.0002,
             'weight_decay': 0.0001
         }
+        config.batch_size = 8
         config.embedding_dim = 200
         config.lstm_weights = [128, 32]
         config.head = lambda: th.nn.Sequential(
@@ -305,6 +343,9 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text', 'pair'},
+                                          namespace='mamkit')
         config.processor = RegistrationKey(name='processor',
                                            tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'vocab-builder',
                                                  'mancini-2024-mamkit'},
@@ -318,6 +359,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             'lr': 0.0002,
             'weight_decay': 0.0001
         }
+        config.batch_size = 8
         config.embedding_dim = 100
         config.lstm_weights = [128]
         config.head = lambda: th.nn.Sequential(
@@ -330,7 +372,6 @@ class BiLSTMConfig(MAMKitModelConfig):
         return config
 
 
-# TODO: add processor and collator
 class TransformerConfig(MAMKitModelConfig):
 
     @classmethod
@@ -369,10 +410,17 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.processor = RegistrationKey(name='processor',
+                                           tags={'mode:text-only', 'default'},
+                                           namespace='mamkit')
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text-transformer'},
+                                          namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
         config.optimizer_args = {'lr': 1e-03, 'weight_decay': 1e-05}
+        config.batch_size = 16
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
             th.nn.ReLU(),
@@ -393,10 +441,17 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.processor = RegistrationKey(name='processor',
+                                           tags={'mode:text-only', 'default'},
+                                           namespace='mamkit')
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text-transformer'},
+                                          namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
         config.optimizer_args = {}
+        config.batch_size = 16
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 128),
             th.nn.ReLU(),
@@ -417,10 +472,17 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.processor = RegistrationKey(name='processor',
+                                           tags={'mode:text-only', 'default'},
+                                           namespace='mamkit')
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text-transformer'},
+                                          namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
         config.optimizer_args = {'lr': 1e-03, 'weight_decay': 1e-05}
+        config.batch_size = 4
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
             th.nn.ReLU(),
@@ -441,10 +503,17 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.processor = RegistrationKey(name='processor',
+                                           tags={'mode:text-only', 'default'},
+                                           namespace='mamkit')
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text-transformer'},
+                                          namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
         config.optimizer_args = {'lr': 1e-03, 'weight_decay': 1e-05}
+        config.batch_size = 4
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
             th.nn.ReLU(),
@@ -465,11 +534,18 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.processor = RegistrationKey(name='processor',
+                                           tags={'mode:text-only', 'default'},
+                                           namespace='mamkit')
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text-transformer'},
+                                          namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
         config.optimizer_args = {}
+        config.batch_size = 8
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 100),
             th.nn.ReLU(),
@@ -492,11 +568,18 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.processor = RegistrationKey(name='processor',
+                                           tags={'mode:text-only', 'default'},
+                                           namespace='mamkit')
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text-transformer'},
+                                          namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
         config.optimizer_args = {'lr': 1e-03, 'weight_decay': 1e-05}
+        config.batch_size = 8
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
             th.nn.ReLU(),
@@ -517,11 +600,18 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.processor = RegistrationKey(name='processor',
+                                           tags={'mode:text-only', 'default'},
+                                           namespace='mamkit')
+        config.collator = RegistrationKey(name='collator',
+                                          tags={'mode:text-only', 'text-transformer', 'pair'},
+                                          namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
         config.test_metrics = {
             'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.batch_size = 8
         config.optimizer_args = {'lr': 1e-03, 'weight_decay': 1e-05}
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768 * 2, 256),

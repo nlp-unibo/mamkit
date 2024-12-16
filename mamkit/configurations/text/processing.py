@@ -22,6 +22,9 @@ __all__ = [
 class UnimodalProcessorConfig(Configuration):
 
     @classmethod
+    @register_method(name='processor',
+                     tags={'mode:text-only', 'default'},
+                     namespace='mamkit')
     def default(
             cls: Type[C]
     ) -> C:
@@ -29,10 +32,12 @@ class UnimodalProcessorConfig(Configuration):
 
         config.add(name='feature_processor',
                    type_hint=RegistrationKey,
-                   description='Feature processor.')
+                   description='Feature processor.',
+                   is_required=False)
         config.add(name='label_processor',
                    type_hint=RegistrationKey,
-                   description='Label processor.')
+                   description='Label processor.',
+                   is_required=False)
 
         return config
 
