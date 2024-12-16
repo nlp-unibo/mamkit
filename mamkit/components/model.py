@@ -3,13 +3,13 @@ from typing import Dict, Any
 import lightning as L
 import torch as th
 from cinnamon.component import Component
-from mamkit.components.modeling.base import MAMKitModule
+
+from mamkit.components.processing import Processor
 
 
 class MAMKitModel(L.LightningModule, Component):
     def __init__(
             self,
-            model: MAMKitModule,
             loss_function,
             optimizer_class,
             val_metrics: Dict = None,
@@ -18,7 +18,6 @@ class MAMKitModel(L.LightningModule, Component):
             optimizer_kwargs: Dict[str, Any] = None
     ):
         super().__init__()
-        self.model = model
         self.loss_function = loss_function()
         self.optimizer_class = optimizer_class
         self.optimizer_kwargs = optimizer_kwargs if optimizer_kwargs is not None else {}
@@ -38,11 +37,11 @@ class MAMKitModel(L.LightningModule, Component):
             self.test_metrics_names = None
             self.test_metrics = None
 
-    def forward(
+    def setup(
             self,
-            inputs
+            processor: Processor
     ):
-        return self.model(inputs)
+        pass
 
     def training_step(
             self,

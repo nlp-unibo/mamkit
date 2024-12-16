@@ -16,7 +16,7 @@ from torchtext.vocab import pretrained_aliases, build_vocab_from_iterator
 from tqdm import tqdm
 from transformers import AutoModel, AutoProcessor, AutoTokenizer, AutoFeatureExtractor
 
-from mamkit.components.data.datasets import UnimodalDataset, MultimodalDataset, MAMDataset, PairUnimodalDataset, \
+from mamkit.components.datasets import UnimodalDataset, MultimodalDataset, MAMDataset, PairUnimodalDataset, \
     PairMultimodalDataset
 
 __all__ = [

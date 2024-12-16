@@ -10,11 +10,10 @@ from lightning import seed_everything
 from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from torch.utils.data import DataLoader
 
-from mamkit.components.data.collators import DataCollator
-from mamkit.components.data.datasets import Loader
-from mamkit.components.data.processing import Processor
-from mamkit.components.modeling.base import MAMKitModule
-from mamkit.components.modeling.lightning import MAMKitModel
+from mamkit.components.collators import DataCollator
+from mamkit.components.datasets import Loader
+from mamkit.components.processing import Processor
+from mamkit.components.model import MAMKitModel
 from mamkit.utility.callbacks import PycharmProgressBar
 
 logger = logging.getLogger(__name__)
@@ -29,7 +28,6 @@ class EvaluationPipeline(Component):
             processor: RegistrationKey,
             collator: RegistrationKey,
             model: RegistrationKey,
-            lt_model: RegistrationKey,
             trainer_args: RegistrationKey,
             early_stopping_args: RegistrationKey,
             model_checkpoint_args: RegistrationKey,
@@ -43,7 +41,6 @@ class EvaluationPipeline(Component):
         self.processor = processor
         self.collator = collator
         self.model = model
-        self.lt_model = lt_model
         self.trainer_args = trainer_args
 
         self.early_stopping_args = early_stopping_args
@@ -88,9 +85,7 @@ class EvaluationPipeline(Component):
                                              shuffle=False,
                                              collate_fn=collator)
 
-                model = MAMKitModule.build_component(registration_key=self.model)
-                model = MAMKitModel.build_component(registration_key=self.lt_model,
-                                                    model=model)
+                model = MAMKitModel.build_component(registration_key=self.model)
 
                 trainer_config = Registry.build_configuration(registration_key=self.trainer_args)
                 es_config = Registry.build_configuration(registration_key=self.early_stopping_args)

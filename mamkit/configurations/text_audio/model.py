@@ -1,10 +1,10 @@
 from typing import Type, List, Callable
 
 import torch as th
-from cinnamon.configuration import Configuration, C
+from cinnamon.configuration import C
 from cinnamon.registry import register_method
 
-from mamkit.components.modeling.text_audio import (
+from mamkit.components.text_audio.model import (
     BiLSTM,
     PairBiLSTM,
     MMTransformer,
@@ -16,10 +16,21 @@ from mamkit.components.modeling.text_audio import (
     MulTA,
     PairMulTA
 )
+from mamkit.configurations.model import MAMKitModelConfig
 from mamkit.modules.transformer import PositionalEncoding, CustomEncoder
+from mamkit.utility.metrics import ClassSubsetMulticlassF1Score
+from torchmetrics.classification.f_beta import F1Score
+
+__all__ = [
+    'BiLSTMConfig',
+    'MMTransformerConfig',
+    'CSAConfig',
+    'EnsembleConfig',
+    'MulTAConfig'
+]
 
 
-class BiLSTMConfig(Configuration):
+class BiLSTMConfig(MAMKitModelConfig):
 
     @classmethod
     def default(
@@ -52,14 +63,21 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'bilstm', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc', 'mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
-    def ukdebates_asd_mancini_2024_mamkit(
+    def ukdebates_asd_mancini_2024_mamkit_mfcc(
             cls
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
+        config.val_metrics = {'val_f1': F1Score(task='binary')}
+        config.test_metrics = {'test_f1': F1Score(task='binary')}
+        config.optimizer_args = {
+            'lr': 0.0001,
+            'weight_decay': 0.0005
+        }
         config.text_lstm_weights = [128, 32]
         config.audio_lstm_weights = [64, 32]
         config.head = lambda: th.nn.Sequential(
@@ -74,14 +92,233 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'bilstm', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'bilstm', 'transformer',
+                           'mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=PairBiLSTM)
-    def marg_arc_mancini_2024_mamkit(
+                     component_class=BiLSTM)
+    def ukdebates_asd_mancini_2024_mamkit_transformer(
             cls
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
+        config.val_metrics = {'val_f1': F1Score(task='binary')}
+        config.test_metrics = {'test_f1': F1Score(task='binary')}
+        config.optimizer_args = {
+            'lr': 0.0001,
+            'weight_decay': 0.0005
+        }
+        config.text_lstm_weights = [128, 32]
+        config.audio_lstm_weights = [64, 32]
+        config.head = lambda: th.nn.Sequential(
+            th.nn.Linear(128, 128),
+            th.nn.ReLU(),
+            th.nn.Linear(128, 2)
+        )
+        config.text_dropout_rate = 0.0
+        config.audio_dropout_rate = 0.0
+
+        return config
+
+    @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc', 'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
+    def mmused_asd_mancini_2024_mamkit_mfcc(
+            cls
+    ):
+        config = cls.default()
+
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 0.0002,
+            'weight_decay': 0.001
+        }
+        config.text_lstm_weights = [128, 32]
+        config.audio_lstm_weights = [64, 32]
+        config.head = lambda: th.nn.Sequential(
+            th.nn.Linear(128, 128),
+            th.nn.ReLU(),
+            th.nn.Linear(128, 2)
+        )
+        config.text_dropout_rate = 0.0
+        config.audio_dropout_rate = 0.0
+
+        return config
+
+    @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'bilstm', 'transformer',
+                           'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
+    def mmused_asd_mancini_2024_mamkit_transformer(
+            cls
+    ):
+        config = cls.default()
+
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 0.0001,
+            'weight_decay': 0.0005
+        }
+        config.text_lstm_weights = [128, 32]
+        config.audio_lstm_weights = [64, 32]
+        config.head = lambda: th.nn.Sequential(
+            th.nn.Linear(128, 128),
+            th.nn.ReLU(),
+            th.nn.Linear(128, 2)
+        )
+        config.text_dropout_rate = 0.0
+        config.audio_dropout_rate = 0.0
+
+        return config
+
+    @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'bilstm', 'mfcc', 'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
+    def mmused_acc_mancini_2024_mamkit_mfcc(
+            cls
+    ):
+        config = cls.default()
+
+        config.loss_function = lambda: th.nn.CrossEntropyLoss()
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 0.0002,
+            'weight_decay': 0.001
+        }
+        config.text_lstm_weights = [128, 32]
+        config.audio_lstm_weights = [64, 32]
+        config.head = lambda: th.nn.Sequential(
+            th.nn.Linear(128, 128),
+            th.nn.ReLU(),
+            th.nn.Linear(128, 2)
+        )
+        config.text_dropout_rate = 0.0
+        config.audio_dropout_rate = 0.0
+
+        return config
+
+    @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'bilstm', 'transformer',
+                           'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
+    def mmused_acc_mancini_2024_mamkit_transformer(
+            cls
+    ):
+        config = cls.default()
+
+        config.loss_function = lambda: th.nn.CrossEntropyLoss()
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 0.0001,
+            'weight_decay': 0.0005
+        }
+        config.text_lstm_weights = [128, 32]
+        config.audio_lstm_weights = [64, 32]
+        config.head = lambda: th.nn.Sequential(
+            th.nn.Linear(128, 128),
+            th.nn.ReLU(),
+            th.nn.Linear(128, 2)
+        )
+        config.text_dropout_rate = 0.0
+        config.audio_dropout_rate = 0.0
+
+        return config
+
+    @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'bilstm', 'mfcc',
+                           'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
+    def mmused_fallacy_afc_mancini_2024_mamkit_mfcc(
+            cls
+    ):
+        config = cls.default()
+
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(
+            weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
+        config.optimizer_args = {
+            'lr': 0.0002,
+            'weight_decay': 0.001
+        }
+        config.text_lstm_weights = [128, 32]
+        config.audio_lstm_weights = [64, 32]
+        config.head = lambda: th.nn.Sequential(
+            th.nn.Linear(128, 128),
+            th.nn.ReLU(),
+            th.nn.Linear(128, 2)
+        )
+        config.text_dropout_rate = 0.0
+        config.audio_dropout_rate = 0.0
+
+        return config
+
+    @classmethod
+    @register_method(name='model',
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'bilstm', 'transformer',
+                           'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=BiLSTM)
+    def mmused_fallacy_afc_mancini_2024_mamkit_transformer(
+            cls
+    ):
+        config = cls.default()
+
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(
+            weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
+        config.optimizer_args = {
+            'lr': 0.0001,
+            'weight_decay': 0.0005
+        }
+        config.text_lstm_weights = [128, 32]
+        config.audio_lstm_weights = [64, 32]
+        config.head = lambda: th.nn.Sequential(
+            th.nn.Linear(128, 128),
+            th.nn.ReLU(),
+            th.nn.Linear(128, 2)
+        )
+        config.text_dropout_rate = 0.0
+        config.audio_dropout_rate = 0.0
+
+        return config
+
+    @classmethod
+    @register_method(name='model',
+                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'bilstm', 'mfcc', 'mancini-2024-mamkit'},
+                     namespace='mamkit',
+                     component_class=PairBiLSTM)
+    def marg_arc_mancini_2024_mamkit_mfcc(
+            cls
+    ):
+        config = cls.default()
+
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
+        config.val_metrics = {
+            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.test_metrics = {
+            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.optimizer_args = {
+            'lr': 0.0002,
+            'weight_decay': 0.001
+        }
         config.text_lstm_weights = [128, 32]
         config.audio_lstm_weights = [64, 32]
         config.head = lambda: th.nn.Sequential(
@@ -96,64 +333,29 @@ class BiLSTMConfig(Configuration):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'bilstm', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'bilstm', 'transformer', 'mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=BiLSTM)
-    def mmused_asd_mancini_2024_mamkit(
+                     component_class=PairBiLSTM)
+    def marg_arc_mancini_2024_mamkit_transformer(
             cls
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
+        config.val_metrics = {
+            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.test_metrics = {
+            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.optimizer_args = {
+            'lr': 0.0001,
+            'weight_decay': 0.0005
+        }
         config.text_lstm_weights = [128, 32]
         config.audio_lstm_weights = [64, 32]
         config.head = lambda: th.nn.Sequential(
-            th.nn.Linear(128, 128),
+            th.nn.Linear(256, 128),
             th.nn.ReLU(),
-            th.nn.Linear(128, 2)
-        )
-        config.text_dropout_rate = 0.0
-        config.audio_dropout_rate = 0.0
-
-        return config
-
-    @classmethod
-    @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'bilstm', 'mancini-2024-mamkit'},
-                     namespace='mamkit',
-                     component_class=BiLSTM)
-    def mmused_acc_mancini_2024_mamkit(
-            cls
-    ):
-        config = cls.default()
-
-        config.text_lstm_weights = [128, 32]
-        config.audio_lstm_weights = [64, 32]
-        config.head = lambda: th.nn.Sequential(
-            th.nn.Linear(128, 128),
-            th.nn.ReLU(),
-            th.nn.Linear(128, 2)
-        )
-        config.text_dropout_rate = 0.0
-        config.audio_dropout_rate = 0.0
-
-        return config
-
-    @classmethod
-    @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'bilstm', 'mancini-2024-mamkit'},
-                     namespace='mamkit',
-                     component_class=BiLSTM)
-    def mmused_fallacy_afc_mancini_2024_mamkit(
-            cls
-    ):
-        config = cls.default()
-
-        config.text_lstm_weights = [128, 32]
-        config.audio_lstm_weights = [64, 32]
-        config.head = lambda: th.nn.Sequential(
-            th.nn.Linear(128, 128),
-            th.nn.ReLU(),
-            th.nn.Linear(128, 2)
+            th.nn.Linear(128, 3)
         )
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
@@ -161,7 +363,7 @@ class BiLSTMConfig(Configuration):
         return config
 
 
-class MMTransformerConfig(Configuration):
+class MMTransformerConfig(MAMKitModelConfig):
 
     @classmethod
     def default(
@@ -207,6 +409,13 @@ class MMTransformerConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
+        config.val_metrics = {'val_f1': F1Score(task='binary')}
+        config.test_metrics = {'test_f1': F1Score(task='binary')}
+        config.optimizer_args = {
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            }
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(832, 128),
             th.nn.ReLU(),
@@ -228,6 +437,13 @@ class MMTransformerConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            }
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(832, 128),
             th.nn.ReLU(),
@@ -249,6 +465,13 @@ class MMTransformerConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss()
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 1e-03,
+            'weight_decay': 0.0005
+        }
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(832, 128),
             th.nn.ReLU(),
@@ -270,6 +493,14 @@ class MMTransformerConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(
+            weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
+        config.optimizer_args = {
+            'lr': 1e-03,
+            'weight_decay': 0.0005
+        }
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(832, 128),
             th.nn.ReLU(),
@@ -291,6 +522,15 @@ class MMTransformerConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
+        config.val_metrics = {
+            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.test_metrics = {
+            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.optimizer_args = {
+            'lr': 1e-03,
+            'weight_decay': 0.0005
+        }
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(832 * 2, 128),
             th.nn.ReLU(),
@@ -303,7 +543,7 @@ class MMTransformerConfig(Configuration):
         return config
 
 
-class CSAConfig(Configuration):
+class CSAConfig(MAMKitModelConfig):
 
     @classmethod
     def default(
@@ -345,6 +585,13 @@ class CSAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
+        config.val_metrics = {'val_f1': F1Score(task='binary')}
+        config.test_metrics = {'test_f1': F1Score(task='binary')}
+        config.optimizer_args = {
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            }
         config.transformer = lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1)
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
@@ -367,6 +614,13 @@ class CSAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+                'lr': 1e-04,
+                'weight_decay': 1e-03
+            }
         config.transformer = lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1)
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
@@ -389,6 +643,13 @@ class CSAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss()
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.transformer = lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1)
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
@@ -411,6 +672,14 @@ class CSAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(
+            weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.transformer = lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1)
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
@@ -433,6 +702,15 @@ class CSAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
+        config.val_metrics = {
+            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.test_metrics = {
+            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.transformer = lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1)
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768 * 2, 256),
@@ -446,7 +724,7 @@ class CSAConfig(Configuration):
         return config
 
 
-class EnsembleConfig(Configuration):
+class EnsembleConfig(MAMKitModelConfig):
 
     @classmethod
     def default(
@@ -499,6 +777,13 @@ class EnsembleConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
+        config.val_metrics = {'val_f1': F1Score(task='binary')}
+        config.test_metrics = {'test_f1': F1Score(task='binary')}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.audio_encoder = lambda: th.nn.TransformerEncoder(
             th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
             num_layers=1
@@ -531,6 +816,13 @@ class EnsembleConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.audio_encoder = lambda: th.nn.TransformerEncoder(
             th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
             num_layers=1
@@ -563,6 +855,13 @@ class EnsembleConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss()
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.audio_encoder = lambda: th.nn.TransformerEncoder(
             th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
             num_layers=1
@@ -595,6 +894,14 @@ class EnsembleConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(
+            weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.audio_encoder = lambda: th.nn.TransformerEncoder(
             th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
             num_layers=1
@@ -627,6 +934,15 @@ class EnsembleConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
+        config.val_metrics = {
+            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.test_metrics = {
+            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.audio_encoder = lambda: th.nn.TransformerEncoder(
             th.nn.TransformerEncoderLayer(d_model=768, nhead=4, dim_feedforward=2048, batch_first=True),
             num_layers=1
@@ -650,7 +966,7 @@ class EnsembleConfig(Configuration):
         return config
 
 
-class MulTAConfig(Configuration):
+class MulTAConfig(MAMKitModelConfig):
 
     @classmethod
     def default(
@@ -695,6 +1011,13 @@ class MulTAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
+        config.val_metrics = {'val_f1': F1Score(task='binary')}
+        config.test_metrics = {'test_f1': F1Score(task='binary')}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.d_ffn = 2048
         config.n_blocks = 4
         config.head = lambda: th.nn.Sequential(
@@ -718,6 +1041,13 @@ class MulTAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.d_ffn = 2048
         config.n_blocks = 4
         config.head = lambda: th.nn.Sequential(
@@ -741,6 +1071,13 @@ class MulTAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss()
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.d_ffn = 2048
         config.n_blocks = 2
         config.head = lambda: th.nn.Sequential(
@@ -764,6 +1101,14 @@ class MulTAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(
+            weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
+        config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
+        config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.d_ffn = 2048
         config.n_blocks = 4
         config.head = lambda: th.nn.Sequential(
@@ -787,6 +1132,15 @@ class MulTAConfig(Configuration):
     ):
         config = cls.default()
 
+        config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
+        config.val_metrics = {
+            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.test_metrics = {
+            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+        config.optimizer_args = {
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.d_ffn = 2048
         config.n_blocks = 4
         config.head = lambda: th.nn.Sequential(

@@ -2,7 +2,7 @@ import torch as th
 
 from mamkit.modules.rnn import LSTMStack
 from mamkit.modules.transformer import PositionalEncoding
-from cinnamon.component import Component
+from mamkit.components.model import MAMKitModel
 
 __all__ = [
     'AudioOnlyModel',
@@ -13,7 +13,7 @@ __all__ = [
 ]
 
 
-class AudioOnlyModel(th.nn.Module, Component):
+class AudioOnlyModel(MAMKitModel):
 
     def forward(
             self,
@@ -29,9 +29,10 @@ class BiLSTM(AudioOnlyModel):
             embedding_dim,
             lstm_weights,
             head,
-            dropout_rate
+            dropout_rate,
+            **kwargs
     ):
-        super().__init__()
+        super().__init__(**kwargs)
 
         self.lstm = LSTMStack(input_size=embedding_dim,
                               lstm_weigths=lstm_weights)
@@ -96,9 +97,10 @@ class Transformer(AudioOnlyModel):
             embedding_dim,
             encoder,
             head,
-            dropout_rate=0.0
+            dropout_rate=0.0,
+            **kwargs
     ):
-        super().__init__()
+        super().__init__(**kwargs)
 
         self.encoder = encoder()
         self.head = head()

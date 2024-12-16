@@ -2,7 +2,7 @@ from typing import TypeVar, Set, Union, Dict, Callable
 
 import torch as th
 
-from mamkit.components.data.datasets import InputMode
+from mamkit.components.datasets import InputMode
 
 Tag = Union[str, Set[str]]
 

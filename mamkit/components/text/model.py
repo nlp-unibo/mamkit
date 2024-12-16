@@ -1,8 +1,7 @@
 import torch as th
-from cinnamon.component import Component
 from transformers import AutoModel, AutoConfig
 
-from mamkit.components.modeling.base import MAMKitModule
+from mamkit.components.model import MAMKitModel
 from mamkit.modules.rnn import LSTMStack
 
 __all__ = [
@@ -14,7 +13,7 @@ __all__ = [
 ]
 
 
-class TextOnlyModel(MAMKitModule, Component):
+class TextOnlyModel(MAMKitModel):
 
     def forward(
             self,
@@ -32,9 +31,10 @@ class BiLSTM(TextOnlyModel):
             lstm_weights,
             head,
             dropout_rate=0.0,
-            embedding_matrix=None
+            embedding_matrix=None,
+            **kwargs
     ):
-        super().__init__()
+        super().__init__(**kwargs)
 
         self.embedding = th.nn.Embedding(num_embeddings=vocab_size,
                                          embedding_dim=self.embedding_dim,
@@ -105,8 +105,9 @@ class Transformer(TextOnlyModel):
             head,
             dropout_rate=0.0,
             is_transformer_trainable: bool = False,
+            **kwargs
     ):
-        super().__init__()
+        super().__init__(**kwargs)
 
         self.model_card = model_card
         self.model_config = AutoConfig.from_pretrained(model_card)

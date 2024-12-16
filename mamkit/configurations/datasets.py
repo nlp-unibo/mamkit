@@ -1,7 +1,7 @@
 from cinnamon.configuration import Configuration, C
 from cinnamon.registry import register_method
 from typing import Type, List, Dict
-from mamkit.components.data.datasets import (
+from mamkit.components.datasets import (
     UKDebates,
     MMUSED,
     MMUSEDFallacy,
@@ -10,6 +10,14 @@ from mamkit.components.data.datasets import (
 )
 
 from pathlib import Path
+
+__all__ = [
+    'LoaderConfig',
+    'UKDebatesConfig',
+    'MMUSEDConfig',
+    'MMUSEDFallacyConfig',
+    'MArgConfig'
+]
 
 
 class LoaderConfig(Configuration):

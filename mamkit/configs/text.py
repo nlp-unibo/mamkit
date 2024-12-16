@@ -2,7 +2,7 @@ import torch as th
 from torchtext.data.utils import get_tokenizer
 
 from mamkit.configs.base import BaseConfig, ConfigKey
-from mamkit.components.data import InputMode
+from mamkit.components.datasets import InputMode
 
 
 class BiLSTMConfig(BaseConfig):

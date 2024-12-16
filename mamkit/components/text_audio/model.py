@@ -3,10 +3,10 @@ from transformers import AutoModel, AutoConfig
 
 from mamkit.modules.rnn import LSTMStack
 from mamkit.modules.transformer import MulTA_CrossAttentionBlock
-from cinnamon.component import Component
+from mamkit.components.model import MAMKitModel
 
 
-class TextAudioModel(th.nn.Module, Component):
+class TextAudioModel(MAMKitModel):
 
     def forward(
             self,
@@ -27,9 +27,10 @@ class BiLSTM(TextAudioModel):
             head,
             text_dropout_rate=0.0,
             audio_dropout_rate=0.0,
-            embedding_matrix=None
+            embedding_matrix=None,
+            **kwargs
     ):
-        super().__init__()
+        super().__init__(**kwargs)
 
         self.embedding = th.nn.Embedding(num_embeddings=vocab_size,
                                          embedding_dim=text_embedding_dim,
@@ -132,8 +133,9 @@ class MMTransformer(TextAudioModel):
             text_dropout_rate=0.0,
             audio_dropout_rate=0.0,
             is_transformer_trainable: bool = False,
+            **kwargs
     ):
-        super().__init__()
+        super().__init__(**kwargs)
 
         self.model_card = model_card
         self.model_config = AutoConfig.from_pretrained(model_card)
@@ -239,7 +241,8 @@ class CSA(TextAudioModel):
             head,
             positional_encoder,
             text_dropout_rate=0.1,
-            audio_dropout_rate=0.1
+            audio_dropout_rate=0.1,
+            **kwargs
     ):
         """
         Args:
@@ -247,7 +250,8 @@ class CSA(TextAudioModel):
             head: head to use
             positional_encoder: positional encoder to use
         """
-        super().__init__()
+        super().__init__(**kwargs)
+
         self.transformer = transformer()
         self.head = head()
         self.positional_encoder = positional_encoder()
@@ -346,9 +350,11 @@ class Ensemble(TextAudioModel):
             text_dropout_rate=0.1,
             audio_dropout_rate=0.1,
             lower_bound=0.3,
-            upper_bound=0.7
+            upper_bound=0.7,
+            **kwargs
     ):
-        super().__init__()
+        super().__init__(**kwargs)
+
         self.text_head = text_head()
         self.audio_head = audio_head()
         self.audio_encoder = audio_encoder()
@@ -503,7 +509,8 @@ class MulTA(TextAudioModel):
             head,
             positional_encoder,
             audio_dropout_rate=0.1,
-            text_dropout_rate=0.1
+            text_dropout_rate=0.1,
+            **kwargs
     ):
         """
         Args:
@@ -512,7 +519,8 @@ class MulTA(TextAudioModel):
             n_blocks: number of blocks to use
             head: head to use
         """
-        super().__init__()
+        super().__init__(**kwargs)
+
         self.embedding_dim = embedding_dim
         self.d_ffn = d_ffn
         self.n_blocks = n_blocks
