@@ -2,6 +2,8 @@ from typing import Type, Dict
 
 from cinnamon.configuration import Configuration, C
 from cinnamon.registry import register_method, RegistrationKey
+import torchtext
+torchtext.disable_torchtext_deprecation_warning()
 from torchtext.data.utils import get_tokenizer
 
 from mamkit.components.text.collators import (

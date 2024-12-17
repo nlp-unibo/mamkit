@@ -81,7 +81,7 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 0.0001,
             'weight_decay': 0.0005
         }
@@ -121,7 +121,7 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 0.0001,
             'weight_decay': 0.0005
         }
@@ -161,7 +161,7 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 0.0002,
             'weight_decay': 0.001
         }
@@ -201,7 +201,7 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 0.0001,
             'weight_decay': 0.0005
         }
@@ -241,7 +241,7 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 0.0002,
             'weight_decay': 0.001
         }
@@ -281,7 +281,7 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 0.0001,
             'weight_decay': 0.0005
         }
@@ -322,7 +322,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 0.0002,
             'weight_decay': 0.001
         }
@@ -363,7 +363,7 @@ class BiLSTMConfig(MAMKitModelConfig):
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 0.0001,
             'weight_decay': 0.0005
         }
@@ -401,10 +401,10 @@ class BiLSTMConfig(MAMKitModelConfig):
                                                namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
-            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+            'val_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
         config.test_metrics = {
-            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
-        config.optimizer_args = {
+            'test_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
+        config.optimizer_kwargs = {
             'lr': 0.0002,
             'weight_decay': 0.001
         }
@@ -443,10 +443,10 @@ class BiLSTMConfig(MAMKitModelConfig):
                                                namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
-            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+            'val_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
         config.test_metrics = {
-            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
-        config.optimizer_args = {
+            'test_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
+        config.optimizer_kwargs = {
             'lr': 0.0001,
             'weight_decay': 0.0005
         }
@@ -524,7 +524,7 @@ class MMTransformerConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-03,
             'weight_decay': 0.0005
         }
@@ -559,7 +559,7 @@ class MMTransformerConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-03,
             'weight_decay': 0.0005
         }
@@ -594,7 +594,7 @@ class MMTransformerConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-03,
             'weight_decay': 0.0005
         }
@@ -631,7 +631,7 @@ class MMTransformerConfig(MAMKitModelConfig):
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-03,
             'weight_decay': 0.0005
         }
@@ -665,10 +665,10 @@ class MMTransformerConfig(MAMKitModelConfig):
                                                namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
-            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+            'val_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
         config.test_metrics = {
-            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
-        config.optimizer_args = {
+            'test_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
+        config.optimizer_kwargs = {
             'lr': 1e-03,
             'weight_decay': 0.0005
         }
@@ -737,7 +737,7 @@ class CSAConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -773,7 +773,7 @@ class CSAConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -809,7 +809,7 @@ class CSAConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -848,7 +848,7 @@ class CSAConfig(MAMKitModelConfig):
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -884,10 +884,10 @@ class CSAConfig(MAMKitModelConfig):
                                                namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
-            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+            'val_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
         config.test_metrics = {
-            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
-        config.optimizer_args = {
+            'test_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -967,7 +967,7 @@ class EnsembleConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -1013,7 +1013,7 @@ class EnsembleConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -1059,7 +1059,7 @@ class EnsembleConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -1108,7 +1108,7 @@ class EnsembleConfig(MAMKitModelConfig):
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -1154,10 +1154,10 @@ class EnsembleConfig(MAMKitModelConfig):
                                                namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
-            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+            'val_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
         config.test_metrics = {
-            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
-        config.optimizer_args = {
+            'test_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -1192,30 +1192,24 @@ class MulTAConfig(MAMKitModelConfig):
     ) -> C:
         config = super().default()
 
-        config.add(name='d_fnn',
+        config.add(name='d_ffn',
                    type_hint=int,
-                   is_required=True,
                    description='Cross-attention units')
         config.add(name='n_blocks',
                    type_hint=int,
-                   is_required=True,
                    description='Number of cross-attention blocks')
         config.add(name='head',
                    type_hint=Callable[[], th.nn.Module],
-                   description='Classification head',
-                   is_required=True)
+                   description='Classification head')
         config.add(name='positional_encoder',
                    type_hint=Callable[[], th.nn.Module],
-                   description='Positional encoding module.',
-                   is_required=True)
+                   description='Positional encoding module.')
         config.add(name='text_dropout_rate',
                    type_hint=float,
-                   description='Dropout rate for text module',
-                   is_required=True)
+                   description='Dropout rate for text module')
         config.add(name='audio_dropout_rate',
                    type_hint=float,
-                   description='Dropout rate for audio module',
-                   is_required=True)
+                   description='Dropout rate for audio module')
 
         return config
 
@@ -1239,7 +1233,7 @@ class MulTAConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -1276,7 +1270,7 @@ class MulTAConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -1313,7 +1307,7 @@ class MulTAConfig(MAMKitModelConfig):
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -1352,7 +1346,7 @@ class MulTAConfig(MAMKitModelConfig):
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=6)}
-        config.optimizer_args = {
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }
@@ -1389,10 +1383,10 @@ class MulTAConfig(MAMKitModelConfig):
                                                namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
-            'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
+            'val_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
         config.test_metrics = {
-            'test_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
-        config.optimizer_args = {
+            'test_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
+        config.optimizer_kwargs = {
             'lr': 1e-04,
             'weight_decay': 1e-03
         }

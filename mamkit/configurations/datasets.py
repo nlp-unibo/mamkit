@@ -79,67 +79,48 @@ class MMUSEDConfig(LoaderConfig):
         config = super().default()
 
         config.get('task').variants = ['asd', 'acc']
+        config.get('task').allowed_range = lambda p: p in ['asd', 'acc']
         config.download_url = 'https://zenodo.org/api/records/11179380/files-archive'
         config.add(name='folder_name',
                    value='MMUSED',
                    type_hint=str,
-                   is_required=True,
                    description='Dataset folder name containing data')
         config.add(name='deleted_ids',
                    value=['13_1988, 17_1992, 42_2016, 43_2016'],
                    type_hint=List[str],
-                   is_required=True,
                    description="List of USED dialogue IDs to be removed since no corresponding audio file can be found.")
         config.add(name='files_filename',
                    value='files',
                    type_hint=str,
-                   description='Folder name where to store downloaded files',
-                   is_required=True)
+                   description='Folder name where to store downloaded files')
         config.add(name='aeneas_filename',
                    value='aenaes',
                    type_hint=str,
-                   description='Folder name where to store AENEAS files',
-                   is_required=True)
+                   description='Folder name where to store AENEAS files')
         config.add(name='audio_filename',
                    value='debates_audio_recordings',
                    type_hint=str,
-                   description='Folder name where to store audio files',
-                   is_required=True)
+                   description='Folder name where to store audio files')
         config.add(name='datasets_filename',
                    value='datasets',
                    type_hint=str,
-                   description='Folder name where to store dataset files',
-                   is_required=True)
+                   description='Folder name where to store dataset files')
         config.add(name='transcripts_filename',
                    value='transcripts',
                    type_hint=str,
-                   description='Folder name where to store transcript files',
-                   is_required=True)
+                   description='Folder name where to store transcript files')
         config.add(name='alignment_filename',
                    value='alignment_results',
                    type_hint=str,
-                   description='Folder name where to store audio alignment files',
-                   is_required=True)
+                   description='Folder name where to store audio alignment files')
         config.add(name='audio_clips_filename',
                    value='audio_clips',
                    type_hint=str,
-                   description='Folder name where to store audio clips files',
-                   is_required=True)
+                   description='Folder name where to store audio clips files')
         config.add(name='processed_filename',
                    value='MM-USElecDeb60to16',
                    type_hint=str,
-                   description='Folder name where to store the final dataset',
-                   is_required=True)
-        config.add(name='tmp_filename',
-                   value='MMUSED-data.zip',
-                   type_hint=str,
-                   description='Temporary folder name when downloading dataset zip',
-                   is_required=True)
-        config.add(name='source_filename',
-                   value='multimodal-dataset',
-                   type_hint=str,
-                   description='Temporary folder where to unzip downloaded files',
-                   is_required=True)
+                   description='Folder name where to store the final dataset')
 
         return config
 
@@ -157,6 +138,7 @@ class MMUSEDFallacyConfig(LoaderConfig):
         config = super().default()
 
         config.task = 'afc'
+        config.get('task').allowed_range = lambda p: p in ['afc']
         config.download_url = 'https://zenodo.org/api/records/11179390/files-archive'
         config.add(name='sample_rate',
                    value=16000,
@@ -183,11 +165,6 @@ class MMUSEDFallacyConfig(LoaderConfig):
                    type_hint=str,
                    description='Folder name where to store audio clips files',
                    is_required=True)
-        config.add(name='tmp_filename',
-                   value='MMUSED-fallacy.zip',
-                   type_hint=str,
-                   description='Temporary folder name when downloading dataset zip',
-                   is_required=True)
 
         return config
 
@@ -205,6 +182,7 @@ class MArgConfig(LoaderConfig):
         config = super().default()
 
         config.task = 'arc'
+        config.get('task').allowed_range = lambda p: p in ['arc']
         config.download_url = 'https://zenodo.org/api/records/5653504/files-archive'
         config.add(name='confidence',
                    type_hint=float,

@@ -412,24 +412,32 @@ class MMUSED(Loader):
 
     def __init__(
             self,
+            folder_name: str,
+            deleted_ids: List[str],
+            files_filename: str,
+            aeneas_filename: str,
+            audio_filename: str,
+            datasets_filename: str,
+            transcripts_filename: str,
+            alignment_filename: str,
+            audio_clips_filename: str,
+            processed_filename: str,
             **kwargs
     ):
         super().__init__(**kwargs)
 
-        assert self.task in ['asd', 'acc']
-
-        self.folder_name = 'MMUSED'
-        self.deleted_ids = ['13_1988, 17_1992, 42_2016, 43_2016']
+        self.folder_name = folder_name
+        self.deleted_ids = deleted_ids
 
         self.data_path = Path(self.base_data_path, self.folder_name).resolve()
-        self.files_path = self.data_path.joinpath('files')
-        self.aeneas_path = self.data_path.joinpath('aeneas')
-        self.audio_path = self.files_path.joinpath('debates_audio_recordings')
-        self.datasets_path = self.files_path.joinpath('datasets')
-        self.transcripts_path = self.files_path.joinpath('transcripts')
-        self.alignments_path = self.files_path.joinpath('alignment_results')
-        self.clips_path = self.files_path.joinpath('audio_clips')
-        self.final_path = self.files_path.joinpath('MM-USElecDeb60to16')
+        self.files_path = self.data_path.joinpath(files_filename)
+        self.aeneas_path = self.data_path.joinpath(aeneas_filename)
+        self.audio_path = self.files_path.joinpath(audio_filename)
+        self.datasets_path = self.files_path.joinpath(datasets_filename)
+        self.transcripts_path = self.files_path.joinpath(transcripts_filename)
+        self.alignments_path = self.files_path.joinpath(alignment_filename)
+        self.clips_path = self.files_path.joinpath(audio_clips_filename)
+        self.final_path = self.files_path.joinpath(processed_filename)
 
         self.data_path.mkdir(parents=True, exist_ok=True)
 
@@ -935,8 +943,7 @@ class MMUSED(Loader):
         if not self.files_path.exists():
             logging.info('Downloading MMUSED data...This might take several minutes, enjoy a coffee ;)')
             tmp_path = self.data_path.joinpath('data.zip')
-            download(url='https://zenodo.org/api/records/11179380/files-archive',
-                     file_path=tmp_path)
+            download(url=self.download_url, file_path=tmp_path)
 
             with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
                 loaded_zip.extractall(self.data_path)
@@ -1023,21 +1030,22 @@ class MMUSEDFallacy(Loader):
 
     def __init__(
             self,
-            sample_rate=16000,
+            folder_name: str,
+            resource_filename: str,
+            audio_filename: str,
+            audio_clips_filename: str,
+            sample_rate: int = 16000,
             **kwargs
     ):
         super().__init__(**kwargs)
 
-        assert self.task in ['afc']
-
         self.sample_rate = sample_rate
-        self.folder_name = 'MMUSED-fallacy'
+        self.folder_name = folder_name
 
         self.data_path = Path(self.base_data_path, self.folder_name).resolve()
-        self.resources_path = self.data_path.joinpath('resources')
-        self.audio_path = self.resources_path.joinpath('debates_audio_recordings')
-        self.clips_path = self.data_path.joinpath('audio_clips')
-        self.dataset_url = 'https://raw.githubusercontent.com/lt-nlp-lab-unibo/multimodal-am-fallacy/main/local_database/MM-DatasetFallacies/no_duplicates/dataset.csv'
+        self.resources_path = self.data_path.joinpath(resource_filename)
+        self.audio_path = self.resources_path.joinpath(audio_filename)
+        self.clips_path = self.data_path.joinpath(audio_clips_filename)
         self.dataset_path = self.data_path.joinpath('dataset.csv')
 
         self.load()
@@ -1193,8 +1201,7 @@ class MMUSEDFallacy(Loader):
             logging.info('Downloading MMUSED-fallacy data...')
             self.data_path.mkdir(parents=True, exist_ok=True)
             tmp_path = self.data_path.joinpath('data.zip')
-            download(url='https://zenodo.org/api/records/11179390/files-archive',
-                     file_path=tmp_path)
+            download(url=self.download_url, file_path=tmp_path)
 
             with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
                 loaded_zip.extractall(self.data_path)
@@ -1301,105 +1308,35 @@ class MArg(Loader):
 
     def __init__(
             self,
-            confidence,
+            folder_name: str,
+            feature_path: Path,
+            aggregated_path: Path,
+            audio_path: Path,
+            speakers_map: Dict[str, str],
+            debate_id_map: Dict[str, str],
+            file_map_timestamp: Dict[str, str],
+            confidence: float,
             **kwargs
     ):
         super().__init__(**kwargs)
 
         assert confidence in [0.85, 1.0]
-        assert self.task in ['arc']
 
         self.confidence = confidence
-        self.folder_name = 'MArg'
+        self.folder_name = folder_name
 
         self.data_path = Path(self.base_data_path, self.folder_name).resolve()
-        self.feature_path = self.data_path.joinpath('data', 'preprocessed full dataset',
-                                                    'full_feature_extraction_dataset.csv')
-        self.aggregated_path = self.data_path.joinpath('annotated dataset', 'aggregated_dataset.csv')
+        self.feature_path = self.data_path.joinpath(feature_path)
+        self.aggregated_path = self.data_path.joinpath(aggregated_path)
         self.final_path = self.data_path.joinpath(f'final_dataset_{self.confidence:.2f}.csv')
-        self.audio_path = self.data_path.joinpath('data', 'audio sentences')
+        self.audio_path = self.data_path.joinpath(audio_path)
 
-        self.speakers_map = {
-            'Chris Wallace': 'Chris Wallace',
-            'Vice President Joe Biden': 'Joe Biden',
-            'President Donald J. Trump': 'Donald Trump',
-            'Chris Wallace:': 'Chris Wallace',
-            'Kristen Welker': 'Kristen Welker',
-            'Donald Trump': 'Donald Trump',
-            'Joe Biden': 'Joe Biden',
-            'George Stephanopoulos': 'George Stephanopoulos',
-            'Nicholas Fed': 'Audience Member 1',
-            'Kelly Lee': 'Audience Member 2',
-            'Anthony Archer': 'Audience Member 3',
-            'Voice Over': 'Voice Over',
-            'Cedric Humphrey': 'Audience Member 4',
-            'George Stephanopoulus': 'George Stephanopoulos',
-            'Angelia Politarhos': 'Audience Member 5',
-            'Speaker 1': 'Voice Over',
-            'Nathan Osburn': 'Audience Member 6',
-            'Andrew Lewis': 'Audience Member 7',
-            'Speaker 2': 'Voice Over',
-            'Michele Ellison': 'Audience Member 8',
-            'Mark Hoffman': 'Audience Member 9',
-            'Mieke Haeck': 'Audience Member 10',
-            'Speaker 3': 'Voice Over',
-            'Keenan Wilson': 'Audience Member 11',
-            'Savannah Guthrie': 'Savannah Guthrie',
-            'President Trump': 'Donald Trump',
-            'Jacqueline Lugo': 'Audience Member 12',
-            'Barbara Peña': 'Audience Member 13',
-            'Isabella Peña': 'Audience Member 14',
-            'Savannah': 'Savannah Guthrie',
-            'Cristy Montesinos Alonso': 'Audience Member 15',
-            'Adam Schucher': 'Audience Member 16',
-            'Moriah Geene': 'Audience Member 17',
-            'Cindy Velez': 'Audience Member 18',
-            'Paulette Dale': 'Audience Member 19',
-            'Susan Page': 'Susan Page',
-            'Kamala Harris': 'Kamala Harris',
-            'Mike Pence': 'Mike Pence',
-            'Kamala Harris ': 'Kamala Harris'
-        }
+        self.speakers_map = speakers_map
         self.speakers_to_id = {
             'error': 'error'
         }
-        self.debate_id_map = {
-            'us_election_2020_1st_presidential_debate_part1_timestamp.csv': '00',
-            'us_election_2020_1st_presidential_debate_part2_timestamp.csv': '01',
-            'us_election_2020_2nd_presidential_debate_part1_timestamp.csv': '02',
-            'us_election_2020_2nd_presidential_debate_part2_timestamp.csv': '03',
-            'us_election_2020_biden_town_hall_part1_timestamp.csv': '04',
-            'us_election_2020_biden_town_hall_part2_timestamp.csv': '05',
-            'us_election_2020_biden_town_hall_part3_timestamp.csv': '06',
-            'us_election_2020_biden_town_hall_part4_timestamp.csv': '07',
-            'us_election_2020_biden_town_hall_part5_timestamp.csv': '08',
-            'us_election_2020_biden_town_hall_part6_timestamp.csv': '09',
-            'us_election_2020_biden_town_hall_part7_timestamp.csv': '10',
-            'us_election_2020_trump_town_hall_1_timestamp.csv': '11',
-            'us_election_2020_trump_town_hall_2_timestamp.csv': '12',
-            'us_election_2020_trump_town_hall_3_timestamp.csv': '13',
-            'us_election_2020_trump_town_hall_4_timestamp.csv': '14',
-            'us_election_2020_vice_presidential_debate_1_timestamp.csv': '15',
-            'us_election_2020_vice_presidential_debate_2_timestamp.csv': '16'
-        }
-        self.file_map_timestamp = {
-            'us_election_2020_1st_presidential_debate_part1_timestamp.csv': 'us_election_2020_1st_presidential_debate_split.csv',
-            'us_election_2020_1st_presidential_debate_part2_timestamp.csv': 'us_election_2020_1st_presidential_debate_split.csv',
-            'us_election_2020_2nd_presidential_debate_part1_timestamp.csv': 'us_election_2020_2nd_presidential_debate_split.csv',
-            'us_election_2020_2nd_presidential_debate_part2_timestamp.csv': 'us_election_2020_2nd_presidential_debate_split.csv',
-            'us_election_2020_biden_town_hall_part1_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
-            'us_election_2020_biden_town_hall_part2_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
-            'us_election_2020_biden_town_hall_part3_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
-            'us_election_2020_biden_town_hall_part4_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
-            'us_election_2020_biden_town_hall_part5_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
-            'us_election_2020_biden_town_hall_part6_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
-            'us_election_2020_biden_town_hall_part7_timestamp.csv': 'us_election_2020_biden_town_hall_split.csv',
-            'us_election_2020_trump_town_hall_1_timestamp.csv': 'us_election_2020_trump_town_hall_split.csv',
-            'us_election_2020_trump_town_hall_2_timestamp.csv': 'us_election_2020_trump_town_hall_split.csv',
-            'us_election_2020_trump_town_hall_3_timestamp.csv': 'us_election_2020_trump_town_hall_split.csv',
-            'us_election_2020_trump_town_hall_4_timestamp.csv': 'us_election_2020_trump_town_hall_split.csv',
-            'us_election_2020_vice_presidential_debate_1_timestamp.csv': 'us_election_2020_vice_presidential_debate_split.csv',
-            'us_election_2020_vice_presidential_debate_2_timestamp.csv': 'us_election_2020_vice_presidential_debate_split.csv'}
+        self.debate_id_map = debate_id_map
+        self.file_map_timestamp = file_map_timestamp
 
         self.data_path.mkdir(parents=True, exist_ok=True)
 
@@ -1565,8 +1502,7 @@ class MArg(Loader):
         if not any(self.data_path.iterdir()):
             logging.info('Downloading M-Arg data...')
             tmp_path = self.data_path.joinpath('data.zip')
-            download(url='https://zenodo.org/api/records/5653504/files-archive',
-                     file_path=tmp_path)
+            download(url=self.download_url, file_path=tmp_path)
             logging.info('Download completed...')
 
             with zipfile.ZipFile(tmp_path, 'r') as loaded_zip:
