@@ -53,31 +53,31 @@ class UnimodalProcessorConfig(Configuration):
 
         config.get('feature_processor').variants = [
             RegistrationKey(name='processor',
-                            tags={'data:ukdebates', 'task:asd', 'vocab-builder', 'mancini-2024-mamkit'},
+                            tags={'data:ukdebates', 'task:asd', 'vocab-builder', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:ukdebates', 'task:asd', 'vocab-builder',
-                                  'mancini-2022-argmining'},
+                                  'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused', 'task:asd', 'vocab-builder',
-                                  'mancini-2024-mamkit'},
+                                  'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused', 'task:asd', 'vocab-builder',
-                                  'mancini-2022-argmining'},
+                                  'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused', 'task:acc', 'vocab-builder',
-                                  'mancini-2024-mamkit'},
+                                  'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused', 'task:acc', 'vocab-builder',
-                                  'mancini-2022-argmining'},
+                                  'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused-fallacy', 'task:afc', 'vocab-builder',
-                                  'mancini-2024-mamkit'},
+                                  'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'text-transformer'},
@@ -100,11 +100,11 @@ class UnimodalProcessorConfig(Configuration):
         config.get('feature_processor').variants = [
             RegistrationKey(name='processor',
                             tags={'data:marg', 'task:arc', 'vocab-builder',
-                                  'mancini-2024-mamkit'},
+                                  'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:marg', 'task:arc', 'vocab-builder',
-                                  'mancini-2022-argmining'},
+                                  'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'text-transformer', 'pair'},
@@ -142,7 +142,7 @@ class VocabBuilderConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:ukdebates', 'task:asd', 'vocab-builder', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'vocab-builder', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=VocabBuilder)
     def ukdebates_asd_mancini_2024_mamkit(
@@ -157,7 +157,7 @@ class VocabBuilderConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:ukdebates', 'task:asd', 'vocab-builder', 'mancini-2022-argmining'},
+                     tags={'data:ukdebates', 'task:asd', 'vocab-builder', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=VocabBuilder)
     def ukdebates_asd_mancini_2022_argmining(
@@ -172,7 +172,7 @@ class VocabBuilderConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused', 'task:asd', 'vocab-builder', 'mancini-2022-argmining'},
+                     tags={'data:mmused', 'task:asd', 'vocab-builder', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=VocabBuilder)
     def mmused_asd_mancini_2022_argmining(
@@ -187,7 +187,7 @@ class VocabBuilderConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused', 'task:asd', 'vocab-builder', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'vocab-builder', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=VocabBuilder)
     def mmused_asd_mancini_2024_mamkit(
@@ -202,7 +202,7 @@ class VocabBuilderConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused', 'task:acc', 'vocab-builder', 'mancini-2022-argmining'},
+                     tags={'data:mmused', 'task:acc', 'vocab-builder', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=VocabBuilder)
     def mmused_acc_mancini_2022_argmining(
@@ -217,7 +217,7 @@ class VocabBuilderConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused', 'task:acc', 'vocab-builder', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'vocab-builder', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=VocabBuilder)
     def mmused_acc_mancini_2024_mamkit(
@@ -232,7 +232,7 @@ class VocabBuilderConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:marg', 'task:arc', 'vocab-builder', 'mancini-2022-argmining'},
+                     tags={'data:marg', 'task:arc', 'vocab-builder', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=PairVocabBuilder)
     def marg_arc_mancini_2022_argmining(
@@ -247,7 +247,7 @@ class VocabBuilderConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:marg', 'task:arg', 'vocab-builder', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arg', 'vocab-builder', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairVocabBuilder)
     def marg_arc_mancini_2024_mamkit(
@@ -262,7 +262,7 @@ class VocabBuilderConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused-fallacy', 'task:afc', 'vocab-builder', 'mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'vocab-builder', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=VocabBuilder)
     def mmused_fallacy_afc_mancini_2024_mamkit(

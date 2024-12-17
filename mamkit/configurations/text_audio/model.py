@@ -63,7 +63,7 @@ class BiLSTMConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def ukdebates_asd_mancini_2024_mamkit_mfcc(
@@ -93,7 +93,7 @@ class BiLSTMConfig(MAMKitModelConfig):
     @classmethod
     @register_method(name='model',
                      tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'bilstm', 'transformer',
-                           'mancini-2024-mamkit'},
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def ukdebates_asd_mancini_2024_mamkit_transformer(
@@ -122,7 +122,7 @@ class BiLSTMConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_asd_mancini_2024_mamkit_mfcc(
@@ -152,7 +152,7 @@ class BiLSTMConfig(MAMKitModelConfig):
     @classmethod
     @register_method(name='model',
                      tags={'data:mmused', 'task:asd', 'mode:text-audio', 'bilstm', 'transformer',
-                           'mancini-2024-mamkit'},
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_asd_mancini_2024_mamkit_transformer(
@@ -181,7 +181,7 @@ class BiLSTMConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'bilstm', 'mfcc', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'bilstm', 'mfcc', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_acc_mancini_2024_mamkit_mfcc(
@@ -211,7 +211,7 @@ class BiLSTMConfig(MAMKitModelConfig):
     @classmethod
     @register_method(name='model',
                      tags={'data:mmused', 'task:acc', 'mode:text-audio', 'bilstm', 'transformer',
-                           'mancini-2024-mamkit'},
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_acc_mancini_2024_mamkit_transformer(
@@ -241,7 +241,7 @@ class BiLSTMConfig(MAMKitModelConfig):
     @classmethod
     @register_method(name='model',
                      tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'bilstm', 'mfcc',
-                           'mancini-2024-mamkit'},
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_fallacy_afc_mancini_2024_mamkit_mfcc(
@@ -272,7 +272,7 @@ class BiLSTMConfig(MAMKitModelConfig):
     @classmethod
     @register_method(name='model',
                      tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'bilstm', 'transformer',
-                           'mancini-2024-mamkit'},
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_fallacy_afc_mancini_2024_mamkit_transformer(
@@ -302,7 +302,7 @@ class BiLSTMConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'bilstm', 'mfcc', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'bilstm', 'mfcc', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairBiLSTM)
     def marg_arc_mancini_2024_mamkit_mfcc(
@@ -333,7 +333,7 @@ class BiLSTMConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'bilstm', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'bilstm', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairBiLSTM)
     def marg_arc_mancini_2024_mamkit_transformer(
@@ -401,7 +401,7 @@ class MMTransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MMTransformer)
     def ukdebates_asd_mancini_2024_mamkit(
@@ -429,7 +429,7 @@ class MMTransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MMTransformer)
     def mmused_asd_mancini_2024_mamkit(
@@ -457,7 +457,7 @@ class MMTransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MMTransformer)
     def mmused_acc_mancini_2024_mamkit(
@@ -485,7 +485,7 @@ class MMTransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MMTransformer)
     def mmused_fallacy_afc_mancini_2024_mamkit(
@@ -514,7 +514,7 @@ class MMTransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairMMTransformer)
     def marg_arc_mancini_2024_mamkit(
@@ -577,7 +577,7 @@ class CSAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=CSA)
     def ukdebates_asd_mancini_2024_mamkit(
@@ -606,7 +606,7 @@ class CSAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=CSA)
     def mmused_asd_mancini_2024_mamkit(
@@ -635,7 +635,7 @@ class CSAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=CSA)
     def mmused_acc_mancini_2024_mamkit(
@@ -664,7 +664,7 @@ class CSAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=CSA)
     def mmused_fallacy_afc_mancini_2024_mamkit(
@@ -694,7 +694,7 @@ class CSAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:margs', 'task:arc', 'mode:text-audio', 'transformer', 'mancini-2024-mamkit'},
+                     tags={'data:margs', 'task:arc', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairCSA)
     def marg_arc_mancini_2024_mamkit(
@@ -769,7 +769,7 @@ class EnsembleConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'ensemble', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'ensemble', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=Ensemble)
     def ukdebates_asd_mancini_2024_mamkit(
@@ -808,7 +808,7 @@ class EnsembleConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'ensemble', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'ensemble', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=Ensemble)
     def mmused_asd_mancini_2024_mamkit(
@@ -847,7 +847,7 @@ class EnsembleConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'ensemble', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'ensemble', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=Ensemble)
     def mmused_acc_mancini_2024_mamkit(
@@ -886,7 +886,7 @@ class EnsembleConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'ensemble', 'mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'ensemble', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=Ensemble)
     def mmused_fallacy_afc_mancini_2024_mamkit(
@@ -926,7 +926,7 @@ class EnsembleConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'ensemble', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'ensemble', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairEnsemble)
     def marg_arc_mancini_2024_mamkit(
@@ -1003,7 +1003,7 @@ class MulTAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'multa', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'multa', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MulTA)
     def ukdebates_asd_mancini_2024_mamkit(
@@ -1033,7 +1033,7 @@ class MulTAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'multa', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'multa', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MulTA)
     def mmused_asd_mancini_2024_mamkit(
@@ -1063,7 +1063,7 @@ class MulTAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'multa', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'multa', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MulTA)
     def mmused_acc_mancini_2024_mamkit(
@@ -1093,7 +1093,7 @@ class MulTAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'multa', 'mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'multa', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MulTA)
     def mmused_fallacy_afc_mancini_2024_mamkit(
@@ -1124,7 +1124,7 @@ class MulTAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'multa', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'multa', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairMulTA)
     def marg_arc_mancini_2024_mamkit(

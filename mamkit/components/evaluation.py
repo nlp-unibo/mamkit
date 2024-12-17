@@ -11,9 +11,7 @@ from lightning import seed_everything
 from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from torch.utils.data import DataLoader
 
-from mamkit.components.collators import DataCollator
 from mamkit.components.datasets import Loader
-from mamkit.components.processing import Processor
 from mamkit.components.model import MAMKitModel
 from mamkit.utility.callbacks import PycharmProgressBar
 
@@ -56,7 +54,7 @@ class EvaluationPipeline(Component):
             seed_everything(seed=seed)
 
             for split_info in loader.get_splits(key=self.data_split_key):
-                model = MAMKitModel.build_component(registration_key=self.model)
+                model: MAMKitModel = MAMKitModel.build_component(registration_key=self.model)
 
                 model.build_processor()
                 model.processor.fit(train_data=split_info.train)

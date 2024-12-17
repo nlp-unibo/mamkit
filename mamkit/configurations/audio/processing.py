@@ -47,43 +47,43 @@ class UnimodalProcessorConfig(Configuration):
 
         config.get('feature_processor').variants = [
             RegistrationKey(name='processor',
-                            tags={'data:ukdebates', 'task:asd', 'mfcc', 'mancini-2024-mamkit'},
+                            tags={'data:ukdebates', 'task:asd', 'mfcc', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'mancini_2024_mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:ukdebates', 'task:asd', 'mfcc', 'mancini-2022-argmining'},
+                            tags={'data:ukdebates', 'task:asd', 'mfcc', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'mancini_2022_argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:asd', 'mfcc', 'mancini-2024-mamkit'},
+                            tags={'data:mmused', 'task:asd', 'mfcc', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused', 'task:asd', 'audio-transformer', 'mancini_2024_mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:asd', 'mfcc', 'mancini-2022-argmining'},
+                            tags={'data:mmused', 'task:asd', 'mfcc', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused', 'task:asd', 'audio-transformer', 'mancini_2022_argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:acc', 'mfcc', 'mancini-2024-mamkit'},
+                            tags={'data:mmused', 'task:acc', 'mfcc', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused', 'task:acc', 'audio-transformer', 'mancini_2024_mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:acc', 'mfcc', 'mancini-2022-argmining'},
+                            tags={'data:mmused', 'task:acc', 'mfcc', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused', 'task:acc', 'audio-transformer', 'mancini_2022_argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused-fallacy', 'task:afc', 'mfcc', 'mancini-2024-mamkit'},
+                            tags={'data:mmused-fallacy', 'task:afc', 'mfcc', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:mmused-fallacy', 'task:afc', 'audio-transformer', 'mancini_2024_mamkit'},
@@ -105,13 +105,13 @@ class UnimodalProcessorConfig(Configuration):
 
         config.get('feature_processor').variants = [
             RegistrationKey(name='processor',
-                            tags={'data:marg', 'task:arc', 'mfcc', 'mancini-2024-mamkit'},
+                            tags={'data:marg', 'task:arc', 'mfcc', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:marg', 'task:arc', 'audio-transformer', 'mancini_2024_mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:marg', 'task:arc', 'mfcc', 'mancini-2022-argmining'},
+                            tags={'data:marg', 'task:arc', 'mfcc', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
                             tags={'data:marg', 'task:arc', 'audio-transformer', 'mancini_2022_argmining'},
@@ -153,7 +153,7 @@ class MFCCExtractorConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:ukdebates', 'task:asd', 'mfcc', 'mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mfcc', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MFCCExtractor)
     def ukdebates_asd_mancini_2024_mamkit(
@@ -167,7 +167,7 @@ class MFCCExtractorConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:ukdebates', 'task:asd', 'mfcc', 'mancini-2022-argmining'},
+                     tags={'data:ukdebates', 'task:asd', 'mfcc', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=MFCCExtractor)
     def ukdebates_asd_mancini_2022_argmining(
@@ -181,7 +181,7 @@ class MFCCExtractorConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused', 'task:asd', 'mfcc', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'mfcc', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MFCCExtractor)
     def mmused_asd_mancini_2024_mamkit(
@@ -195,7 +195,7 @@ class MFCCExtractorConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused', 'task:asd', 'mfcc', 'mancini-2022-argmining'},
+                     tags={'data:mmused', 'task:asd', 'mfcc', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=MFCCExtractor)
     def mmused_asd_mancini_2022_argmining(
@@ -209,7 +209,7 @@ class MFCCExtractorConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused', 'task:acc', 'mfcc', 'mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'mfcc', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MFCCExtractor)
     def mmused_acc_mancini_2024_mamkit(
@@ -223,7 +223,7 @@ class MFCCExtractorConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused', 'task:acc', 'mfcc', 'mancini-2022-argmining'},
+                     tags={'data:mmused', 'task:acc', 'mfcc', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=MFCCExtractor)
     def mmused_acc_mancini_2022_argmining(
@@ -237,7 +237,7 @@ class MFCCExtractorConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mfcc', 'mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mfcc', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MFCCExtractor)
     def mmused_fallacy_afc_mancini_2024_mamkit(
@@ -251,7 +251,7 @@ class MFCCExtractorConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:marg', 'task:arc', 'mfcc', 'mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mfcc', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairMFCCExtractor)
     def marg_arc_mancini_2024_mamkit(
@@ -265,7 +265,7 @@ class MFCCExtractorConfig(Configuration):
 
     @classmethod
     @register_method(name='processor',
-                     tags={'data:marg', 'task:arc', 'mfcc', 'mancini-2022-argmining'},
+                     tags={'data:marg', 'task:arc', 'mfcc', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
                      component_class=PairMFCCExtractor)
     def marg_arc_mancini_2022_argmining(
