@@ -52,10 +52,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'vocab-builder',
                                                  'source:mancini-2024-mamkit'},
                                            namespace='mamkit')
@@ -88,10 +88,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'vocab-builder',
                                                  'source:mancini-2022-argmining'},
                                            namespace='mamkit')
@@ -124,10 +124,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:asd', 'mode:text-only', 'vocab-builder',
                                                  'source:mancini-2024-mamkit'},
                                            namespace='mamkit')
@@ -160,10 +160,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:asd', 'mode:text-only', 'vocab-builder',
                                                  'source:mancini-2022-argmining'},
                                            namespace='mamkit')
@@ -196,10 +196,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:acc', 'mode:text-only', 'vocab-builder',
                                                  'source:mancini-2024-mamkit'},
                                            namespace='mamkit')
@@ -232,10 +232,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:acc', 'mode:text-only', 'vocab-builder',
                                                  'source:mancini-2022-argmining'},
                                            namespace='mamkit')
@@ -268,10 +268,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'vocab-builder',
                                                  'source:mancini-2024-mamkit'},
                                            namespace='mamkit')
@@ -305,10 +305,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text', 'pair'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:marg', 'task:arc', 'mode:text-only', 'vocab-builder',
                                                  'source:mancini-2024-mamkit'},
                                            namespace='mamkit')
@@ -343,10 +343,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ) -> C:
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text', 'pair'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'vocab-builder',
                                                  'source:mancini-2024-mamkit'},
                                            namespace='mamkit')
@@ -410,10 +410,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'mode:text-only', 'default'},
                                            namespace='mamkit')
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text-transformer'},
                                           namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
@@ -441,10 +441,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'mode:text-only', 'default'},
                                            namespace='mamkit')
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text-transformer'},
                                           namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
@@ -472,10 +472,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'mode:text-only', 'default'},
                                            namespace='mamkit')
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text-transformer'},
                                           namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
@@ -503,10 +503,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'mode:text-only', 'default'},
                                            namespace='mamkit')
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text-transformer'},
                                           namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
@@ -534,10 +534,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'mode:text-only', 'default'},
                                            namespace='mamkit')
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text-transformer'},
                                           namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
@@ -568,10 +568,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'mode:text-only', 'default'},
                                            namespace='mamkit')
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text-transformer'},
                                           namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
@@ -600,10 +600,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'mode:text-only', 'default'},
                                            namespace='mamkit')
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:text-only', 'text-transformer', 'pair'},
                                           namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))

@@ -49,10 +49,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:ukdebates', 'mode:audio-only', 'task:asd', 'audio-transformer',
                                                  'mancini_2022_argmining'},
                                            namespace='mamkit')
@@ -84,10 +84,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:ukdebates', 'mode:audio-only', 'task:asd', 'mfcc',
                                                  'mancini_2022_argmining'},
                                            namespace='mamkit')
@@ -119,10 +119,10 @@ class BiLSTMConfig(MAMKitModelConfig):
             cls
     ):
         config = cls.default()
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:ukdebates', 'mode:audio-only', 'task:asd', 'audio-transformer',
                                                  'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -153,10 +153,10 @@ class BiLSTMConfig(MAMKitModelConfig):
             cls
     ):
         config = cls.default()
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:ukdebates', 'task:asd', 'mode:audio-only', 'mfcc',
                                                  'source:mancini-2024-mamkit'},
                                            namespace='mamkit')
@@ -189,10 +189,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:asd', 'mode:audio-only', 'audio-transformer',
                                                  'mancini_2022_argmining'},
                                            namespace='mamkit')
@@ -225,10 +225,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:asd', 'mode:audio-only', 'mfcc',
                                                  'mancini_2022_argmining'},
                                            namespace='mamkit')
@@ -261,10 +261,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:asd', 'mode:audio-only', 'audio-transformer',
                                                  'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -297,10 +297,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:asd', 'mode:audio-only', 'mfcc',
                                                  'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -333,10 +333,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:acc', 'mode:audio-only', 'audio-transformer',
                                                  'mancini_2022_argmining'},
                                            namespace='mamkit')
@@ -368,10 +368,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:acc', 'mode:audio-only', 'mfcc',
                                                  'mancini_2022_argmining'},
                                            namespace='mamkit')
@@ -403,10 +403,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:acc', 'mode:audio-only', 'audio-transformer',
                                                  'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -439,10 +439,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:acc', 'mode:audio-only', 'mfcc',
                                                  'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -475,10 +475,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused-fallacy', 'task:afc', 'mode:audio-only',
                                                  'audio-transformer', 'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -511,10 +511,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused-fallacy', 'task:afc', 'mode:audio-only',
                                                  'mfcc', 'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -547,10 +547,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio', 'pair'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:marg', 'task:arc', 'mode:audio-only', 'audio-transformer',
                                                  'mancini_2022_argmining'},
                                            namespace='mamkit')
@@ -585,10 +585,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio', 'pair'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:marg', 'task:arc', 'mode:audio-only', 'mfcc',
                                                  'mancini_2022_argmining'},
                                            namespace='mamkit')
@@ -622,10 +622,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio', 'pair'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:marg', 'task:arc', 'mode:audio-only', 'audio-transformer',
                                                  'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -659,10 +659,10 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio', 'pair'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:marg', 'task:arc', 'mode:audio-only', 'mfcc',
                                                  'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -720,10 +720,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:ukdebates', 'task:asd', 'audio-transformer',
                                                  'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -754,10 +754,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'mancini_2024_mamkit'},
                                            namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
@@ -787,10 +787,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'mancini_2024_mamkit'},
                                            namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
@@ -820,10 +820,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:mmused-fallacy', 'task:afc', 'audio-transformer',
                                                  'mancini_2024_mamkit'},
                                            namespace='mamkit')
@@ -855,10 +855,10 @@ class TransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
-        config.collator = RegistrationKey(name='collator',
+        config.collator_key = RegistrationKey(name='collator',
                                           tags={'mode:audio-only', 'audio', 'pair'},
                                           namespace='mamkit')
-        config.processor = RegistrationKey(name='processor',
+        config.processor_key = RegistrationKey(name='processor',
                                            tags={'data:marg', 'task:arc', 'audio-transformer', 'mancini_2024_mamkit'},
                                            namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))

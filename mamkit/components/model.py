@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 import lightning as L
 import torch as th
@@ -13,8 +13,8 @@ class MAMKitModel(L.LightningModule, Component):
 
     def __init__(
             self,
-            processor: RegistrationKey,
-            collator: RegistrationKey,
+            processor_key: RegistrationKey,
+            collator_key: RegistrationKey,
             loss_function,
             optimizer_class,
             val_metrics: Dict = None,
@@ -24,8 +24,10 @@ class MAMKitModel(L.LightningModule, Component):
     ):
         super().__init__()
 
-        self.processor = processor
-        self.collator = collator
+        self.processor_key = processor_key
+        self.collator_key = collator_key
+        self.processor: Optional[Processor] = None
+        self.collator: Optional[DataCollator] = None
 
         self.loss_function = loss_function()
         self.optimizer_class = optimizer_class
@@ -49,14 +51,14 @@ class MAMKitModel(L.LightningModule, Component):
     def build_processor(
             self
     ):
-        self.processor: Processor = Processor.build_component(registration_key=self.processor)
+        self.processor = Processor.build_component(registration_key=self.processor_key)
 
     def build_collator(
             self
     ):
         collator_args = self.processor.get_collator_args()
-        self.collator: DataCollator = DataCollator.build_component(registration_key=self.collator,
-                                                                   **collator_args)
+        self.collator = DataCollator.build_component(registration_key=self.collator_key,
+                                                     **collator_args)
 
     def training_step(
             self,

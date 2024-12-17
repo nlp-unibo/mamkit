@@ -2,7 +2,7 @@ from typing import Type, List, Callable
 
 import torch as th
 from cinnamon.configuration import C
-from cinnamon.registry import register_method
+from cinnamon.registry import register_method, RegistrationKey
 
 from mamkit.components.text_audio.model import (
     BiLSTM,
@@ -63,7 +63,8 @@ class BiLSTMConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc', 'source:mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def ukdebates_asd_mancini_2024_mamkit_mfcc(
@@ -71,6 +72,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'mfcc'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
@@ -87,6 +94,10 @@ class BiLSTMConfig(MAMKitModelConfig):
         )
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
+
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:ukdebates', 'task:asd', 'source:mancini-2024-mamkit'}))
 
         return config
 
@@ -101,6 +112,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'transformer'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
@@ -118,11 +135,16 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
 
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:ukdebates', 'task:asd', 'source:mancini-2024-mamkit'}))
+
         return config
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc', 'source:mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:asd', 'mode:text-audio', 'bilstm', 'mfcc',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_asd_mancini_2024_mamkit_mfcc(
@@ -130,6 +152,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'mfcc'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -146,6 +174,10 @@ class BiLSTMConfig(MAMKitModelConfig):
         )
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
+
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:mmused', 'task:asd', 'source:mancini-2024-mamkit'}))
 
         return config
 
@@ -160,6 +192,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'transformer'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -177,11 +215,16 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
 
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:mmused', 'task:asd', 'source:mancini-2024-mamkit'}))
+
         return config
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'bilstm', 'mfcc', 'source:mancini-2024-mamkit'},
+                     tags={'data:mmused', 'task:acc', 'mode:text-audio', 'bilstm', 'mfcc',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=BiLSTM)
     def mmused_acc_mancini_2024_mamkit_mfcc(
@@ -189,6 +232,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'mfcc'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -205,6 +254,10 @@ class BiLSTMConfig(MAMKitModelConfig):
         )
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
+
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:mmused', 'task:acc', 'source:mancini-2024-mamkit'}))
 
         return config
 
@@ -219,6 +272,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'transformer'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -236,6 +295,10 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
 
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:mmused', 'task:acc', 'source:mancini-2024-mamkit'}))
+
         return config
 
     @classmethod
@@ -249,6 +312,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'mfcc'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
@@ -266,6 +335,10 @@ class BiLSTMConfig(MAMKitModelConfig):
         )
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
+
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:mmused-fallacy', 'task:afc', 'source:mancini-2024-mamkit'}))
 
         return config
 
@@ -280,6 +353,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'transformer'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
@@ -298,6 +377,10 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
 
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:mmused-fallacy', 'task:afc', 'source:mancini-2024-mamkit'}))
+
         return config
 
     @classmethod
@@ -310,6 +393,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm', 'pair'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'mfcc', 'pair'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
@@ -329,11 +418,16 @@ class BiLSTMConfig(MAMKitModelConfig):
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
 
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:marg', 'task:arc', 'source:mancini-2024-mamkit'}))
+
         return config
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'bilstm', 'transformer', 'source:mancini-2024-mamkit'},
+                     tags={'data:marg', 'task:arc', 'mode:text-audio', 'bilstm', 'transformer',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=PairBiLSTM)
     def marg_arc_mancini_2024_mamkit_transformer(
@@ -341,6 +435,12 @@ class BiLSTMConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'lstm', 'pair'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'lstm', 'transformer', 'pair'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
@@ -359,6 +459,10 @@ class BiLSTMConfig(MAMKitModelConfig):
         )
         config.text_dropout_rate = 0.0
         config.audio_dropout_rate = 0.0
+
+        config.add_condition(name='compound-match',
+                             condition=lambda c: not c.processor_key.compound_tags.difference(
+                                 {'data:marg', 'task:arc', 'source:mancini-2024-mamkit'}))
 
         return config
 
@@ -401,7 +505,8 @@ class MMTransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'transformer',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MMTransformer)
     def ukdebates_asd_mancini_2024_mamkit(
@@ -409,13 +514,20 @@ class MMTransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'transformer', 'data:ukdebates', 'task:asd',
+                                                     'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
         config.optimizer_args = {
-                'lr': 1e-03,
-                'weight_decay': 0.0005
-            }
+            'lr': 1e-03,
+            'weight_decay': 0.0005
+        }
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(832, 128),
             th.nn.ReLU(),
@@ -437,13 +549,20 @@ class MMTransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'transformer', 'data:mmused', 'task:asd',
+                                                     'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
         config.optimizer_args = {
-                'lr': 1e-03,
-                'weight_decay': 0.0005
-            }
+            'lr': 1e-03,
+            'weight_decay': 0.0005
+        }
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(832, 128),
             th.nn.ReLU(),
@@ -465,6 +584,13 @@ class MMTransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'transformer', 'data:mmused', 'task:acc',
+                                                     'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -485,7 +611,8 @@ class MMTransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'transformer',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=MMTransformer)
     def mmused_fallacy_afc_mancini_2024_mamkit(
@@ -493,6 +620,13 @@ class MMTransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'transformer', 'data:mmused-fallacy',
+                                                     'task:afc', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
@@ -522,6 +656,13 @@ class MMTransformerConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'transformer', 'pair'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'transformer', 'pair', 'data:marg', 'task:arc',
+                                                     'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
@@ -577,7 +718,8 @@ class CSAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-audio', 'transformer',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=CSA)
     def ukdebates_asd_mancini_2024_mamkit(
@@ -585,13 +727,20 @@ class CSAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'data:ukdebates',
+                                                     'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
         config.optimizer_args = {
-                'lr': 1e-04,
-                'weight_decay': 1e-03
-            }
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.transformer = lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1)
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
@@ -614,13 +763,20 @@ class CSAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'data:mmused',
+                                                     'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
         config.optimizer_args = {
-                'lr': 1e-04,
-                'weight_decay': 1e-03
-            }
+            'lr': 1e-04,
+            'weight_decay': 1e-03
+        }
         config.transformer = lambda: CustomEncoder(d_model=768, ffn_hidden=2048, n_head=4, n_layers=1, drop_prob=0.1)
         config.head = lambda: th.nn.Sequential(
             th.nn.Linear(768, 256),
@@ -643,6 +799,13 @@ class CSAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'data:mmused',
+                                                     'task:acc', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -664,7 +827,8 @@ class CSAConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'transformer', 'source:mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'transformer',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=CSA)
     def mmused_fallacy_afc_mancini_2024_mamkit(
@@ -672,6 +836,14 @@ class CSAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer',
+                                                     'data:mmused-fallacy', 'task:afc', 'audio-transformer',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
@@ -702,6 +874,14 @@ class CSAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer', 'pair'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'pair',
+                                                     'data:marg', 'task:arc', 'audio-transformer',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
@@ -777,6 +957,13 @@ class EnsembleConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'data:ukdebates',
+                                                     'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
@@ -816,6 +1003,13 @@ class EnsembleConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'data:mmused',
+                                                     'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -855,6 +1049,13 @@ class EnsembleConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'data:mmused',
+                                                     'task:acc', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -886,7 +1087,8 @@ class EnsembleConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'ensemble', 'source:mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-audio', 'ensemble',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
                      component_class=Ensemble)
     def mmused_fallacy_afc_mancini_2024_mamkit(
@@ -894,6 +1096,14 @@ class EnsembleConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer',
+                                                     'data:mmused-fallacy', 'task:afc', 'audio-transformer',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
@@ -934,6 +1144,14 @@ class EnsembleConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer', 'pair'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'pair',
+                                                     'data:marg', 'task:arc', 'audio-transformer',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}
@@ -1011,6 +1229,13 @@ class MulTAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'data:ukdebates',
+                                                     'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
@@ -1041,6 +1266,13 @@ class MulTAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'data:mmused',
+                                                     'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -1071,6 +1303,13 @@ class MulTAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'data:mmused',
+                                                     'task:acc', 'audio-transformer', 'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -1101,6 +1340,14 @@ class MulTAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer',
+                                                     'data:mmused-fallacy', 'task:afc', 'audio-transformer',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
@@ -1132,6 +1379,14 @@ class MulTAConfig(MAMKitModelConfig):
     ):
         config = cls.default()
 
+        config.collator_key = RegistrationKey(name='collator',
+                                              tags={'mode:text-audio', 'multimodal', 'transformer'},
+                                              namespace='mamkit')
+        config.processor_key = RegistrationKey(name='processor',
+                                               tags={'mode:text-audio', 'multimodal', 'transformer', 'pair',
+                                                     'data:marg', 'task:arc', 'audio-transformer',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(task='multiclass', num_classes=3, class_subset=[1, 2])}

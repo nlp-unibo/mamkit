@@ -13,10 +13,10 @@ class MAMKitModelConfig(Configuration):
     ) -> C:
         config = super().default()
 
-        config.add(name='processor',
+        config.add(name='processor_key',
                    type_hint=RegistrationKey,
                    description='Input data processor')
-        config.add(name='collator',
+        config.add(name='collator_key',
                    type_hint=RegistrationKey,
                    description='Input data collator')
         config.add(name='batch_size',

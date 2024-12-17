@@ -11,14 +11,6 @@ from mamkit.components.datasets import (
 
 from pathlib import Path
 
-__all__ = [
-    'LoaderConfig',
-    'UKDebatesConfig',
-    'MMUSEDConfig',
-    'MMUSEDFallacyConfig',
-    'MArgConfig'
-]
-
 
 class LoaderConfig(Configuration):
 
@@ -29,12 +21,10 @@ class LoaderConfig(Configuration):
         config = super().default()
 
         config.add(name='task',
-                   is_required=True,
                    type_hint=str,
                    description='Task name.')
         config.add(name='input_mode',
                    type_hint=InputMode,
-                   is_required=True,
                    description='Task mode',
                    variants=[
                        InputMode.TEXT_ONLY,
@@ -42,7 +32,6 @@ class LoaderConfig(Configuration):
                        InputMode.TEXT_AUDIO
                    ])
         config.add(name='download_url',
-                   is_required=True,
                    type_hint=str,
                    description='URL where to download the dataset.')
 
@@ -62,17 +51,17 @@ class UKDebatesConfig(LoaderConfig):
         config = super().default()
 
         config.task = 'asd'
+        config.get('task').allowed_range = lambda t: t in ['asd']
         config.download_url = 'http://argumentationmining.disi.unibo.it/dataset_aaai2016.tgz'
+
         config.add(name='folder_name',
                    value='UKDebates',
                    type_hint=str,
-                   is_required=True,
                    description='Dataset folder name containing data')
         config.add(name='audio_path',
                    value=Path('dataset', 'audio'),
                    type_hint=Path,
-                   description='Relative path where to store audio content',
-                   is_required=True)
+                   description='Relative path where to store audio content')
 
         return config
 
@@ -315,7 +304,7 @@ class MArgConfig(LoaderConfig):
                    type_hint=Dict[str, str],
                    description='File to id debate mapping',
                    is_required=True)
-        config.add(name='debate_id_map',
+        config.add(name='file_map_timestamp',
                    value={
                        'us_election_2020_1st_presidential_debate_part1_timestamp.csv': 'us_election_2020_1st_presidential_debate_split.csv',
                        'us_election_2020_1st_presidential_debate_part2_timestamp.csv': 'us_election_2020_1st_presidential_debate_split.csv',

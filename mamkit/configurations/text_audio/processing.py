@@ -41,25 +41,25 @@ class MultimodalProcessorConfig(Configuration):
 
         config.get('audio_processor').variants = [
             RegistrationKey(name='processor',
-                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused-fallacy', 'task:afc', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:mmused-fallacy', 'task:afc', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit')
         ]
         config.get('text_processor').variants = [
@@ -110,10 +110,10 @@ class MultimodalProcessorConfig(Configuration):
 
         config.get('audio_processor').variants = [
             RegistrationKey(name='processor',
-                            tags={'data:marg', 'task:arc', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:marg', 'task:arc', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:marg', 'task:arc', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:marg', 'task:arc', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit')
         ]
         config.get('text_processor').variants = [
@@ -251,25 +251,25 @@ class MultimodalProcessorConfig(Configuration):
 
         config.get('audio_processor').variants = [
             RegistrationKey(name='processor',
-                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused-fallacy', 'task:afc', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:mmused-fallacy', 'task:afc', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit')
         ]
         config.text_processor = None
@@ -289,10 +289,10 @@ class MultimodalProcessorConfig(Configuration):
 
         config.get('audio_processor').variants = [
             RegistrationKey(name='processor',
-                            tags={'data:marg', 'task:arc', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:marg', 'task:arc', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:marg', 'task:arc', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:marg', 'task:arc', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit')
         ]
         config.text_processor = None
@@ -312,25 +312,25 @@ class MultimodalProcessorConfig(Configuration):
 
         config.get('audio_processor').variants = [
             RegistrationKey(name='processor',
-                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:ukdebates', 'task:asd', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:mmused', 'task:asd', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:mmused', 'task:acc', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:mmused-fallacy', 'task:afc', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:mmused-fallacy', 'task:afc', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit')
         ]
         config.text_processor = RegistrationKey(name='processor',
@@ -352,10 +352,10 @@ class MultimodalProcessorConfig(Configuration):
 
         config.get('audio_processor').variants = [
             RegistrationKey(name='processor',
-                            tags={'data:marg', 'task:arc', 'audio-transformer', 'mancini_2024_mamkit'},
+                            tags={'data:marg', 'task:arc', 'audio-transformer', 'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             RegistrationKey(name='processor',
-                            tags={'data:marg', 'task:arc', 'audio-transformer', 'mancini_2022_argmining'},
+                            tags={'data:marg', 'task:arc', 'audio-transformer', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
         ]
         config.text_processor = RegistrationKey(name='processor',

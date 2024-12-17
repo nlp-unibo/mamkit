@@ -5,7 +5,7 @@ from typing import List
 
 import lightning as L
 import numpy as np
-from cinnamon.component import Component
+from cinnamon.component import RunnableComponent
 from cinnamon.registry import RegistrationKey, Registry
 from lightning import seed_everything
 from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
@@ -18,27 +18,27 @@ from mamkit.utility.callbacks import PycharmProgressBar
 logger = logging.getLogger(__name__)
 
 
-class EvaluationPipeline(Component):
+class EvaluationPipeline(RunnableComponent):
 
     def __init__(
             self,
             save_path: Path,
-            loader: RegistrationKey,
-            model: RegistrationKey,
-            trainer_args: RegistrationKey,
-            early_stopping_args: RegistrationKey,
-            model_checkpoint_args: RegistrationKey,
+            loader_key: RegistrationKey,
+            model_key: RegistrationKey,
+            trainer_config_key: RegistrationKey,
+            early_stopping_config_key: RegistrationKey,
+            model_checkpoint_config_key: RegistrationKey,
             seeds: List[int],
             data_split_key: str,
     ):
         self.save_path = save_path
 
-        self.loader = loader
-        self.model = model
-        self.trainer_args = trainer_args
+        self.loader_key = loader_key
+        self.model_key = model_key
+        self.trainer_config_key = trainer_config_key
 
-        self.early_stopping_args = early_stopping_args
-        self.model_checkpoint_args = model_checkpoint_args
+        self.early_stopping_config_key = early_stopping_config_key
+        self.model_checkpoint_config_key = model_checkpoint_config_key
 
         self.seeds = seeds
         self.data_split_key = data_split_key
@@ -48,13 +48,13 @@ class EvaluationPipeline(Component):
     ):
         metrics = {}
 
-        loader = Loader.build_component(registration_key=self.loader)
+        loader = Loader.build_component(registration_key=self.loader_key)
 
         for seed in self.seeds:
             seed_everything(seed=seed)
 
             for split_info in loader.get_splits(key=self.data_split_key):
-                model: MAMKitModel = MAMKitModel.build_component(registration_key=self.model)
+                model: MAMKitModel = MAMKitModel.build_component(registration_key=self.model_key)
 
                 model.build_processor()
                 model.processor.fit(train_data=split_info.train)
@@ -79,9 +79,9 @@ class EvaluationPipeline(Component):
                                              shuffle=False,
                                              collate_fn=model.collator)
 
-                trainer_config = Registry.build_configuration(registration_key=self.trainer_args)
-                es_config = Registry.build_configuration(registration_key=self.early_stopping_args)
-                model_ckpt_config = Registry.build_configuration(registration_key=self.model_checkpoint_args)
+                trainer_config = Registry.build_configuration(registration_key=self.trainer_config_key)
+                es_config = Registry.build_configuration(registration_key=self.early_stopping_config_key)
+                model_ckpt_config = Registry.build_configuration(registration_key=self.model_checkpoint_config_key)
 
                 trainer = L.Trainer(**trainer_config.to_value_dict(),
                                     callbacks=[EarlyStopping(**es_config.to_value_dict()),

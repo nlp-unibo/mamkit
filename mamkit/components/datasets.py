@@ -1,4 +1,5 @@
 import abc
+import json
 import logging
 import os
 import shutil
@@ -14,7 +15,6 @@ from typing import Optional, List, Callable, Union, Dict
 
 import numpy as np
 import pandas as pd
-import simplejson as sj
 from cinnamon.component import Component
 from nltk.tokenize import sent_tokenize
 from pydub import AudioSegment
@@ -51,6 +51,9 @@ class InputMode(Enum):
     TEXT_ONLY = 'text-only'
     AUDIO_ONLY = 'audio-only'
     TEXT_AUDIO = 'text-audio'
+
+    def __str__(self):
+        return str(self.value)
 
 
 class UnimodalDataset(Dataset):
@@ -179,12 +182,15 @@ class Loader(Component, abc.ABC):
 
     def __init__(
             self,
-            task_name: str,
+            task: str,
             input_mode: InputMode,
+            download_url: str,
             base_data_path: Optional[Path] = None
     ):
-        self.task_name = task_name
+        self.task = task
         self.input_mode = input_mode
+        self.download_url = download_url
+
         self.base_data_path = Path.cwd() if base_data_path is None else base_data_path
 
         self.splitters = {
@@ -267,16 +273,15 @@ class UKDebates(Loader):
 
     def __init__(
             self,
+            folder_name: str,
+            audio_path: Path,
             **kwargs
     ):
         super().__init__(**kwargs)
 
-        assert self.task_name == 'asd'
-
-        self.download_url = 'http://argumentationmining.disi.unibo.it/dataset_aaai2016.tgz'
-        self.folder_name = 'UKDebates'
+        self.folder_name = folder_name
         self.data_path = Path(self.base_data_path, self.folder_name).resolve()
-        self.audio_path = self.data_path.joinpath('dataset', 'audio')
+        self.audio_path = self.data_path.joinpath(audio_path)
 
         if not self.data_path.exists():
             self.load()
@@ -388,7 +393,7 @@ class UKDebates(Loader):
                 file_path=folds_path)
 
         with folds_path.open('r') as json_file:
-            folds_data = sj.load(json_file)
+            folds_data = json.load(json_file)
             folds_data = sorted(folds_data.items(), key=lambda item: int(item[0].split('_')[-1]))
 
         split_info = []
@@ -411,7 +416,7 @@ class MMUSED(Loader):
     ):
         super().__init__(**kwargs)
 
-        assert self.task_name in ['asd', 'acc']
+        assert self.task in ['asd', 'acc']
 
         self.folder_name = 'MMUSED'
         self.deleted_ids = ['13_1988, 17_1992, 42_2016, 43_2016']
@@ -990,7 +995,7 @@ class MMUSED(Loader):
                        for document_id, clip_id in zip(df.Document.values, df['idClip'].values)]
         df['audio_paths'] = audio_paths
 
-        if self.task_name == 'acc':
+        if self.task == 'acc':
             df = df[df['Component'].isin(['Premise', 'Claim'])]
             df.loc[df.Component == 'Premise', 'Component'] = 0
             df.loc[df.Component == 'Claim', 'Component'] = 1
@@ -1023,7 +1028,7 @@ class MMUSEDFallacy(Loader):
     ):
         super().__init__(**kwargs)
 
-        assert self.task_name in ['afc']
+        assert self.task in ['afc']
 
         self.sample_rate = sample_rate
         self.folder_name = 'MMUSED-fallacy'
@@ -1250,7 +1255,7 @@ class MMUSEDFallacy(Loader):
                        for debate_id, clip_id in zip(df['Dialogue ID'].values, df['idClipSnippet'].values)]
         df['audio_paths'] = audio_paths
 
-        if self.task_name == 'afc':
+        if self.task == 'afc':
             df.loc[df.Fallacy == 'AppealtoEmotion', 'Fallacy'] = 0
             df.loc[df.Fallacy == 'AppealtoAuthority', 'Fallacy'] = 1
             df.loc[df.Fallacy == 'AdHominem', 'Fallacy'] = 2
@@ -1302,7 +1307,7 @@ class MArg(Loader):
         super().__init__(**kwargs)
 
         assert confidence in [0.85, 1.0]
-        assert self.task_name in ['arc']
+        assert self.task in ['arc']
 
         self.confidence = confidence
         self.folder_name = 'MArg'
@@ -1624,7 +1629,7 @@ class MArg(Loader):
     ) -> pd.DataFrame:
         df = pd.read_csv(self.final_path)
 
-        if self.task_name == 'arc':
+        if self.task == 'arc':
             df.loc[df.relation == 'neither', 'relation'] = 0
             df.loc[df.relation == 'support', 'relation'] = 1
             df.loc[df.relation == 'attack', 'relation'] = 2
@@ -1650,7 +1655,7 @@ class MArg(Loader):
                 file_path=folds_path)
 
         with folds_path.open('r') as json_file:
-            folds_data = sj.load(json_file)
+            folds_data = json.load(json_file)
             folds_data = sorted(folds_data.items(), key=lambda item: int(item[0].split('_')[-1]))
 
         split_info = []
