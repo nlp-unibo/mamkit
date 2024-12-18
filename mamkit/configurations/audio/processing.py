@@ -161,7 +161,7 @@ class MFCCExtractorConfig(Configuration):
     ):
         config = cls.default()
 
-        config.pooling_size = None
+        config.pooling_sizes = None
 
         return config
 
@@ -175,7 +175,7 @@ class MFCCExtractorConfig(Configuration):
     ):
         config = cls.default()
 
-        config.pooling_size = [5, 5, 5]
+        config.pooling_sizes = [5, 5, 5]
 
         return config
 
@@ -189,7 +189,7 @@ class MFCCExtractorConfig(Configuration):
     ):
         config = cls.default()
 
-        config.pooling_size = [5]
+        config.pooling_sizes = [5]
 
         return config
 
@@ -203,7 +203,7 @@ class MFCCExtractorConfig(Configuration):
     ):
         config = cls.default()
 
-        config.pooling_size = [5]
+        config.pooling_sizes = [5]
 
         return config
 
@@ -217,7 +217,7 @@ class MFCCExtractorConfig(Configuration):
     ):
         config = cls.default()
 
-        config.pooling_size = [5]
+        config.pooling_sizes = [5]
 
         return config
 
@@ -231,7 +231,7 @@ class MFCCExtractorConfig(Configuration):
     ):
         config = cls.default()
 
-        config.pooling_size = [10]
+        config.pooling_sizes = [10]
 
         return config
 
@@ -245,7 +245,7 @@ class MFCCExtractorConfig(Configuration):
     ):
         config = cls.default()
 
-        config.pooling_size = [5]
+        config.pooling_sizes = [5]
 
         return config
 
@@ -259,7 +259,7 @@ class MFCCExtractorConfig(Configuration):
     ):
         config = cls.default()
 
-        config.pooling_size = None
+        config.pooling_sizes = None
 
         return config
 
@@ -273,7 +273,7 @@ class MFCCExtractorConfig(Configuration):
     ):
         config = cls.default()
 
-        config.pooling_size = None
+        config.pooling_sizes = None
 
         return config
 

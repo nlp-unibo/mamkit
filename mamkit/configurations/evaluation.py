@@ -57,7 +57,7 @@ class EvaluationPipelineConfig(Configuration):
     ):
         config = cls.default()
 
-        config.loader_key = RegistrationKey(name='loader', tags={'data:ukdebates'}, namespace='mamkit')
+        config.loader_key = RegistrationKey(name='dataset', tags={'data:ukdebates'}, namespace='mamkit')
         config.get('model_key').variants = [
             # Text-only
             RegistrationKey(name='model',
@@ -140,7 +140,7 @@ class EvaluationPipelineConfig(Configuration):
     ):
         config = cls.default()
 
-        config.loader_key = RegistrationKey(name='loader', tags={'data:mmused'}, namespace='mamkit')
+        config.loader_key = RegistrationKey(name='dataset', tags={'data:mmused'}, namespace='mamkit')
         config.get('model_key').variants = [
             # Text-only
             RegistrationKey(name='model',
@@ -271,7 +271,7 @@ class EvaluationPipelineConfig(Configuration):
     ):
         config = cls.default()
 
-        config.loader_key = RegistrationKey(name='loader', tags={'data:mmused-fallacy'}, namespace='mamkit')
+        config.loader_key = RegistrationKey(name='dataset', tags={'data:mmused-fallacy'}, namespace='mamkit')
         config.get('model_key').variants = [
             # Text-only
             RegistrationKey(name='model',
@@ -342,7 +342,7 @@ class EvaluationPipelineConfig(Configuration):
     ):
         config = cls.default()
 
-        config.loader_key = RegistrationKey(name='loader', tags={'data:mmused-fallacy'}, namespace='mamkit')
+        config.loader_key = RegistrationKey(name='dataset', tags={'data:mmused-fallacy'}, namespace='mamkit')
         config.get('model_key').variants = [
             # Text-only
             RegistrationKey(name='model',
