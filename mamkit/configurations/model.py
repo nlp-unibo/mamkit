@@ -28,7 +28,6 @@ class MAMKitModelConfig(Configuration):
                    description='Loss function for optimization')
         config.add(name='optimizer_class',
                    value=th.optim.Adam,
-                   type_hint=th.optim.Optimizer,
                    description='Optimizer class')
         config.add(name='optimizer_kwargs',
                    type_hint=Optional[Dict[str, Any]],

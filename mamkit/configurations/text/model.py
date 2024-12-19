@@ -1,4 +1,4 @@
-from typing import Type, List, Callable
+from typing import Type, List, Callable, Optional
 
 import torch as th
 from cinnamon.configuration import C
@@ -42,19 +42,20 @@ class BiLSTMConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'bilstm', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=BiLSTM)
+                     component_class=BiLSTM,
+                     build_recursively=False)
     def ukdebates_asd_mancini_2024_mamkit(
             cls: Type[C]
     ) -> C:
         config = cls.default()
 
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text'},
+                                              namespace='mamkit')
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'data:ukdebates', 'task:asd', 'vocab-builder',
-                           'source:mancini-2024-mamkit'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'data:ukdebates', 'task:asd', 'vocab-builder',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
@@ -78,19 +79,20 @@ class BiLSTMConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'bilstm', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
-                     component_class=BiLSTM)
+                     component_class=BiLSTM,
+                     build_recursively=False)
     def ukdebates_asd_mancini_2022_argmining(
             cls: Type[C]
     ) -> C:
         config = cls.default()
 
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text'},
+                                              namespace='mamkit')
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'data:ukdebates', 'task:asd', 'vocab-builder',
-                           'source:mancini-2022-argmining'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'data:ukdebates', 'task:asd', 'vocab-builder',
+                                                     'source:mancini-2022-argmining'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
@@ -114,19 +116,20 @@ class BiLSTMConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:mmused', 'task:asd', 'mode:text-only', 'bilstm', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=BiLSTM)
+                     component_class=BiLSTM,
+                     build_recursively=False)
     def mmused_asd_mancini_2024_mamkit(
             cls: Type[C]
     ) -> C:
         config = cls.default()
 
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text'},
+                                              namespace='mamkit')
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'data:mmused', 'task:asd', 'vocab-builder',
-                           'source:mancini-2024-mamkit'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'data:mmused', 'task:asd', 'vocab-builder',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -150,19 +153,20 @@ class BiLSTMConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:mmused', 'task:asd', 'mode:text-only', 'bilstm', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
-                     component_class=BiLSTM)
+                     component_class=BiLSTM,
+                     build_recursively=False)
     def mmused_asd_mancini_2022_argmining(
             cls: Type[C]
     ) -> C:
         config = cls.default()
 
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text'},
+                                              namespace='mamkit')
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'data:mmused', 'task:asd', 'vocab-builder',
-                           'source:mancini-2022-argmining'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'data:mmused', 'task:asd', 'vocab-builder',
+                                                     'source:mancini-2022-argmining'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -186,19 +190,20 @@ class BiLSTMConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:mmused', 'task:acc', 'mode:text-only', 'bilstm', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=BiLSTM)
+                     component_class=BiLSTM,
+                     build_recursively=False)
     def mmused_acc_mancini_2024_mamkit(
             cls: Type[C]
     ) -> C:
         config = cls.default()
 
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text'},
+                                              namespace='mamkit')
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'data:mmused', 'task:acc', 'vocab-builder',
-                           'source:mancini-2024-mamkit'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'data:mmused', 'task:acc', 'vocab-builder',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -222,19 +227,20 @@ class BiLSTMConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:mmused', 'task:acc', 'mode:text-only', 'bilstm', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
-                     component_class=BiLSTM)
+                     component_class=BiLSTM,
+                     build_recursively=False)
     def mmused_acc_mancini_2022_argmining(
             cls: Type[C]
     ) -> C:
         config = cls.default()
 
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text'},
+                                              namespace='mamkit')
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'data:mmused', 'task:acc', 'vocab-builder',
-                           'source:mancini-2022-argmining'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'data:mmused', 'task:acc', 'vocab-builder',
+                                                     'source:mancini-2022-argmining'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -258,19 +264,21 @@ class BiLSTMConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'bilstm', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=BiLSTM)
+                     component_class=BiLSTM,
+                     build_recursively=False)
     def mmused_fallacy_afc_mancini_2024_mamkit(
             cls: Type[C]
     ) -> C:
         config = cls.default()
 
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text'},
+                                              namespace='mamkit')
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'data:mmused-fallacy', 'task:afc', 'vocab-builder',
-                           'source:mancini-2024-mamkit'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'data:mmused-fallacy', 'task:afc',
+                                                     'vocab-builder',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
@@ -295,19 +303,20 @@ class BiLSTMConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:marg', 'task:arc', 'mode:text-only', 'bilstm', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=PairBiLSTM)
+                     component_class=PairBiLSTM,
+                     build_recursively=False)
     def marg_arc_mancini_2024_mamkit(
             cls: Type[C]
     ) -> C:
         config = cls.default()
 
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text', 'pair'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text', 'pair'},
+                                              namespace='mamkit')
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'pair', 'data:marg', 'task:arc', 'vocab-builder',
-                           'source:mancini-2024-mamkit'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'pair', 'data:marg', 'task:arc', 'vocab-builder',
+                                                     'source:mancini-2024-mamkit'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
@@ -333,19 +342,20 @@ class BiLSTMConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:marg', 'task:arc', 'mode:text-only', 'source:mancini-2022-argmining'},
                      namespace='mamkit',
-                     component_class=PairBiLSTM)
+                     component_class=PairBiLSTM,
+                     build_recursively=False)
     def marg_arc_mancini_2022_argmining(
             cls: Type[C]
     ) -> C:
         config = cls.default()
 
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text', 'pair'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text', 'pair'},
+                                              namespace='mamkit')
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'pair', 'data:marg', 'task:arc', 'vocab-builder',
-                           'source:mancini-2022-argmining'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'pair', 'data:marg', 'task:arc', 'vocab-builder',
+                                                     'source:mancini-2022-argmining'},
+                                               namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
@@ -377,7 +387,7 @@ class TransformerConfig(MAMKitModelConfig):
         config = super().default()
 
         config.add(name='model_card',
-                   type_hint=str,
+                   type_hint=Optional[str],
                    description='Transformer model card from HuggingFace.',
                    variants=['bert-base-uncased', 'roberta-base'])
         config.add(name='head',
@@ -397,18 +407,19 @@ class TransformerConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=Transformer)
+                     component_class=Transformer,
+                     build_recursively=False)
     def ukdebates_asd_mancini_2024_mamkit(
             cls
     ):
         config = cls.default()
 
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'text-transformer'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'text-transformer'},
+                                               namespace='mamkit')
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text-transformer'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text-transformer'},
+                                              namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
@@ -426,20 +437,22 @@ class TransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'transformer', 'source:mancini-2022-argmining'},
+                     tags={'data:ukdebates', 'task:asd', 'mode:text-only', 'transformer',
+                           'source:mancini-2022-argmining'},
                      namespace='mamkit',
-                     component_class=Transformer)
+                     component_class=Transformer,
+                     build_recursively=False)
     def ukdebates_asd_mancini_2022(
             cls
     ):
         config = cls.default()
 
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'text-transformer'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'text-transformer'},
+                                               namespace='mamkit')
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text-transformer'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text-transformer'},
+                                              namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.82478632, 1.26973684]))
         config.val_metrics = {'val_f1': F1Score(task='binary')}
         config.test_metrics = {'test_f1': F1Score(task='binary')}
@@ -459,18 +472,19 @@ class TransformerConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:mmused', 'task:asd', 'mode:text-only', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=Transformer)
+                     component_class=Transformer,
+                     build_recursively=False)
     def mmused_asd_mancini_2024_mamkit(
             cls
     ):
         config = cls.default()
 
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'text-transformer'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'text-transformer'},
+                                               namespace='mamkit')
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text-transformer'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text-transformer'},
+                                              namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([2.15385234, 0.65116223]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -490,18 +504,19 @@ class TransformerConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:mmused', 'task:acc', 'mode:text-only', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=Transformer)
+                     component_class=Transformer,
+                     build_recursively=False)
     def mmused_acc_mancini_2024_mamkit(
             cls
     ):
         config = cls.default()
 
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'text-transformer'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'text-transformer'},
+                                               namespace='mamkit')
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text-transformer'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text-transformer'},
+                                              namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss()
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=2)}
         config.test_metrics = {'test_f1': F1Score(task='multiclass', num_classes=2)}
@@ -519,20 +534,22 @@ class TransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'transformer', 'source:mancini-2024-eacl'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'transformer',
+                           'source:mancini-2024-eacl'},
                      namespace='mamkit',
-                     component_class=Transformer)
+                     component_class=Transformer,
+                     build_recursively=False)
     def mmused_fallacy_afc_mancini_2024_eacl(
             cls
     ):
         config = cls.default()
 
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'text-transformer'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'text-transformer'},
+                                               namespace='mamkit')
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text-transformer'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text-transformer'},
+                                              namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
@@ -553,20 +570,22 @@ class TransformerConfig(MAMKitModelConfig):
 
     @classmethod
     @register_method(name='model',
-                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'transformer', 'source:mancini-2024-mamkit'},
+                     tags={'data:mmused-fallacy', 'task:afc', 'mode:text-only', 'transformer',
+                           'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=Transformer)
+                     component_class=Transformer,
+                     build_recursively=False)
     def mmused_fallacy_afc_mancini_2024_mamkit(
             cls
     ):
         config = cls.default()
 
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'text-transformer'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'text-transformer'},
+                                               namespace='mamkit')
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text-transformer'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text-transformer'},
+                                              namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(
             weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255]))
         config.val_metrics = {'val_f1': F1Score(task='multiclass', num_classes=6)}
@@ -587,18 +606,19 @@ class TransformerConfig(MAMKitModelConfig):
     @register_method(name='model',
                      tags={'data:marg', 'task:arc', 'mode:text-only', 'transformer', 'source:mancini-2024-mamkit'},
                      namespace='mamkit',
-                     component_class=PairTransformer)
+                     component_class=PairTransformer,
+                     build_recursively=False)
     def marg_arc_mancini_2024_mamkit(
             cls
     ):
         config = cls.default()
 
         config.processor_key = RegistrationKey(name='processor',
-                                           tags={'mode:text-only', 'text-transformer', 'pair'},
-                                           namespace='mamkit')
+                                               tags={'mode:text-only', 'text-transformer', 'pair'},
+                                               namespace='mamkit')
         config.collator_key = RegistrationKey(name='collator',
-                                          tags={'mode:text-only', 'text-transformer', 'pair'},
-                                          namespace='mamkit')
+                                              tags={'mode:text-only', 'text-transformer', 'pair'},
+                                              namespace='mamkit')
         config.loss_function = lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.35685072, 6.16919192, 28.08045977]))
         config.val_metrics = {
             'val_f1': ClassSubsetMulticlassF1Score(num_classes=3, class_subset=[1, 2])}
