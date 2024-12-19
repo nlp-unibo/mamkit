@@ -59,7 +59,7 @@ class UKDebatesConfig(LoaderConfig):
                    type_hint=str,
                    description='Dataset folder name containing data')
         config.add(name='audio_path',
-                   value=Path('dataset', 'audio'),
+                   value=Path('dataset', '../audio'),
                    type_hint=Path,
                    description='Relative path where to store audio content')
 

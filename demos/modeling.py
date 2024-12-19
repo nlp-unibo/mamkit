@@ -43,7 +43,7 @@ def training_from_config():
     logging.info(model)
 
     # Training
-    trainer = lightning.Trainer(**config.trainer_args)
+    trainer = lightning.Trainer(**config.trainer_config_key)
     trainer.fit(model, train_dataloaders=...)
 
 
