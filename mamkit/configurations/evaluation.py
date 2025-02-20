@@ -51,7 +51,8 @@ class EvaluationPipelineConfig(Configuration):
     @register_method(name='evaluation',
                      tags={'data:ukdebates'},
                      namespace='mamkit',
-                     component_class=EvaluationPipeline)
+                     component_class=EvaluationPipeline,
+                     build_recursively=False)
     def ukdebates(
             cls
     ):
@@ -134,7 +135,8 @@ class EvaluationPipelineConfig(Configuration):
     @register_method(name='evaluation',
                      tags={'data:mmused'},
                      namespace='mamkit',
-                     component_class=EvaluationPipeline)
+                     component_class=EvaluationPipeline,
+                     build_recursively=False)
     def mmused(
             cls
     ):
@@ -265,7 +267,8 @@ class EvaluationPipelineConfig(Configuration):
     @register_method(name='evaluation',
                      tags={'data:mmused-fallacy'},
                      namespace='mamkit',
-                     component_class=EvaluationPipeline)
+                     component_class=EvaluationPipeline,
+                     build_recursively=False)
     def mmused_fallacy(
             cls
     ):
@@ -336,7 +339,8 @@ class EvaluationPipelineConfig(Configuration):
     @register_method(name='evaluation',
                      tags={'data:marg'},
                      namespace='mamkit',
-                     component_class=EvaluationPipeline)
+                     component_class=EvaluationPipeline,
+                     build_recursively=False)
     def marg(
             cls
     ):
@@ -352,7 +356,8 @@ class EvaluationPipelineConfig(Configuration):
                             tags={'data:marg', 'task:arc', 'mode:text-only', 'source:mancini-2022-argmining'},
                             namespace='mamkit'),
             RegistrationKey(name='model',
-                            tags={'data:marg', 'task:arc', 'mode:text-only', 'transformer', 'source:mancini-2024-mamkit'},
+                            tags={'data:marg', 'task:arc', 'mode:text-only', 'transformer',
+                                  'source:mancini-2024-mamkit'},
                             namespace='mamkit'),
             # Audio-only
             # RegistrationKey(name='model',
