@@ -72,6 +72,11 @@ def youtube_download(
                 }],
                 'outtmpl': filename.as_posix()
             }
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([link])
-            os.system("youtube-dl --rm-cache-dir")
+            try:
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([link])
+            except yt_dlp.utils.DownloadError as e:
+                logging.info(f'Could not download {link}')
+                raise e
+            finally:
+                os.system("youtube-dl --rm-cache-dir")
