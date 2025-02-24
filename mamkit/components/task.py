@@ -18,7 +18,7 @@ from mamkit.utility.callbacks import PycharmProgressBar
 logger = logging.getLogger(__name__)
 
 
-class EvaluationPipeline(RunnableComponent):
+class Task(RunnableComponent):
 
     def __init__(
             self,

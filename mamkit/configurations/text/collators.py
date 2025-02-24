@@ -1,10 +1,11 @@
 from typing import Type, Dict, Optional
 
+import torchtext
+torchtext.disable_torchtext_deprecation_warning()
+
 from cinnamon.configuration import Configuration, C
 from cinnamon.registry import register_method, RegistrationKey
-import torchtext
 
-torchtext.disable_torchtext_deprecation_warning()
 from torchtext.data.utils import get_tokenizer
 
 from mamkit.components.text.collators import (
@@ -57,7 +58,7 @@ class UnimodalCollatorConfig(Configuration):
     @register_method(name='collator',
                      tags={'mode:text-only', 'text', 'pair'},
                      namespace='mamkit',
-                     component_class=UnimodalCollator)
+                     component_class=PairUnimodalCollator)
     def text_pair(
             cls
     ):
@@ -85,7 +86,7 @@ class UnimodalCollatorConfig(Configuration):
     @register_method(name='collator',
                      tags={'mode:text-only', 'text-transformer', 'pair'},
                      namespace='mamkit',
-                     component_class=UnimodalCollator)
+                     component_class=PairUnimodalCollator)
     def pair_text_transformer(
             cls
     ):
@@ -113,7 +114,7 @@ class UnimodalCollatorConfig(Configuration):
     @register_method(name='collator',
                      tags={'mode:text-only', 'text-transformer-output', 'pair'},
                      namespace='mamkit',
-                     component_class=UnimodalCollator)
+                     component_class=PairUnimodalCollator)
     def pair_text_transformer_output(
             cls
     ):

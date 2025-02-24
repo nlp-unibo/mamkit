@@ -433,6 +433,9 @@ class TransformerConfig(MAMKitModelConfig):
         config.dropout_rate = 0.0
         config.is_transformer_trainable = False
 
+        # config.add_condition(name='model_card_cond',
+        #                      condition=lambda c: c.processor_key.feature_processor.model_card == c.collator_key.feature_collator.model_card)
+
         return config
 
     @classmethod

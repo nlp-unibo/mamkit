@@ -2,11 +2,11 @@ from typing import Type, List
 
 from cinnamon.configuration import Configuration, C
 from cinnamon.registry import RegistrationKey, register_method
-from mamkit.components.evaluation import EvaluationPipeline
+from mamkit.components.task import Task
 from pathlib import Path
 
 
-class EvaluationPipelineConfig(Configuration):
+class TaskConfig(Configuration):
 
     @classmethod
     def default(
@@ -17,7 +17,7 @@ class EvaluationPipelineConfig(Configuration):
         config.add(name='save_path',
                    value=Path('.').resolve(),
                    type_hint=Path,
-                   description='Base path where to save evaluation results')
+                   description='Base path where to save task results')
         config.add(name='loader_key',
                    type_hint=RegistrationKey,
                    description='Loader component')
@@ -48,10 +48,10 @@ class EvaluationPipelineConfig(Configuration):
         return config
 
     @classmethod
-    @register_method(name='evaluation',
+    @register_method(name='task',
                      tags={'data:ukdebates'},
                      namespace='mamkit',
-                     component_class=EvaluationPipeline,
+                     component_class=Task,
                      build_recursively=False)
     def ukdebates(
             cls
@@ -132,10 +132,10 @@ class EvaluationPipelineConfig(Configuration):
         return config
 
     @classmethod
-    @register_method(name='evaluation',
+    @register_method(name='task',
                      tags={'data:mmused'},
                      namespace='mamkit',
-                     component_class=EvaluationPipeline,
+                     component_class=Task,
                      build_recursively=False)
     def mmused(
             cls
@@ -264,10 +264,10 @@ class EvaluationPipelineConfig(Configuration):
         return config
 
     @classmethod
-    @register_method(name='evaluation',
+    @register_method(name='task',
                      tags={'data:mmused-fallacy'},
                      namespace='mamkit',
-                     component_class=EvaluationPipeline,
+                     component_class=Task,
                      build_recursively=False)
     def mmused_fallacy(
             cls
@@ -336,10 +336,10 @@ class EvaluationPipelineConfig(Configuration):
         return config
 
     @classmethod
-    @register_method(name='evaluation',
+    @register_method(name='task',
                      tags={'data:marg'},
                      namespace='mamkit',
-                     component_class=EvaluationPipeline,
+                     component_class=Task,
                      build_recursively=False)
     def marg(
             cls
