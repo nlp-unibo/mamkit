@@ -190,6 +190,7 @@ class PairUnimodalProcessor(Processor):
 
 
 class MultimodalProcessor(Processor):
+
     def __init__(
             self,
             text_processor: ProcessorComponent = None,
