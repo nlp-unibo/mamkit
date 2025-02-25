@@ -1,10 +1,8 @@
 import abc
 import logging
-import os
 import shutil
 import tarfile
 import zipfile
-from collections import Counter
 from dataclasses import dataclass
 from distutils.dir_util import copy_tree
 from enum import Enum
@@ -46,7 +44,8 @@ class UnimodalDataset(Dataset):
     def __init__(
             self,
             inputs,
-            labels
+            labels,
+            context=None
     ):
         """
         ``UnimodalDataset`` constructor.
@@ -58,6 +57,7 @@ class UnimodalDataset(Dataset):
         """
         self.inputs = inputs
         self.labels = labels
+        self.context = context
 
     def __getitem__(
             self,
@@ -73,7 +73,9 @@ class UnimodalDataset(Dataset):
             tuple: input, label
 
         """
-        return self.inputs[idx], self.labels[idx]
+        return self.inputs[idx], \
+            self.labels[idx], \
+            self.context[idx] if self.context is not None else None
 
     def __len__(self):
         return len(self.labels)
@@ -85,17 +87,25 @@ class PairUnimodalDataset(Dataset):
             self,
             a_inputs,
             b_inputs,
-            labels
+            labels,
+            a_context=None,
+            b_context=None
     ):
         self.a_inputs = a_inputs
         self.b_inputs = b_inputs
         self.labels = labels
+        self.a_context = a_context
+        self.b_context = b_context
 
     def __getitem__(
             self,
             idx
     ):
-        return self.a_inputs[idx], self.b_inputs[idx], self.labels[idx]
+        return self.a_inputs[idx], \
+            self.b_inputs[idx], \
+            self.labels[idx], \
+            self.a_context[idx] if self.a_context is not None else None, \
+            self.b_context[idx] if self.b_context is not None else None
 
     def __len__(self):
         return len(self.labels)
@@ -107,17 +117,25 @@ class MultimodalDataset(Dataset):
             self,
             texts,
             audio,
-            labels
+            labels,
+            text_context=None,
+            audio_context=None
     ):
         self.texts = texts
         self.audio = audio
         self.labels = labels
+        self.text_context = text_context
+        self.audio_context = audio_context
 
     def __getitem__(
             self,
             idx
     ):
-        return self.texts[idx], self.audio[idx], self.labels[idx]
+        return self.texts[idx], \
+            self.audio[idx], \
+            self.labels[idx], \
+            self.text_context[idx] if self.text_context is not None else None, \
+            self.audio_context[idx] if self.audio_context is not None else None
 
     def __len__(self):
         return len(self.labels)
@@ -131,19 +149,35 @@ class PairMultimodalDataset(Dataset):
             b_texts,
             a_audio,
             b_audio,
-            labels
+            labels,
+            a_text_context=None,
+            a_audio_context=None,
+            b_text_context=None,
+            b_audio_context=None
     ):
         self.a_texts = a_texts
         self.b_texts = b_texts
         self.a_audio = a_audio
         self.b_audio = b_audio
         self.labels = labels
+        self.a_text_context = a_text_context
+        self.a_audio_context = a_audio_context
+        self.b_text_context = b_text_context
+        self.b_audio_context = b_audio_context
 
     def __getitem__(
             self,
             idx
     ):
-        return self.a_texts[idx], self.b_texts[idx], self.a_audio[idx], self.b_audio[idx], self.labels[idx]
+        return self.a_texts[idx], \
+            self.b_texts[idx], \
+            self.a_audio[idx], \
+            self.b_audio[idx], \
+            self.labels[idx], \
+            self.a_text_context[idx], \
+            self.a_audio_context[idx], \
+            self.b_text_context[idx], \
+            self.b_audio_context[idx]
 
     def __len__(self):
         return len(self.labels)
@@ -573,7 +607,7 @@ class MMUSEDFallacy(Loader):
 
     def generate_clips(
             self
-    ) -> pd.DataFrame:
+    ):
         df = pd.read_pickle(self.data_path.joinpath('dataset.pkl'))
 
         df['dialogue_paths'] = None
@@ -599,19 +633,19 @@ class MMUSEDFallacy(Loader):
                 if clip_filepath.exists():
                     continue
 
-                audio_clip = recording[start_time:end_time]
+                audio_clip = recording[start_time * 1000: end_time * 1000]
                 audio_clip = audio_clip.set_frame_rate(self.sample_rate)
                 audio_clip = audio_clip.set_channels(1)
                 audio_clip.export(clip_filepath, format="wav")
 
-            df.loc[row_idx, 'dialogue_paths'] = dialogue_paths
+            df.at[row_idx, 'dialogue_paths'] = dialogue_paths
 
             # Snippet
             for sent_idx, sent, start_time, end_time in zip(row['snippet_indexes'],
                                                             row['snippet_sentences'],
                                                             row['snippet_start_time'],
                                                             row['snippet_end_time']):
-                clip_name = f'{row["dialogue_id"]}_{sent_idx}'
+                clip_name = f'{sent_idx}.wav'
                 clip_filepath = self.clips_path.joinpath(row['dialogue_id'], clip_name)
                 clip_filepath.parent.resolve().mkdir(parents=True, exist_ok=True)
 
@@ -620,16 +654,16 @@ class MMUSEDFallacy(Loader):
                 if clip_filepath.exists():
                     continue
 
-                audio_clip = recording[start_time:end_time]
+                audio_clip = recording[start_time * 1000: end_time * 1000]
                 audio_clip = audio_clip.set_frame_rate(self.sample_rate)
                 audio_clip = audio_clip.set_channels(1)
                 audio_clip.export(clip_filepath, format="wav")
 
-            df.loc[row_idx, 'snippet_paths'] = snippet_paths
+            df.at[row_idx, 'snippet_paths'] = snippet_paths
 
-        return df
+        df.to_pickle(self.dataset_path)
 
-    def build_clips(
+    def download_audio(
             self
     ):
         dl_df = pd.read_csv(self.data_path.joinpath("download_links.csv"), sep=';')
@@ -641,9 +675,6 @@ class MMUSEDFallacy(Loader):
         youtube_download(save_path=self.audio_path,
                          debate_ids=dl_df.id.values,
                          debate_urls=dl_df.link.values)
-
-        dl_df = self.generate_clips()
-        dl_df.to_pickle(self.dataset_path)
 
     def load(
             self
@@ -666,62 +697,76 @@ class MMUSEDFallacy(Loader):
 
             logging.info('Download completed!')
 
+        if not self.audio_path.exists():
+            logging.info('Downloading audio data...')
+            self.download_audio()
+            logging.info('Download completed!')
+
         if not self.clips_path.exists():
             logging.info('Building audio clips...')
-            self.build_clips()
-            logging.info('Build completed!')
+            self.generate_clips()
+            logging.info('Build completed')
 
             # clear
-            shutil.rmtree(self.audio_path)
+            # TODO: uncomment when done testing
+            # shutil.rmtree(self.audio_path)
 
     def _get_text_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         if self.task_name == 'afc':
-            inputs = df.snippet.values if not self.with_context else (df.snippet.values, df.dialogue.values)
+            inputs = df.snippet.values
+            context = df.dialogue.values if self.with_context else None
             labels = df.fallacy.values
         else:
-            inputs = df.sentences.values if not self.with_context else (df.sentence.values, df.context.values)
+            inputs = df.sentences.values
+            context = df.context.values if self.with_context else None
             labels = df.label.values
 
         return UnimodalDataset(inputs=inputs,
-                               labels=labels)
+                               labels=labels,
+                               context=context)
 
     def _get_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         if self.task_name == 'afc':
-            inputs = df.snippet_paths.values if not self.with_context else (
-            df.snippet_path.values, df.dialogue_path.values)
+            inputs = df.snippet_paths.values
+            context = df.dialogue_path.values if self.with_context else None
             labels = df.fallacy.values
         else:
-            inputs = df.sentence_path.values if not self.with_context else (
-            df.sentence_path.values, df.context_paths.values)
+            inputs = df.sentence_path.values
+            context = df.context_paths.values if self.with_context else None
             labels = df.label.values
 
         return UnimodalDataset(inputs=inputs,
-                               labels=labels)
+                               labels=labels,
+                               context=context)
 
     def _get_text_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
         if self.task_name == 'afc':
-            texts = df.snippet.values if not self.with_context else (df.snippet.values, df.dialogue.values)
-            audio = df.snippet_paths.values if not self.with_context else (
-            df.snippet_path.values, df.dialogue_path.values)
+            texts = df.snippet.values
+            text_context = df.dialogue.values if self.with_context else None
+            audio = df.snippet_paths.values
+            audio_context = df.dialogue_path.values if self.with_context else None
             labels = df.fallacy.values
         else:
-            texts = df.sentences.values if not self.with_context else (df.sentence.values, df.context.values)
-            audio = df.sentence_path.values if not self.with_context else (
-            df.sentence_path.values, df.context_paths.values)
+            texts = df.sentences.values
+            text_context = df.context.values if self.with_context else None
+            audio = df.sentence_path.values
+            audio_context = df.context_paths.values if self.with_context else None
             labels = df.label.values
 
         return MultimodalDataset(texts=texts,
                                  audio=audio,
-                                 labels=labels)
+                                 labels=labels,
+                                 text_context=text_context,
+                                 audio_context=audio_context)
 
     def _build_afd_dataset(
             self,
@@ -775,6 +820,45 @@ class MMUSEDFallacy(Loader):
 
         return pd.DataFrame(afd_data)
 
+    # TODO: build context as AFD
+    def _build_afc_context(
+            self,
+            df: pd.DataFrame
+    ):
+        for row_idx, row in df.iterrows():
+            snippet_index = min(row['snippet_indexes'])
+
+            # Past context
+            context_indexes = [item_idx for item_idx, dial_idx in enumerate(row['dialogue_indexes'])
+                               if dial_idx < snippet_index][-self.context_window:]
+
+            # Future context if past not available
+            if not len(context_indexes):
+                context_indexes = [item_idx for item_idx, dial_idx in enumerate(row['dialogue_indexes'])
+                                   if dial_idx > snippet_index][-self.context_window:]
+
+            dialogue_indexes = [item for idx, item in enumerate(row['dialogue_indexes']) if idx in context_indexes]
+            dialogue_start_time = [item for idx, item in enumerate(row['dialogue_start_time']) if
+                                   idx in context_indexes]
+            dialogue_end_time = [item for idx, item in enumerate(row['dialogue_end_time']) if idx in context_indexes]
+            dialogue_sentences = [item for idx, item in enumerate(row['dialogue_sentences']) if idx in context_indexes]
+            dialogue_tokens = [item for idx, item in enumerate(row['dialogue_tokens']) if idx in context_indexes]
+            dialogue_whisper_indexes = [item for idx, item in enumerate(row['dialogue_whisper_indexes']) if
+                                        idx in context_indexes]
+            dialogue = ' '.join(dialogue_sentences)
+            dialogue_paths = [item for idx, item in enumerate(row['dialogue_paths']) if idx in context_indexes]
+
+            df.at[row_idx, 'dialogue_indexes'] = dialogue_indexes
+            df.at[row_idx, 'dialogue_start_time'] = dialogue_start_time
+            df.at[row_idx, 'dialogue_end_time'] = dialogue_end_time
+            df.at[row_idx, 'dialogue_sentences'] = dialogue_sentences
+            df.at[row_idx, 'dialogue_tokens'] = dialogue_tokens
+            df.at[row_idx, 'dialogue_whisper_indexes'] = dialogue_whisper_indexes
+            df.at[row_idx, 'dialogue'] = dialogue
+            df.at[row_idx, 'dialogue_paths'] = dialogue_paths
+
+        return df
+
     @property
     def data(
             self
@@ -783,6 +867,8 @@ class MMUSEDFallacy(Loader):
 
         # afc
         if self.task_name == 'afc':
+            df = self._build_afc_context(df=df)
+
             df.loc[df.fallacy == 'AppealtoEmotion', 'fallacy'] = 0
             df.loc[df.fallacy == 'AppealtoAuthority', 'fallacy'] = 1
             df.loc[df.fallacy == 'AdHominem', 'fallacy'] = 2

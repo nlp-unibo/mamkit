@@ -1,23 +1,20 @@
 import logging
 import pickle
 from pathlib import Path
-from typing import Optional, Iterable, Dict, List
+from typing import Optional, Iterable, Dict, List, Union, Any
 
-import librosa
-import numpy as np
 import torch as th
-from librosa import feature
-from skimage.measure import block_reduce
-from torch.nn.utils.rnn import pad_sequence
-from torchaudio.backend.soundfile_backend import load
-from torchaudio.functional import resample
-import resampy
 from torchtext.vocab import pretrained_aliases, build_vocab_from_iterator
 from tqdm import tqdm
 from transformers import AutoModel, AutoProcessor, AutoTokenizer, AutoFeatureExtractor
 
 from mamkit.data.datasets import UnimodalDataset, MultimodalDataset, MAMDataset, PairUnimodalDataset, \
     PairMultimodalDataset
+from mamkit.utility.processing import encode_audio_and_context_mfcc, encode_audio_and_context_nn, \
+    encode_text_and_context_nn
+
+
+# TODO: sometimes context can be empty -> handle this
 
 
 class Processor:
@@ -49,8 +46,8 @@ class ProcessorComponent:
 
     def fit(
             self,
-            *args,
-            **kwargs
+            inputs: Any,
+            context: Any = None
     ):
         pass
 
@@ -66,17 +63,48 @@ class ProcessorComponent:
 
     def __call__(
             self,
-            *args,
-            **kwargs
+            inputs: Any,
+            context: Any = None
     ):
-        return args, kwargs
+        return inputs, context
+
+
+class PairProcessorComponent:
+
+    def fit(
+            self,
+            a_inputs: Any,
+            b_inputs: Any,
+            a_context: Any = None,
+            b_context: Any = None
+    ):
+        pass
+
+    def clear(
+            self
+    ):
+        pass
+
+    def reset(
+            self
+    ):
+        pass
+
+    def __call__(
+            self,
+            a_inputs: Any,
+            b_inputs: Any,
+            a_context: Any = None,
+            b_context: Any = None
+    ):
+        return a_inputs, b_inputs, a_context, b_context
 
 
 class UnimodalProcessor(Processor):
     def __init__(
             self,
-            features_processor=None,
-            label_processor=None,
+            features_processor: ProcessorComponent = None,
+            label_processor: ProcessorComponent = None,
     ):
         self.features_processor = features_processor
         self.label_processor = label_processor
@@ -86,7 +114,7 @@ class UnimodalProcessor(Processor):
             train_data: UnimodalDataset
     ):
         if self.features_processor is not None:
-            self.features_processor.fit(train_data.inputs)
+            self.features_processor.fit(inputs=train_data.inputs, context=train_data.context)
 
         if self.label_processor is not None:
             self.label_processor.fit(train_data.labels)
@@ -96,7 +124,55 @@ class UnimodalProcessor(Processor):
             data: UnimodalDataset
     ):
         if self.features_processor is not None:
-            data.inputs = self.features_processor(data.inputs)
+            data.inputs, data.context = self.features_processor(inputs=data.inputs, context=data.context)
+
+        if self.label_processor is not None:
+            data.labels = self.label_processor(data.labels)
+
+        return data
+
+    def clear(
+            self
+    ):
+        if self.features_processor is not None:
+            self.features_processor.clear()
+
+        if self.label_processor is not None:
+            self.label_processor.clear()
+
+
+class PairUnimodalProcessor(Processor):
+    def __init__(
+            self,
+            features_processor: PairProcessorComponent = None,
+            label_processor: ProcessorComponent = None,
+    ):
+        self.features_processor = features_processor
+        self.label_processor = label_processor
+
+    def fit(
+            self,
+            train_data: PairUnimodalDataset
+    ):
+        if self.features_processor is not None:
+            self.features_processor.fit(a_inputs=train_data.a_inputs,
+                                        b_inputs=train_data.b_inputs,
+                                        a_context=train_data.a_context,
+                                        b_context=train_data.b_context)
+
+        if self.label_processor is not None:
+            self.label_processor.fit(train_data.labels)
+
+    def __call__(
+            self,
+            data: PairUnimodalDataset
+    ):
+        if self.features_processor is not None:
+            data.a_inputs, data.b_inputs, \
+                data.a_context, data.b_context = self.features_processor(a_inputs=data.a_inputs,
+                                                                         b_inputs=data.b_inputs,
+                                                                         a_context=data.a_context,
+                                                                         b_context=data.b_context)
 
         if self.label_processor is not None:
             data.labels = self.label_processor(data.labels)
@@ -116,9 +192,9 @@ class UnimodalProcessor(Processor):
 class MultimodalProcessor(Processor):
     def __init__(
             self,
-            text_processor=None,
-            audio_processor=None,
-            label_processor=None
+            text_processor: ProcessorComponent = None,
+            audio_processor: ProcessorComponent = None,
+            label_processor: ProcessorComponent = None
     ):
         self.text_processor = text_processor
         self.audio_processor = audio_processor
@@ -129,10 +205,10 @@ class MultimodalProcessor(Processor):
             train_data: MultimodalDataset
     ):
         if self.text_processor is not None:
-            self.text_processor.fit(train_data.texts)
+            self.text_processor.fit(inputs=train_data.texts, context=train_data.text_context)
 
         if self.audio_processor is not None:
-            self.audio_processor.fit(train_data.audio)
+            self.audio_processor.fit(inputs=train_data.audio, context=train_data.audio_context)
 
         if self.label_processor is not None:
             self.label_processor.fit(train_data.labels)
@@ -142,10 +218,10 @@ class MultimodalProcessor(Processor):
             data: MultimodalDataset
     ):
         if self.text_processor is not None:
-            data.texts = self.text_processor(data.texts)
+            data.texts, data.text_context = self.text_processor(inputs=data.texts, context=data.text_context)
 
         if self.audio_processor is not None:
-            data.audio = self.audio_processor(data.audio)
+            data.audio, data.audio_context = self.audio_processor(inputs=data.audio, context=data.audio_context)
 
         if self.label_processor is not None:
             data.labels = self.label_processor(data.labels)
@@ -165,53 +241,12 @@ class MultimodalProcessor(Processor):
             self.label_processor.clear()
 
 
-class PairUnimodalProcessor(Processor):
-    def __init__(
-            self,
-            features_processor=None,
-            label_processor=None,
-    ):
-        self.features_processor = features_processor
-        self.label_processor = label_processor
-
-    def fit(
-            self,
-            train_data: PairUnimodalDataset
-    ):
-        if self.features_processor is not None:
-            self.features_processor.fit(train_data.a_inputs, train_data.b_inputs)
-
-        if self.label_processor is not None:
-            self.label_processor.fit(train_data.labels)
-
-    def __call__(
-            self,
-            data: PairUnimodalDataset
-    ):
-        if self.features_processor is not None:
-            data.a_inputs, data.b_inputs = self.features_processor(data.a_inputs, data.b_inputs)
-
-        if self.label_processor is not None:
-            data.labels = self.label_processor(data.labels)
-
-        return data
-
-    def clear(
-            self
-    ):
-        if self.features_processor is not None:
-            self.features_processor.clear()
-
-        if self.label_processor is not None:
-            self.label_processor.clear()
-
-
 class PairMultimodalProcessor(Processor):
     def __init__(
             self,
-            text_processor=None,
-            audio_processor=None,
-            label_processor=None
+            text_processor: PairProcessorComponent = None,
+            audio_processor: PairProcessorComponent = None,
+            label_processor: ProcessorComponent = None
     ):
         self.text_processor = text_processor
         self.audio_processor = audio_processor
@@ -222,10 +257,12 @@ class PairMultimodalProcessor(Processor):
             train_data: PairMultimodalDataset
     ):
         if self.text_processor is not None:
-            self.text_processor.fit(train_data.a_texts, train_data.b_texts)
+            self.text_processor.fit(a_inputs=train_data.a_texts, b_inputs=train_data.b_texts,
+                                    a_context=train_data.a_text_context, b_context=train_data.b_text_context)
 
         if self.audio_processor is not None:
-            self.audio_processor.fit(train_data.a_audio, train_data.b_audio)
+            self.audio_processor.fit(a_inputs=train_data.a_audio, b_inputs=train_data.b_audio,
+                                     a_context=train_data.a_audio_context, b_context=train_data.b_audio_context)
 
         if self.label_processor is not None:
             self.label_processor.fit(train_data.labels)
@@ -235,10 +272,18 @@ class PairMultimodalProcessor(Processor):
             data: PairMultimodalDataset
     ):
         if self.text_processor is not None:
-            data.a_texts, data.b_texts = self.text_processor(data.a_texts, data.b_texts)
+            data.a_texts, data.b_texts, \
+                data.a_text_context, data.b_text_context = self.text_processor(a_inputs=data.a_texts,
+                                                                               b_inputs=data.b_texts,
+                                                                               a_context=data.a_text_context,
+                                                                               b_context=data.b_text_context)
 
         if self.audio_processor is not None:
-            data.a_audio, data.b_audio = self.audio_processor(data.a_audio, data.b_audio)
+            data.a_audio, data.b_audio, \
+                data.a_audio_context, data.b_audio_context = self.audio_processor(a_inputs=data.a_audio,
+                                                                                  b_inputs=data.b_audio,
+                                                                                  a_context=data.a_audio_context,
+                                                                                  b_context=data.b_audio_context)
 
         if self.label_processor is not None:
             data.labels = self.label_processor(data.labels)
@@ -276,11 +321,13 @@ class VocabBuilder(ProcessorComponent):
 
     def fit(
             self,
-            texts
+            inputs: List[str],
+            context: List[str] = None
     ):
         logging.info('Building vocabulary...')
+        vocab_input = inputs if context is None else set(inputs + context)
         self.vocab = build_vocab_from_iterator(
-            iterator=iter([self.tokenizer(text) for text in texts]),
+            iterator=iter([self.tokenizer(text) for text in vocab_input]),
             specials=['<pad>', '<unk>'],
             special_first=True,
             **self.tokenization_args
@@ -292,9 +339,10 @@ class VocabBuilder(ProcessorComponent):
 
     def __call__(
             self,
-            texts
+            inputs: List[str],
+            context: List[str] = None
     ):
-        return texts
+        return inputs, context
 
     def clear(
             self
@@ -307,7 +355,7 @@ class VocabBuilder(ProcessorComponent):
         self.embedding_matrix = None
 
 
-class PairVocabBuilder(ProcessorComponent):
+class PairVocabBuilder(PairProcessorComponent):
 
     def __init__(
             self,
@@ -325,12 +373,22 @@ class PairVocabBuilder(ProcessorComponent):
 
     def fit(
             self,
-            a_texts,
-            b_texts
+            a_texts: List[str],
+            b_texts: List[str],
+            a_context: List[str] = None,
+            b_context: List[str] = None
     ):
         logging.info('Building vocabulary...')
+
+        vocab_input = a_texts + b_texts
+        if a_context is not None:
+            vocab_input += a_context
+        if b_context is not None:
+            vocab_input += b_context
+
+        vocab_input = set(vocab_input)
         self.vocab = build_vocab_from_iterator(
-            iterator=iter([self.tokenizer(text) for text in list(a_texts) + list(b_texts)]),
+            iterator=iter([self.tokenizer(text) for text in vocab_input]),
             specials=['<pad>', '<unk>'],
             special_first=True,
             **self.tokenization_args
@@ -342,10 +400,12 @@ class PairVocabBuilder(ProcessorComponent):
 
     def __call__(
             self,
-            a_texts,
-            b_texts
+            a_texts: List[str],
+            b_texts: List[str],
+            a_context: List[str] = None,
+            b_context: List[str] = None
     ):
-        return a_texts, b_texts
+        return a_texts, b_texts, a_context, b_context
 
     def clear(
             self
@@ -375,72 +435,44 @@ class MFCCExtractor(ProcessorComponent):
         self.remove_energy = remove_energy
         self.normalize = normalize
         self.serialization_path = serialization_path if serialization_path is not None else Path('mfccs.pkl')
+        self.preloaded_mfccs = {}
 
-    def parse_audio(
-            self,
-            audio_file
-    ):
-        audio, sampling_rate = librosa.load(audio_file)
-        if sampling_rate != self.sampling_rate:
-            audio = resampy.resample(audio, sampling_rate, self.sampling_rate)
-        mfccs = librosa.feature.mfcc(y=audio, sr=sampling_rate, n_mfcc=self.mfccs)[2:]
-        spectral_centroids = librosa.feature.spectral_centroid(y=audio, sr=self.sampling_rate)
-        spectral_bandwidth = librosa.feature.spectral_bandwidth(y=audio, sr=self.sampling_rate)
-        spectral_rolloff = librosa.feature.spectral_rolloff(y=audio, sr=self.sampling_rate)
-        spectral_contrast = librosa.feature.spectral_contrast(y=audio, sr=self.sampling_rate)
-        chroma_ft = librosa.feature.chroma_stft(y=audio, sr=self.sampling_rate)
-
-        # [frames, mfccs]
-        features = np.concatenate(
-            (spectral_centroids, spectral_bandwidth, spectral_rolloff, spectral_contrast, chroma_ft, mfccs),
-            axis=0).transpose()
-
-        if self.remove_energy:
-            features = features[:, 1:]
-
-        if self.pooling_sizes is not None:
-            for pooling_size in self.pooling_sizes:
-                features = block_reduce(features, (pooling_size, 1), np.mean)
-
-        if self.normalize and features.shape[0] > 1:
-            mean = np.mean(features, axis=0)
-            std = np.std(features, axis=0)
-            features = np.divide((features - mean[np.newaxis, :]), std[np.newaxis, :])
-
-        return features
+        if self.serialization_path.exists():
+            with self.serialization_path.open('rb') as f:
+                self.preloaded_mfccs: Dict = pickle.load(f)
 
     def __call__(
             self,
-            audio_files: Iterable[Path]
+            inputs: List[Union[Path, List[Path]]],
+            context: List[List[Path]] = None
     ):
-        preloaded_mfccs: Dict = {}
-        preloaded_length = 0
-        if self.serialization_path.exists():
-            with self.serialization_path.open('rb') as f:
-                preloaded_mfccs: Dict = pickle.load(f)
-                preloaded_length = len(preloaded_mfccs)
+        preloaded_length = len(self.preloaded_mfccs)
 
-        features = []
-        for audio_file in tqdm(audio_files, desc='Extracting MFCCs'):
-            audio_file = Path(audio_file) if type(audio_file) != Path else audio_file
-            assert audio_file.is_file(), f'Could not find file {audio_file}'
+        input_context = context if context is not None else [None] * len(inputs)
 
-            if audio_file.as_posix() in preloaded_mfccs:
-                audio_features = preloaded_mfccs[audio_file.as_posix()]
-            else:
-                audio_features = self.parse_audio(audio_file=audio_file)
-                preloaded_mfccs[audio_file.as_posix()] = audio_features
+        input_features, context_features = [], []
+        for audio_input, audio_context in tqdm(zip(inputs, input_context), desc='Extracting MFCCs'):
+            audio_features, context_audio_features = encode_audio_and_context_mfcc(audio_input=audio_input,
+                                                                                   audio_context=audio_context,
+                                                                                   preloaded_mfccs=self.preloaded_mfccs,
+                                                                                   mfccs=self.mfccs,
+                                                                                   normalize=self.normalize,
+                                                                                   pooling_sizes=self.pooling_sizes,
+                                                                                   remove_energy=self.remove_energy,
+                                                                                   sampling_rate=self.sampling_rate)
 
-            features.append(audio_features)
+            input_features.append(audio_features)
+            if context_audio_features is not None:
+                context_features.append(context_audio_features)
 
-        if len(preloaded_mfccs) != preloaded_length:
+        if len(self.preloaded_mfccs) != preloaded_length:
             with self.serialization_path.open('wb') as f:
-                pickle.dump(preloaded_mfccs, f)
+                pickle.dump(self.preloaded_mfccs, f)
 
-        return features
+        return input_features, context_features if len(context_features) else None
 
 
-class PairMFCCExtractor(ProcessorComponent):
+class PairMFCCExtractor(PairProcessorComponent):
 
     def __init__(
             self,
@@ -457,80 +489,64 @@ class PairMFCCExtractor(ProcessorComponent):
         self.remove_energy = remove_energy
         self.normalize = normalize
         self.serialization_path = serialization_path if serialization_path is not None else Path('mfccs.pkl')
+        self.preloaded_mfccs = {}
 
-    def parse_audio(
-            self,
-            audio_file
-    ):
-        audio, sampling_rate = librosa.load(audio_file)
-        if sampling_rate != self.sampling_rate:
-            audio = resampy.resample(audio, sampling_rate, self.sampling_rate)
-        mfccs = librosa.feature.mfcc(y=audio, sr=sampling_rate, n_mfcc=self.mfccs)[2:]
-        spectral_centroids = librosa.feature.spectral_centroid(y=audio, sr=self.sampling_rate)
-        spectral_bandwidth = librosa.feature.spectral_bandwidth(y=audio, sr=self.sampling_rate)
-        spectral_rolloff = librosa.feature.spectral_rolloff(y=audio, sr=self.sampling_rate)
-        spectral_contrast = librosa.feature.spectral_contrast(y=audio, sr=self.sampling_rate)
-        chroma_ft = librosa.feature.chroma_stft(y=audio, sr=self.sampling_rate)
-
-        # [frames, mfccs]
-        features = np.concatenate(
-            (spectral_centroids, spectral_bandwidth, spectral_rolloff, spectral_contrast, chroma_ft, mfccs),
-            axis=0).transpose()
-
-        if self.remove_energy:
-            features = features[:, 1:]
-
-        if self.pooling_sizes is not None:
-            for pooling_size in self.pooling_sizes:
-                features = block_reduce(features, (pooling_size, 1), np.mean)
-
-        if self.normalize and features.shape[0] > 1:
-            mean = np.mean(features, axis=0)
-            std = np.std(features, axis=0)
-            features = np.divide((features - mean[np.newaxis, :]), std[np.newaxis, :])
-
-        return features
+        if self.serialization_path.exists():
+            with self.serialization_path.open('rb') as f:
+                self.preloaded_mfccs: Dict = pickle.load(f)
 
     def __call__(
             self,
-            a_audio_files: Iterable[Path],
-            b_audio_files: Iterable[Path]
+            a_inputs: List[Union[Path, List[Path]]],
+            b_inputs: List[Union[Path, List[Path]]],
+            a_context: List[List[Path]] = None,
+            b_context: List[List[Path]] = None
     ):
-        preloaded_mfccs: Dict = {}
-        preloaded_length = 0
-        if self.serialization_path.exists():
-            with self.serialization_path.open('rb') as f:
-                preloaded_mfccs: Dict = pickle.load(f)
-                preloaded_length = len(preloaded_mfccs)
+        preloaded_length = len(self.preloaded_mfccs)
 
-        a_features, b_features = [], []
-        for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), desc='Extracting MFCCs'):
-            a_audio_file = Path(a_audio_file) if type(a_audio_file) != Path else a_audio_file
-            b_audio_file = Path(b_audio_file) if type(b_audio_file) != Path else b_audio_file
-            assert a_audio_file.is_file(), f'Could not find file {a_audio_file}'
-            assert b_audio_file.is_file(), f'Could not find file {b_audio_file}'
+        a_input_context = a_context if a_context is not None else [None] * len(a_inputs)
+        b_input_context = b_context if b_context is not None else [None] * len(b_inputs)
 
-            if a_audio_file.as_posix() in preloaded_mfccs:
-                a_audio_features = preloaded_mfccs[a_audio_file.as_posix()]
-            else:
-                a_audio_features = self.parse_audio(audio_file=a_audio_file)
-                preloaded_mfccs[a_audio_file.as_posix()] = a_audio_features
+        a_features, b_features, a_context_features, b_context_features = [], [], [], []
+        for a_audio_input, b_audio_input, \
+                a_audio_context, b_audio_context in tqdm(zip(a_inputs, b_inputs, a_input_context, b_input_context),
+                                                         desc='Extracting MFCCs'):
+            a_audio_features, \
+                a_context_audio_features = encode_audio_and_context_mfcc(audio_input=a_audio_input,
+                                                                         audio_context=a_audio_context,
+                                                                         preloaded_mfccs=self.preloaded_mfccs,
+                                                                         mfccs=self.mfccs,
+                                                                         normalize=self.normalize,
+                                                                         pooling_sizes=self.pooling_sizes,
+                                                                         remove_energy=self.remove_energy,
+                                                                         sampling_rate=self.sampling_rate)
+            b_audio_features, \
+                b_context_audio_features = encode_audio_and_context_mfcc(audio_input=b_audio_input,
+                                                                         audio_context=b_audio_context,
+                                                                         preloaded_mfccs=self.preloaded_mfccs,
+                                                                         mfccs=self.mfccs,
+                                                                         normalize=self.normalize,
+                                                                         pooling_sizes=self.pooling_sizes,
+                                                                         remove_energy=self.remove_energy,
+                                                                         sampling_rate=self.sampling_rate)
 
             a_features.append(a_audio_features)
-
-            if b_audio_file.as_posix() in preloaded_mfccs:
-                b_audio_features = preloaded_mfccs[b_audio_file.as_posix()]
-            else:
-                b_audio_features = self.parse_audio(audio_file=b_audio_file)
-                preloaded_mfccs[b_audio_file.as_posix()] = b_audio_features
-
             b_features.append(b_audio_features)
 
-        if len(preloaded_mfccs) != preloaded_length:
-            with self.serialization_path.open('wb') as f:
-                pickle.dump(preloaded_mfccs, f)
+            if a_context_audio_features is not None:
+                a_context_features.append(a_context_audio_features)
 
-        return a_features, b_features
+            if b_context_audio_features is not None:
+                b_context_features.append(b_context_audio_features)
+
+        if len(self.preloaded_mfccs) != preloaded_length:
+            with self.serialization_path.open('wb') as f:
+                pickle.dump(self.preloaded_mfccs, f)
+
+        a_context_features = a_context_features if len(a_context_features) else None
+        b_context_features = b_context_features if len(b_context_features) else None
+
+        return a_features, b_features, a_context_features, b_context_features
 
 
 class TextTransformer(ProcessorComponent):
@@ -556,23 +572,30 @@ class TextTransformer(ProcessorComponent):
 
     def __call__(
             self,
-            texts
+            inputs: List[str],
+            context: List[str] = None
     ):
         if self.model is None:
             self._init_models()
 
-        text_features = []
+        context_input = context if context is not None else [None] * len(inputs)
+
+        text_features, context_features = [], []
         with th.inference_mode():
-            for text in tqdm(texts, desc='Encoding text...'):
-                tokenized = self.tokenizer([text],
-                                           padding=True,
-                                           return_tensors='pt',
-                                           **self.tokenizer_args).to(self.device)
-                model_output = self.model(**tokenized, **self.model_args)
-                text_emb = model_output.last_hidden_state * tokenized.attention_mask[:, :, None]
-                text_emb = text_emb.detach().cpu().numpy()[0]
+            for text, context in tqdm(zip(inputs, context_input), desc='Encoding text...'):
+                text_emb, context_emb = encode_text_and_context_nn(text=text,
+                                                                   context=context,
+                                                                   model=self.model,
+                                                                   tokenizer=self.tokenizer,
+                                                                   model_args=self.model_args,
+                                                                   tokenizer_args=self.tokenizer_args,
+                                                                   device=self.device)
+
                 text_features.append(text_emb)
-        return text_features
+                if context_emb is not None:
+                    context_features.append(context_emb)
+
+        return text_features, context_features if len(context_features) else None
 
     def clear(
             self
@@ -582,7 +605,7 @@ class TextTransformer(ProcessorComponent):
         th.cuda.empty_cache()
 
 
-class PairTextTransformer(ProcessorComponent):
+class PairTextTransformer(PairProcessorComponent):
 
     def __init__(
             self,
@@ -605,26 +628,49 @@ class PairTextTransformer(ProcessorComponent):
 
     def __call__(
             self,
-            a_texts,
-            b_texts
+            a_inputs: List[str],
+            b_inputs: List[str],
+            a_context: List[str] = None,
+            b_context: List[str] = None
     ):
         if self.model is None:
             self._init_models()
 
-        a_text_features, b_text_features = [], []
-        with th.inference_mode():
-            for a_text, b_text in tqdm(zip(a_texts, b_texts), desc='Encoding text...'):
-                tokenized = self.tokenizer([a_text, b_text],
-                                           padding=True,
-                                           return_tensors='pt',
-                                           **self.tokenizer_args).to(self.device)
-                model_output = self.model(**tokenized, **self.model_args)
-                text_emb = model_output.last_hidden_state * tokenized.attention_mask[:, :, None]
-                text_emb = text_emb.detach().cpu().numpy()
-                a_text_features.append(text_emb[0])
-                b_text_features.append(text_emb[1])
+        a_input_context = a_context if a_context is not None else [None] * len(a_inputs)
+        b_input_context = b_context if b_context is not None else [None] * len(b_inputs)
 
-        return a_text_features, b_text_features
+        a_text_features, b_text_features, a_context_features, b_context_features = [], [], [], []
+        with th.inference_mode():
+            for a_text, b_text, \
+                    a_context, b_context in tqdm(zip(a_inputs, b_inputs,
+                                                     a_input_context, b_input_context),
+                                                 desc='Encoding text...'):
+                a_text_emb, a_context_emb = encode_text_and_context_nn(text=a_text,
+                                                                       context=a_context,
+                                                                       model=self.model,
+                                                                       tokenizer=self.tokenizer,
+                                                                       model_args=self.model_args,
+                                                                       tokenizer_args=self.tokenizer_args,
+                                                                       device=self.device)
+                a_text_features.append(a_text_emb)
+                if a_context_emb is not None:
+                    a_context_features.append(a_context_emb)
+
+                b_text_emb, b_context_emb = encode_text_and_context_nn(text=b_text,
+                                                                       context=b_context,
+                                                                       model=self.model,
+                                                                       tokenizer=self.tokenizer,
+                                                                       model_args=self.model_args,
+                                                                       tokenizer_args=self.tokenizer_args,
+                                                                       device=self.device)
+                b_text_features.append(b_text_emb)
+                if b_context_emb is not None:
+                    b_context_features.append(b_context_emb)
+
+        a_context_features = a_context_features if len(a_context_features) else None
+        b_context_features = b_context_features if len(b_context_features) else None
+
+        return a_text_features, b_text_features, a_context_features, b_context_features
 
     def clear(
             self
@@ -663,48 +709,31 @@ class AudioTransformer(ProcessorComponent):
 
     def __call__(
             self,
-            audio_files: Iterable[str]
+            inputs: List[Union[Path, List[Path]]],
+            context: List[List[Path]] = None
     ):
         if self.model is None:
             self._init_models()
 
-        parsed_audio = []
-        for audio_file in tqdm(audio_files, desc='Extracting Audio Features...'):
-            if not Path(audio_file).is_file():
-                raise RuntimeError(f'Could not read file {audio_file}')
-            audio, sampling_rate = load(audio_file)
-            if sampling_rate != self.sampling_rate:
-                audio = resample(audio, sampling_rate, self.sampling_rate)
-            audio = th.mean(audio, dim=0, keepdim=True)
+        input_context = context if context is not None else [None] * len(inputs)
 
-            with th.inference_mode():
-                features = self.processor(audio,
-                                          sampling_rate=self.sampling_rate,
-                                          padding=True,
-                                          return_tensors='pt',
-                                          **self.processor_args)
-                features = features.input_values[0].to(self.device)
-                model_features = self.model(features, **self.model_args).last_hidden_state[0].unsqueeze(0)
+        input_features, context_features = [], []
+        for audio_input, audio_context in tqdm(zip(inputs, input_context), desc='Extracting Audio Features...'):
+            audio_features, \
+                context_audio_features = encode_audio_and_context_nn(audio_input=audio_input,
+                                                                     model=self.model,
+                                                                     processor=self.processor,
+                                                                     model_args=self.model_args,
+                                                                     processor_args=self.processor_args,
+                                                                     sampling_rate=self.sampling_rate,
+                                                                     aggregate=self.aggregate,
+                                                                     downsampling_factor=self.downsampling_factor,
+                                                                     device=self.device)
+            input_features.append(audio_features)
+            if context_audio_features is not None:
+                context_features.append(context_audio_features)
 
-                if self.downsampling_factor is not None:
-                    try:
-                        features = th.nn.functional.interpolate(model_features.permute(0, 2, 1),
-                                                                scale_factor=self.downsampling_factor,
-                                                                mode='linear')
-                        features = features.permute(0, 2, 1)
-                    except RuntimeError:
-                        features = model_features
-                else:
-                    features = model_features
-
-                features = features[0].detach().cpu().numpy()
-
-            if self.aggregate:
-                features = np.mean(features.squeeze(axis=0), axis=0, keepdims=True)
-
-            parsed_audio.append(features)
-
-        return parsed_audio
+        return input_features, context_features if len(context_features) else None
 
     def clear(
             self
@@ -714,87 +743,7 @@ class AudioTransformer(ProcessorComponent):
         th.cuda.empty_cache()
 
 
-class AudioTransformerExtractor(ProcessorComponent):
-
-    def __init__(
-            self,
-            model_card,
-            sampling_rate,
-            downsampling_factor=None,
-            aggregate: bool = False,
-            processor_args=None,
-            model_args=None
-    ):
-        self.model_card = model_card
-        self.sampling_rate = sampling_rate
-        self.downsampling_factor = downsampling_factor
-        self.aggregate = aggregate
-        self.processor_args = processor_args if processor_args is not None else {}
-        self.model_args = model_args if model_args is not None else {}
-        self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
-        self.processor = None
-        self.model = None
-
-    def _init_models(
-            self
-    ):
-        self.processor = AutoFeatureExtractor.from_pretrained(self.model_card)
-        self.model = AutoModel.from_pretrained(self.model_card).to(self.device)
-
-    def __call__(
-            self,
-            audio_files: Iterable[str]
-    ):
-        if self.model is None:
-            self._init_models()
-
-        parsed_audio = []
-        for audio_file in tqdm(audio_files, desc='Extracting Audio Features...'):
-            if not Path(audio_file).is_file():
-                raise RuntimeError(f'Could not read file {audio_file}')
-            audio, sampling_rate = load(audio_file)
-            if sampling_rate != self.sampling_rate:
-                audio = resample(audio, sampling_rate, self.sampling_rate)
-            audio = th.mean(audio, dim=0, keepdim=True)
-
-            with th.inference_mode():
-                features = self.processor(audio,
-                                          sampling_rate=self.sampling_rate,
-                                          padding=True,
-                                          return_tensors='pt',
-                                          **self.processor_args)
-                features = features.input_values[0].to(self.device)
-                model_features = self.model(features, **self.model_args).last_hidden_state[0].unsqueeze(0)
-
-                if self.downsampling_factor is not None:
-                    try:
-                        features = th.nn.functional.interpolate(model_features.permute(0, 2, 1),
-                                                                scale_factor=self.downsampling_factor,
-                                                                mode='linear')
-                        features = features.permute(0, 2, 1)
-                    except RuntimeError:
-                        features = model_features
-                else:
-                    features = model_features
-
-                features = features[0].detach().cpu().numpy()
-
-            if self.aggregate:
-                features = np.mean(features.squeeze(axis=0), axis=0, keepdims=True)
-
-            parsed_audio.append(features)
-
-        return parsed_audio
-
-    def clear(
-            self
-    ):
-        self.model = None
-        self.extractor = None
-        th.cuda.empty_cache()
-
-
-class PairAudioTransformer(ProcessorComponent):
+class PairAudioTransformer(PairProcessorComponent):
 
     def __init__(
             self,
@@ -823,58 +772,55 @@ class PairAudioTransformer(ProcessorComponent):
 
     def __call__(
             self,
-            a_audio_files: List[Path],
-            b_audio_files: List[Path]
+            a_inputs: List[Union[Path, List[Path]]],
+            b_inputs: List[Union[Path, List[Path]]],
+            a_context: List[List[Path]] = None,
+            b_context: List[List[Path]] = None
     ):
         if self.model is None:
             self._init_models()
 
-        a_parsed_audio, b_parsed_audio = [], []
-        for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), total=len(a_audio_files), desc='Extracting Audio Features...'):
-            if not Path(a_audio_file).is_file():
-                raise RuntimeError(f'Could not read file {a_audio_file}')
-            a_audio, a_sampling_rate = load(a_audio_file)
-            if a_sampling_rate != self.sampling_rate:
-                a_audio = resample(a_audio, a_sampling_rate, self.sampling_rate)
-            a_audio = th.mean(a_audio, dim=0)
+        a_input_context = a_context if a_context is not None else [None] * len(a_inputs)
+        b_input_context = b_context if b_context is not None else [None] * len(b_inputs)
 
-            if not Path(b_audio_file).is_file():
-                raise RuntimeError(f'Could not read file {b_audio_file}')
-            b_audio, b_sampling_rate = load(b_audio_file)
-            if b_sampling_rate != self.sampling_rate:
-                b_audio = resample(b_audio, b_sampling_rate, self.sampling_rate)
-            b_audio = th.mean(b_audio, dim=0)
+        a_features, b_features, a_context_features, b_context_features = [], [], [], []
+        for a_audio_input, b_audio_input, \
+                a_audio_context, b_audio_context in tqdm(zip(a_inputs, b_inputs, a_input_context, b_input_context),
+                                                         desc='Extracting Audio features...'):
+            a_audio_features, \
+                a_context_audio_features = encode_audio_and_context_nn(audio_input=a_audio_input,
+                                                                       model=self.model,
+                                                                       processor=self.processor,
+                                                                       model_args=self.model_args,
+                                                                       processor_args=self.processor_args,
+                                                                       sampling_rate=self.sampling_rate,
+                                                                       aggregate=self.aggregate,
+                                                                       downsampling_factor=self.downsampling_factor,
+                                                                       device=self.device)
+            b_audio_features, \
+                b_context_audio_features = encode_audio_and_context_nn(audio_input=a_audio_input,
+                                                                       model=self.model,
+                                                                       processor=self.processor,
+                                                                       model_args=self.model_args,
+                                                                       processor_args=self.processor_args,
+                                                                       sampling_rate=self.sampling_rate,
+                                                                       aggregate=self.aggregate,
+                                                                       downsampling_factor=self.downsampling_factor,
+                                                                       device=self.device)
 
-            pair_audio = pad_sequence([a_audio, b_audio], batch_first=True, padding_value=0.0)
-            with th.inference_mode():
-                features = self.processor(pair_audio,
-                                          sampling_rate=self.sampling_rate,
-                                          padding=True,
-                                          return_tensors='pt',
-                                          **self.processor_args)
-                features = features.input_values[0].to(self.device)
-                model_features = self.model(features, **self.model_args).last_hidden_state
+            a_features.append(a_audio_features)
+            b_features.append(b_audio_features)
 
-                if self.downsampling_factor is not None:
-                    try:
-                        features = th.nn.functional.interpolate(model_features.permute(0, 2, 1),
-                                                                scale_factor=self.downsampling_factor,
-                                                                mode='linear')
-                        features = features.permute(0, 2, 1)
-                    except RuntimeError:
-                        features = model_features
-                else:
-                    features = model_features
+            if a_context_audio_features is not None:
+                a_context_features.append(a_context_audio_features)
 
-                features = features.detach().cpu().numpy()
+            if b_context_audio_features is not None:
+                b_context_features.append(b_context_audio_features)
 
-            if self.aggregate:
-                features = np.mean(features, axis=1, keepdims=True)
+        a_context_features = a_context_features if len(a_context_features) else None
+        b_context_features = b_context_features if len(b_context_features) else None
 
-            a_parsed_audio.append(features[0])
-            b_parsed_audio.append(features[1])
-
-        return a_parsed_audio, b_parsed_audio
+        return a_features, b_features, a_context_features, b_context_features
 
     def clear(
             self
@@ -884,26 +830,7 @@ class PairAudioTransformer(ProcessorComponent):
         th.cuda.empty_cache()
 
 
-class PairAudioTransformerExtractor(ProcessorComponent):
-
-    def __init__(
-            self,
-            model_card,
-            sampling_rate,
-            downsampling_factor=None,
-            aggregate: bool = False,
-            processor_args=None,
-            model_args=None
-    ):
-        self.model_card = model_card
-        self.sampling_rate = sampling_rate
-        self.downsampling_factor = downsampling_factor
-        self.aggregate = aggregate
-        self.processor_args = processor_args if processor_args is not None else {}
-        self.model_args = model_args if model_args is not None else {}
-        self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
-        self.processor = None
-        self.model = None
+class AudioTransformerExtractor(AudioTransformer):
 
     def _init_models(
             self
@@ -911,65 +838,11 @@ class PairAudioTransformerExtractor(ProcessorComponent):
         self.processor = AutoFeatureExtractor.from_pretrained(self.model_card)
         self.model = AutoModel.from_pretrained(self.model_card).to(self.device)
 
-    def __call__(
-            self,
-            a_audio_files: List[Path],
-            b_audio_files: List[Path]
-    ):
-        if self.model is None:
-            self._init_models()
 
-        a_parsed_audio, b_parsed_audio = [], []
-        for a_audio_file, b_audio_file in tqdm(zip(a_audio_files, b_audio_files), total=len(a_audio_files), desc='Extracting Audio Features...'):
-            if not Path(a_audio_file).is_file():
-                raise RuntimeError(f'Could not read file {a_audio_file}')
-            a_audio, a_sampling_rate = load(a_audio_file)
-            if a_sampling_rate != self.sampling_rate:
-                a_audio = resample(a_audio, a_sampling_rate, self.sampling_rate)
-            a_audio = th.mean(a_audio, dim=0)
+class PairAudioTransformerExtractor(PairAudioTransformer):
 
-            if not Path(b_audio_file).is_file():
-                raise RuntimeError(f'Could not read file {b_audio_file}')
-            b_audio, b_sampling_rate = load(b_audio_file)
-            if b_sampling_rate != self.sampling_rate:
-                b_audio = resample(b_audio, b_sampling_rate, self.sampling_rate)
-            b_audio = th.mean(b_audio, dim=0)
-
-            pair_audio = pad_sequence([a_audio, b_audio], batch_first=True, padding_value=0.0)
-            with th.inference_mode():
-                features = self.processor(pair_audio,
-                                          sampling_rate=self.sampling_rate,
-                                          padding=True,
-                                          return_tensors='pt',
-                                          **self.processor_args)
-                features = features.input_values[0].to(self.device)
-                model_features = self.model(features, **self.model_args).last_hidden_state
-
-                if self.downsampling_factor is not None:
-                    try:
-                        features = th.nn.functional.interpolate(model_features.permute(0, 2, 1),
-                                                                scale_factor=self.downsampling_factor,
-                                                                mode='linear')
-                        features = features.permute(0, 2, 1)
-                    except RuntimeError:
-                        features = model_features
-                else:
-                    features = model_features
-
-                features = features.detach().cpu().numpy()
-
-            if self.aggregate:
-                features = np.mean(features, axis=1, keepdims=True)
-
-            a_parsed_audio.append(features[0])
-            b_parsed_audio.append(features[1])
-
-        return a_parsed_audio, b_parsed_audio
-
-    def clear(
+    def _init_models(
             self
     ):
-        self.model = None
-        self.processor = None
-        th.cuda.empty_cache()
-
+        self.processor = AutoFeatureExtractor.from_pretrained(self.model_card)
+        self.model = AutoModel.from_pretrained(self.model_card).to(self.device)

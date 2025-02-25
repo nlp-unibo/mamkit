@@ -3,13 +3,39 @@ from torch.nn.utils.rnn import pad_sequence
 from torchaudio.backend.soundfile_backend import load
 from torchaudio.functional import resample
 from transformers import AutoTokenizer, AutoProcessor, AutoModel
+from typing import Any
+from utility.processing import parse_audio_nn
+
+
+# TODO: sometimes context can be empty -> handle this
+
+class CollatorComponent:
+
+    def __call__(
+            self,
+            inputs: Any,
+            context: Any = None
+    ):
+        return inputs, context
+
+
+class PairCollatorComponent:
+
+    def __call__(
+            self,
+            a_inputs: Any,
+            b_inputs: Any,
+            a_context: Any = None,
+            b_context: Any = None
+    ):
+        return a_inputs, b_inputs, a_context, b_context
 
 
 class UnimodalCollator:
     def __init__(
             self,
-            features_collator,
-            label_collator
+            features_collator: CollatorComponent,
+            label_collator: CollatorComponent
     ):
         self.features_collator = features_collator
         self.label_collator = label_collator
@@ -18,20 +44,21 @@ class UnimodalCollator:
             self,
             batch
     ):
-        features_raw, labels = zip(*batch)
+        inputs, labels, context = zip(*batch)
         if self.features_collator is None:
-            features_collated = features_raw
+            features_collated = inputs, context
         else:
-            features_collated = self.features_collator(features_raw)
+            features_collated = self.features_collator(inputs=inputs, context=context)
 
         if self.label_collator is None:
             labels_collated = labels
         else:
-            labels_collated = self.label_collator(labels)
+            labels_collated = self.label_collator(inputs=labels)
 
         return features_collated, labels_collated
 
 
+# TODO: update w/ context
 class PairUnimodalCollator(UnimodalCollator):
 
     def __call__(
@@ -52,6 +79,7 @@ class PairUnimodalCollator(UnimodalCollator):
         return features_collated, labels_collated
 
 
+# TODO: update w/ context
 class MultimodalCollator:
     def __init__(
             self,
@@ -86,6 +114,7 @@ class MultimodalCollator:
         return (text_collated, audio_collated), labels_collated
 
 
+# TODO: update w/ context
 class PairMultimodalCollator(MultimodalCollator):
 
     def __call__(
@@ -111,7 +140,7 @@ class PairMultimodalCollator(MultimodalCollator):
         return (text_collated, audio_collated), labels_collated
 
 
-class TextCollator:
+class TextCollator(CollatorComponent):
 
     def __init__(
             self,
@@ -123,13 +152,20 @@ class TextCollator:
 
     def __call__(
             self,
-            texts
+            inputs,
+            context=None
     ):
-        texts = [th.tensor(self.vocab(self.tokenizer(text))) for text in texts]
+        texts = [th.tensor(self.vocab(self.tokenizer(text))) for text in inputs]
         texts = pad_sequence(texts, padding_value=0, batch_first=True)
-        return texts
+
+        if context is not None:
+            context = [th.tensor(self.vocab(self.tokenizer(text))) for text in context]
+            context = pad_sequence(context, padding_value=0, batch_first=True)
+
+        return texts, context
 
 
+# TODO: update w/ context
 class PairTextCollator(TextCollator):
 
     def __call__(
@@ -146,7 +182,7 @@ class PairTextCollator(TextCollator):
         return a_texts, b_texts
 
 
-class TextTransformerCollator:
+class TextTransformerCollator(CollatorComponent):
     def __init__(
             self,
             model_card,
@@ -160,15 +196,31 @@ class TextTransformerCollator:
 
     def __call__(
             self,
-            text
+            inputs,
+            context=None
     ):
-        tokenized = self.tokenizer(text,
-                                   padding=True,
-                                   return_tensors='pt',
-                                   **self.tokenizer_args).to(self.device)
-        return tokenized['input_ids'], tokenized['attention_mask']
+        tok_inputs = self.tokenizer(inputs,
+                                    padding=True,
+                                    return_tensors='pt',
+                                    **self.tokenizer_args).to(self.device)
+
+        tok_context = {
+            'input_ids': None,
+            'attention_mask': None
+        }
+        if context is not None:
+            tok_context = self.tokenizer(context,
+                                         padding=True,
+                                         return_tensors='pt',
+                                         **self.tokenizer_args).to(self.device)
+
+        return tok_inputs['input_ids'], \
+            tok_inputs['attention_mask'], \
+            tok_context['input_ids'], \
+            tok_context['attention_mask']
 
 
+# TODO: update w/ context
 class PairTextTransformerCollator(TextTransformerCollator):
 
     def __call__(
@@ -188,17 +240,29 @@ class PairTextTransformerCollator(TextTransformerCollator):
             (b_tokenized['input_ids'], b_tokenized['attention_mask'])
 
 
-class TextTransformerOutputCollator:
+class TextTransformerOutputCollator(CollatorComponent):
 
     def __call__(
             self,
-            texts
+            inputs,
+            context=None
     ):
-        texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in texts], padding_value=0.0, batch_first=True)
+        texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in inputs],
+                             padding_value=0.0, batch_first=True)
         attention_mask = texts[:, :, 0] != 0.0
-        return texts, attention_mask.to(th.float32)
+        attention_mask = attention_mask.to(th.float32)
+
+        context_texts, context_mask = None, None
+        if context is not None:
+            context_texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in context],
+                                         padding_value=0.0, batch_first=True)
+            context_mask = context_texts[:, :, 0] != 0.0
+            context_mask = context_mask.to(th.float32)
+
+        return texts, attention_mask, context_texts, context_mask
 
 
+# TODO: update w/ context
 class PairTextTransformerOutputCollator(TextTransformerOutputCollator):
 
     def __call__(
@@ -218,7 +282,8 @@ class PairTextTransformerOutputCollator(TextTransformerOutputCollator):
         return (a_texts, a_attention_mask.to(th.float32)), (b_texts, b_attention_mask.to(th.float32))
 
 
-class AudioTransformerCollator:
+# TODO: update w/ context
+class AudioTransformerCollator(CollatorComponent):
 
     def __init__(
             self,
@@ -242,10 +307,13 @@ class AudioTransformerCollator:
 
     def __call__(
             self,
-            audio_files
+            inputs,
+            context=None
     ):
         loaded_audio = []
-        for audio_file in audio_files:
+
+        # TODO: move this code to utility/collators.py
+        for audio_file in inputs:
             if not audio_file.is_file():
                 raise RuntimeError(f'Could not read file {audio_file}')
             audio, sampling_rate = load(audio_file.as_posix())
@@ -277,6 +345,7 @@ class AudioTransformerCollator:
         return features, attention_mask
 
 
+# TODO: update w/ context
 class AudioCollator:
 
     def __call__(
@@ -296,6 +365,7 @@ class AudioCollator:
         return features, attention_mask.to(th.float32)
 
 
+# TODO: update w/ context
 class PairAudioCollator(AudioCollator):
 
     def _parse_features(
