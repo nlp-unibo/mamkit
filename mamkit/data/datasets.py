@@ -595,7 +595,7 @@ class MMUSEDFallacy(Loader):
         self.folder_name = 'MMUSED-fallacy'
 
         # Files: download_links.csv, link_ids.csv, dataset.pkl
-        self.archive_url = 'https://zenodo.org/api/records/11179390/files-archive'
+        self.archive_url = 'https://zenodo.org/api/records/14931806/files-archive'
 
         self.data_path = Path(self.base_data_path, self.folder_name).resolve()
         self.audio_path = self.data_path.joinpath('audio_recordings')
@@ -719,7 +719,7 @@ class MMUSEDFallacy(Loader):
             context = df.dialogue.values if self.with_context else None
             labels = df.fallacy.values
         else:
-            inputs = df.sentences.values
+            inputs = df.sentence.values
             context = df.context.values if self.with_context else None
             labels = df.label.values
 
@@ -755,7 +755,7 @@ class MMUSEDFallacy(Loader):
             audio_context = df.dialogue_path.values if self.with_context else None
             labels = df.fallacy.values
         else:
-            texts = df.sentences.values
+            texts = df.sentence.values
             text_context = df.context.values if self.with_context else None
             audio = df.sentence_path.values
             audio_context = df.context_paths.values if self.with_context else None
