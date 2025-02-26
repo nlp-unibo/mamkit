@@ -18,6 +18,7 @@ from nltk.tokenize import sent_tokenize
 from pydub import AudioSegment
 from torch.utils.data import Dataset
 from tqdm import tqdm
+from itertools import chain
 
 from mamkit.utility.data import download, youtube_download
 
@@ -611,6 +612,8 @@ class MMUSEDFallacy(Loader):
     ):
         df = pd.read_pickle(self.data_path.joinpath('dataset.pkl'))
 
+        total_dialogue_paths = []
+        total_snippet_paths = []
         df['dialogue_paths'] = None
         df['snippet_paths'] = None
         for row_idx, row in tqdm(df.iterrows(), desc='Building clips...', total=df.shape[0]):
@@ -639,7 +642,7 @@ class MMUSEDFallacy(Loader):
                 audio_clip = audio_clip.set_channels(1)
                 audio_clip.export(clip_filepath, format="wav")
 
-            df.at[row_idx, 'dialogue_paths'] = dialogue_paths
+            total_dialogue_paths.append(dialogue_paths)
 
             # Snippet
             for sent_idx, sent, start_time, end_time in zip(row['snippet_indexes'],
@@ -660,19 +663,16 @@ class MMUSEDFallacy(Loader):
                 audio_clip = audio_clip.set_channels(1)
                 audio_clip.export(clip_filepath, format="wav")
 
-            df.at[row_idx, 'snippet_paths'] = snippet_paths
+            total_snippet_paths.append(snippet_paths)
 
+        df['dialogue_paths'] = total_dialogue_paths
+        df['snippet_paths'] = total_snippet_paths
         df.to_pickle(self.dataset_path)
 
     def download_audio(
             self
     ):
         dl_df = pd.read_csv(self.data_path.joinpath("download_links.csv"), sep=';')
-        link_df = pd.read_csv(self.data_path.joinpath('link_ids.csv'), sep=';')
-        valid_debate_ids = [item for item in link_df['mm_id'].values if item != 'NOT_FOUND']
-
-        dl_df = dl_df[dl_df.id.isin(valid_debate_ids)]
-
         youtube_download(save_path=self.audio_path,
                          debate_ids=dl_df.id.values,
                          debate_urls=dl_df.link.values)
@@ -698,19 +698,17 @@ class MMUSEDFallacy(Loader):
 
             logging.info('Download completed!')
 
-        if not self.audio_path.exists():
+        if not self.clips_path.exists():
             logging.info('Downloading audio data...')
             self.download_audio()
             logging.info('Download completed!')
 
-        if not self.clips_path.exists():
             logging.info('Building audio clips...')
             self.generate_clips()
             logging.info('Build completed')
 
             # clear
-            # TODO: uncomment when done testing
-            # shutil.rmtree(self.audio_path)
+            shutil.rmtree(self.audio_path)
 
     def _get_text_data(
             self,
@@ -780,42 +778,37 @@ class MMUSEDFallacy(Loader):
             dialogue_df = df.loc[df.dialogue_id == dialogue_id]
 
             dialogue_sentences = [(sent_idx, sent, 0, start_time, end_time)
-                                  for sent_idx, sent, start_time, end_time in zip(dialogue_df.dialogue_indexes,
-                                                                                  dialogue_df.dialogue_sentences,
-                                                                                  dialogue_df.dialogue_start_time,
-                                                                                  dialogue_df.dialogue_end_time)]
+                                  for sent_idx, sent, start_time, end_time in zip(chain(*dialogue_df.dialogue_indexes),
+                                                                                  chain(*dialogue_df.dialogue_sentences),
+                                                                                  chain(*dialogue_df.dialogue_start_time),
+                                                                                  chain(*dialogue_df.dialogue_end_time))
+                                  if sent_idx not in list(chain(*dialogue_df.snippet_indexes))]
             snippet_sentences = [(sent_idx, sent, 1, start_time, end_time)
-                                 for sent_idx, sent, start_time, end_time in zip(dialogue_df.snippet_indexes,
-                                                                                 dialogue_df.snippet_sentences,
-                                                                                 dialogue_df.snippet_start_time,
-                                                                                 dialogue_df.snippet_end_time)]
+                                 for sent_idx, sent, start_time, end_time in zip(chain(*dialogue_df.snippet_indexes),
+                                                                                 chain(*dialogue_df.snippet_sentences),
+                                                                                 chain(*dialogue_df.snippet_start_time),
+                                                                                 chain(*dialogue_df.snippet_end_time))]
 
             sentences = sorted(set(dialogue_sentences + snippet_sentences), key=lambda item: item[0])
-            context_window = self.context_window if self.context_window > 0 else len(sentences)
+            context_window = self.context_window if self.context_window >= 0 else len(sentences)
 
-            for sent_idx, sent, label, start_time, end_time in enumerate(sentences):
-                past_boundary = max(sent_idx - context_window, 0)
-                past_context = sentences[past_boundary:sent_idx]
+            for rel_idx, (sent_idx, sent, label, start_time, end_time) in enumerate(sentences):
+                past_boundary = max(rel_idx - context_window, 0)
+                past_context = sentences[past_boundary:rel_idx]
 
                 context_audio_paths = [self.clips_path.joinpath(dialogue_id, f'{item[0]}.wav')
                                        for item in past_context]
                 context_sentences = [item[1] for item in past_context]
-                context_start_time = [item[3] for item in past_context]
-                context_end_time = [item[4] for item in past_context]
 
                 afd_data.append(
                     {
                         'context_paths': context_audio_paths,
-                        'context_start_time': context_start_time,
-                        'context_end_time': context_end_time,
-                        'context_sentences': context_sentences,
                         'context': ' '.join(context_sentences),
                         'sentence': sent,
                         'sentence_path': self.clips_path.joinpath(dialogue_id, f'{sent_idx}.wav'),
                         'label': label,
                         'dialogue_id': dialogue_id,
-                        'filename': dialogue_df.filename.values[0],
-                        'split': dialogue_df.split.values[0]
+                        'filename': dialogue_df.filename.values[0]
                     }
                 )
 
@@ -825,6 +818,7 @@ class MMUSEDFallacy(Loader):
             self,
             df: pd.DataFrame
     ):
+        info = []
         for row_idx, row in tqdm(df.iterrows(), desc='Building AFC Context', total=df.shape[0]):
             snippet_index = min(row['snippet_indexes'])
 
@@ -832,27 +826,22 @@ class MMUSEDFallacy(Loader):
             context_indexes = [item_idx for item_idx, dial_idx in enumerate(row['dialogue_indexes'])
                                if dial_idx < snippet_index][-self.context_window:]
 
-            dialogue_indexes = [item for idx, item in enumerate(row['dialogue_indexes']) if idx in context_indexes]
-            dialogue_start_time = [item for idx, item in enumerate(row['dialogue_start_time']) if
-                                   idx in context_indexes]
-            dialogue_end_time = [item for idx, item in enumerate(row['dialogue_end_time']) if idx in context_indexes]
             dialogue_sentences = [item for idx, item in enumerate(row['dialogue_sentences']) if idx in context_indexes]
             dialogue_tokens = [item for idx, item in enumerate(row['dialogue_tokens']) if idx in context_indexes]
-            dialogue_whisper_indexes = [item for idx, item in enumerate(row['dialogue_whisper_indexes']) if
-                                        idx in context_indexes]
             dialogue = ' '.join(dialogue_sentences)
             dialogue_paths = [item for idx, item in enumerate(row['dialogue_paths']) if idx in context_indexes]
 
-            df.at[row_idx, 'dialogue_indexes'] = dialogue_indexes
-            df.at[row_idx, 'dialogue_start_time'] = dialogue_start_time
-            df.at[row_idx, 'dialogue_end_time'] = dialogue_end_time
-            df.at[row_idx, 'dialogue_sentences'] = dialogue_sentences
-            df.at[row_idx, 'dialogue_tokens'] = dialogue_tokens
-            df.at[row_idx, 'dialogue_whisper_indexes'] = dialogue_whisper_indexes
-            df.at[row_idx, 'dialogue'] = dialogue
-            df.at[row_idx, 'dialogue_paths'] = dialogue_paths
+            info.append({
+                'dialogue_tokens': dialogue_tokens,
+                'dialogue': dialogue,
+                'dialogue_paths': dialogue_paths,
+                'snippet_indexes': row['snippet_indexes'],
+                'snippet': row['snippet'],
+                'snippet_paths': row['snippet_paths'],
+                'fallacy': row['fallacy']
+            })
 
-        return df
+        return pd.DataFrame(info)
 
     @cached_property
     def data(

@@ -1,5 +1,3 @@
-from torchaudio import load
-from torchaudio.functional import resample
 import torch as th
 from torch.nn.utils.rnn import pad_sequence
 
@@ -95,54 +93,6 @@ def encode_text_with_context_transformer_output(
     return texts, attention_mask, context_texts, context_mask
 
 
-# TODO: handle when inputs is empty
-def encode_audio_transformer(
-        inputs,
-        processor,
-        model,
-        device,
-        model_args={},
-        processor_args={},
-        sampling_rate=16000,
-        downsampling_factor=None,
-        aggregate=False
-):
-    loaded_audio = []
-
-    # TODO: check if inputs can be a nested list of audio files
-    for audio_file in inputs:
-        if not audio_file.is_file():
-            raise RuntimeError(f'Could not read file {audio_file}')
-        audio, sampling_rate = load(audio_file.as_posix())
-        if sampling_rate != sampling_rate:
-            audio = resample(audio, sampling_rate, sampling_rate)
-        audio = th.mean(audio, dim=0)
-        loaded_audio.append(audio)
-
-    loaded_audio = pad_sequence(loaded_audio, batch_first=True, padding_value=0.0)
-    with th.inference_mode():
-        features = processor(loaded_audio,
-                             sampling_rate=sampling_rate,
-                             return_tensors='pt',
-                             return_attention_mask=True,
-                             **processor_args)
-        attention_mask = features.attention_mask
-        features = features.input_values[0].to(device)
-        features = model(features, **model_args).last_hidden_state
-
-        if downsampling_factor is not None:
-            features = th.nn.functional.interpolate(features.permute(0, 2, 1),
-                                                    scale_factor=downsampling_factor,
-                                                    mode='linear')
-            features = features.permute(0, 2, 1)
-
-    if aggregate:
-        features = th.mean(features, dim=1, keepdim=True)
-
-    return features, attention_mask
-
-
-# TODO: test when inputs is empty
 def encode_audio_torch(
         inputs
 ):

@@ -1,17 +1,16 @@
+from typing import Any
+
 import torch as th
 from torch.nn.utils.rnn import pad_sequence
-from transformers import AutoTokenizer, AutoProcessor, AutoModel
-from typing import Any
+from transformers import AutoTokenizer
+
 from mamkit.utility.collators import (
-    encode_audio_transformer,
     encode_text_with_context_torch,
     encode_text_with_context_transformer,
     encode_text_with_context_transformer_output,
     encode_audio_with_context_torch
 )
 
-
-# TODO: sometimes context can be empty -> handle this
 
 class CollatorComponent:
 
@@ -328,59 +327,6 @@ class PairTextTransformerOutputCollator(PairCollatorComponent):
                 'b_inputs': b_ids, 'b_mask': b_mask,
                 'a_context': a_context_ids, 'a_context_mask': a_context_mask,
                 'b_context': b_context_ids, 'b_context_mask': b_context_mask}
-
-
-class AudioTransformerCollator(CollatorComponent):
-
-    def __init__(
-            self,
-            model_card,
-            sampling_rate,
-            downsampling_factor=None,
-            aggregate=False,
-            processor_args=None,
-            model_args=None,
-    ):
-        self.model_card = model_card
-        self.sampling_rate = sampling_rate
-        self.processor_args = processor_args if processor_args is not None else {}
-        self.model_args = model_args if model_args is not None else {}
-        self.downsampling_factor = downsampling_factor
-        self.aggregate = aggregate
-
-        self.device = th.device('cuda' if th.cuda.is_available() else 'cpu')
-        self.processor = AutoProcessor.from_pretrained(model_card)
-        self.model = AutoModel.from_pretrained(model_card).to(self.device)
-
-    def __call__(
-            self,
-            inputs,
-            context=None
-    ):
-        features, attention_mask = encode_audio_transformer(inputs=inputs,
-                                                            model=self.model,
-                                                            model_args=self.model_args,
-                                                            processor=self.processor,
-                                                            processor_args=self.processor_args,
-                                                            device=self.device,
-                                                            aggregate=self.aggregate,
-                                                            downsampling_factor=self.downsampling_factor,
-                                                            sampling_rate=self.sampling_rate)
-
-        context_features, context_mask = None, None
-        if context is not None:
-            context_features, context_mask = encode_audio_transformer(inputs=context,
-                                                                      model=self.model,
-                                                                      model_args=self.model_args,
-                                                                      processor=self.processor,
-                                                                      processor_args=self.processor_args,
-                                                                      device=self.device,
-                                                                      aggregate=self.aggregate,
-                                                                      downsampling_factor=self.downsampling_factor,
-                                                                      sampling_rate=self.sampling_rate)
-
-        return {'inputs': features, 'input_mask': attention_mask,
-                'context': context_features, 'context_mask': context_mask}
 
 
 class AudioCollator(CollatorComponent):
