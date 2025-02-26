@@ -14,9 +14,6 @@ from mamkit.utility.processing import encode_audio_and_context_mfcc, encode_audi
     encode_text_and_context_nn
 
 
-# TODO: sometimes context can be empty -> handle this
-
-
 class Processor:
 
     def fit(
@@ -452,7 +449,9 @@ class MFCCExtractor(ProcessorComponent):
         input_context = context if context is not None else [None] * len(inputs)
 
         input_features, context_features = [], []
-        for audio_input, audio_context in tqdm(zip(inputs, input_context), desc='Extracting MFCCs'):
+        for audio_input, audio_context in tqdm(zip(inputs, input_context),
+                                               desc='Extracting MFCCs',
+                                               total=len(inputs)):
             audio_features, context_audio_features = encode_audio_and_context_mfcc(audio_input=audio_input,
                                                                                    audio_context=audio_context,
                                                                                    preloaded_mfccs=self.preloaded_mfccs,
@@ -583,7 +582,7 @@ class TextTransformer(ProcessorComponent):
 
         text_features, context_features = [], []
         with th.inference_mode():
-            for text, context in tqdm(zip(inputs, context_input), desc='Encoding text...'):
+            for text, context in tqdm(zip(inputs, context_input), desc='Encoding text...', total=len(inputs)):
                 text_emb, context_emb = encode_text_and_context_nn(text=text,
                                                                    context=context,
                                                                    model=self.model,
@@ -645,7 +644,8 @@ class PairTextTransformer(PairProcessorComponent):
             for a_text, b_text, \
                     a_context, b_context in tqdm(zip(a_inputs, b_inputs,
                                                      a_input_context, b_input_context),
-                                                 desc='Encoding text...'):
+                                                 desc='Encoding text...',
+                                                 total=len(a_inputs)):
                 a_text_emb, a_context_emb = encode_text_and_context_nn(text=a_text,
                                                                        context=a_context,
                                                                        model=self.model,
@@ -719,9 +719,12 @@ class AudioTransformer(ProcessorComponent):
         input_context = context if context is not None else [None] * len(inputs)
 
         input_features, context_features = [], []
-        for audio_input, audio_context in tqdm(zip(inputs, input_context), desc='Extracting Audio Features...'):
+        for audio_input, audio_context in tqdm(zip(inputs, input_context),
+                                               desc='Extracting Audio Features...',
+                                               total=len(inputs)):
             audio_features, \
                 context_audio_features = encode_audio_and_context_nn(audio_input=audio_input,
+                                                                     audio_context=audio_context,
                                                                      model=self.model,
                                                                      processor=self.processor,
                                                                      model_args=self.model_args,
@@ -787,7 +790,8 @@ class PairAudioTransformer(PairProcessorComponent):
         a_features, b_features, a_context_features, b_context_features = [], [], [], []
         for a_audio_input, b_audio_input, \
                 a_audio_context, b_audio_context in tqdm(zip(a_inputs, b_inputs, a_input_context, b_input_context),
-                                                         desc='Extracting Audio features...'):
+                                                         desc='Extracting Audio features...',
+                                                         total=len(a_inputs)):
             a_audio_features, \
                 a_context_audio_features = encode_audio_and_context_nn(audio_input=a_audio_input,
                                                                        model=self.model,

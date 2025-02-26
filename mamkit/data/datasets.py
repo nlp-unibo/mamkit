@@ -8,7 +8,8 @@ from distutils.dir_util import copy_tree
 from enum import Enum
 from functools import partial
 from pathlib import Path
-from typing import Optional, List, Callable, Union, Dict
+from typing import Optional, List, Callable, Union, Dict, Iterable
+from django.utils.functional import cached_property
 
 import numpy as np
 import pandas as pd
@@ -775,7 +776,7 @@ class MMUSEDFallacy(Loader):
         dialogue_ids = np.unique(df.dialogue_id.values)
 
         afd_data = []
-        for dialogue_id in dialogue_ids:
+        for dialogue_id in tqdm(dialogue_ids, desc='Building AFD data...'):
             dialogue_df = df.loc[df.dialogue_id == dialogue_id]
 
             dialogue_sentences = [(sent_idx, sent, 0, start_time, end_time)
@@ -820,22 +821,16 @@ class MMUSEDFallacy(Loader):
 
         return pd.DataFrame(afd_data)
 
-    # TODO: build context as AFD
     def _build_afc_context(
             self,
             df: pd.DataFrame
     ):
-        for row_idx, row in df.iterrows():
+        for row_idx, row in tqdm(df.iterrows(), desc='Building AFC Context', total=df.shape[0]):
             snippet_index = min(row['snippet_indexes'])
 
             # Past context
             context_indexes = [item_idx for item_idx, dial_idx in enumerate(row['dialogue_indexes'])
                                if dial_idx < snippet_index][-self.context_window:]
-
-            # Future context if past not available
-            if not len(context_indexes):
-                context_indexes = [item_idx for item_idx, dial_idx in enumerate(row['dialogue_indexes'])
-                                   if dial_idx > snippet_index][-self.context_window:]
 
             dialogue_indexes = [item for idx, item in enumerate(row['dialogue_indexes']) if idx in context_indexes]
             dialogue_start_time = [item for idx, item in enumerate(row['dialogue_start_time']) if
@@ -859,7 +854,7 @@ class MMUSEDFallacy(Loader):
 
         return df
 
-    @property
+    @cached_property
     def data(
             self
     ) -> pd.DataFrame:
@@ -892,9 +887,8 @@ class MMUSEDFallacy(Loader):
 
     def get_mancini_2024_splits(
             self
-    ) -> List[SplitInfo]:
+    ) -> Iterable[SplitInfo]:
         dialogues = set(self.data['dialogue_id'].values)
-        splits_info = []
         for dialogue_id in dialogues:
             train_df = self.data[self.data['dialogue_id'] != dialogue_id]
             test_df = self.data[self.data['dialogue_id'] == dialogue_id]
@@ -908,9 +902,7 @@ class MMUSEDFallacy(Loader):
             split_info = self.build_info_from_splits(train_df=train_df,
                                                      val_df=val_df,
                                                      test_df=test_df)
-            splits_info.append(split_info)
-
-        return splits_info
+            yield split_info
 
 
 class MArg(Loader):

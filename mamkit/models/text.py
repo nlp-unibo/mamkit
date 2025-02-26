@@ -8,7 +8,7 @@ class TextOnlyModel(th.nn.Module):
 
     def forward(
             self,
-            text
+            inputs
     ):
         pass
 
@@ -40,10 +40,11 @@ class BiLSTM(TextOnlyModel):
 
     def forward(
             self,
-            text
+            inputs
     ):
+
         # [bs, N, d]
-        tokens_emb = self.embedding(text)
+        tokens_emb = self.embedding(inputs['inputs'])
 
         tokens_emb = self.dropout(tokens_emb)
 
@@ -60,13 +61,11 @@ class PairBiLSTM(BiLSTM):
 
     def forward(
             self,
-            text
+            inputs
     ):
-        a_text, b_text = text
-
         # A input
         # [bs, T, d_t]
-        a_tokens_emb = self.embedding(a_text)
+        a_tokens_emb = self.embedding(inputs['a_inputs'])
         a_tokens_emb = self.dropout(a_tokens_emb)
 
         # [bs, d']
@@ -74,7 +73,7 @@ class PairBiLSTM(BiLSTM):
 
         # B input
         # [bs, T, d_t]
-        b_tokens_emb = self.embedding(b_text)
+        b_tokens_emb = self.embedding(inputs['b_inputs'])
         b_tokens_emb = self.dropout(b_tokens_emb)
 
         # [bs, d']
@@ -112,9 +111,10 @@ class Transformer(TextOnlyModel):
 
     def forward(
             self,
-            text
+            inputs
     ):
-        input_ids, attention_mask = text
+        input_ids = inputs['inputs']
+        attention_mask = inputs['input_mask']
 
         tokens_emb = self.model(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state
         tokens_emb = self.dropout(tokens_emb)
@@ -129,10 +129,9 @@ class PairTransformer(Transformer):
 
     def encode_text(
             self,
-            text
+            input_ids,
+            attention_mask
     ):
-        input_ids, attention_mask = text
-
         tokens_emb = self.model(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state
         tokens_emb = self.dropout(tokens_emb)
         text_emb = (tokens_emb * attention_mask[:, :, None]).sum(dim=1)
@@ -142,12 +141,10 @@ class PairTransformer(Transformer):
 
     def forward(
             self,
-            text
+            inputs
     ):
-        a_text, b_text = text
-
-        a_text_emb = self.encode_text(text=a_text)
-        b_text_emb = self.encode_text(text=b_text)
+        a_text_emb = self.encode_text(input_ids=inputs['a_inputs'], attention_mask=inputs['a_mask'])
+        b_text_emb = self.encode_text(input_ids=inputs['b_inputs'], attention_mask=inputs['b_mask'])
 
         concat_emb = th.concat((a_text_emb, b_text_emb), dim=-1)
         logits = self.head(concat_emb)

@@ -9,7 +9,8 @@ def encode_text_torch(
         vocab,
         tokenizer
 ):
-    texts = [th.tensor(vocab(tokenizer(text))) for text in inputs]
+    texts = [th.tensor(vocab(tokenizer(text))) if text is not None
+             else th.tensor([0], dtype=th.int32) for text in inputs]
     texts = pad_sequence(texts, padding_value=0, batch_first=True)
     return texts
 
@@ -23,7 +24,7 @@ def encode_text_with_context_torch(
     texts = encode_text_torch(inputs=inputs, vocab=vocab, tokenizer=tokenizer)
 
     if context is not None:
-        context = encode_text_torch(inputs=inputs, vocab=vocab, tokenizer=tokenizer)
+        context = encode_text_torch(inputs=context, vocab=vocab, tokenizer=tokenizer)
 
     return texts, context
 
@@ -34,6 +35,8 @@ def encode_text_transformer(
         device,
         tokenizer_args={}
 ):
+    inputs = [item if item is not None else "" for item in inputs]
+
     tok_inputs = tokenizer(inputs,
                            padding=True,
                            return_tensors='pt',
@@ -70,7 +73,8 @@ def encode_text_with_context_transformer(
 def encode_text_transformer_output(
         inputs
 ):
-    texts = pad_sequence([th.tensor(text, dtype=th.float32) for text in inputs],
+    texts = pad_sequence([th.tensor(text, dtype=th.float32) if text is not None
+                          else th.tensor([0.0]).view(1, 1) for text in inputs],
                          padding_value=0.0, batch_first=True)
     attention_mask = texts[:, :, 0] != 0.0
     attention_mask = attention_mask.to(th.float32)
@@ -91,6 +95,7 @@ def encode_text_with_context_transformer_output(
     return texts, attention_mask, context_texts, context_mask
 
 
+# TODO: handle when inputs is empty
 def encode_audio_transformer(
         inputs,
         processor,
@@ -104,6 +109,7 @@ def encode_audio_transformer(
 ):
     loaded_audio = []
 
+    # TODO: check if inputs can be a nested list of audio files
     for audio_file in inputs:
         if not audio_file.is_file():
             raise RuntimeError(f'Could not read file {audio_file}')
@@ -136,10 +142,12 @@ def encode_audio_transformer(
     return features, attention_mask
 
 
+# TODO: test when inputs is empty
 def encode_audio_torch(
         inputs
 ):
-    features = [th.tensor(feature_set, dtype=th.float32) for feature_set in inputs]
+    features = [th.tensor(feature_set, dtype=th.float32) if feature_set is not None
+                else th.tensor([0.0]) for feature_set in inputs]
     features = pad_sequence(features, batch_first=True, padding_value=float('-inf'))
     features[(features == float('-inf'))] = 0
 

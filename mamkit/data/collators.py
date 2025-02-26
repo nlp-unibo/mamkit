@@ -20,7 +20,7 @@ class CollatorComponent:
             inputs: Any,
             context: Any = None
     ):
-        return inputs, context
+        return {'inputs': inputs, 'context': context}
 
 
 class PairCollatorComponent:
@@ -32,7 +32,7 @@ class PairCollatorComponent:
             a_context: Any = None,
             b_context: Any = None
     ):
-        return a_inputs, b_inputs, a_context, b_context
+        return {'a_inputs': a_inputs, 'b_inputs': b_inputs, 'a_context': a_context, 'b_context': b_context}
 
 
 class UnimodalCollator:
@@ -51,14 +51,14 @@ class UnimodalCollator:
     ):
         inputs, labels, context = zip(*batch)
         if self.features_collator is None:
-            features_collated = (inputs, context)
+            features_collated = {'inputs': inputs, 'context': context}
         else:
             features_collated = self.features_collator(inputs=inputs, context=context)
 
         if self.label_collator is None:
             labels_collated = labels
         else:
-            labels_collated = self.label_collator(inputs=labels)
+            labels_collated = self.label_collator(labels)
 
         return features_collated, labels_collated
 
@@ -79,7 +79,8 @@ class PairUnimodalCollator:
     ):
         a_features, b_features, labels, a_context, b_context = zip(*batch)
         if self.features_collator is None:
-            features_collated = (a_features, b_features, a_context, b_context)
+            features_collated = {'a_inputs': a_features, 'b_inputs': b_features,
+                                 'a_context': a_context, 'b_context': b_context}
         else:
             features_collated = self.features_collator(a_inputs=a_features,
                                                        b_inputs=b_features,
@@ -112,12 +113,12 @@ class MultimodalCollator:
     ):
         text_raw, audio_raw, labels, text_context, audio_context = zip(*batch)
         if self.text_collator is None:
-            text_collated = (text_raw, text_context)
+            text_collated = {'inputs': text_raw, 'context': text_context}
         else:
             text_collated = self.text_collator(inputs=text_raw, context=text_context)
 
         if self.audio_collator is None:
-            audio_collated = (audio_raw, audio_context)
+            audio_collated = {'inputs': audio_raw, 'context': audio_context}
         else:
             audio_collated = self.audio_collator(inputs=audio_raw, context=audio_context)
 
@@ -126,7 +127,8 @@ class MultimodalCollator:
         else:
             labels_collated = self.label_collator(labels)
 
-        return (text_collated, audio_collated), labels_collated
+        return {**{f'text_{key}': value for key, value in text_collated.items()},
+                **{f'audio_{key}': value for key, value in audio_collated.items()}}, labels_collated
 
 
 class PairMultimodalCollator:
@@ -150,13 +152,15 @@ class PairMultimodalCollator:
          a_text_context, a_audio_context, b_text_context, b_audio_context) = zip(*batch)
 
         if self.text_collator is None:
-            text_collated = (a_text, b_text, a_text_context, b_text_context)
+            text_collated = {'a_inputs': a_text, 'b_inputs': b_text,
+                             'a_context': a_text_context, 'b_context': b_text_context}
         else:
             text_collated = self.text_collator(a_inputs=a_text, b_inputs=b_text,
                                                a_context=a_text_context, b_context=b_text_context)
 
         if self.audio_collator is None:
-            audio_collated = (a_audio, b_audio, a_audio_context, b_audio_context)
+            audio_collated = {'a_inputs': a_audio, 'b_inputs': b_audio,
+                              'a_context': a_audio_context, 'b_context': b_audio_context}
         else:
             audio_collated = self.audio_collator(a_inputs=a_audio, b_inputs=b_audio,
                                                  a_context=a_audio_context, b_context=b_audio_context)
@@ -166,7 +170,8 @@ class PairMultimodalCollator:
         else:
             labels_collated = self.label_collator(labels)
 
-        return (text_collated, audio_collated), labels_collated
+        return {**{f'text_{key}': value for key, value in text_collated.items()},
+                **{f'audio_{key}': value for key, value in audio_collated.items()}}, labels_collated
 
 
 class TextCollator(CollatorComponent):
@@ -188,7 +193,7 @@ class TextCollator(CollatorComponent):
                                                         context=context,
                                                         vocab=self.vocab,
                                                         tokenizer=self.tokenizer)
-        return texts, context
+        return {'inputs': texts, 'context': context}
 
 
 class PairTextCollator(PairCollatorComponent):
@@ -218,7 +223,7 @@ class PairTextCollator(PairCollatorComponent):
                                                             vocab=self.vocab,
                                                             tokenizer=self.tokenizer)
 
-        return a_texts, b_texts, a_context, b_context
+        return {'a_inputs': a_texts, 'b_inputs': b_texts, 'a_context': a_context, 'b_context': b_context}
 
 
 class TextTransformerCollator(CollatorComponent):
@@ -246,7 +251,8 @@ class TextTransformerCollator(CollatorComponent):
                                                                            tokenizer_args=self.tokenizer_args,
                                                                            device=self.device)
 
-        return input_ids, attention_mask, context_ids, context_mask
+        return {'inputs': input_ids, 'input_mask': attention_mask,
+                'context': context_ids, 'context_mask': context_mask}
 
 
 class PairTextTransformerCollator(PairCollatorComponent):
@@ -283,10 +289,10 @@ class PairTextTransformerCollator(PairCollatorComponent):
                                                                                tokenizer_args=self.tokenizer_args,
                                                                                device=self.device)
 
-        return (a_input_ids, a_mask,
-                b_input_ids, b_mask,
-                a_context_ids, a_context_mask,
-                b_context_ids, b_context_mask)
+        return {'a_inputs': a_input_ids, 'a_mask': a_mask,
+                'b_inputs': b_inputs, 'b_mask': b_mask,
+                'a_context': a_context_ids, 'a_context_mask': a_context_mask,
+                'b_context': b_context_ids, 'b_context_mask': b_context_mask}
 
 
 class TextTransformerOutputCollator(CollatorComponent):
@@ -299,7 +305,8 @@ class TextTransformerOutputCollator(CollatorComponent):
         (input_ids, attention_mask,
          context_ids, context_mask) = encode_text_with_context_transformer_output(inputs=inputs,
                                                                                   context=context)
-        return input_ids, attention_mask, context_ids, context_mask
+        return {'inputs': input_ids, 'input_mask': attention_mask,
+                'context': context_ids, 'context_mask': context_mask}
 
 
 class PairTextTransformerOutputCollator(PairCollatorComponent):
@@ -317,10 +324,10 @@ class PairTextTransformerOutputCollator(PairCollatorComponent):
         b_ids, b_mask, b_context_ids, b_context_mask = encode_text_with_context_transformer_output(inputs=b_inputs,
                                                                                                    context=b_context)
 
-        return (a_ids, a_mask,
-                b_ids, b_mask,
-                a_context_ids, a_context_mask,
-                b_context_ids, b_context_mask)
+        return {'a_inputs': a_ids, 'a_mask': a_mask,
+                'b_inputs': b_ids, 'b_mask': b_mask,
+                'a_context': a_context_ids, 'a_context_mask': a_context_mask,
+                'b_context': b_context_ids, 'b_context_mask': b_context_mask}
 
 
 class AudioTransformerCollator(CollatorComponent):
@@ -372,7 +379,8 @@ class AudioTransformerCollator(CollatorComponent):
                                                                       downsampling_factor=self.downsampling_factor,
                                                                       sampling_rate=self.sampling_rate)
 
-        return features, attention_mask, context_features, context_mask
+        return {'inputs': features, 'input_mask': attention_mask,
+                'context': context_features, 'context_mask': context_mask}
 
 
 class AudioCollator(CollatorComponent):
@@ -386,7 +394,8 @@ class AudioCollator(CollatorComponent):
          context_features, context_mask) = encode_audio_with_context_torch(inputs=inputs,
                                                                            context=context)
 
-        return audio_features, attention_mask, context_features, context_mask
+        return {'inputs': audio_features, 'input_mask': attention_mask,
+                'context': context_features, 'context_mask': context_mask}
 
 
 class PairAudioCollator(PairCollatorComponent):
@@ -416,13 +425,13 @@ class PairAudioCollator(PairCollatorComponent):
     ):
         (a_audio_features, a_attention_mask,
          a_context_features, a_context_mask) = encode_audio_with_context_torch(inputs=a_inputs,
-                                                                           context=a_context)
+                                                                               context=a_context)
 
         (b_audio_features, b_attention_mask,
          b_context_features, b_context_mask) = encode_audio_with_context_torch(inputs=b_inputs,
-                                                                           context=b_context)
+                                                                               context=b_context)
 
-        return (a_audio_features, a_attention_mask,
-                b_audio_features, b_attention_mask,
-                a_context_features, a_context_mask,
-                b_context_features, b_context_mask)
+        return {'a_inputs': a_audio_features, 'a_mask': a_attention_mask,
+                'b_inputs': b_audio_features, 'b_mask': b_attention_mask,
+                'a_context': a_context_features, 'a_context_mask': a_context_mask,
+                'b_context': b_context_features, 'b_context_mask': b_context_mask}

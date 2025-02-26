@@ -8,7 +8,7 @@ class AudioOnlyModel(th.nn.Module):
 
     def forward(
             self,
-            audio
+            inputs
     ):
         pass
 
@@ -30,14 +30,13 @@ class BiLSTM(AudioOnlyModel):
         self.head = head()
         self.dropout = th.nn.Dropout(p=dropout_rate)
 
+    # TODO: move to utility
     def forward(
             self,
-            audio
+            inputs
     ):
         # audio_features -> [bs, N, d]
-        audio_features, audio_attention = audio
-
-        audio_features = self.dropout(audio_features)
+        audio_features = self.dropout(inputs['inputs'])
 
         # [bs, d']
         audio_emb = self.lstm(audio_features)
@@ -52,11 +51,9 @@ class PairBiLSTM(BiLSTM):
 
     def encode_audio(
             self,
-            audio
+            audio_features
     ):
         # audio_features -> [bs, N, d]
-        audio_features, audio_attention = audio
-
         audio_features = self.dropout(audio_features)
 
         # [bs, d']
@@ -66,12 +63,10 @@ class PairBiLSTM(BiLSTM):
 
     def forward(
             self,
-            audio
+            inputs
     ):
-        a_audio, b_audio = audio
-
-        a_audio_emb = self.encode_audio(audio=a_audio)
-        b_audio_emb = self.encode_audio(audio=b_audio)
+        a_audio_emb = self.encode_audio(audio_features=inputs['a_inputs'])
+        b_audio_emb = self.encode_audio(audio_features=inputs['b_inputs'])
 
         concat_emb = th.concat((a_audio_emb, b_audio_emb), dim=-1)
         logits = self.head(concat_emb)
@@ -97,11 +92,12 @@ class TransformerEncoder(AudioOnlyModel):
         self.layer_norm = th.nn.LayerNorm(embedding_dim)
         self.dropout = th.nn.Dropout(p=dropout_rate)
 
+    # TODO: move to utility
     def forward(
             self,
-            audio
+            inputs
     ):
-        audio_features, attention_mask = audio
+        audio_features, attention_mask = inputs['inputs'], inputs['input_mask']
 
         padding_mask = ~attention_mask.to(th.bool)
         full_attention_mask = th.zeros((audio_features.shape[1], audio_features.shape[1]), dtype=th.bool).to(
@@ -127,10 +123,9 @@ class PairTransformerEncoder(TransformerEncoder):
 
     def encode_audio(
             self,
-            audio
+            audio_features,
+            attention_mask
     ):
-        audio_features, attention_mask = audio
-
         padding_mask = ~attention_mask.to(th.bool)
         full_attention_mask = th.zeros((audio_features.shape[1], audio_features.shape[1]), dtype=th.bool).to(
             audio_features.device)
@@ -152,11 +147,10 @@ class PairTransformerEncoder(TransformerEncoder):
 
     def forward(
             self,
-            audio
+            inputs
     ):
-        a_audio, b_audio = audio
-        a_audio_emb = self.encode_audio(a_audio)
-        b_audio_emb = self.encode_audio(b_audio)
+        a_audio_emb = self.encode_audio(audio_features=inputs['a_inputs'], attention_mask=inputs['a_mask'])
+        b_audio_emb = self.encode_audio(audio_features=inputs['b_inputs'], attention_mask=inputs['b_mask'])
 
         concat_emb = th.concat((a_audio_emb, b_audio_emb), dim=-1)
         logits = self.head(concat_emb)

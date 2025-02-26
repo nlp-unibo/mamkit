@@ -52,7 +52,6 @@ def parse_audio_mfcc(
     return features
 
 
-# TODO: handle when context is empty
 def encode_audio_mfcc(
         audio_input: Union[Path, List[Path]],
         mfccs: int,
@@ -62,6 +61,15 @@ def encode_audio_mfcc(
         normalize: bool = True,
         preloaded_mfccs: Dict = {}
 ):
+    if type(audio_input) == list and not len(audio_input):
+        return np.array([0.0])
+
+    if audio_input is None:
+        return np.array([0.0])
+
+    if type(audio_input) == Path and not audio_input.exists():
+        return np.array([0.0])
+
     input_hash = hash(audio_input.as_posix() if type(audio_input) == Path
                       else '--'.join(sorted([item.as_posix() for item in audio_input])))
     if input_hash in preloaded_mfccs:
@@ -126,7 +134,6 @@ def parse_audio_nn(
     return audio
 
 
-# TODO: handle when audio context is empty
 def encode_audio_nn(
         audio_input: Union[Path, List[Path]],
         processor,
@@ -138,6 +145,15 @@ def encode_audio_nn(
         downsampling_factor=None,
         aggregate: bool = False,
 ):
+    if audio_input is None:
+        return th.tensor([0.0], dtype=th.float32)
+
+    if type(audio_input) == Path and not audio_input.exists():
+        return th.tensor([0.0], dtype=th.float32)
+
+    if type(audio_input) == list and not len(audio_input):
+        return th.tensor([0.0], dtype=th.float32)
+
     audio = parse_audio_nn(audio_input=audio_input,
                            sampling_rate=sampling_rate)
 
@@ -206,7 +222,6 @@ def encode_audio_and_context_nn(
     return audio_features, context_audio_features
 
 
-# TODO: handle when context is empty
 def encode_text_nn(
         text: str,
         tokenizer,
@@ -215,6 +230,9 @@ def encode_text_nn(
         tokenizer_args: Dict = None,
         model_args: Dict = None
 ):
+    if text is None or not len(text):
+        return th.tensor([0.0], dtype=th.float32)
+
     tokenized = tokenizer([text],
                           padding=True,
                           return_tensors='pt',
@@ -244,7 +262,7 @@ def encode_text_and_context_nn(
 
     context_emb = None
     if context is not None:
-        context_emb = encode_text_nn(text=text,
+        context_emb = encode_text_nn(text=context,
                                      model=model,
                                      tokenizer=tokenizer,
                                      model_args=model_args,
