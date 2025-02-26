@@ -2,14 +2,14 @@ import logging
 from pathlib import Path
 from typing import List
 
-from mamkit.data.datasets import SplitInfo, UKDebates, MMUSEDFallacy, InputMode
+from mamkit.data.datasets import SplitInfo, UKDebates, InputMode
 
 
 def loading_data_example():
     base_data_path = Path(__file__).parent.parent.resolve().joinpath('data')
-    loader = MMUSEDFallacy(task_name='afc',
-                           input_mode=InputMode.TEXT_ONLY,
-                           base_data_path=base_data_path)
+    loader = UKDebates(task_name='asd',
+                       input_mode=InputMode.TEXT_ONLY,
+                       base_data_path=base_data_path)
     logging.info(loader.data)
 
 

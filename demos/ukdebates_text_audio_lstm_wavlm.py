@@ -8,7 +8,7 @@ from lightning.pytorch import seed_everything
 from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from torch.utils.data import DataLoader
 from torchmetrics.classification.f_beta import F1Score
-
+from torchmetrics import MetricCollection
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text_audio import BiLSTMTransformerConfig
 from mamkit.data.collators import MultimodalCollator, TextCollator, AudioCollator
@@ -16,7 +16,7 @@ from mamkit.data.datasets import UKDebates, InputMode
 from mamkit.data.processing import VocabBuilder, MultimodalProcessor, AudioTransformer
 from mamkit.models.text_audio import BiLSTM
 from mamkit.utility.callbacks import PycharmProgressBar
-from mamkit.utility.model import to_lighting_model
+from mamkit.utility.model import MAMKitLightingModel
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
@@ -95,13 +95,13 @@ if __name__ == '__main__':
                            audio_dropout_rate=config.audio_dropout_rate,
                            embedding_matrix=processor.text_processor.embedding_matrix
                            )
-            model = to_lighting_model(model=model,
-                                      loss_function=config.loss_function,
-                                      num_classes=config.num_classes,
-                                      optimizer_class=config.optimizer,
-                                      val_metrics={'val_f1': F1Score(task='binary')},
-                                      test_metrics={'test_f1': F1Score(task='binary')},
-                                      **config.optimizer_args)
+            model = MAMKitLightingModel(model=model,
+                                        loss_function=config.loss_function,
+                                        num_classes=config.num_classes,
+                                        optimizer_class=config.optimizer,
+                                        val_metrics=MetricCollection({'f1': F1Score(task='binary')}),
+                                        test_metrics=MetricCollection({'f1': F1Score(task='binary')}),
+                                        **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,
                                 callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=5),

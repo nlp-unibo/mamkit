@@ -17,7 +17,7 @@ def parse_audio_mfcc(
         remove_energy: bool = True,
         normalize: bool = True,
 ):
-    if type(audio_input) == Path:
+    if isinstance(audio_input, Path):
         audio, audio_sampling_rate = librosa.load(audio_input)
     else:
         _, audio_sampling_rate = librosa.load(audio_input[0])
@@ -67,10 +67,10 @@ def encode_audio_mfcc(
     if audio_input is None:
         return np.array([0.0])
 
-    if type(audio_input) == Path and not audio_input.exists():
+    if isinstance(audio_input, Path) and not audio_input.exists():
         return np.array([0.0])
 
-    input_hash = hash(audio_input.as_posix() if type(audio_input) == Path
+    input_hash = hash(audio_input.as_posix() if isinstance(audio_input, Path)
                       else '--'.join(sorted([item.as_posix() for item in audio_input])))
     if input_hash in preloaded_mfccs:
         return preloaded_mfccs[input_hash]
@@ -121,7 +121,7 @@ def parse_audio_nn(
         audio_input: Union[Path, List[Path]],
         sampling_rate: int = 16000,
 ):
-    if type(audio_input) == Path:
+    if isinstance(audio_input, Path):
         audio, audio_sampling_rate = load(audio_input)
     else:
         _, audio_sampling_rate = load(audio_input[0])
@@ -148,7 +148,7 @@ def encode_audio_nn(
     if audio_input is None:
         return th.tensor([0.0], dtype=th.float32)
 
-    if type(audio_input) == Path and not audio_input.exists():
+    if isinstance(audio_input, Path) and not audio_input.exists():
         return th.tensor([0.0], dtype=th.float32)
 
     if type(audio_input) == list and not len(audio_input):

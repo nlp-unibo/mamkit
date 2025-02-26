@@ -8,7 +8,7 @@ from mamkit.data.processing import VocabBuilder, UnimodalProcessor
 if __name__ == '__main__':
     base_data_path = Path(__file__).parent.parent.resolve().joinpath('data')
 
-    loader = MMUSEDFallacy(task_name='afc',
+    loader = MMUSEDFallacy(task_name='afd',
                            input_mode=InputMode.TEXT_ONLY,
                            base_data_path=base_data_path,
                            with_context=True)
