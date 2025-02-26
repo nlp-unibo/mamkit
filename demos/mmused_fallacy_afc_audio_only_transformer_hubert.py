@@ -8,7 +8,7 @@ from lightning.pytorch import seed_everything
 from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from torch.utils.data import DataLoader
 from torchmetrics.classification.f_beta import F1Score
-
+from torchmetrics import MetricCollection
 from mamkit.configs.audio import TransformerEncoderConfig
 from mamkit.configs.base import ConfigKey
 from mamkit.data.collators import AudioCollator, UnimodalCollator
@@ -16,7 +16,7 @@ from mamkit.data.datasets import MMUSEDFallacy, InputMode
 from mamkit.data.processing import AudioTransformerExtractor, UnimodalProcessor
 from mamkit.models.audio import TransformerEncoder
 from mamkit.utility.callbacks import PycharmProgressBar
-from mamkit.utility.model import to_lighting_model
+from mamkit.utility.model import MAMKitLightingModel
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
@@ -85,13 +85,14 @@ if __name__ == '__main__':
                                        dropout_rate=config.dropout_rate,
                                        encoder=config.encoder,
                                        head=config.head)
-            model = to_lighting_model(model=model,
-                                      loss_function=config.loss_function,
-                                      num_classes=config.num_classes,
-                                      optimizer_class=config.optimizer,
-                                      val_metrics={'val_f1': F1Score(task='multiclass', num_classes=6)},
-                                      test_metrics={'test_f1': F1Score(task='multiclass', num_classes=6)},
-                                      **config.optimizer_args)
+            model = MAMKitLightingModel(model=model,
+                                        loss_function=config.loss_function,
+                                        num_classes=config.num_classes,
+                                        optimizer_class=config.optimizer,
+                                        val_metrics=MetricCollection({'f1': F1Score(task='multiclass', num_classes=6)}),
+                                        test_metrics=MetricCollection(
+                                            {'f1': F1Score(task='multiclass', num_classes=6)}),
+                                        **config.optimizer_args)
 
             trainer = L.Trainer(**trainer_args,
                                 callbacks=[EarlyStopping(monitor='val_loss', mode='min', patience=5),

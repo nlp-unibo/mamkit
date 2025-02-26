@@ -1,6 +1,7 @@
 import lightning as L
 import torch as th
 from typing import Dict
+from torchmetrics import MetricCollection
 
 
 class MAMKitLightingModel(L.LightningModule):
@@ -10,32 +11,21 @@ class MAMKitLightingModel(L.LightningModule):
             loss_function,
             num_classes: int,
             optimizer_class,
-            val_metrics: Dict = None,
-            test_metrics: Dict = None,
+            val_metrics: MetricCollection = None,
+            test_metrics: MetricCollection = None,
             log_metrics: bool = True,
             **optimizer_kwargs
     ):
         super().__init__()
+
         self.model = model
         self.loss_function = loss_function()
         self.optimizer_class = optimizer_class
         self.optimizer_kwargs = optimizer_kwargs
         self.num_classes = num_classes
         self.log_metrics = log_metrics
-
-        if val_metrics is not None:
-            self.val_metrics_names = val_metrics.keys()
-            self.val_metrics = th.nn.ModuleList(list(val_metrics.values()))
-        else:
-            self.val_metric_names = None
-            self.val_metrics = None
-
-        if test_metrics is not None:
-            self.test_metrics_names = test_metrics.keys()
-            self.test_metrics = th.nn.ModuleList(list(test_metrics.values()))
-        else:
-            self.test_metrics_names = None
-            self.test_metrics = None
+        self.val_metrics = val_metrics
+        self.test_metrics = test_metrics
 
     def forward(
             self,
@@ -69,11 +59,18 @@ class MAMKitLightingModel(L.LightningModule):
 
         if self.val_metrics is not None:
             y_hat = th.argmax(y_hat, dim=-1)
-            for val_metric_name, val_metric in zip(self.val_metrics_names, self.val_metrics):
-                val_metric(y_hat, y_true)
-                self.log(val_metric_name, val_metric, on_step=False, on_epoch=True, prog_bar=self.log_metrics)
+            self.val_metrics.update(y_hat, y_true)
 
         return loss
+
+    def on_validation_epoch_end(
+            self
+    ) -> None:
+        if self.val_metrics is not None:
+            metric_values = self.val_metrics.compute()
+            for key, value in metric_values.items():
+                self.log(f'val_{key}', value, prog_bar=self.log_metrics)
+            self.val_metrics.reset()
 
     def test_step(
             self,
@@ -88,33 +85,21 @@ class MAMKitLightingModel(L.LightningModule):
 
         if self.test_metrics is not None:
             y_hat = th.argmax(y_hat, dim=-1)
-            for test_metric_name, test_metric in zip(self.test_metrics_names, self.test_metrics):
-                test_metric(y_hat, y_true)
-                self.log(test_metric_name, test_metric, on_step=False, on_epoch=True)
+            self.test_metrics.update(y_hat, y_true)
 
         return loss
+
+    def on_test_epoch_end(
+            self
+    ) -> None:
+        if self.test_metrics is not None:
+            metric_values = self.test_metrics.compute()
+            for key, value in metric_values.items():
+                self.log(f'test_{key}', value, prog_bar=self.log_metrics)
+            self.test_metrics.reset()
 
     def configure_optimizers(
             self
     ):
         return self.optimizer_class(self.model.parameters(), **self.optimizer_kwargs)
 
-
-def to_lighting_model(
-        model: th.nn.Module,
-        loss_function,
-        num_classes,
-        optimizer_class,
-        val_metrics: Dict = None,
-        test_metrics: Dict = None,
-        log_metrics: bool = True,
-        **optimizer_kwargs
-):
-    return MAMKitLightingModel(model=model,
-                               loss_function=loss_function,
-                               num_classes=num_classes,
-                               optimizer_class=optimizer_class,
-                               val_metrics=val_metrics,
-                               test_metrics=test_metrics,
-                               log_metrics=log_metrics,
-                               **optimizer_kwargs)
