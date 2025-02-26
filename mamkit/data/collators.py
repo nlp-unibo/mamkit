@@ -289,7 +289,7 @@ class PairTextTransformerCollator(PairCollatorComponent):
                                                                                device=self.device)
 
         return {'a_inputs': a_input_ids, 'a_mask': a_mask,
-                'b_inputs': b_inputs, 'b_mask': b_mask,
+                'b_inputs': b_input_ids, 'b_mask': b_mask,
                 'a_context': a_context_ids, 'a_context_mask': a_context_mask,
                 'b_context': b_context_ids, 'b_context_mask': b_context_mask}
 

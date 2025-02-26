@@ -371,14 +371,14 @@ class PairVocabBuilder(PairProcessorComponent):
 
     def fit(
             self,
-            a_texts: List[str],
-            b_texts: List[str],
+            a_inputs: List[str],
+            b_inputs: List[str],
             a_context: List[str] = None,
             b_context: List[str] = None
     ):
         logging.info('Building vocabulary...')
 
-        vocab_input = a_texts + b_texts
+        vocab_input = a_inputs + b_inputs
         if a_context is not None:
             vocab_input += a_context
         if b_context is not None:
@@ -398,12 +398,12 @@ class PairVocabBuilder(PairProcessorComponent):
 
     def __call__(
             self,
-            a_texts: List[str],
-            b_texts: List[str],
+            a_inputs: List[str],
+            b_inputs: List[str],
             a_context: List[str] = None,
             b_context: List[str] = None
     ):
-        return a_texts, b_texts, a_context, b_context
+        return a_inputs, b_inputs, a_context, b_context
 
     def clear(
             self

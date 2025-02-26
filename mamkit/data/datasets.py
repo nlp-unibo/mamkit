@@ -176,10 +176,10 @@ class PairMultimodalDataset(Dataset):
             self.a_audio[idx], \
             self.b_audio[idx], \
             self.labels[idx], \
-            self.a_text_context[idx], \
-            self.a_audio_context[idx], \
-            self.b_text_context[idx], \
-            self.b_audio_context[idx]
+            self.a_text_context[idx] if self.a_text_context is not None else None, \
+            self.a_audio_context[idx] if self.a_audio_context is not None else None, \
+            self.b_text_context[idx] if self.b_text_context is not None else None, \
+            self.b_audio_context[idx] if self.b_audio_context is not None else None
 
     def __len__(self):
         return len(self.labels)
@@ -1225,6 +1225,9 @@ class MArg(Loader):
             self
     ) -> pd.DataFrame:
         df = pd.read_csv(self.final_path)
+
+        df['sentence_1_audio_path'] = [Path(item) for item in df['sentence_1_audio_path'].values]
+        df['sentence_2_audio_path'] = [Path(item) for item in df['sentence_2_audio_path'].values]
 
         if self.task_name == 'arc':
             df.loc[df.relation == 'neither', 'relation'] = 0
