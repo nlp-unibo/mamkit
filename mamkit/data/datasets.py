@@ -379,7 +379,7 @@ class UKDebates(Loader):
                                  audio=df.audio.values,
                                  labels=df.labels.values)
 
-    @property
+    @cached_property
     def data(
             self
     ) -> pd.DataFrame:
@@ -462,11 +462,17 @@ class MMUSED(Loader):
                  is filled with the debate_ids of the corresponding generated clip.
         """
         df = pd.read_pickle(self.data_path.joinpath('dataset.pkl'))
+        dl_df = pd.read_csv(self.data_path.joinpath("download_links.csv"), sep=';')
 
         df['audio_paths'] = None
         for row_idx, row in tqdm(df.iterrows(), desc='Building clips...', total=df.shape[0]):
             recording_filepath = self.audio_path.joinpath(row['dialogue_id'], 'full_audio.wav')
             recording = AudioSegment.from_file(recording_filepath)
+
+            debate_dl_df = dl_df[dl_df.id == row['dialogue_id']]
+            trim_start_time = debate_dl_df['startMin'].values[0] * 60 + debate_dl_df['startSec'].values[0]
+            trim_end_time = debate_dl_df['endMin'].values[0] * 60 + debate_dl_df['endSec'].values[0]
+            recording = recording[trim_start_time * 1000:-trim_end_time * 1000]
 
             clip_filepath = self.clips_path.joinpath(row['dialogue_id'], f'{row["text_index"]}.wav')
             clip_filepath.parent.resolve().mkdir(parents=True, exist_ok=True)
@@ -546,7 +552,7 @@ class MMUSED(Loader):
                                  audio=df['audio_paths'].values,
                                  labels=df.component.values)
 
-    @property
+    @cached_property
     def data(
             self
     ) -> pd.DataFrame:
@@ -611,6 +617,7 @@ class MMUSEDFallacy(Loader):
             self
     ):
         df = pd.read_pickle(self.data_path.joinpath('dataset.pkl'))
+        dl_df = pd.read_csv(self.data_path.joinpath("download_links.csv"), sep=';')
 
         total_dialogue_paths = []
         total_snippet_paths = []
@@ -622,6 +629,11 @@ class MMUSEDFallacy(Loader):
 
             recording_filepath = self.audio_path.joinpath(row['dialogue_id'], 'full_audio.wav')
             recording = AudioSegment.from_file(recording_filepath)
+
+            debate_dl_df = dl_df[dl_df.id == row['dialogue_id']]
+            trim_start_time = debate_dl_df['startMin'].values[0] * 60 + debate_dl_df['startSec'].values[0]
+            trim_end_time = debate_dl_df['endMin'].values[0] * 60 + debate_dl_df['endSec'].values[0]
+            recording = recording[trim_start_time * 1000:-trim_end_time * 1000]
 
             # Dialogues
             for sent_idx, sent, start_time, end_time in zip(row['dialogue_indexes'],
@@ -1220,7 +1232,7 @@ class MArg(Loader):
                                      b_audio=df.sentence_2_audio_path.values,
                                      labels=df.relation.values)
 
-    @property
+    @cached_property
     def data(
             self
     ) -> pd.DataFrame:
