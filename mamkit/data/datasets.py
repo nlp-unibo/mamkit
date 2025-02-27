@@ -441,7 +441,7 @@ class MMUSED(Loader):
         self.folder_name = 'MMUSED'
 
         # Files: download_links.csv, dataset.pkl
-        self.archive_url = 'https://zenodo.org/api/records/11179380/files-archive'
+        self.archive_url = 'https://zenodo.org/api/records/14938592/files-archive'
 
         self.data_path = Path(self.base_data_path, self.folder_name).resolve()
         self.audio_path = self.data_path.joinpath('audio_recordings')
@@ -464,42 +464,45 @@ class MMUSED(Loader):
         df = pd.read_pickle(self.data_path.joinpath('dataset.pkl'))
         dl_df = pd.read_csv(self.data_path.joinpath("download_links.csv"), sep=';')
 
-        df['audio_paths'] = None
-        for row_idx, row in tqdm(df.iterrows(), desc='Building clips...', total=df.shape[0]):
-            recording_filepath = self.audio_path.joinpath(row['dialogue_id'], 'full_audio.wav')
+        dialogue_ids = set(df.dialogue_id.values)
+
+        for dialogue_id in tqdm(dialogue_ids, desc='Building clips...', total=len(dialogue_ids)):
+            recording_filepath = self.audio_path.joinpath(dialogue_id, 'full_audio.wav')
             recording = AudioSegment.from_file(recording_filepath)
 
-            debate_dl_df = dl_df[dl_df.id == row['dialogue_id']]
+            debate_dl_df = dl_df[dl_df.id == dialogue_id]
+
             trim_start_time = debate_dl_df['startMin'].values[0] * 60 + debate_dl_df['startSec'].values[0]
             trim_end_time = debate_dl_df['endMin'].values[0] * 60 + debate_dl_df['endSec'].values[0]
             recording = recording[trim_start_time * 1000:-trim_end_time * 1000]
 
-            clip_filepath = self.clips_path.joinpath(row['dialogue_id'], f'{row["text_index"]}.wav')
-            clip_filepath.parent.resolve().mkdir(parents=True, exist_ok=True)
+            dialogue_df = df[df.dialogue_id == dialogue_id]
 
-            df.loc[row_idx, 'audio_paths'] = clip_filepath
+            for row_idx, row in dialogue_df.iterrows():
+                for sent_idx, start_time, end_time in zip(row['speech_indexes'],
+                                                          row['speech_start_time'],
+                                                          row['speech_end_time']):
 
-            if clip_filepath.exists():
-                continue
+                    clip_filepath = self.clips_path.joinpath(row['dialogue_id'], f'{sent_idx}.wav')
+                    clip_filepath.parent.resolve().mkdir(parents=True, exist_ok=True)
 
-            audio_clip = recording[row['text_start_time']:row['text_end_time']]
-            audio_clip = audio_clip.set_frame_rate(self.sample_rate)
-            audio_clip = audio_clip.set_channels(1)
-            audio_clip.export(clip_filepath, format="wav")
+                    if clip_filepath.exists():
+                        continue
+
+                    audio_clip = recording[start_time * 1000:end_time * 1000]
+                    audio_clip = audio_clip.set_frame_rate(self.sample_rate)
+                    audio_clip = audio_clip.set_channels(1)
+                    audio_clip.export(clip_filepath, format="wav")
 
         return df
 
-    def build_clips(
+    def download_audio(
             self
     ):
         dl_df = pd.read_csv(self.data_path.joinpath("download_links.csv"), sep=';')
-
         youtube_download(save_path=self.audio_path,
                          debate_ids=dl_df.id.values,
                          debate_urls=dl_df.link.values)
-
-        dl_df = self.generate_clips()
-        dl_df.to_pickle(self.dataset_path)
 
     def load(
             self
@@ -523,9 +526,13 @@ class MMUSED(Loader):
             logging.info('Download completed!')
 
         if not self.clips_path.exists():
+            logging.info('Downloading audio data...')
+            self.download_audio()
+            logging.info('Download completed!')
+
             logging.info('Building audio clips...')
-            self.build_clips()
-            logging.info('Build completed!')
+            self.generate_clips()
+            logging.info('Build completed')
 
             # clear
             shutil.rmtree(self.audio_path)
@@ -534,29 +541,46 @@ class MMUSED(Loader):
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
-        return UnimodalDataset(inputs=df.text.values,
+        return UnimodalDataset(inputs=df.speech.values,
                                labels=df.component.values)
 
     def _get_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
-        return UnimodalDataset(inputs=df['audio_paths'].values,
+        return UnimodalDataset(inputs=df['speech_paths'].values,
                                labels=df.component.values)
 
     def _get_text_audio_data(
             self,
             df: pd.DataFrame
     ) -> MAMDataset:
-        return MultimodalDataset(texts=df.text.values,
-                                 audio=df['audio_paths'].values,
+        return MultimodalDataset(texts=df.speech.values,
+                                 audio=df['speech_paths'].values,
                                  labels=df.component.values)
+
+    def _build_audio_data(
+            self,
+            df: pd.DataFrame
+    ):
+        speech_paths = []
+        for row_idx, row in tqdm(df.iterrows(), desc='Mapping audio data...', total=df.shape[0]):
+            row_paths = []
+            for sent_idx in row['speech_indexes']:
+                clip_filepath = self.clips_path.joinpath(row['dialogue_id'], f'{sent_idx}.wav')
+                row_paths.append(clip_filepath)
+            speech_paths.append(row_paths)
+
+        return speech_paths
 
     @cached_property
     def data(
             self
     ) -> pd.DataFrame:
         df = pd.read_pickle(self.dataset_path)
+
+        speech_paths = self._build_audio_data(df=df)
+        df['speech_paths'] = speech_paths
 
         if self.task_name == 'acc':
             df = df[df.component.isin(['Premise', 'Claim'])]
@@ -619,48 +643,53 @@ class MMUSEDFallacy(Loader):
         df = pd.read_pickle(self.data_path.joinpath('dataset.pkl'))
         dl_df = pd.read_csv(self.data_path.joinpath("download_links.csv"), sep=';')
 
-        for row_idx, row in tqdm(df.iterrows(), desc='Building clips...', total=df.shape[0]):
-            recording_filepath = self.audio_path.joinpath(row['dialogue_id'], 'full_audio.wav')
+        dialogue_ids = set(df.dialogue_id.values)
+
+        for dialogue_id in tqdm(dialogue_ids, desc='Building clips...', total=len(dialogue_ids)):
+            recording_filepath = self.audio_path.joinpath(dialogue_id, 'full_audio.wav')
             recording = AudioSegment.from_file(recording_filepath)
 
-            debate_dl_df = dl_df[dl_df.id == row['dialogue_id']]
+            debate_dl_df = dl_df[dl_df.id == dialogue_id]
+
             trim_start_time = debate_dl_df['startMin'].values[0] * 60 + debate_dl_df['startSec'].values[0]
             trim_end_time = debate_dl_df['endMin'].values[0] * 60 + debate_dl_df['endSec'].values[0]
             recording = recording[trim_start_time * 1000:-trim_end_time * 1000]
 
-            # Dialogues
-            for sent_idx, sent, start_time, end_time in zip(row['dialogue_indexes'],
-                                                            row['dialogue_sentences'],
-                                                            row['dialogue_start_time'],
-                                                            row['dialogue_end_time']):
-                clip_name = f'{sent_idx}.wav'
-                clip_filepath = self.clips_path.joinpath(row['dialogue_id'], clip_name)
-                clip_filepath.parent.resolve().mkdir(parents=True, exist_ok=True)
+            dialogue_df = df[df.dialogue_id == dialogue_id]
+            for row_idx, row in dialogue_df.iterrows():
+                # Dialogues
+                for sent_idx, sent, start_time, end_time in zip(row['dialogue_indexes'],
+                                                                row['dialogue_sentences'],
+                                                                row['dialogue_start_time'],
+                                                                row['dialogue_end_time']):
+                    clip_name = f'{sent_idx}.wav'
+                    clip_filepath = self.clips_path.joinpath(row['dialogue_id'], clip_name)
+                    clip_filepath.parent.resolve().mkdir(parents=True, exist_ok=True)
 
-                if clip_filepath.exists():
-                    continue
+                    if clip_filepath.exists():
+                        continue
 
-                audio_clip = recording[start_time * 1000: end_time * 1000]
-                audio_clip = audio_clip.set_frame_rate(self.sample_rate)
-                audio_clip = audio_clip.set_channels(1)
-                audio_clip.export(clip_filepath, format="wav")
+                    audio_clip = recording[start_time * 1000: end_time * 1000]
+                    audio_clip = audio_clip.set_frame_rate(self.sample_rate)
+                    audio_clip = audio_clip.set_channels(1)
+                    audio_clip.export(clip_filepath, format="wav")
 
-            # Snippet
-            for sent_idx, sent, start_time, end_time in zip(row['snippet_indexes'],
-                                                            row['snippet_sentences'],
-                                                            row['snippet_start_time'],
-                                                            row['snippet_end_time']):
-                clip_name = f'{sent_idx}.wav'
-                clip_filepath = self.clips_path.joinpath(row['dialogue_id'], clip_name)
-                clip_filepath.parent.resolve().mkdir(parents=True, exist_ok=True)
+                # Snippet
+                for sent_idx, sent, start_time, end_time in zip(row['snippet_indexes'],
+                                                                row['snippet_sentences'],
+                                                                row['snippet_start_time'],
+                                                                row['snippet_end_time']):
+                    clip_name = f'{sent_idx}.wav'
+                    clip_filepath = self.clips_path.joinpath(row['dialogue_id'], clip_name)
+                    clip_filepath.parent.resolve().mkdir(parents=True, exist_ok=True)
 
-                if clip_filepath.exists():
-                    continue
+                    if clip_filepath.exists():
+                        continue
 
-                audio_clip = recording[start_time * 1000: end_time * 1000]
-                audio_clip = audio_clip.set_frame_rate(self.sample_rate)
-                audio_clip = audio_clip.set_channels(1)
-                audio_clip.export(clip_filepath, format="wav")
+                    audio_clip = recording[start_time * 1000: end_time * 1000]
+                    audio_clip = audio_clip.set_frame_rate(self.sample_rate)
+                    audio_clip = audio_clip.set_channels(1)
+                    audio_clip.export(clip_filepath, format="wav")
 
         df.to_pickle(self.dataset_path)
 
@@ -774,8 +803,10 @@ class MMUSEDFallacy(Loader):
 
             dialogue_sentences = [(sent_idx, sent, 0, start_time, end_time)
                                   for sent_idx, sent, start_time, end_time in zip(chain(*dialogue_df.dialogue_indexes),
-                                                                                  chain(*dialogue_df.dialogue_sentences),
-                                                                                  chain(*dialogue_df.dialogue_start_time),
+                                                                                  chain(
+                                                                                      *dialogue_df.dialogue_sentences),
+                                                                                  chain(
+                                                                                      *dialogue_df.dialogue_start_time),
                                                                                   chain(*dialogue_df.dialogue_end_time))
                                   if sent_idx not in list(chain(*dialogue_df.snippet_indexes))]
             snippet_sentences = [(sent_idx, sent, 1, start_time, end_time)
