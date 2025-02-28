@@ -443,23 +443,8 @@ document.write(`
 </dd></dl>
 
 </section>
-<section id="module-mamkit.utility.config">
-<span id="mamkit-utility-config-module"></span><h2>mamkit.utility.config module<a class="headerlink" href="#module-mamkit.utility.config" title="Permalink to this heading">#</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="mamkit.utility.config.extract_from_class">
-<span class="sig-prename descclassname"><span class="pre">mamkit.utility.config.</span></span><span class="sig-name descname"><span class="pre">extract_from_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.utility.config.extract_from_class" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="mamkit.utility.config.extract_from_method">
-<span class="sig-prename descclassname"><span class="pre">mamkit.utility.config.</span></span><span class="sig-name descname"><span class="pre">extract_from_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.utility.config.extract_from_method" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="mamkit-utility-config-module">
+<h2>mamkit.utility.config module<a class="headerlink" href="#mamkit-utility-config-module" title="Permalink to this heading">#</a></h2>
 </section>
 <section id="module-mamkit.utility.data">
 <span id="mamkit-utility-data-module"></span><h2>mamkit.utility.data module<a class="headerlink" href="#module-mamkit.utility.data" title="Permalink to this heading">#</a></h2>
@@ -599,6 +584,28 @@ yourself.</p></li>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Your model’s output</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mamkit.utility.model.MAMKitLightingModel.on_test_epoch_end">
+<span class="sig-name descname"><span class="pre">on_test_epoch_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.utility.model.MAMKitLightingModel.on_test_epoch_end" title="Permalink to this definition">#</a></dt>
+<dd><p>Called in the test loop at the very end of the epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mamkit.utility.model.MAMKitLightingModel.on_validation_epoch_end">
+<span class="sig-name descname"><span class="pre">on_validation_epoch_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.utility.model.MAMKitLightingModel.on_validation_epoch_end" title="Permalink to this definition">#</a></dt>
+<dd><p>Called in the validation loop at the very end of the epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -814,11 +821,6 @@ the model goes back to training mode and gradients are enabled.</p>
 
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="mamkit.utility.model.to_lighting_model">
-<span class="sig-prename descclassname"><span class="pre">mamkit.utility.model.</span></span><span class="sig-name descname"><span class="pre">to_lighting_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">optimizer_kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.utility.model.to_lighting_model" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
 </section>
 <section id="module-mamkit.utility">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mamkit.utility" title="Permalink to this heading">#</a></h2>
@@ -870,11 +872,7 @@ the model goes back to training mode and gradients are enabled.</p>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-mamkit.utility.config">mamkit.utility.config module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.config.extract_from_class"><code class="docutils literal notranslate"><span class="pre">extract_from_class()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.config.extract_from_method"><code class="docutils literal notranslate"><span class="pre">extract_from_method()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit-utility-config-module">mamkit.utility.config module</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-mamkit.utility.data">mamkit.utility.data module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.data.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.data.youtube_download"><code class="docutils literal notranslate"><span class="pre">youtube_download()</span></code></a></li>
@@ -891,12 +889,13 @@ the model goes back to training mode and gradients are enabled.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.model.MAMKitLightingModel"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.model.MAMKitLightingModel.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.configure_optimizers()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.model.MAMKitLightingModel.forward"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.forward()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.model.MAMKitLightingModel.on_test_epoch_end"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.on_test_epoch_end()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.model.MAMKitLightingModel.on_validation_epoch_end"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.on_validation_epoch_end()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.model.MAMKitLightingModel.test_step"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.test_step()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.model.MAMKitLightingModel.training_step"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.training_step()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.model.MAMKitLightingModel.validation_step"><code class="docutils literal notranslate"><span class="pre">MAMKitLightingModel.validation_step()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mamkit.utility.model.to_lighting_model"><code class="docutils literal notranslate"><span class="pre">to_lighting_model()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-mamkit.utility">Module contents</a></li>

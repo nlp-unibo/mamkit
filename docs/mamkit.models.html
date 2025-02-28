@@ -425,7 +425,7 @@ document.write(`
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.audio.AudioOnlyModel.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.AudioOnlyModel.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.AudioOnlyModel.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -450,7 +450,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.audio.AudioOnlyModel" title="mamkit.models.audio.AudioOnlyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioOnlyModel</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.audio.BiLSTM.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.BiLSTM.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.BiLSTM.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -475,12 +475,12 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.audio.BiLSTM" title="mamkit.models.audio.BiLSTM"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiLSTM</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.audio.PairBiLSTM.encode_audio">
-<span class="sig-name descname"><span class="pre">encode_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.PairBiLSTM.encode_audio" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">encode_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_features</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.PairBiLSTM.encode_audio" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.audio.PairBiLSTM.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.PairBiLSTM.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.PairBiLSTM.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -505,12 +505,12 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.audio.TransformerEncoder" title="mamkit.models.audio.TransformerEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerEncoder</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.audio.PairTransformerEncoder.encode_audio">
-<span class="sig-name descname"><span class="pre">encode_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.PairTransformerEncoder.encode_audio" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">encode_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.PairTransformerEncoder.encode_audio" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.audio.PairTransformerEncoder.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.PairTransformerEncoder.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.PairTransformerEncoder.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -535,7 +535,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.audio.AudioOnlyModel" title="mamkit.models.audio.AudioOnlyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioOnlyModel</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.audio.TransformerEncoder.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.TransformerEncoder.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.audio.TransformerEncoder.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -563,7 +563,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.text.TextOnlyModel" title="mamkit.models.text.TextOnlyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextOnlyModel</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text.BiLSTM.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.BiLSTM.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.BiLSTM.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -588,7 +588,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.text.BiLSTM" title="mamkit.models.text.BiLSTM"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiLSTM</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text.PairBiLSTM.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.PairBiLSTM.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.PairBiLSTM.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -613,12 +613,12 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.text.Transformer" title="mamkit.models.text.Transformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformer</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text.PairTransformer.encode_text">
-<span class="sig-name descname"><span class="pre">encode_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.PairTransformer.encode_text" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">encode_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attention_mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.PairTransformer.encode_text" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text.PairTransformer.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.PairTransformer.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.PairTransformer.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -643,7 +643,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text.TextOnlyModel.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.TextOnlyModel.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.TextOnlyModel.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -668,7 +668,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.text.TextOnlyModel" title="mamkit.models.text.TextOnlyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextOnlyModel</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text.Transformer.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.Transformer.forward" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text.Transformer.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the computation performed at every call.</p>
 <p>Should be overridden by all subclasses.</p>
 <div class="admonition note">
@@ -822,7 +822,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.text_audio.BiLSTM" title="mamkit.models.text_audio.BiLSTM"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiLSTM</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text_audio.PairBiLSTM.encode_input">
-<span class="sig-name descname"><span class="pre">encode_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairBiLSTM.encode_input" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">encode_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_features</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairBiLSTM.encode_input" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -852,7 +852,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.text_audio.CSA" title="mamkit.models.text_audio.CSA"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSA</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text_audio.PairCSA.encode_inputs">
-<span class="sig-name descname"><span class="pre">encode_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairCSA.encode_inputs" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">encode_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens_emb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_attentions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_attentions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairCSA.encode_inputs" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -882,12 +882,12 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.text_audio.Ensemble" title="mamkit.models.text_audio.Ensemble"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ensemble</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text_audio.PairEnsemble.encode_audio">
-<span class="sig-name descname"><span class="pre">encode_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairEnsemble.encode_audio" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">encode_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_attentions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairEnsemble.encode_audio" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text_audio.PairEnsemble.encode_text">
-<span class="sig-name descname"><span class="pre">encode_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairEnsemble.encode_text" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">encode_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens_emb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_attentions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairEnsemble.encode_text" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -917,7 +917,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.text_audio.MMTransformer" title="mamkit.models.text_audio.MMTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MMTransformer</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text_audio.PairMMTransformer.encode_inputs">
-<span class="sig-name descname"><span class="pre">encode_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairMMTransformer.encode_inputs" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">encode_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairMMTransformer.encode_inputs" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -947,7 +947,7 @@ registered hooks while the latter silently ignores them.</p>
 <dd><p>Bases: <a class="reference internal" href="#mamkit.models.text_audio.MulTA" title="mamkit.models.text_audio.MulTA"><code class="xref py py-class docutils literal notranslate"><span class="pre">MulTA</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="mamkit.models.text_audio.PairMulTA.encode_inputs">
-<span class="sig-name descname"><span class="pre">encode_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairMulTA.encode_inputs" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">encode_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_attentions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio_attentions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mamkit.models.text_audio.PairMulTA.encode_inputs" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
