@@ -168,3 +168,5 @@ mmused_acc.sh
 mmused_fallacy_afc.sh
 ukdebates.sh
 mamkit.egg-info
+
+data/
