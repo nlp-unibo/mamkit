@@ -378,18 +378,54 @@ In addition to that, the toolkit provides a <code class="docutils literal notran
 The figure below illustrates the toolkit’s structure.</p>
 <img alt="_images/mamkit2-resized.png" class="align-center" src="_images/mamkit2-resized.png" />
 </section>
-<section id="install">
-<h1>Install<a class="headerlink" href="#install" title="Permalink to this heading">#</a></h1>
-<dl>
-<dt>pip</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mamkit
+<section id="prerequisites">
+<h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h1>
+<p>Before installing MAMKit, ensure you have the following:</p>
+<ul>
+<li><p><strong>Python 3.10</strong> (MAMKit is tested with this version)</p></li>
+<li><p><strong>FFmpeg</strong> (Required for audio processing)</p>
+<p>You can install it via:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ffmpeg<span class="w">  </span><span class="c1"># Debian/Ubuntu</span>
+brew<span class="w"> </span>install<span class="w"> </span>ffmpeg<span class="w">      </span><span class="c1"># macOS</span>
+choco<span class="w"> </span>install<span class="w"> </span>ffmpeg<span class="w">     </span><span class="c1"># Windows (using Chocolatey)</span>
 </pre></div>
 </div>
-</dd>
-<dt>git</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/lt-nlp-lab-unibo/mamkit
+<p>For other installation methods, refer to the <a class="reference external" href="https://www.ffmpeg.org/">FFmpeg official website</a>.</p>
+</li>
+</ul>
+</section>
+<section id="install-via-pypi">
+<h1>Install via PyPi<a class="headerlink" href="#install-via-pypi" title="Permalink to this heading">#</a></h1>
+<ol class="arabic">
+<li><p>Install MAMKit using PyPi:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mamkit
 </pre></div>
 </div>
-</dd>
-</dl>
+</li>
+<li><p>Access MAMKit in your Python code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mamkit</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="install-from-github">
+<h1>Install from GitHub<a class="headerlink" href="#install-from-github" title="Permalink to this heading">#</a></h1>
+<p>This installation is recommended for users who wish to conduct experiments and customize the toolkit according to their needs.</p>
+<ol class="arabic">
+<li><p>Clone the repository and install the requirements:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:nlp-unibo/mamkit.git
+<span class="nb">cd</span><span class="w"> </span>mamkit
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</li>
+<li><p>Access MAMKit in your Python code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mamkit</span>
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
 <section id="contribute">
 <h1>Contribute<a class="headerlink" href="#contribute" title="Permalink to this heading">#</a></h1>
@@ -407,27 +443,11 @@ We welcome new datasets, models, and any other contribution that can improve the
 <section id="citing">
 <h1>Citing<a class="headerlink" href="#citing" title="Permalink to this heading">#</a></h1>
 <p>If you use MAMKit in your research, please cite the following paper:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">mancini</span><span class="o">-</span><span class="n">etal</span><span class="o">-</span><span class="mi">2024</span><span class="o">-</span><span class="n">mamkit</span><span class="p">,</span>
-   <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{MAMK}</span><span class="s2">it: A Comprehensive Multimodal Argument Mining Toolkit&quot;</span><span class="p">,</span>
-   <span class="n">author</span> <span class="o">=</span> <span class="s2">&quot;Mancini, Eleonora  and</span>
-      <span class="n">Ruggeri</span><span class="p">,</span> <span class="n">Federico</span>  <span class="ow">and</span>
-      <span class="n">Colamonaco</span><span class="p">,</span> <span class="n">Stefano</span>  <span class="ow">and</span>
-      <span class="n">Zecca</span><span class="p">,</span> <span class="n">Andrea</span>  <span class="ow">and</span>
-      <span class="n">Marro</span><span class="p">,</span> <span class="n">Samuele</span>  <span class="ow">and</span>
-      <span class="n">Torroni</span><span class="p">,</span> <span class="n">Paolo</span><span class="s2">&quot;,</span>
-   <span class="n">editor</span> <span class="o">=</span> <span class="s2">&quot;Ajjour, Yamen  and</span>
-      <span class="n">Bar</span><span class="o">-</span><span class="n">Haim</span><span class="p">,</span> <span class="n">Roy</span>  <span class="ow">and</span>
-      <span class="n">El</span> <span class="n">Baff</span><span class="p">,</span> <span class="n">Roxanne</span>  <span class="ow">and</span>
-      <span class="n">Liu</span><span class="p">,</span> <span class="n">Zhexiong</span>  <span class="ow">and</span>
-      <span class="n">Skitalinskaya</span><span class="p">,</span> <span class="n">Gabriella</span><span class="s2">&quot;,</span>
-   <span class="n">booktitle</span> <span class="o">=</span> <span class="s2">&quot;Proceedings of the 11th Workshop on Argument Mining (ArgMining 2024)&quot;</span><span class="p">,</span>
-   <span class="n">month</span> <span class="o">=</span> <span class="n">aug</span><span class="p">,</span>
-   <span class="n">year</span> <span class="o">=</span> <span class="s2">&quot;2024&quot;</span><span class="p">,</span>
-   <span class="n">address</span> <span class="o">=</span> <span class="s2">&quot;Bangkok, Thailand&quot;</span><span class="p">,</span>
-   <span class="n">publisher</span> <span class="o">=</span> <span class="s2">&quot;Association for Computational Linguistics&quot;</span><span class="p">,</span>
-   <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://aclanthology.org/2024.argmining-1.7/&quot;</span><span class="p">,</span>
-   <span class="n">doi</span> <span class="o">=</span> <span class="s2">&quot;10.18653/v1/2024.argmining-1.7&quot;</span><span class="p">,</span>
-   <span class="n">pages</span> <span class="o">=</span> <span class="s2">&quot;69--82&quot;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">TBAmamkit</span><span class="p">,</span>
+  <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">MAMKit</span><span class="p">:</span> <span class="n">A</span> <span class="n">Comprehensive</span> <span class="n">Multimodal</span> <span class="n">Argument</span> <span class="n">Mining</span> <span class="n">Toolkit</span><span class="p">},</span>
+  <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">TBA</span><span class="p">},</span>
+  <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">TBA</span><span class="p">},</span>
+  <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="n">TBA</span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -472,7 +492,9 @@ We welcome new datasets, models, and any other contribution that can improve the
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">MAMKit</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">Structure</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#install-via-pypi">Install via PyPi</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-github">Install from GitHub</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#contribute">Contribute</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#contact">Contact</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#citing">Citing</a></li>

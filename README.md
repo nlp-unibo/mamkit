@@ -63,6 +63,23 @@ processing capabilities, organized in 5 main components.
 
 
 ## 🔧 Installation
+
+
+### ⚠️ Prerequisites
+Before installing MAMKit, ensure you have the following:
+
+- **Python 3.10** (MAMKit is tested with this version)
+- **ffmpeg** (Required for audio processing)  
+  You can install it via:
+  ```bash
+  sudo apt install ffmpeg  # Debian/Ubuntu  
+  brew install ffmpeg      # macOS  
+  choco install ffmpeg     # Windows (using Chocolatey)  
+  ```
+
+For other installation methods, refer to the [FFmpeg official website](https://www.ffmpeg.org/). 
+
+
 ### Install via PyPi
 
 1. Install MAMKit using PyPi:
