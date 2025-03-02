@@ -49,7 +49,7 @@ processing capabilities, organized in 5 main components.
 | [UkDebates](https://doi.org/10.1145/2850417)                             | Argumentative Sentence Detection (ASD)                                                  |
 | [MArg<sub>&gamma;</sub>](https://doi.org/10.18653/v1/2021.argmining-1.8) | Argumentative Relation Classification (ARC)                                             |
 | [MM-USED](https://aclanthology.org/2022.argmining-1.15)                  | Argumentative Sentence Detection (ASD) <br>Argumentative Component Classification (ACC) |
-| [MM-USED-fallacy](https://aclanthology.org/2024.eacl-short.16)                                                      | Argumentative Fallacy Classification (AFC) <br> Argumentative Fallacy Classification (AFD)                                            |
+| [MM-USED-fallacy](https://aclanthology.org/2024.eacl-short.16)                                                      | Argumentative Fallacy Classification (AFC) <br> Argumentative Fallacy Detection(AFD)                                            |
 
 
 | **Model**  | **Text Encoding** | **Audio Encoding**                          | **Fusion**   |
