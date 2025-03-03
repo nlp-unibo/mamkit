@@ -378,18 +378,54 @@ In addition to that, the toolkit provides a <code class="docutils literal notran
 The figure below illustrates the toolkit’s structure.</p>
 <img alt="_images/mamkit2-resized.png" class="align-center" src="_images/mamkit2-resized.png" />
 </section>
-<section id="install">
-<h1>Install<a class="headerlink" href="#install" title="Permalink to this heading">#</a></h1>
-<dl>
-<dt>pip</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mamkit
+<section id="prerequisites">
+<h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h1>
+<p>Before installing MAMKit, ensure you have the following:</p>
+<ul>
+<li><p><strong>Python 3.10</strong> (MAMKit is tested with this version)</p></li>
+<li><p><strong>FFmpeg</strong> (Required for audio processing)</p>
+<p>You can install it via:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ffmpeg<span class="w">  </span><span class="c1"># Debian/Ubuntu</span>
+brew<span class="w"> </span>install<span class="w"> </span>ffmpeg<span class="w">      </span><span class="c1"># macOS</span>
+choco<span class="w"> </span>install<span class="w"> </span>ffmpeg<span class="w">     </span><span class="c1"># Windows (using Chocolatey)</span>
 </pre></div>
 </div>
-</dd>
-<dt>git</dt><dd><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/lt-nlp-lab-unibo/mamkit
+<p>For other installation methods, refer to the <a class="reference external" href="https://www.ffmpeg.org/">FFmpeg official website</a>.</p>
+</li>
+</ul>
+</section>
+<section id="install-via-pypi">
+<h1>Install via PyPi<a class="headerlink" href="#install-via-pypi" title="Permalink to this heading">#</a></h1>
+<ol class="arabic">
+<li><p>Install MAMKit using PyPi:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mamkit
 </pre></div>
 </div>
-</dd>
-</dl>
+</li>
+<li><p>Access MAMKit in your Python code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mamkit</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="install-from-github">
+<h1>Install from GitHub<a class="headerlink" href="#install-from-github" title="Permalink to this heading">#</a></h1>
+<p>This installation is recommended for users who wish to conduct experiments and customize the toolkit according to their needs.</p>
+<ol class="arabic">
+<li><p>Clone the repository and install the requirements:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:nlp-unibo/mamkit.git
+<span class="nb">cd</span><span class="w"> </span>mamkit
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</li>
+<li><p>Access MAMKit in your Python code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mamkit</span>
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
 <section id="contribute">
 <h1>Contribute<a class="headerlink" href="#contribute" title="Permalink to this heading">#</a></h1>
@@ -456,7 +492,9 @@ We welcome new datasets, models, and any other contribution that can improve the
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">MAMKit</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">Structure</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#install-via-pypi">Install via PyPi</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-github">Install from GitHub</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#contribute">Contribute</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#contact">Contact</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#citing">Citing</a></li>

@@ -49,7 +49,7 @@ processing capabilities, organized in 5 main components.
 | [UkDebates](https://doi.org/10.1145/2850417)                             | Argumentative Sentence Detection (ASD)                                                  |
 | [MArg<sub>&gamma;</sub>](https://doi.org/10.18653/v1/2021.argmining-1.8) | Argumentative Relation Classification (ARC)                                             |
 | [MM-USED](https://aclanthology.org/2022.argmining-1.15)                  | Argumentative Sentence Detection (ASD) <br>Argumentative Component Classification (ACC) |
-| [MM-USED-fallacy](https://aclanthology.org/2024.eacl-short.16)                                                      | Argumentative Fallacy Classification (AFC)                                              |
+| [MM-USED-fallacy](https://aclanthology.org/2024.eacl-short.16)                                                      | Argumentative Fallacy Classification (AFC) <br> Argumentative Fallacy Detection(AFD)                                            |
 
 
 | **Model**  | **Text Encoding** | **Audio Encoding**                          | **Fusion**   |
@@ -63,6 +63,23 @@ processing capabilities, organized in 5 main components.
 
 
 ## 🔧 Installation
+
+
+### ⚠️ Prerequisites
+Before installing MAMKit, ensure you have the following:
+
+- **Python 3.10** (MAMKit is tested with this version)
+- **ffmpeg** (Required for audio processing)  
+  You can install it via:
+  ```bash
+  sudo apt install ffmpeg  # Debian/Ubuntu  
+  brew install ffmpeg      # macOS  
+  choco install ffmpeg     # Windows (using Chocolatey)  
+  ```
+
+For other installation methods, refer to the [FFmpeg official website](https://www.ffmpeg.org/). 
+
+
 ### Install via PyPi
 
 1. Install MAMKit using PyPi:

@@ -22,18 +22,57 @@ The figure below illustrates the toolkit's structure.
 
 
 
-Install
-===============================================
+Prerequisites
+=============
 
-pip
+Before installing MAMKit, ensure you have the following:
+
+- **Python 3.10** (MAMKit is tested with this version)
+- **FFmpeg** (Required for audio processing)  
+
+  You can install it via:
+
+  .. code-block:: bash
+
+     sudo apt install ffmpeg  # Debian/Ubuntu  
+     brew install ffmpeg      # macOS  
+     choco install ffmpeg     # Windows (using Chocolatey)  
+
+  For other installation methods, refer to the `FFmpeg official website <https://www.ffmpeg.org/>`_.
+
+Install via PyPi
+================
+
+1. Install MAMKit using PyPi:
+
    .. code-block:: bash
 
-      pip install mamkit
+      pip install mamkit  
 
-git
+2. Access MAMKit in your Python code:
+
+   .. code-block:: python
+
+      import mamkit  
+
+Install from GitHub
+===================
+
+This installation is recommended for users who wish to conduct experiments and customize the toolkit according to their needs.
+
+1. Clone the repository and install the requirements:
+
    .. code-block:: bash
 
-      git clone https://github.com/lt-nlp-lab-unibo/mamkit
+      git clone git@github.com:nlp-unibo/mamkit.git
+      cd mamkit
+      pip install -r requirements.txt  
+
+2. Access MAMKit in your Python code:
+
+   .. code-block:: python
+
+      import mamkit  
 
 
 
