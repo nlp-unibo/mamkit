@@ -204,9 +204,9 @@ class PairMMTransformer(MMTransformer):
             self,
             inputs
     ):
-        a_concat_emb = self.encode_inputs(text_ids=inputs['text_a_inputs'], text_mask=inputs['text_a_mask'],
+        a_concat_emb = self.encode_inputs(text_ids=inputs['text_a_inputs'], text_mask=inputs['text_a_input_mask'],
                                           audio_features=inputs['audio_a_inputs'], audio_mask=inputs['audio_a_inputs'])
-        b_concat_emb = self.encode_inputs(text_ids=inputs['text_b_inputs'], text_mask=inputs['text_b_mask'],
+        b_concat_emb = self.encode_inputs(text_ids=inputs['text_b_inputs'], text_mask=inputs['text_b_input_mask'],
                                           audio_features=inputs['audio_b_inputs'], audio_mask=inputs['audio_b_inputs'])
 
         concat_emb = th.concat((a_concat_emb, b_concat_emb), dim=-1)
@@ -305,10 +305,10 @@ class PairCSA(CSA):
             self,
             inputs
     ):
-        a_emb = self.encode_inputs(tokens_emb=inputs['text_a_inputs'], text_attentions=inputs['text_a_mask'],
-                                   audio_features=inputs['audio_a_inputs'], audio_attentions=inputs['audio_a_mask'])
-        b_emb = self.encode_inputs(tokens_emb=inputs['text_b_inputs'], text_attentions=inputs['text_b_mask'],
-                                   audio_features=inputs['audio_b_inputs'], audio_attentions=inputs['audio_b_mask'])
+        a_emb = self.encode_inputs(tokens_emb=inputs['text_a_inputs'], text_attentions=inputs['text_a_input_mask'],
+                                   audio_features=inputs['audio_a_inputs'], audio_attentions=inputs['audio_a_input_mask'])
+        b_emb = self.encode_inputs(tokens_emb=inputs['text_b_inputs'], text_attentions=inputs['text_b_input_mask'],
+                                   audio_features=inputs['audio_b_inputs'], audio_attentions=inputs['audio_b_input_mask'])
 
         concat_emb = th.concat((a_emb, b_emb), dim=-1)
 
@@ -437,8 +437,8 @@ class PairEnsemble(Ensemble):
             self,
             inputs
     ):
-        a_text_emb = self.encode_text(tokens_emb=inputs['text_a_inputs'], text_attentions=inputs['text_a_mask'])
-        b_text_emb = self.encode_text(tokens_emb=inputs['text_b_inputs'], text_attentions=inputs['text_b_mask'])
+        a_text_emb = self.encode_text(tokens_emb=inputs['text_a_inputs'], text_attentions=inputs['text_a_input_mask'])
+        b_text_emb = self.encode_text(tokens_emb=inputs['text_b_inputs'], text_attentions=inputs['text_b_input_mask'])
         concat_text_emb = th.concat((a_text_emb, b_text_emb), dim=-1)
         text_logits = self.text_head(concat_text_emb)
 

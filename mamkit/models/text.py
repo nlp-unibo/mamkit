@@ -143,8 +143,8 @@ class PairTransformer(Transformer):
             self,
             inputs
     ):
-        a_text_emb = self.encode_text(input_ids=inputs['a_inputs'], attention_mask=inputs['a_mask'])
-        b_text_emb = self.encode_text(input_ids=inputs['b_inputs'], attention_mask=inputs['b_mask'])
+        a_text_emb = self.encode_text(input_ids=inputs['a_inputs'], attention_mask=inputs['a_input_mask'])
+        b_text_emb = self.encode_text(input_ids=inputs['b_inputs'], attention_mask=inputs['b_input_mask'])
 
         concat_emb = th.concat((a_text_emb, b_text_emb), dim=-1)
         logits = self.head(concat_emb)

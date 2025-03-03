@@ -149,8 +149,8 @@ class PairTransformerEncoder(TransformerEncoder):
             self,
             inputs
     ):
-        a_audio_emb = self.encode_audio(audio_features=inputs['a_inputs'], attention_mask=inputs['a_mask'])
-        b_audio_emb = self.encode_audio(audio_features=inputs['b_inputs'], attention_mask=inputs['b_mask'])
+        a_audio_emb = self.encode_audio(audio_features=inputs['a_inputs'], attention_mask=inputs['a_input_mask'])
+        b_audio_emb = self.encode_audio(audio_features=inputs['b_inputs'], attention_mask=inputs['b_input_mask'])
 
         concat_emb = th.concat((a_audio_emb, b_audio_emb), dim=-1)
         logits = self.head(concat_emb)
