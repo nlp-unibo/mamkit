@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from torchmetrics import MetricCollection
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text_audio import EnsembleConfig
-from mamkit.data.collators import PairMultimodalCollator, PairTextTransformerOutputCollator, PairAudioCollator
+from mamkit.data.collators import PairMultimodalCollator, PairTextTransformerOutputCollator, PairAudioOutputCollator
 from mamkit.data.datasets import MArg, InputMode
 from mamkit.data.processing import PairMultimodalProcessor, PairAudioTransformer, PairTextTransformer
 from mamkit.models.text_audio import PairEnsemble
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
             collator = PairMultimodalCollator(
                 text_collator=PairTextTransformerOutputCollator(),
-                audio_collator=PairAudioCollator(),
+                audio_collator=PairAudioOutputCollator(),
                 label_collator=lambda labels: th.tensor(labels)
             )
 

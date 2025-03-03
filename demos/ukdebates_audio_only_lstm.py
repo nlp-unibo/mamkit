@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from torchmetrics import MetricCollection
 from mamkit.configs.audio import BiLSTMTransformerConfig
 from mamkit.configs.base import ConfigKey
-from mamkit.data.collators import AudioCollator, UnimodalCollator
+from mamkit.data.collators import AudioCollatorOutput, UnimodalCollator
 from mamkit.data.datasets import UKDebates, InputMode
 from mamkit.data.processing import AudioTransformer, UnimodalProcessor
 from mamkit.models.audio import BiLSTM
@@ -63,7 +63,7 @@ if __name__ == '__main__':
             processor.clear()
 
             unimodal_collator = UnimodalCollator(
-                features_collator=AudioCollator(),
+                features_collator=AudioCollatorOutput(),
                 label_collator=lambda labels: th.tensor(labels)
             )
 

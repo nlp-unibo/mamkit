@@ -11,7 +11,7 @@ from torchmetrics.classification.f_beta import F1Score
 from torchmetrics import MetricCollection
 from mamkit.configs.base import ConfigKey
 from mamkit.configs.text_audio import MMTransformerConfig
-from mamkit.data.collators import MultimodalCollator, TextTransformerCollator, AudioCollator
+from mamkit.data.collators import MultimodalCollator, TextTransformerCollator, AudioCollatorOutput
 from mamkit.data.datasets import UKDebates, InputMode
 from mamkit.data.processing import MultimodalProcessor, AudioTransformerExtractor
 from mamkit.models.text_audio import MMTransformer
@@ -65,7 +65,7 @@ if __name__ == '__main__':
             collator = MultimodalCollator(
                 text_collator=TextTransformerCollator(model_card=config.text_model_card,
                                                       tokenizer_args=config.tokenizer_args),
-                audio_collator=AudioCollator(),
+                audio_collator=AudioCollatorOutput(),
                 label_collator=lambda labels: th.tensor(labels)
             )
 

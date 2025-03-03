@@ -40,7 +40,6 @@ class InputMode(Enum):
 class UnimodalDataset(Dataset):
     """
     Dataset class for unimodal data.
-
     """
 
     def __init__(
@@ -50,11 +49,10 @@ class UnimodalDataset(Dataset):
             context=None
     ):
         """
-        ``UnimodalDataset`` constructor.
-
         Args:
             inputs: list of inputs
             labels: list of labels
+            context: list of contexts, if any
 
         """
         self.inputs = inputs
@@ -93,6 +91,15 @@ class PairUnimodalDataset(Dataset):
             a_context=None,
             b_context=None
     ):
+        """
+        Args:
+            a_inputs: list of inputs corresponding to input A
+            b_inputs: list of inputs corresponding to input B
+            a_context: list of contexts, if any, corresponding to input A
+            b_context: list of contexts, if any, corresponding to input B
+            labels: list of labels
+
+        """
         self.a_inputs = a_inputs
         self.b_inputs = b_inputs
         self.labels = labels
@@ -123,6 +130,14 @@ class MultimodalDataset(Dataset):
             text_context=None,
             audio_context=None
     ):
+        """
+        Args:
+            texts: list of input texts
+            audio: list of input audio filepaths
+            labels: list of labels
+            text_context: list of text contexts, if any
+            audio_context: list of audio context, if any
+        """
         self.texts = texts
         self.audio = audio
         self.labels = labels
@@ -157,6 +172,18 @@ class PairMultimodalDataset(Dataset):
             b_text_context=None,
             b_audio_context=None
     ):
+        """
+        Args:
+            a_texts: list of texts corresponding to input A
+            b_texts: list of texts corresponding to input B
+            a_audio: list of audio filepaths corresponding to input A
+            b_audio: list of audio filepaths corresponding to input B
+            labels: list of labels
+            a_text_context: list of text contexts corresponding to input A
+            a_audio_context: list of audio contexts corresponding to input A
+            b_text_context: list of text contexts corresponding to input B
+            b_audio_context: list of audio contexts corresponding to input B
+        """
         self.a_texts = a_texts
         self.b_texts = b_texts
         self.a_audio = a_audio
@@ -196,6 +223,9 @@ class SplitInfo:
 
 
 class Loader(abc.ABC):
+    """
+    Base dataset interface
+    """
 
     def __init__(
             self,
@@ -203,6 +233,13 @@ class Loader(abc.ABC):
             input_mode: InputMode,
             base_data_path: Optional[Path] = None
     ):
+        """
+        Args:
+            task_name: name of supported task
+            input_mode: supported input mode
+            base_data_path: base path where data will be stored
+        """
+
         self.task_name = task_name
         self.input_mode = input_mode
         self.base_data_path = Path.cwd() if base_data_path is None else base_data_path
@@ -221,6 +258,10 @@ class Loader(abc.ABC):
             method: Callable[[], List[SplitInfo]],
             key: str
     ):
+        """
+        Registers the input callable method via given key as a data splitter.
+        """
+
         if not hasattr(self, method.__name__):
             setattr(self, method.__name__, partial(method, self=self))
             self.splitters[key] = getattr(self, method.__name__)
@@ -284,10 +325,15 @@ class Loader(abc.ABC):
 
 
 class UKDebates(Loader):
+    """
+    Official loader for UKDebates dataset.
+    From: Argument Mining from Speech: Detecting Claims in Political Debates
+    Url: https://cdn.aaai.org/ojs/10384/10384-13-13912-1-2-20201228.pdf
+    """
 
     def __init__(
             self,
-            sample_rate=16000,
+            sample_rate: int = 16000,
             **kwargs
     ):
         super().__init__(**kwargs)
@@ -425,7 +471,9 @@ class UKDebates(Loader):
 
 class MMUSED(Loader):
     """
-    The following debates from USED are missing: 13_1988, 17_1992, 42_2016, 43_2016
+    Official MM-USED loader.
+    From: Multimodal Argument Mining: A Case Study in Political Debates
+    Url: https://aclanthology.org/2022.argmining-1.15/
     """
 
     def __init__(
@@ -607,6 +655,11 @@ class MMUSED(Loader):
 
 
 class MMUSEDFallacy(Loader):
+    """
+    Official MM-USEDFallacy loader.
+    From: Multimodal Fallacy Classification in Political Debates
+    Url: https://aclanthology.org/2024.eacl-short.16/
+    """
 
     def __init__(
             self,
@@ -853,16 +906,18 @@ class MMUSEDFallacy(Loader):
                                if dial_idx < snippet_index][-self.context_window:]
 
             dialogue_sentences = [item for idx, item in enumerate(row['dialogue_sentences']) if idx in context_indexes]
-            dialogue_tokens = [item for idx, item in enumerate(row['dialogue_tokens']) if idx in context_indexes]
             dialogue = ' '.join(dialogue_sentences)
+            dialogue_indexes = [item for idx, item in enumerate(row['dialogue_indexes']) if idx in context_indexes]
             dialogue_paths = [item for idx, item in enumerate(row['dialogue_paths']) if idx in context_indexes]
 
             info.append({
-                'dialogue_tokens': dialogue_tokens,
+                'dialogue_indexes': dialogue_indexes,
+                'dialogue_sentences': dialogue_sentences,
                 'dialogue': dialogue,
                 'dialogue_id': row['dialogue_id'],
                 'dialogue_paths': dialogue_paths,
                 'snippet_indexes': row['snippet_indexes'],
+                'snippet_sentences': row['snippet_sentences'],
                 'snippet': row['snippet'],
                 'snippet_paths': row['snippet_paths'],
                 'fallacy': row['fallacy']
@@ -960,6 +1015,11 @@ class MMUSEDFallacy(Loader):
 
 
 class MArg(Loader):
+    """
+    Official M-Arg loader.
+    From: M-Arg: Multimodal Argument Mining Dataset for Political Debates with Audio and Transcripts
+    Url: https://aclanthology.org/2021.argmining-1.8/
+    """
 
     def __init__(
             self,

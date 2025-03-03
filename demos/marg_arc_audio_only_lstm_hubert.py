@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from torchmetrics import MetricCollection
 from mamkit.configs.audio import BiLSTMTransformerConfig
 from mamkit.configs.base import ConfigKey
-from mamkit.data.collators import PairUnimodalCollator, PairAudioCollator
+from mamkit.data.collators import PairUnimodalCollator, PairAudioOutputCollator
 from mamkit.data.datasets import MArg, InputMode
 from mamkit.data.processing import PairUnimodalProcessor, PairAudioTransformerExtractor
 from mamkit.models.audio import PairBiLSTM
@@ -66,7 +66,7 @@ if __name__ == '__main__':
             processor.clear()
 
             collator = PairUnimodalCollator(
-                features_collator=PairAudioCollator(),
+                features_collator=PairAudioOutputCollator(),
                 label_collator=lambda labels: th.tensor(labels)
             )
 

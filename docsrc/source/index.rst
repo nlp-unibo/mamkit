@@ -63,11 +63,27 @@ If you use MAMKit in your research, please cite the following paper:
 
 .. code-block::
 
-   @inproceedings{TBAmamkit,
-     title={MAMKit: A Comprehensive Multimodal Argument Mining Toolkit},
-     author={TBA},
-     booktitle={TBA},
-     year={TBA}
+   @inproceedings{mancini-etal-2024-mamkit,
+    title = "{MAMK}it: A Comprehensive Multimodal Argument Mining Toolkit",
+    author = "Mancini, Eleonora  and
+      Ruggeri, Federico  and
+      Colamonaco, Stefano  and
+      Zecca, Andrea  and
+      Marro, Samuele  and
+      Torroni, Paolo",
+    editor = "Ajjour, Yamen  and
+      Bar-Haim, Roy  and
+      El Baff, Roxanne  and
+      Liu, Zhexiong  and
+      Skitalinskaya, Gabriella",
+    booktitle = "Proceedings of the 11th Workshop on Argument Mining (ArgMining 2024)",
+    month = aug,
+    year = "2024",
+    address = "Bangkok, Thailand",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.argmining-1.7",
+    doi = "10.18653/v1/2024.argmining-1.7",
+    pages = "69--82",
    }
 
 

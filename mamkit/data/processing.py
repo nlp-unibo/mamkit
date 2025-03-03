@@ -14,12 +14,18 @@ from mamkit.utility.processing import encode_audio_and_context_mfcc, encode_audi
     encode_text_and_context_nn
 
 
-class Processor:
+class MAMProcessor:
+    """
+    Base MAM processor interface
+    """
 
     def fit(
             self,
             train_data: MAMDataset
     ):
+        """
+        Fits on training MAM data
+        """
         pass
 
     def clear(
@@ -30,6 +36,9 @@ class Processor:
     def reset(
             self
     ):
+        """
+        Clears the processor internal state.
+        """
         pass
 
     def __call__(
@@ -40,12 +49,22 @@ class Processor:
 
 
 class ProcessorComponent:
+    """
+    Base processor interface
+    """
 
     def fit(
             self,
             inputs: Any,
             context: Any = None
     ):
+        """
+        Fits on input and context features.
+
+        Args:
+            inputs: any input feature
+            context: any context features associated with inputs
+        """
         pass
 
     def clear(
@@ -56,6 +75,9 @@ class ProcessorComponent:
     def reset(
             self
     ):
+        """
+        Resets the processor internal state.
+        """
         pass
 
     def __call__(
@@ -67,6 +89,9 @@ class ProcessorComponent:
 
 
 class PairProcessorComponent:
+    """
+    Pair base processor interface
+    """
 
     def fit(
             self,
@@ -75,6 +100,15 @@ class PairProcessorComponent:
             a_context: Any = None,
             b_context: Any = None
     ):
+        """
+        Fits on input and context features.
+
+        Args:
+            a_inputs: any input feature corresponding to input A
+            b_inputs: any input feature corresponding to input B
+            a_context: any context features associated with input A
+            b_context: any context features associated with input B
+        """
         pass
 
     def clear(
@@ -97,12 +131,22 @@ class PairProcessorComponent:
         return a_inputs, b_inputs, a_context, b_context
 
 
-class UnimodalProcessor(Processor):
+class UnimodalProcessor(MAMProcessor):
+    """
+    Unimodal processor interface supporting a features processor and a label processor.
+    """
+
     def __init__(
             self,
             features_processor: ProcessorComponent = None,
             label_processor: ProcessorComponent = None,
     ):
+        """
+        Args:
+            features_processor: any feature processor
+            label_processor: any label processor
+        """
+
         self.features_processor = features_processor
         self.label_processor = label_processor
 
@@ -138,12 +182,22 @@ class UnimodalProcessor(Processor):
             self.label_processor.clear()
 
 
-class PairUnimodalProcessor(Processor):
+class PairUnimodalProcessor(MAMProcessor):
+    """
+    Pair unimodal processor interface supporting a features processor and a label processor.
+    """
+
     def __init__(
             self,
             features_processor: PairProcessorComponent = None,
             label_processor: ProcessorComponent = None,
     ):
+        """
+        Args:
+            features_processor: any feature processor
+            label_processor: any label processor
+        """
+
         self.features_processor = features_processor
         self.label_processor = label_processor
 
@@ -186,7 +240,10 @@ class PairUnimodalProcessor(Processor):
             self.label_processor.clear()
 
 
-class MultimodalProcessor(Processor):
+class MultimodalProcessor(MAMProcessor):
+    """
+    Multimodal processor interface supporting a text processor, an audio processor, and a label processor.
+    """
 
     def __init__(
             self,
@@ -194,6 +251,13 @@ class MultimodalProcessor(Processor):
             audio_processor: ProcessorComponent = None,
             label_processor: ProcessorComponent = None
     ):
+        """
+        Args:
+            text_processor: any text feature processor
+            audio_processor: any audio feature processor
+            label_processor: any label processor
+        """
+
         self.text_processor = text_processor
         self.audio_processor = audio_processor
         self.label_processor = label_processor
@@ -239,13 +303,24 @@ class MultimodalProcessor(Processor):
             self.label_processor.clear()
 
 
-class PairMultimodalProcessor(Processor):
+class PairMultimodalProcessor(MAMProcessor):
+    """
+    Pair multimodal processor interface supporting a text processor, an audio processor, and a label processor.
+    """
+
     def __init__(
             self,
             text_processor: PairProcessorComponent = None,
             audio_processor: PairProcessorComponent = None,
             label_processor: ProcessorComponent = None
     ):
+        """
+        Args:
+            text_processor: any text feature processor
+            audio_processor: any audio feature processor
+            label_processor: any label processor
+        """
+
         self.text_processor = text_processor
         self.audio_processor = audio_processor
         self.label_processor = label_processor
@@ -302,6 +377,9 @@ class PairMultimodalProcessor(Processor):
 
 
 class VocabBuilder(ProcessorComponent):
+    """
+    Torch text processor that uses a tokenizer to build a vocabulary from text.
+    """
 
     def __init__(
             self,
@@ -310,6 +388,14 @@ class VocabBuilder(ProcessorComponent):
             embedding_model: Optional[str] = None,
             tokenization_args=None
     ):
+        """
+        Args:
+            tokenizer: any torchtext tokenizer
+            embedding_dim: embedding dimension for pre-trained vocabs
+            embedding_model: pre-trained embedding model, if any
+            tokenization_args: any additional tokenizer specific arguments, if any
+        """
+
         self.tokenizer = tokenizer
         self.embedding_dim = embedding_dim
         self.embedding_model = pretrained_aliases[embedding_model]() if embedding_model is not None else None
@@ -322,6 +408,14 @@ class VocabBuilder(ProcessorComponent):
             inputs: List[str],
             context: List[str] = None
     ):
+        """
+        Fits tokenizer to build a vocabulary based on input texts and contexts, if any
+
+        Args:
+            inputs: input texts to tokenize and encode
+            context: context texts to tokenize and encode
+        """
+
         logging.info('Building vocabulary...')
         vocab_input = inputs if context is None else set(inputs + context)
         self.vocab = build_vocab_from_iterator(
@@ -354,6 +448,9 @@ class VocabBuilder(ProcessorComponent):
 
 
 class PairVocabBuilder(PairProcessorComponent):
+    """
+    Pair torch text processor that uses a tokenizer to build a vocabulary from text.
+    """
 
     def __init__(
             self,
@@ -362,6 +459,14 @@ class PairVocabBuilder(PairProcessorComponent):
             embedding_model: Optional[str] = None,
             tokenization_args=None
     ):
+        """
+        Args:
+            tokenizer: any torchtext tokenizer
+            embedding_dim: embedding dimension for pre-trained vocabs
+            embedding_model: pre-trained embedding model, if any
+            tokenization_args: any additional tokenizer specific arguments, if any
+        """
+
         self.tokenizer = tokenizer
         self.embedding_dim = embedding_dim
         self.embedding_model = pretrained_aliases[embedding_model]() if embedding_model is not None else None
@@ -376,6 +481,16 @@ class PairVocabBuilder(PairProcessorComponent):
             a_context: List[str] = None,
             b_context: List[str] = None
     ):
+        """
+        Fits tokenizer to build a vocabulary based on input texts and contexts, if any
+
+        Args:
+            a_inputs: input texts to tokenize and encode corresponding to input A
+            b_inputs: input texts to tokenize and encode corresponding to input B
+            a_context: context texts to tokenize and encode associated with input A
+            b_context: context texts to tokenize and encode associated with input B
+        """
+
         logging.info('Building vocabulary...')
 
         vocab_input = a_inputs + b_inputs
@@ -417,6 +532,9 @@ class PairVocabBuilder(PairProcessorComponent):
 
 
 class MFCCExtractor(ProcessorComponent):
+    """
+    Torch MFCC audio processor
+    """
 
     def __init__(
             self,
@@ -427,6 +545,16 @@ class MFCCExtractor(ProcessorComponent):
             normalize: bool = True,
             serialization_path: Path = None
     ):
+        """
+        Args:
+            mfccs: number of MFCCs to extract
+            sampling_rate: audio sampling rate
+            pooling_sizes: where to apply (nested) mean pooling to reduce the number of audio frames
+            remove_energy: whether to remove energy MFCC
+            normalize: whether to normalize MFCCs or not
+            serialization_path: where to store computed MFCCs to speed up future processing
+        """
+
         self.mfccs = mfccs
         self.sampling_rate = sampling_rate
         self.pooling_sizes = pooling_sizes
@@ -473,6 +601,9 @@ class MFCCExtractor(ProcessorComponent):
 
 
 class PairMFCCExtractor(PairProcessorComponent):
+    """
+    Torch MFCC audio processor
+    """
 
     def __init__(
             self,
@@ -483,6 +614,16 @@ class PairMFCCExtractor(PairProcessorComponent):
             normalize: bool = True,
             serialization_path: Path = None
     ):
+        """
+        Args:
+            mfccs: number of MFCCs to extract
+            sampling_rate: audio sampling rate
+            pooling_sizes: where to apply (nested) mean pooling to reduce the number of audio frames
+            remove_energy: whether to remove energy MFCC
+            normalize: whether to normalize MFCCs or not
+            serialization_path: where to store computed MFCCs to speed up future processing
+        """
+
         self.mfccs = mfccs
         self.sampling_rate = sampling_rate
         self.pooling_sizes = pooling_sizes
@@ -550,13 +691,23 @@ class PairMFCCExtractor(PairProcessorComponent):
 
 
 class TextTransformer(ProcessorComponent):
+    """
+    Text transformer processor
+    """
 
     def __init__(
             self,
-            model_card,
-            tokenizer_args=None,
-            model_args=None,
+            model_card: str,
+            tokenizer_args: Optional[Dict] = None,
+            model_args: Optional[Dict] = None,
     ):
+        """
+        Args:
+            model_card: any huggingface model card
+            tokenizer_args: any tokenizer-specific additional arguments
+            model_args: any model-specific additional arguments for encoding inputs
+        """
+
         self.model_card = model_card
         self.tokenizer_args = tokenizer_args if tokenizer_args is not None else {}
         self.model_args = model_args if model_args is not None else {}
@@ -606,6 +757,9 @@ class TextTransformer(ProcessorComponent):
 
 
 class PairTextTransformer(PairProcessorComponent):
+    """
+    Pair text transformer processor
+    """
 
     def __init__(
             self,
@@ -613,6 +767,13 @@ class PairTextTransformer(PairProcessorComponent):
             tokenizer_args=None,
             model_args=None,
     ):
+        """
+        Args:
+            model_card: any huggingface model card
+            tokenizer_args: any tokenizer-specific additional arguments
+            model_args: any model-specific additional arguments for encoding inputs
+        """
+
         self.model_card = model_card
         self.tokenizer_args = tokenizer_args if tokenizer_args is not None else {}
         self.model_args = model_args if model_args is not None else {}
@@ -682,6 +843,9 @@ class PairTextTransformer(PairProcessorComponent):
 
 
 class AudioTransformer(ProcessorComponent):
+    """
+    Audio transformer processor
+    """
 
     def __init__(
             self,
@@ -692,6 +856,16 @@ class AudioTransformer(ProcessorComponent):
             processor_args=None,
             model_args=None
     ):
+        """
+        Args:
+            model_card: any huggingface model card
+            sampling_rate: audio sampling rate
+            downsampling_factor: whether to perform audio downsampling to reduce the number of frames
+            aggregate: whether to compute mean audio feature vector
+            processor_args: any audio processor-specific additional arguments
+            model_args: any model-specific additional arguments for encoding inputs
+        """
+
         self.model_card = model_card
         self.sampling_rate = sampling_rate
         self.downsampling_factor = downsampling_factor
@@ -748,6 +922,9 @@ class AudioTransformer(ProcessorComponent):
 
 
 class PairAudioTransformer(PairProcessorComponent):
+    """
+    Pair audio transformer processor
+    """
 
     def __init__(
             self,
@@ -758,6 +935,16 @@ class PairAudioTransformer(PairProcessorComponent):
             processor_args=None,
             model_args=None
     ):
+        """
+        Args:
+            model_card: any huggingface model card
+            sampling_rate: audio sampling rate
+            downsampling_factor: whether to perform audio downsampling to reduce the number of frames
+            aggregate: whether to compute mean audio feature vector
+            processor_args: any audio processor-specific additional arguments
+            model_args: any model-specific additional arguments for encoding inputs
+        """
+
         self.model_card = model_card
         self.sampling_rate = sampling_rate
         self.downsampling_factor = downsampling_factor
@@ -836,6 +1023,9 @@ class PairAudioTransformer(PairProcessorComponent):
 
 
 class AudioTransformerExtractor(AudioTransformer):
+    """
+    Audio transformer extractor
+    """
 
     def _init_models(
             self
@@ -845,6 +1035,9 @@ class AudioTransformerExtractor(AudioTransformer):
 
 
 class PairAudioTransformerExtractor(PairAudioTransformer):
+    """
+    Pair audio transformer extractor
+    """
 
     def _init_models(
             self
