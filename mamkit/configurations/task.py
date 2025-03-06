@@ -4,6 +4,7 @@ from cinnamon.configuration import Configuration, C
 from cinnamon.registry import RegistrationKey, register_method
 from mamkit.components.task import Task
 from pathlib import Path
+from mamkit.utility.conditions import match_compound_tags
 
 
 class TaskConfig(Configuration):
@@ -127,7 +128,8 @@ class TaskConfig(Configuration):
         config.data_split_key = 'mancini-et-al-2022'
 
         config.add_condition(name='task-and-input-match',
-                             condition=lambda c: not c.model_key.compound_tags.difference(c.loader_key.compound_tags))
+                             condition=lambda c: match_compound_tags(a_key=c.model_key, b_key=c.loader_key),
+                             is_pre_condition=True)
 
         return config
 
@@ -259,7 +261,8 @@ class TaskConfig(Configuration):
         config.data_split_key = 'default'
 
         config.add_condition(name='task-and-input-match',
-                             condition=lambda c: not c.model_key.compound_tags.difference(c.loader_key.compound_tags))
+                             condition=lambda c: match_compound_tags(c.model_key, c.loader_key),
+                             is_pre_condition=True)
 
         return config
 
@@ -331,7 +334,8 @@ class TaskConfig(Configuration):
         config.data_split_key = 'mancini-et-al-2024'
 
         config.add_condition(name='task-and-input-match',
-                             condition=lambda c: not c.model_key.compound_tags.difference(c.loader_key.compound_tags))
+                             condition=lambda c: match_compound_tags(c.model_key, c.loader_key),
+                             is_pre_condition=True)
 
         return config
 
@@ -401,6 +405,7 @@ class TaskConfig(Configuration):
         config.data_split_key = 'mancini-et-al-2022'
 
         config.add_condition(name='task-and-input-match',
-                             condition=lambda c: not c.model_key.compound_tags.difference(c.loader_key.compound_tags))
+                             condition=lambda c: match_compound_tags(c.model_key, c.loader_key),
+                             is_pre_condition=True)
 
         return config
