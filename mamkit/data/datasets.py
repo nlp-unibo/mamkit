@@ -1163,7 +1163,7 @@ class MArg(Loader):
             s2a = feature_df['audio_file'].loc[feature_df['text'] == s2t].values[0]
 
             # If we want to filter by annotation confidence we can add here the following if statement
-            if row["relation:confidence"] > self.confidence:
+            if row["relation:confidence"] >= self.confidence:
                 df_final = df_final._append(
                     {'id': id1,
                      'relation': relation1,
@@ -1311,8 +1311,7 @@ class MArg(Loader):
         self.build_chunks()
         feature_df = pd.read_csv(self.feature_path)
         aggregated_df = pd.read_csv(self.aggregated_path)
-        train_df = self._build_complete_dataset(feature_df=feature_df,
-                                                aggregated_df=aggregated_df)
+        train_df = self._build_complete_dataset(feature_df=feature_df, aggregated_df=aggregated_df)
 
         # Add index for cv routine
         train_df['index'] = np.arange(train_df.shape[0])
