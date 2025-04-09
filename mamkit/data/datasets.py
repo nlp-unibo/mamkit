@@ -496,8 +496,6 @@ class MMUSED(Loader):
         self.clips_path = self.data_path.joinpath('audio_clips')
         self.dataset_path = self.data_path.joinpath('dataset.pkl')
 
-        self.data_path.mkdir(parents=True, exist_ok=True)
-
         self.load()
 
     def generate_clips(
