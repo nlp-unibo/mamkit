@@ -678,7 +678,7 @@ class MMUSEDFallacy(Loader):
         self.folder_name = 'MMUSED-fallacy'
 
         # Files: download_links.csv, link_ids.csv, dataset.pkl
-        self.archive_url = 'https://zenodo.org/api/records/14938117/files-archive'
+        self.archive_url = 'https://zenodo.org/api/records/15182835/files-archive'
 
         self.data_path = Path(self.base_data_path, self.folder_name).resolve()
         self.audio_path = self.data_path.joinpath('audio_recordings')
@@ -689,6 +689,8 @@ class MMUSEDFallacy(Loader):
 
         self.add_splits(method=self.get_mancini_2024_splits,
                         key='mancini-et-al-2024')
+        self.add_splits(method=self.get_mmarg_fallacy_splits,
+                        key='mm-argfallacy-2025')
 
     def generate_clips(
             self
@@ -853,6 +855,7 @@ class MMUSEDFallacy(Loader):
         afd_data = []
         for dialogue_id in tqdm(dialogue_ids, desc='Building AFD data...'):
             dialogue_df = df.loc[df.dialogue_id == dialogue_id]
+            label = dialogue_df['fallacy'].values[0]
 
             dialogue_sentences = [(sent_idx, sent, 0, start_time, end_time)
                                   for sent_idx, sent, start_time, end_time in zip(chain(*dialogue_df.dialogue_indexes),
@@ -862,7 +865,7 @@ class MMUSEDFallacy(Loader):
                                                                                       *dialogue_df.dialogue_start_time),
                                                                                   chain(*dialogue_df.dialogue_end_time))
                                   if sent_idx not in list(chain(*dialogue_df.snippet_indexes))]
-            snippet_sentences = [(sent_idx, sent, 1, start_time, end_time)
+            snippet_sentences = [(sent_idx, sent, 1 if label is not None else None, start_time, end_time)
                                  for sent_idx, sent, start_time, end_time in zip(chain(*dialogue_df.snippet_indexes),
                                                                                  chain(*dialogue_df.snippet_sentences),
                                                                                  chain(*dialogue_df.snippet_start_time),
@@ -997,7 +1000,7 @@ class MMUSEDFallacy(Loader):
     def get_mancini_2024_splits(
             self
     ) -> Iterable[SplitInfo]:
-        dialogues = set(self.data['dialogue_id'].values)
+        dialogues = set(self.data['dialogue_id'].values).difference({'47_2024', '48_2024'})
         for dialogue_id in dialogues:
             train_df = self.data[self.data['dialogue_id'] != dialogue_id]
             test_df = self.data[self.data['dialogue_id'] == dialogue_id]
@@ -1012,6 +1015,17 @@ class MMUSEDFallacy(Loader):
                                                      val_df=val_df,
                                                      test_df=test_df)
             yield split_info
+
+    def get_mmarg_fallacy_splits(
+            self
+    ) -> Iterable[SplitInfo]:
+        train_df = self.data[~self.data['dialogue_id'].isin(['47_2024', '48_2024'])]
+        test_df = self.data[self.data['dialogue_id'].isin(['47_2024', '48_2024'])]
+
+        split_info = self.build_info_from_splits(train_df=train_df,
+                                                 val_df=pd.DataFrame(columns=self.data.columns),
+                                                 test_df=test_df)
+        return [split_info]
 
 
 class MArg(Loader):
