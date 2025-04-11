@@ -16,7 +16,7 @@ def loading_data_example():
 def loading_predefined_splits():
     loader = UKDebates(task_name='asd',
                        input_mode=InputMode.TEXT_ONLY)
-    split_info = loader.get_splits('mancini-et-al-2022')
+    split_info = loader.get_splits('mm-argfallacy-2025')
     logging.info(split_info[0])
 
 
