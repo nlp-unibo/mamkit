@@ -706,7 +706,8 @@ class MMUSEDFallacy(Loader):
 
             trim_start_time = debate_dl_df['startMin'].values[0] * 60 + debate_dl_df['startSec'].values[0]
             trim_end_time = debate_dl_df['endMin'].values[0] * 60 + debate_dl_df['endSec'].values[0]
-            recording = recording[trim_start_time * 1000:-trim_end_time * 1000]
+            if trim_end_time > 0:
+                recording = recording[trim_start_time * 1000:-trim_end_time * 1000]
 
             dialogue_df = df[df.dialogue_id == dialogue_id]
             for row_idx, row in dialogue_df.iterrows():
@@ -853,7 +854,6 @@ class MMUSEDFallacy(Loader):
         afd_data = []
         for dialogue_id in tqdm(dialogue_ids, desc='Building AFD data...'):
             dialogue_df = df.loc[df.dialogue_id == dialogue_id]
-            label = dialogue_df['fallacy'].values[0]
 
             dialogue_sentences = [(sent_idx, sent, 0, start_time, end_time)
                                   for sent_idx, sent, start_time, end_time in zip(chain(*dialogue_df.dialogue_indexes),
@@ -863,11 +863,13 @@ class MMUSEDFallacy(Loader):
                                                                                       *dialogue_df.dialogue_start_time),
                                                                                   chain(*dialogue_df.dialogue_end_time))
                                   if sent_idx not in list(chain(*dialogue_df.snippet_indexes))]
-            snippet_sentences = [(sent_idx, sent, 1 if label is not None else None, start_time, end_time)
-                                 for sent_idx, sent, start_time, end_time in zip(chain(*dialogue_df.snippet_indexes),
-                                                                                 chain(*dialogue_df.snippet_sentences),
-                                                                                 chain(*dialogue_df.snippet_start_time),
-                                                                                 chain(*dialogue_df.snippet_end_time))]
+            snippet_sentences = [(sent_idx, sent, 1 if label is not None else 0, start_time, end_time)
+                                 for sent_idx, sent, start_time, end_time, label in
+                                 zip(chain(*dialogue_df.snippet_indexes),
+                                     chain(*dialogue_df.snippet_sentences),
+                                     chain(*dialogue_df.snippet_start_time),
+                                     chain(*dialogue_df.snippet_end_time),
+                                     chain(dialogue_df.fallacy))]
 
             sentences = sorted(set(dialogue_sentences + snippet_sentences), key=lambda item: item[0])
             context_window = self.context_window if self.context_window >= 0 else len(sentences)
