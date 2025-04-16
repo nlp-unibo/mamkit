@@ -676,7 +676,7 @@ class MMUSEDFallacy(Loader):
         self.folder_name = 'MMUSED-fallacy'
 
         # Files: download_links.csv, link_ids.csv, dataset.pkl
-        self.archive_url = 'https://zenodo.org/api/records/15183217/files-archive'
+        self.archive_url = 'https://zenodo.org/api/records/15229681/files-archive'
 
         self.data_path = Path(self.base_data_path, self.folder_name).resolve()
         self.audio_path = self.data_path.joinpath('audio_recordings')
