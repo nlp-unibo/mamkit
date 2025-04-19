@@ -27,7 +27,9 @@ class BiLSTMMFCCsConfig(BaseConfig):
                   tags={'anonymous'}): 'marg_arc_anonymous',
 
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.AUDIO_ONLY, task_name='afc',
-                  tags={'anonymous'}): 'mmused_fallacy_afc_anonymous'
+                  tags={'anonymous'}): 'mmused_fallacy_afc_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.AUDIO_ONLY, task_name='afd',
+                  tags={'anonymous'}): 'mmused_fallacy_afd_anonymous'
     }
 
     def __init__(
@@ -293,6 +295,34 @@ class BiLSTMMFCCsConfig(BaseConfig):
             batch_size=4,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+        )
+
+    @classmethod
+    def mmused_fallacy_afd_anonymous(
+            cls
+    ):
+        return cls(
+            sampling_rate=16000,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(64, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            optimizer_args={
+                'lr': 0.0002,
+                'weight_decay': 0.001
+            },
+            optimizer=th.optim.Adam,
+            lstm_weights=[64, 32],
+            dropout_rate=0.1,
+            mfccs=25,
+            pooling_sizes=[5],
+            normalize=True,
+            remove_energy=True,
+            num_classes=2,
+            seeds=[42],
+            batch_size=4,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.53858521, 6.97916667])),
         )
 
 
@@ -936,6 +966,8 @@ class TransformerEncoderConfig(BaseConfig):
                   tags={'anonymous', 'hubert'}): 'mmused_fallacy_afc_hubert_anonymous',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.AUDIO_ONLY, task_name='afc',
                   tags={'anonymous', 'wavlm'}): 'mmused_fallacy_afc_wavlm_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.AUDIO_ONLY, task_name='afd',
+                  tags={'anonymous', 'wavlm'}): 'mmused_fallacy_afd_wavlm_anonymous',
     }
 
     def __init__(
@@ -1414,5 +1446,35 @@ class TransformerEncoderConfig(BaseConfig):
             dropout_rate=0.2,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+            seeds=[42],
+        )
+
+    @classmethod
+    def mmused_fallacy_afd_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            embedding_dim=768,
+            encoder=lambda: th.nn.TransformerEncoder(
+                th.nn.TransformerEncoderLayer(d_model=768, nhead=8, dim_feedforward=100, batch_first=True),
+                num_layers=1
+            ),
+            num_classes=2,
+            processor_args={},
+            model_args={},
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            sampling_rate=16000,
+            batch_size=8,
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            dropout_rate=0.2,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.53858521, 6.97916667])),
             seeds=[42],
         )

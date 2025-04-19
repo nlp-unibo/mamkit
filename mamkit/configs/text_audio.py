@@ -21,7 +21,9 @@ class BiLSTMMFCCsConfig(BaseConfig):
                   tags={'anonymous'}): 'marg_arc_anonymous',
 
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
-                  tags={'anonymous'}): 'mmused_fallacy_afc_anonymous'
+                  tags={'anonymous'}): 'mmused_fallacy_afc_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afd',
+                  tags={'anonymous'}): 'mmused_fallacy_afd_anonymous'
     }
 
     def __init__(
@@ -223,6 +225,39 @@ class BiLSTMMFCCsConfig(BaseConfig):
             batch_size=4,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+        )
+
+    @classmethod
+    def mmused_fallacy_afd_anonymous(
+            cls
+    ):
+        return cls(
+            text_embedding_dim=200,
+            text_lstm_weights=[128, 32],
+            text_dropout_rate=0.0,
+            audio_dropout_rate=0.0,
+            embedding_model='glove.6B.200d',
+            tokenizer=get_tokenizer(tokenizer='basic_english'),
+            audio_lstm_weights=[64, 32],
+            sampling_rate=16000,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(128, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            optimizer_args={
+                'lr': 0.0002,
+                'weight_decay': 0.001
+            },
+            optimizer=th.optim.Adam,
+            mfccs=25,
+            pooling_sizes=[5],
+            normalize=True,
+            remove_energy=True,
+            num_classes=2,
+            seeds=[42],
+            batch_size=4,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.53858521, 6.97916667])),
         )
 
 
@@ -864,6 +899,9 @@ class MMTransformerConfig(BaseConfig):
                   tags={'anonymous', 'bert', 'hubert'}): 'mmused_fallacy_afc_bert_hubert_anonymous',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
                   tags={'anonymous', 'bert', 'wavlm'}): 'mmused_fallacy_afc_bert_wavlm_anonymous',
+
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afd',
+                  tags={'anonymous', 'bert', 'wavlm'}): 'mmused_fallacy_afd_bert_wavlm_anonymous',
 
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_AUDIO, task_name='afc',
                   tags={'anonymous', 'roberta', 'wav2vec'}): 'mmused_fallacy_afc_roberta_wav2vec_anonymous',
@@ -1655,6 +1693,41 @@ class MMTransformerConfig(BaseConfig):
                 weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
             batch_size=8,
             num_classes=6,
+        )
+
+    @classmethod
+    def mmused_fallacy_afd_bert_wavlm_anonymous(
+            cls
+    ):
+        return cls(
+            text_model_card='bert-base-uncased',
+            text_embedding_dim=768,
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(832, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            text_dropout_rate=0.2,
+            audio_dropout_rate=0.2,
+            audio_embedding_dim=768,
+            lstm_weights=[64, 32],
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 1e-03,
+                'weight_decay': 0.0005
+            },
+            audio_model_card='patrickvonplaten/wavlm-libri-clean-100h-base-plus',
+            sampling_rate=16000,
+            aggregate=False,
+            downsampling_factor=1 / 5,
+            audio_model_args={},
+            processor_args={},
+            tokenizer_args={},
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.53858521, 6.97916667])),
+            batch_size=8,
+            num_classes=2,
         )
 
     @classmethod

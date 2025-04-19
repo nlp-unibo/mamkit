@@ -1,6 +1,6 @@
 import lightning as L
 import torch as th
-from typing import Dict
+from typing import Any
 from torchmetrics import MetricCollection
 
 
@@ -32,6 +32,15 @@ class MAMKitLightingModel(L.LightningModule):
             x
     ):
         return self.model(x)
+
+    def predict_step(
+            self,
+            batch,
+            batch_idx
+    ):
+        inputs, y_true = batch
+        y_hat = self.model(inputs)
+        return th.argmax(y_hat, dim=-1).detach().cpu().numpy()
 
     def training_step(
             self,

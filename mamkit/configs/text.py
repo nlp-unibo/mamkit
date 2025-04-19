@@ -24,7 +24,9 @@ class BiLSTMConfig(BaseConfig):
         ConfigKey(dataset='marg', input_mode=InputMode.TEXT_ONLY, task_name='arc',
                   tags={'anonymous'}): 'marg_arc_anonymous',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
-                  tags={'anonymous'}): 'mmused_fallacy_afc_anonymous'
+                  tags={'anonymous'}): 'mmused_fallacy_afc_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afd',
+                  tags={'anonymous'}): 'mmused_fallacy_afd_anonymous'
     }
 
     def __init__(
@@ -282,6 +284,32 @@ class BiLSTMConfig(BaseConfig):
             num_classes=6
         )
 
+    @classmethod
+    def mmused_fallacy_afd_anonymous(
+            cls
+    ):
+        return cls(
+            embedding_dim=200,
+            lstm_weights=[128, 32],
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(64, 128),
+                th.nn.ReLU(),
+                th.nn.Linear(128, 2)
+            ),
+            dropout_rate=0.0,
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={
+                'lr': 0.0002,
+                'weight_decay': 0.0001
+            },
+            embedding_model='glove.6B.200d',
+            tokenizer=get_tokenizer(tokenizer='basic_english'),
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.53858521, 6.97916667])),
+            batch_size=8,
+            num_classes=2
+        )
+
 
 class TransformerConfig(BaseConfig):
     configs = {
@@ -303,6 +331,8 @@ class TransformerConfig(BaseConfig):
                   tags={'anonymous', 'bert'}): 'mmused_fallacy_afc_bert_anonymous',
         ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afc',
                   tags={'anonymous', 'roberta'}): 'mmused_fallacy_afc_roberta_anonymous',
+        ConfigKey(dataset='mmused-fallacy', input_mode=InputMode.TEXT_ONLY, task_name='afd',
+                  tags={'anonymous', 'roberta'}): 'mmused_fallacy_afd_roberta_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
                   tags={'anonymous', 'bert'}): 'mmused_acc_bert_anonymous',
         ConfigKey(dataset='mmused', input_mode=InputMode.TEXT_ONLY, task_name='acc',
@@ -560,6 +590,27 @@ class TransformerConfig(BaseConfig):
             is_transformer_trainable=False,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.2586882, 1.05489022, 2.28787879, 3.2030303, 4.09689922, 5.18137255])),
+        )
+
+    @classmethod
+    def mmused_fallacy_afd_roberta_anonymous(
+            cls
+    ):
+        return cls(
+            model_card='roberta-base',
+            head=lambda: th.nn.Sequential(
+                th.nn.Linear(768, 256),
+                th.nn.ReLU(),
+                th.nn.Linear(256, 2)
+            ),
+            dropout_rate=0.2,
+            seeds=[42],
+            optimizer=th.optim.Adam,
+            optimizer_args={'lr': 1e-03, 'weight_decay': 1e-05},
+            batch_size=8,
+            num_classes=2,
+            is_transformer_trainable=False,
+            loss_function=lambda: th.nn.CrossEntropyLoss(weight=th.Tensor([0.53858521, 6.97916667])),
         )
 
     @classmethod
