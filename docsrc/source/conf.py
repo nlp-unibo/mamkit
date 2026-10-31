@@ -9,13 +9,15 @@ from pathlib import Path
 sys.path.insert(0, Path(__file__).absolute().parent.parent.parent.as_posix())
 sys.path.insert(0, Path(__file__).absolute().parent.parent.as_posix())
 
+import mamkit  # noqa: E402
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'mamkit'
 copyright = '2024, LT-NLP-lab UniBO'
 author = 'Eleonora Mancini, Federico Ruggeri'
-release = '1.0'
+release = mamkit.__version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

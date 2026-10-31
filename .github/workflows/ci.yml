@@ -1,0 +1,98 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  # CPU wheels: no check needs the CUDA libraries the default wheels pull in.
+  TORCH: torch>=2.3.0,<2.4 torchaudio>=2.3.0,<2.4
+  TORCH_CPU_INDEX: https://download.pytorch.org/whl/cpu
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    # ponytail: report-only until the formatting pull request lands; then drop this.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install "ruff>=0.15.20"
+      - run: ruff check .
+      - run: ruff format --check .
+
+  tests:
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # torchtext 0.18 publishes wheels up to CPython 3.12.
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install $TORCH --index-url $TORCH_CPU_INDEX
+      - run: pip install -e ".[dev]"
+      - run: pytest
+
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install $TORCH --index-url $TORCH_CPU_INDEX
+      - run: pip install -e ".[docs]"
+      - run: cd docsrc && bash build_docs.sh
+
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check --strict dist/*
+      - name: Verify built wheel
+        run: |
+          python -m venv /tmp/verify
+          /tmp/verify/bin/pip install $TORCH --index-url $TORCH_CPU_INDEX
+          /tmp/verify/bin/pip install dist/*.whl
+          cd /tmp
+          /tmp/verify/bin/python -c "import mamkit; print(mamkit.__version__)"
+
+  all-green:
+    name: All checks passed
+    if: always()
+    needs: [lint, tests, docs, package]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify required jobs
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped')
+        run: exit 1
+      - run: echo "every job passed"

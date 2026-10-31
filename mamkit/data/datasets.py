@@ -4,12 +4,10 @@ import shutil
 import tarfile
 import zipfile
 from dataclasses import dataclass
-from distutils.dir_util import copy_tree
 from enum import Enum
-from functools import partial
+from functools import cached_property, partial
 from pathlib import Path
 from typing import Optional, List, Callable, Union, Dict, Iterable
-from django.utils.functional import cached_property
 
 import numpy as np
 import pandas as pd
@@ -1317,7 +1315,7 @@ class MArg(Loader):
             dl_tmp_path.unlink()
 
             source_path = self.data_path.joinpath('rafamestre-m-arg_multimodal-argumentation-dataset-851736f')
-            copy_tree(source_path.as_posix(), self.data_path.as_posix())
+            shutil.copytree(source_path, self.data_path, dirs_exist_ok=True)
 
             shutil.rmtree(source_path)
 
