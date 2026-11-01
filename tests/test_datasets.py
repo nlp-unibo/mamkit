@@ -6,10 +6,13 @@ recordings; their tests arrive with the loader rewrite.
 
 import json
 
+import numpy as np
+import pandas as pd
 import pytest
 
 from mamkit.data.datasets import (
     InputMode,
+    MMUSEDFallacy,
     MultimodalDataset,
     PairMultimodalDataset,
     PairUnimodalDataset,
@@ -97,11 +100,10 @@ def test_ukdebates_builds_a_dataset_per_input_mode(ukdebates_root):
     assert isinstance(split.train, MultimodalDataset)
 
 
-def test_ukdebates_default_splits_fail(ukdebates_root):
-    # Defect: empty validation and test splits are passed as the property
-    # object pandas.DataFrame.empty instead of empty frames.
-    with pytest.raises(AttributeError, match="property"):
-        ukdebates(ukdebates_root).get_splits("default")
+def test_ukdebates_default_splits_train_on_all_data(ukdebates_root):
+    [split] = ukdebates(ukdebates_root).get_splits("default")
+    assert len(split.train.inputs) == 4
+    assert len(split.val.inputs) == 0 and len(split.test.inputs) == 0
 
 
 def test_ukdebates_supports_only_asd(ukdebates_root):
@@ -111,3 +113,25 @@ def test_ukdebates_supports_only_asd(ukdebates_root):
             input_mode=InputMode.TEXT_ONLY,
             base_data_path=ukdebates_root,
         )
+
+
+def test_mmused_fallacy_mancini_splits_do_not_depend_on_hashing(monkeypatch, tmp_path):
+    # Folds follow sorted dialogue ids, and each fold draws four distinct
+    # validation dialogues, so a numpy seed fixes every split.
+    monkeypatch.setattr(MMUSEDFallacy, "load", lambda self: None)
+    loader = MMUSEDFallacy(
+        task_name="afc", input_mode=InputMode.TEXT_ONLY, base_data_path=tmp_path
+    )
+    dialogues = [f"{index}_2020" for index in range(8)] + ["47_2024", "48_2024"]
+    loader.__dict__["data"] = pd.DataFrame({"dialogue_id": dialogues})
+    loader.build_info_from_splits = lambda train_df, val_df, test_df: (
+        train_df,
+        val_df,
+        test_df,
+    )
+    np.random.seed(0)
+    splits = list(loader.get_splits("mancini-et-al-2024"))
+    assert [test.dialogue_id.item() for _, _, test in splits] == dialogues[:8]
+    for train, val, test in splits:
+        assert val.dialogue_id.nunique() == 4
+        assert not set(train.dialogue_id) & set(val.dialogue_id)

@@ -392,7 +392,7 @@ class VocabBuilder(ProcessorComponent):
         """
 
         logging.info("Building vocabulary...")
-        vocab_input = inputs if context is None else set(inputs + context)
+        vocab_input = list(inputs) + (list(context) if context is not None else [])
         self.vocab = build_vocab_from_iterator(
             iterator=iter([self.tokenizer(text) for text in vocab_input]),
             specials=["<pad>", "<unk>"],
@@ -468,13 +468,12 @@ class PairVocabBuilder(PairProcessorComponent):
 
         logging.info("Building vocabulary...")
 
-        vocab_input = a_inputs + b_inputs
+        vocab_input = list(a_inputs) + list(b_inputs)
         if a_context is not None:
-            vocab_input += a_context
+            vocab_input += list(a_context)
         if b_context is not None:
-            vocab_input += b_context
+            vocab_input += list(b_context)
 
-        vocab_input = set(vocab_input)
         self.vocab = build_vocab_from_iterator(
             iterator=iter([self.tokenizer(text) for text in vocab_input]),
             specials=["<pad>", "<unk>"],
