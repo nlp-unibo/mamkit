@@ -565,9 +565,13 @@ class MulTA(TextAudioModel):
                 audio_crossmodal_out, text_features, text_attentions
             )
 
-        # pooling of transformer output
-        text_crossmodal_out_mean = th.mean(text_crossmodal_out, dim=1)
-        audio_crossmodal_out_mean = th.mean(audio_crossmodal_out, dim=1)
+        # mean pooling of transformer output over valid positions
+        text_crossmodal_out_mean = (
+            text_crossmodal_out * text_attentions[:, :, None]
+        ).sum(dim=1) / text_attentions.sum(dim=1)[:, None]
+        audio_crossmodal_out_mean = (
+            audio_crossmodal_out * audio_attentions[:, :, None]
+        ).sum(dim=1) / audio_attentions.sum(dim=1)[:, None]
 
         # concatenate text and audio features
         text_audio = th.cat(
@@ -601,9 +605,13 @@ class PairMulTA(MulTA):
                 audio_crossmodal_out, text_features, text_attentions
             )
 
-        # pooling of transformer output
-        text_crossmodal_out_mean = th.mean(text_crossmodal_out, dim=1)
-        audio_crossmodal_out_mean = th.mean(audio_crossmodal_out, dim=1)
+        # mean pooling of transformer output over valid positions
+        text_crossmodal_out_mean = (
+            text_crossmodal_out * text_attentions[:, :, None]
+        ).sum(dim=1) / text_attentions.sum(dim=1)[:, None]
+        audio_crossmodal_out_mean = (
+            audio_crossmodal_out * audio_attentions[:, :, None]
+        ).sum(dim=1) / audio_attentions.sum(dim=1)[:, None]
 
         # concatenate text and audio features
         text_audio = th.cat(

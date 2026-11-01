@@ -95,13 +95,14 @@ def encode_audio_torch(inputs):
         for feature_set in inputs
     ]
     features = pad_sequence(features, batch_first=True, padding_value=float("-inf"))
-    features[(features == float("-inf"))] = 0
 
     if len(features.shape) == 3:
         attention_mask = features[:, :, 0] != float("-inf")
     else:
         attention_mask = th.ones((features.shape[0]), dtype=th.int32)
         features = features[:, None, :]
+
+    features[(features == float("-inf"))] = 0
 
     return features, attention_mask.to(th.float32)
 
