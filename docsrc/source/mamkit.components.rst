@@ -28,6 +28,14 @@ mamkit.components.features module
    :undoc-members:
    :show-inheritance:
 
+mamkit.components.lightning module
+----------------------------------
+
+.. automodule:: mamkit.components.lightning
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 mamkit.components.loaders module
 --------------------------------
 
@@ -48,6 +56,14 @@ mamkit.components.splits module
 -------------------------------
 
 .. automodule:: mamkit.components.splits
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mamkit.components.tasks module
+------------------------------
+
+.. automodule:: mamkit.components.tasks
    :members:
    :undoc-members:
    :show-inheritance:

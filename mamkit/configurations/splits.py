@@ -7,10 +7,10 @@ from cinnamon.registry import register_class, register_method
 
 from mamkit.configurations.keys import (
     ALL_TRAIN_SPLIT,
+    COLUMN_SPLIT,
     MARG_085_MANCINI_2022_SPLIT,
     MMUSED_FALLACY_MANCINI_2024_SPLIT,
     MMUSED_FALLACY_MM_ARGFALLACY_2025_SPLIT,
-    MMUSED_SPLIT,
     UKDEBATES_MANCINI_2022_SPLIT,
 )
 
@@ -27,9 +27,9 @@ class AllTrainConfig(Configuration):
     """Trains on every row, without validation or test sets."""
 
 
-@register_class(key=MMUSED_SPLIT, component="mamkit.components.splits.ColumnSplit")
+@register_class(key=COLUMN_SPLIT, component="mamkit.components.splits.ColumnSplit")
 class ColumnSplitConfig(Configuration):
-    """The train, validation, and test sets that MM-USED ships."""
+    """The sets a column names, such as the ones MM-USED ships."""
 
     column: str = Param("split", description="Column naming the set of each row")
     train: str = Param("TRAIN")

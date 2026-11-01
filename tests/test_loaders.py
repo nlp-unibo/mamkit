@@ -335,7 +335,7 @@ def test_all_train_split(registry, ukdebates_root):
 
 
 def test_mmused_split_reads_the_split_column(registry, mmused_root):
-    [split] = Registry.from_key(keys.MMUSED_SPLIT)(mmused(mmused_root))
+    [split] = Registry.from_key(keys.COLUMN_SPLIT)(mmused(mmused_root))
     assert sizes(split) == [2, 1, 1]
     assert split.test.inputs["text"] == ["good plan"]
 

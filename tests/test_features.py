@@ -154,12 +154,9 @@ def test_padded_tokens_do_not_change_text_bilstm_logits():
     dataset = MAMDataset({"text": ["the cat", "the cat sat on a mat"]}, [0, 1])
     features.fit(dataset, featurizers)
     th.manual_seed(0)
-    model = Classifier(
-        encoders.TextBiLSTM(
-            embedding_dim=4, lstm_weights=[3], **featurizers["text"].model_inputs()
-        ),
-        head=[2],
-    ).eval()
+    encoder = encoders.TextBiLSTM(embedding_dim=4, lstm_weights=[3])
+    encoder.load_vocabulary(**featurizers["text"].model_inputs())
+    model = Classifier(encoder, head=[2]).eval()
     alone, _ = features.collate([dataset[0]], featurizers)
     both, _ = features.collate([dataset[0], dataset[1]], featurizers)
     with th.no_grad():

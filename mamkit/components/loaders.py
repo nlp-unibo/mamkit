@@ -780,3 +780,40 @@ class MArg(Loader):
         train_df["index"] = np.arange(train_df.shape[0])
 
         train_df.to_csv(self.final_path, index=False)
+
+
+class Toy(Loader):
+    """A synthetic text corpus for smoke tests, with no download.
+
+    Each text holds random filler words and one cue word, ``good`` for label 1
+    and ``bad`` for label 0. The ``split`` column assigns 60% of the rows to
+    training and 20% each to validation and test.
+    """
+
+    folder_name = "Toy"
+    tasks = ("toy",)
+    filler = ("the", "a", "debate", "policy", "tax", "vote", "plan", "now")
+
+    def __init__(self, size: int = 200, seed: int = 0, **kwargs):
+        super().__init__(**kwargs)
+        if self.input_mode != "text-only":
+            raise ValueError("The toy corpus has text only")
+        self.size = size
+        self.seed = seed
+
+    def columns(self):
+        return {"inputs": {"text": "text"}, "context": None, "label": "label"}
+
+    @cached_property
+    def data(self) -> pd.DataFrame:
+        generator = np.random.default_rng(self.seed)
+        labels = generator.integers(0, 2, self.size)
+        texts = []
+        for label in labels:
+            words = list(generator.choice(self.filler, size=5))
+            words.insert(generator.integers(0, 6), "good" if label else "bad")
+            texts.append(" ".join(words))
+        train, val = int(0.6 * self.size), int(0.8 * self.size)
+        splits = ["TRAIN"] * train + ["VALIDATION"] * (val - train)
+        splits += ["TEST"] * (self.size - val)
+        return pd.DataFrame({"text": texts, "label": labels.tolist(), "split": splits})

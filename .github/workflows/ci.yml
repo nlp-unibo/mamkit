@@ -49,6 +49,8 @@ jobs:
       - run: pip install $TORCH --index-url $TORCH_CPU_INDEX
       - run: pip install -e ".[dev]"
       - run: pytest --cov=mamkit --cov-branch --cov-fail-under=77 --cov-report=term-missing
+      # Imports every registered component and checks it against its configuration.
+      - run: cmn-check -dir mamkit --deep
 
   docs:
     name: Documentation
