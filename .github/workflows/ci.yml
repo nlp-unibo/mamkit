@@ -48,7 +48,7 @@ jobs:
           cache: pip
       - run: pip install $TORCH --index-url $TORCH_CPU_INDEX
       - run: pip install -e ".[dev]"
-      - run: pytest --cov=mamkit --cov-branch --cov-fail-under=74 --cov-report=term-missing
+      - run: pytest --cov=mamkit --cov-branch --cov-fail-under=77 --cov-report=term-missing
 
   docs:
     name: Documentation

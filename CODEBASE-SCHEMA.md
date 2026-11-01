@@ -57,3 +57,17 @@ The model classes in `mamkit.models` stay until the legacy configurations that u
 6. `VocabularyText.model_inputs` returns the arguments `vocab_size` and `embedding_matrix` of `TextBiLSTM`.
 
 The processors and collators in `mamkit.data` stay until the legacy configurations that use them are removed.
+
+## Loaders and split strategies
+
+`mamkit.components.loaders` depends on `mamkit.components.datasets`, `mamkit.utility.data`, pandas, pydub, and nltk.
+
+1. Each loader downloads its corpus in `__init__` when its folder is missing. `MMUSED` and `MMUSEDFallacy` call `build_clips` only when their input mode reads audio.
+2. `build_clips` calls `youtube_download`, `trimmed_recording`, and `export_clip`.
+3. `Loader.dataset` reads the column names from `columns` and returns a `MAMDataset` with the modalities of the input mode.
+
+`mamkit.components.splits` depends on `mamkit.components.datasets` and `mamkit.utility.data`. Each strategy reads `loader.data`, calls `loader.dataset` on row subsets, and returns a list of `Split`. `FoldFiles` calls `download` when its file is missing from the loader folder.
+
+`mamkit.configurations.splits` registers one configuration per published split. Its keys are declared in `mamkit.configurations.keys`. `Registry.build` on the `mamkit` package folder loads them.
+
+The loaders in `mamkit.data.datasets` stay until the legacy configurations that use them are removed.
