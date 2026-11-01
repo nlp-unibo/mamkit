@@ -221,3 +221,29 @@ def test_pair_ensemble_ignores_text_dropout():
     model.train()
     with th.no_grad():
         th.testing.assert_close(model(record["batch"]), record["logits"])
+
+
+MASKED = [
+    "audio_pair_transformer",
+    "audio_transformer",
+    "csa",
+    "ensemble",
+    "multa",
+    "pair_csa",
+    "pair_ensemble",
+    "pair_multa",
+    "text_pair_transformer",
+    "text_transformer",
+]
+
+
+@pytest.mark.parametrize("name", MASKED)
+def test_padding_does_not_change_logits(name):
+    # Models that read a mask must ignore the values at padded positions.
+    model, record = build(name)
+    noisy = {key: value.clone() for key, value in record["batch"].items()}
+    for key, mask in record["batch"].items():
+        if key.endswith("input_mask"):
+            noisy[key.replace("input_mask", "inputs")][mask == 0] = 100.0
+    with th.no_grad():
+        th.testing.assert_close(model(noisy), model(record["batch"]))

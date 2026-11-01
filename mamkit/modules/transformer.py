@@ -393,15 +393,18 @@ class MulTA_CrossAttentionBlock(torch.nn.Module):
         Args:
             elem_a: elements of the modality A
             elem_b: elements of the modality B
-            attn_mask: attention mask to use
+            attn_mask: mask of modality B, with 1 for valid positions and 0 for padding
         """
         elem_a = self.layer_norm(elem_a)
         elem_b = self.layer_norm(elem_b)
-        attn_mask = attn_mask.to(torch.float32)
 
         # cross modal attention with elem_a as query and elem_b as key and value
         mh_out, _ = self.mh_attention(
-            elem_a, elem_b, elem_b, key_padding_mask=attn_mask, need_weights=False
+            elem_a,
+            elem_b,
+            elem_b,
+            key_padding_mask=~attn_mask.to(torch.bool),
+            need_weights=False,
         )
         # residual connection
         add_out = mh_out + elem_a

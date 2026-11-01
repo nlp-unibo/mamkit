@@ -82,14 +82,12 @@ def test_pair_text_transformer_output_collator_pads_each_side():
     assert output["b_input_mask"].tolist() == [[1.0], [1.0]]
 
 
-def test_audio_collator_marks_padded_frames_as_valid():
-    # Defect: the padding value is replaced before the mask is built, so the
-    # padded frame of the second sample is marked as valid.
+def test_audio_collator_masks_padded_frames():
     first = np.ones((2, 3), dtype=np.float32)
     second = np.ones((1, 3), dtype=np.float32)
     output = collators.AudioCollatorOutput()(inputs=[first, second])
     assert output["inputs"][1, 1].tolist() == [0.0, 0.0, 0.0]
-    assert output["input_mask"].tolist() == [[1.0, 1.0], [1.0, 1.0]]
+    assert output["input_mask"].tolist() == [[1.0, 1.0], [1.0, 0.0]]
 
 
 def test_audio_collator_keeps_aggregated_vectors_as_one_frame():
