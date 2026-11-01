@@ -42,3 +42,18 @@ This file records call relations and module dependencies. It covers the modules 
 2. `Ensemble` calls a text classifier and an audio classifier and mixes their class distributions.
 
 The model classes in `mamkit.models` stay until the legacy configurations that use them are removed.
+
+## Datasets and featurizers
+
+`mamkit.components.datasets` depends only on torch. `MAMDataset` holds one list per modality, or one such dictionary per side `a` and `b`, with a label per sample.
+
+`mamkit.components.features` depends on `mamkit.components.datasets`, `mamkit.utility.processing`, `mamkit.utility.text`, and transformers.
+
+1. `VocabularyText` calls `build_vocabulary` and `basic_english`, and `glove_vectors` when it has an embedding model.
+2. `TokenizedText` calls a pretrained tokenizer. `EncodedText` calls `encode_text_nn`.
+3. `MFCCAudio` calls `encode_audio_mfcc`. `EncodedAudio` calls `encode_audio_nn`.
+4. Every `collate` method calls `pad`, except the one of `TokenizedText`.
+5. The functions `fit`, `transform`, and `collate` call one featurizer per modality on each side of a `MAMDataset`.
+6. `VocabularyText.model_inputs` returns the arguments `vocab_size` and `embedding_matrix` of `TextBiLSTM`.
+
+The processors and collators in `mamkit.data` stay until the legacy configurations that use them are removed.
