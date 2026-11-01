@@ -146,7 +146,7 @@ def parse_audio_nn(
         audio = th.concatenate([load(item)[0] for item in audio_input], dim=-1)
 
     if sampling_rate != audio_sampling_rate:
-        audio = resample(audio, sampling_rate, sampling_rate)
+        audio = resample(audio, audio_sampling_rate, sampling_rate)
 
     audio = th.mean(audio, dim=0, keepdim=True)
     return audio
@@ -201,7 +201,7 @@ def encode_audio_nn(
         features = features[0].detach().cpu().numpy()
 
     if aggregate:
-        features = np.mean(features.squeeze(axis=0), axis=0, keepdims=True)
+        features = np.mean(features, axis=0, keepdims=True)
 
     return features
 
