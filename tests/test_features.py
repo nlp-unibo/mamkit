@@ -71,10 +71,8 @@ def test_encoded_audio_downsamples(audio_files):
     )
 
 
-def test_encoded_audio_with_feature_extractor_matches_golden(audio_files):
-    featurizer = features.EncodedAudio(
-        model_card=HUBERT, sampling_rate=16_000, feature_extractor=True
-    )
+def test_encoded_audio_reads_hubert_through_its_feature_extractor(audio_files):
+    featurizer = features.EncodedAudio(model_card=HUBERT, sampling_rate=16_000)
     same(
         featurizer.transform([audio_files["short"]]),
         "processing/audio_transformer_extractor",

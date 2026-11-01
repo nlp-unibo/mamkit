@@ -17,7 +17,7 @@ import numpy as np
 import torch as th
 from torch.nn.utils.rnn import pad_sequence
 from tqdm import tqdm
-from transformers import AutoFeatureExtractor, AutoModel, AutoProcessor, AutoTokenizer
+from transformers import AutoFeatureExtractor, AutoModel, AutoTokenizer
 
 from mamkit.components.datasets import MAMDataset, sides
 from mamkit.utility.processing import encode_audio_mfcc, encode_audio_nn, encode_text_nn
@@ -192,8 +192,10 @@ class MFCCAudio(Featurizer):
 class EncodedAudio(Featurizer):
     """Frame embeddings from a pretrained audio model, computed once per dataset.
 
-    ``feature_extractor`` loads the model's feature extractor instead of its
-    processor. ``aggregate`` averages the frames of each clip.
+    The inputs come from the model's feature extractor, which gives the same
+    values as its processor for the wav2vec 2.0 and WavLM cards and also works
+    for HuBERT, which has no processor. ``aggregate`` averages the frames of
+    each clip.
     """
 
     def __init__(
@@ -202,7 +204,6 @@ class EncodedAudio(Featurizer):
         sampling_rate: int,
         downsampling_factor: Optional[float] = None,
         aggregate: bool = False,
-        feature_extractor: bool = False,
         processor_args: Optional[Dict] = None,
         model_args: Optional[Dict] = None,
     ):
@@ -210,7 +211,6 @@ class EncodedAudio(Featurizer):
         self.sampling_rate = sampling_rate
         self.downsampling_factor = downsampling_factor
         self.aggregate = aggregate
-        self.feature_extractor = feature_extractor
         self.processor_args = processor_args or {}
         self.model_args = model_args or {}
         self.processor = None
@@ -218,8 +218,7 @@ class EncodedAudio(Featurizer):
 
     def transform(self, inputs):
         if self.model is None:
-            loader = AutoFeatureExtractor if self.feature_extractor else AutoProcessor
-            self.processor = loader.from_pretrained(self.model_card)
+            self.processor = AutoFeatureExtractor.from_pretrained(self.model_card)
             self.model = AutoModel.from_pretrained(self.model_card).to(DEVICE)
         return [
             encode_audio_nn(

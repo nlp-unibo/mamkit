@@ -20,6 +20,25 @@ class LoaderConfig(Configuration):
     )
 
 
+class UKDebatesConfig(LoaderConfig):
+    task_name: str = Param("asd")
+
+
+class MMUSEDConfig(LoaderConfig):
+    sample_rate: int = Param(16000, ge=1, description="Sampling rate of the clips")
+
+
+class MMUSEDFallacyConfig(LoaderConfig):
+    with_context: bool = Param(False)
+    context_window: int = Param(3, description="Previous sentences; -1 keeps all")
+    sample_rate: int = Param(16000, ge=1, description="Sampling rate of the clips")
+
+
+class MArgConfig(LoaderConfig):
+    task_name: str = Param("arc")
+    confidence: float = Param(0.85, description="Minimum annotation confidence")
+
+
 @register_class(key=TOY_LOADER, component="mamkit.components.loaders.Toy")
 class ToyConfig(LoaderConfig):
     """The synthetic text corpus for smoke tests."""

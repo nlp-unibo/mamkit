@@ -84,3 +84,13 @@ The loaders in `mamkit.data.datasets` stay until the legacy configurations that 
 `MAMKitLightningModel` calls `import_path` to resolve its loss and optimizer. `Classifier`, `Ensemble`, and `Concat` call `Registry.from_keys` on their child components. A configuration can therefore name a child by its key.
 
 `mamkit.configurations.tasks` registers `TOY_TASK`, which reads the `Toy` loader through `COLUMN_SPLIT`.
+
+## Experiment registrations
+
+`mamkit.configurations.experiments` holds one module per corpus and one for the metrics. Each module registers the loaders, featurizers, encoders, models, and tasks of the published experiments of its corpus. The keys are declared in `mamkit.configurations.keys`.
+
+1. A task registration names its loader, split strategy, text and audio featurizers, model, and metrics by key.
+2. An `EncodedAudio` registration lists the alternative audio cards as variants of `model_card`. The registry then derives one task key per card, tagged `audio.model_card=<card>`.
+3. A text card has its own registrations, because the tokenizer and the encoder must name the same card.
+
+`tests/test_registrations.py` reads every task and its children back from the registry and compares them with `tests/golden/configs.json`.
