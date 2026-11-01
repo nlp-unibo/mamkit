@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   mamkit.components
    mamkit.configs
    mamkit.data
    mamkit.models
