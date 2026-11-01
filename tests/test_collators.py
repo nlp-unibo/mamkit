@@ -45,12 +45,22 @@ def test_text_transformer_collator_tokenizes():
     golden("collators/text_transformer", output)
 
 
-def test_pair_text_transformer_collator_tokenizes_side_a_twice():
-    # Defect: side B is tokenized from the side A inputs and context.
-    collator = collators.PairTextTransformerCollator(model_card=BERT)
-    output = collator(a_inputs=["the cat sat"], b_inputs=["something else entirely"])
-    assert th.equal(output["b_inputs"], output["a_inputs"])
-    assert th.equal(output["b_input_mask"], output["a_input_mask"])
+def test_pair_text_transformer_collator_matches_single_collator():
+    pair = collators.PairTextTransformerCollator(model_card=BERT)
+    output = pair(
+        a_inputs=["the cat sat"],
+        b_inputs=["something else entirely"],
+        a_context=["a dog"],
+        b_context=["a bird flew by"],
+    )
+    single = collators.TextTransformerCollator(model_card=BERT)
+    for side, inputs, context in (
+        ("a", ["the cat sat"], ["a dog"]),
+        ("b", ["something else entirely"], ["a bird flew by"]),
+    ):
+        expected = single(inputs=inputs, context=context)
+        for key, value in expected.items():
+            assert th.equal(output[f"{side}_{key}"], value), f"{side}_{key}"
 
 
 def test_text_transformer_output_collator_pads_embeddings():
