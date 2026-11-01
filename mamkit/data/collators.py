@@ -519,8 +519,8 @@ class PairTextTransformerCollator(PairCollatorComponent):
 
         (b_input_ids, b_mask, b_context_ids, b_context_mask) = (
             encode_text_with_context_transformer(
-                inputs=a_inputs,
-                context=a_context,
+                inputs=b_inputs,
+                context=b_context,
                 tokenizer=self.tokenizer,
                 tokenizer_args=self.tokenizer_args,
                 device=self.device,

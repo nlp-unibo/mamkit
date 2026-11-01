@@ -958,6 +958,7 @@ class PairAudioTransformer(PairProcessorComponent):
         ):
             a_audio_features, a_context_audio_features = encode_audio_and_context_nn(
                 audio_input=a_audio_input,
+                audio_context=a_audio_context,
                 model=self.model,
                 processor=self.processor,
                 model_args=self.model_args,
@@ -968,7 +969,8 @@ class PairAudioTransformer(PairProcessorComponent):
                 device=self.device,
             )
             b_audio_features, b_context_audio_features = encode_audio_and_context_nn(
-                audio_input=a_audio_input,
+                audio_input=b_audio_input,
+                audio_context=b_audio_context,
                 model=self.model,
                 processor=self.processor,
                 model_args=self.model_args,

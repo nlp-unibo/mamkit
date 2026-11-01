@@ -162,18 +162,22 @@ def test_audio_transformer_extractor_features(audio_files):
     golden("processing/audio_transformer_extractor", features)
 
 
-def test_pair_audio_transformer_encodes_side_a_twice(audio_files):
-    # Defect: side B is encoded from the side A audio, and both contexts are
-    # dropped.
+def test_pair_audio_transformer_matches_single_transformer(audio_files):
     pair = processing.PairAudioTransformer(model_card=WAV2VEC, sampling_rate=16_000)
     a, b, a_context, b_context = pair(
         a_inputs=[audio_files["short"]],
         b_inputs=[audio_files["long"]],
         a_context=[[audio_files["long"]]],
-        b_context=[[audio_files["long"]]],
+        b_context=[[audio_files["short"]]],
     )
-    np.testing.assert_array_equal(a[0], b[0])
-    assert a_context is None and b_context is None
+    single, context = audio_transformer()(
+        inputs=[audio_files["short"], audio_files["long"]],
+        context=[[audio_files["long"]], [audio_files["short"]]],
+    )
+    np.testing.assert_allclose(a[0], single[0], rtol=1e-5)
+    np.testing.assert_allclose(b[0], single[1], rtol=1e-5)
+    np.testing.assert_allclose(a_context[0], context[0], rtol=1e-5)
+    np.testing.assert_allclose(b_context[0], context[1], rtol=1e-5)
 
 
 def test_parse_audio_nn_does_not_resample(audio_files):
