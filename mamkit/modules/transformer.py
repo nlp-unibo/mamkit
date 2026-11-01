@@ -21,7 +21,8 @@ class PositionalEncoding(nn.Module):
         """
         Args:
             d_model: dimension of model
-            dual_modality: when True, add a sequence of 0s or 1s depending on the modality
+            dual_modality: when True, add a sequence of 0s or 1s depending on the
+                modality
             dropout: dropout rate
             max_len: max length of sequence
         """

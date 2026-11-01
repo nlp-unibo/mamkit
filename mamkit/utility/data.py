@@ -38,9 +38,11 @@ def youtube_download(save_path: Path, debate_ids: List, debate_urls: List) -> No
 
     :param save_path: path where to download youtube videos
     :param debate_ids: list of strings representing debates IDs
-    :param debate_urls: list of strings representing the urls to the YouTube videos of the debates
-    :return: None. The function populates the folder 'files/debates_audio_recordings' by creating a folder for each
-             debate. Each folder contains the audio file extracted from the corresponding video
+    :param debate_urls: list of strings representing the urls to the YouTube videos
+        of the debates
+    :return: None. The function populates the folder 'files/debates_audio_recordings'
+             by creating a folder for each debate. Each folder contains the audio
+             file extracted from the corresponding video
     """
 
     map_debate_link = dict(zip(debate_ids, debate_urls))

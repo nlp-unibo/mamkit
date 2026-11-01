@@ -138,7 +138,7 @@ class MMTransformer(TextAudioModel):
 
     def forward(self, inputs):
         text_ids, text_mask = inputs["text_inputs"], inputs["text_input_mask"]
-        audio, audio_mask = inputs["audio_inputs"], inputs["audio_input_mask"]
+        audio = inputs["audio_inputs"]
 
         # [bs, T, d_t]
         tokens_emb = self.model(

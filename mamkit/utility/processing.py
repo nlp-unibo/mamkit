@@ -70,7 +70,7 @@ def encode_audio_mfcc(
     normalize: bool = True,
     preloaded_mfccs: Dict = {},
 ):
-    if type(audio_input) == list and not len(audio_input):
+    if isinstance(audio_input, list) and not len(audio_input):
         return np.array([0.0])
 
     if audio_input is None:
@@ -169,7 +169,7 @@ def encode_audio_nn(
     if isinstance(audio_input, Path) and not audio_input.exists():
         return th.tensor([0.0], dtype=th.float32)
 
-    if type(audio_input) == list and not len(audio_input):
+    if isinstance(audio_input, list) and not len(audio_input):
         return th.tensor([0.0], dtype=th.float32)
 
     audio = parse_audio_nn(audio_input=audio_input, sampling_rate=sampling_rate)

@@ -1167,7 +1167,7 @@ class MArg(Loader):
                 # Match speakers to their names using the dictionary above
                 try:
                     speaker_name = self.speakers_map[df["speaker"].iloc[r]]
-                except:  # In theory this exception is never raised
+                except Exception:  # In theory this exception is never raised
                     speaker_name = "Speaker not found"
                 speaker += [speaker_name] * len(split_text)
                 # Assign IDs to speakers
@@ -1247,7 +1247,7 @@ class MArg(Loader):
                             (row["start"] - buffer) * 1000 : (row["end"] + buffer)
                             * 1000
                         ]
-                    except:
+                    except Exception:
                         extract = debate_mp3[
                             (row["start"] - buffer) * 1000 : row["end"] * 1000
                         ]
@@ -1262,7 +1262,7 @@ class MArg(Loader):
                     speaker = speak_df[speak_df["text"] == row["text"]]["speaker"].iloc[
                         0
                     ]
-                except:
+                except Exception:
                     logging.info(f"Error parsing {row['text']}")
                     speaker = "error"
 

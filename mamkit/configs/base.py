@@ -24,7 +24,7 @@ class ConfigKey:
         self.dataset = dataset
         self.input_mode = input_mode
         self.task_name = task_name
-        self.tags = {tags} if type(tags) == str else tags
+        self.tags = {tags} if isinstance(tags, str) else tags
 
     def __hash__(self) -> int:
         return hash(self.__str__())
