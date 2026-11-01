@@ -247,6 +247,7 @@ class CSA(TextAudioModel):
             (text_attentions, audio_attentions.float()), dim=1
         )
 
+        tokens_emb = self.text_dropout(tokens_emb)
         audio_features = self.positional_encoder(audio_features)
 
         concatenated_features = th.cat((tokens_emb, audio_features), dim=1)
@@ -284,6 +285,7 @@ class PairCSA(CSA):
             (text_attentions, audio_attentions.float()), dim=1
         )
 
+        tokens_emb = self.text_dropout(tokens_emb)
         audio_features = self.positional_encoder(audio_features)
 
         concatenated_features = th.cat((tokens_emb, audio_features), dim=1)
@@ -417,6 +419,8 @@ class Ensemble(TextAudioModel):
 
 class PairEnsemble(Ensemble):
     def encode_text(self, tokens_emb, text_attentions):
+        tokens_emb = self.text_dropout(tokens_emb)
+
         text_emb = (tokens_emb * text_attentions[:, :, None]).sum(dim=1)
         text_emb = text_emb / text_attentions.sum(dim=1)[:, None]
 
@@ -472,8 +476,8 @@ class PairEnsemble(Ensemble):
         audio_logits = self.audio_head(concat_audio_emb)
 
         # Ensemble
-        text_probabilities = th.nn.functional.softmax(text_logits)
-        audio_probabilities = th.nn.functional.softmax(audio_logits)
+        text_probabilities = th.nn.functional.softmax(text_logits, dim=-1)
+        audio_probabilities = th.nn.functional.softmax(audio_logits, dim=-1)
 
         # coefficient to balance the two models based on weight learned
         # (tanh + 1) / 2 to have values in [0,1]

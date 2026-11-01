@@ -147,11 +147,13 @@ def test_audio_transformer_downsamples(audio_files):
     golden("processing/audio_transformer_downsampled", features)
 
 
-def test_audio_transformer_aggregate_fails_on_several_frames(audio_files):
-    # Defect: aggregation squeezes a frame axis that is longer than one, which
-    # breaks the four mancini-et-al-2022 configurations that aggregate.
-    with pytest.raises(ValueError, match="squeeze"):
-        audio_transformer(aggregate=True)(inputs=[audio_files["long"]])
+def test_audio_transformer_aggregate_averages_frames(audio_files):
+    features, _ = audio_transformer()(inputs=[audio_files["long"]])
+    aggregated, _ = audio_transformer(aggregate=True)(inputs=[audio_files["long"]])
+    assert features[0].shape[0] > 1
+    np.testing.assert_allclose(
+        aggregated[0], features[0].mean(axis=0, keepdims=True), rtol=1e-5
+    )
 
 
 def test_audio_transformer_extractor_features(audio_files):
@@ -180,11 +182,10 @@ def test_pair_audio_transformer_matches_single_transformer(audio_files):
     np.testing.assert_allclose(b_context[0], context[1], rtol=1e-5)
 
 
-def test_parse_audio_nn_does_not_resample(audio_files):
-    # Defect: the resampling call uses the target rate as the source rate, so
-    # a 22.05 kHz clip keeps its 22.05 kHz length.
+def test_parse_audio_nn_resamples_to_target_rate(audio_files):
+    # The clip lasts half a second at 22.05 kHz.
     audio = parse_audio_nn(audio_files["resampled"], sampling_rate=16_000)
-    assert audio.shape == (1, 11_025)
+    assert audio.shape == (1, 8_000)
 
 
 class Upper:

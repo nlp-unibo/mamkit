@@ -203,24 +203,62 @@ def test_forward_matches_golden(name):
     th.testing.assert_close(logits, record["logits"], rtol=1e-4, atol=1e-5)
 
 
-def test_pair_ensemble_ignores_text_dropout():
-    # Defect: Ensemble drops text features in training, PairEnsemble does not.
-    # With every other dropout off, a training pass that drops all text still
-    # reproduces the evaluation output.
-    _, record = build("pair_ensemble")
-    model = text_audio.PairEnsemble(
-        head(2 * DIM),
-        head(2 * DIM),
+def no_dropout_positional():
+    return PositionalEncoding(DIM, dropout=0.0)
+
+
+# Each model drops all text features and nothing else.
+TEXT_DROPOUT = {
+    "csa": lambda: text_audio.CSA(
+        custom_encoder,
+        head(DIM),
+        no_dropout_positional,
+        text_dropout_rate=1.0,
+        audio_dropout_rate=0.0,
+    ),
+    "ensemble": lambda: text_audio.Ensemble(
+        head(DIM),
+        head(DIM),
         lambda: audio_encoder(dropout=0.0),
-        lambda: PositionalEncoding(DIM, dropout=0.0),
+        no_dropout_positional,
         DIM,
         text_dropout_rate=1.0,
         audio_dropout_rate=0.0,
-    )
+    ),
+    "pair_csa": lambda: text_audio.PairCSA(
+        custom_encoder,
+        head(2 * DIM),
+        no_dropout_positional,
+        text_dropout_rate=1.0,
+        audio_dropout_rate=0.0,
+    ),
+    "pair_ensemble": lambda: text_audio.PairEnsemble(
+        head(2 * DIM),
+        head(2 * DIM),
+        lambda: audio_encoder(dropout=0.0),
+        no_dropout_positional,
+        DIM,
+        text_dropout_rate=1.0,
+        audio_dropout_rate=0.0,
+    ),
+}
+
+
+@pytest.mark.filterwarnings("error::UserWarning")
+@pytest.mark.parametrize("name", sorted(TEXT_DROPOUT))
+def test_text_dropout_applies_in_training(name):
+    # A training pass that drops all text equals an evaluation pass on zero
+    # text features.
+    _, record = build(name)
+    model = TEXT_DROPOUT[name]()
     model.load_state_dict(record["state_dict"])
-    model.train()
+    silent = dict(record["batch"])
+    for key in silent:
+        if key.startswith("text_") and key.endswith("inputs"):
+            silent[key] = th.zeros_like(silent[key])
     with th.no_grad():
-        th.testing.assert_close(model(record["batch"]), record["logits"])
+        expected = model.eval()(silent)
+        th.testing.assert_close(model.train()(record["batch"]), expected)
 
 
 MASKED = [
