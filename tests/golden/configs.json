@@ -1,0 +1,5730 @@
+{
+ "audio.BiLSTMMFCCsConfig:marg:audio-only:arc:anonymous": {
+  "batch_size": 8,
+  "dropout_rate": 0.1,
+  "embedding_dim": 44,
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": null,
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:marg:audio-only:arc:mancini-et-al-2022": {
+  "error": "AttributeError: type object 'BiLSTMMFCCsConfig' has no attribute 'marg_arc_mancini_2022'"
+ },
+ "audio.BiLSTMMFCCsConfig:mmused-fallacy:audio-only:afc:anonymous": {
+  "batch_size": 4,
+  "dropout_rate": 0.1,
+  "embedding_dim": 44,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": [
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused-fallacy:audio-only:afd:anonymous": {
+  "batch_size": 4,
+  "dropout_rate": 0.1,
+  "embedding_dim": 44,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.5385851860046387,
+    6.979166507720947
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": [
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused:audio-only:acc:anonymous": {
+  "batch_size": 4,
+  "dropout_rate": 0.1,
+  "embedding_dim": 44,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": [
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused:audio-only:acc:mancini-et-al-2022": {
+  "batch_size": 8,
+  "dropout_rate": 0.1,
+  "embedding_dim": 44,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=64, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=64, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   128,
+   32
+  ],
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.0001
+  },
+  "pooling_sizes": [
+   10
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused:audio-only:asd:anonymous": {
+  "batch_size": 4,
+  "dropout_rate": 0.1,
+  "embedding_dim": 44,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": [
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused:audio-only:asd:mancini-et-al-2022": {
+  "batch_size": 8,
+  "dropout_rate": 0.3,
+  "embedding_dim": 44,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=64, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=64, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.005
+  },
+  "pooling_sizes": [
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:ukdebates:audio-only:asd:anonymous": {
+  "batch_size": 16,
+  "dropout_rate": 0.0,
+  "embedding_dim": 44,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": null,
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:ukdebates:audio-only:asd:mancini-et-al-2022": {
+  "batch_size": 8,
+  "dropout_rate": 0.2,
+  "embedding_dim": 44,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.005
+  },
+  "pooling_sizes": [
+   5,
+   5,
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:marg:audio-only:arc:anonymous": {
+  "aggregate": false,
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:marg:audio-only:arc:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:marg:audio-only:arc:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:marg:audio-only:arc:mancini-et-al-2022": {
+  "error": "AttributeError: type object 'BiLSTMTransformerConfig' has no attribute 'marg_arc_mancini_2022'"
+ },
+ "audio.BiLSTMTransformerConfig:mmused-fallacy:audio-only:afc:anonymous": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused-fallacy:audio-only:afc:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused-fallacy:audio-only:afc:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:acc:anonymous": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:acc:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:acc:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:acc:mancini-et-al-2022": {
+  "aggregate": true,
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "dropout_rate": 0.0,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=256, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   128
+  ],
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:asd:anonymous": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:asd:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:asd:mancini-et-al-2022": {
+  "aggregate": true,
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "dropout_rate": 0.0,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   32,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.0001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:ukdebates:audio-only:asd:anonymous": {
+  "aggregate": false,
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:ukdebates:audio-only:asd:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:ukdebates:audio-only:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "dropout_rate": 0.1,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:ukdebates:audio-only:asd:mancini-et-al-2022": {
+  "aggregate": true,
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "dropout_rate": 0.5,
+  "embedding_dim": 768,
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=32, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=32, out_features=32, bias=True)\n  (3): ReLU()\n  (4): Linear(in_features=32, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ]
+ },
+ "audio.TransformerEncoderConfig:marg:audio-only:arc:anonymous": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": null,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:marg:audio-only:arc:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": null,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:marg:audio-only:arc:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": null,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused-fallacy:audio-only:afc:anonymous": {
+  "aggregate": false,
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused-fallacy:audio-only:afc:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused-fallacy:audio-only:afc:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused-fallacy:audio-only:afd:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.5385851860046387,
+    6.979166507720947
+   ]
+  },
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:acc:anonymous": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:acc:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:acc:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:asd:anonymous": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:asd:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "dropout_rate": 0.2,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:ukdebates:audio-only:asd:anonymous": {
+  "aggregate": false,
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "dropout_rate": 0.0,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "model_args": {},
+  "model_card": "facebook/wav2vec2-base-960h",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:ukdebates:audio-only:asd:anonymous,hubert": {
+  "aggregate": false,
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "dropout_rate": 0.0,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "model_args": {},
+  "model_card": "facebook/hubert-base-ls960",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "audio.TransformerEncoderConfig:ukdebates:audio-only:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "dropout_rate": 0.0,
+  "embedding_dim": 768,
+  "encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=100, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=100, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "model_args": {},
+  "model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ]
+ },
+ "text.BiLSTMConfig:marg:text-only:arc:anonymous": {
+  "batch_size": 8,
+  "dropout_rate": 0.0,
+  "embedding_dim": 200,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   128,
+   32
+  ],
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.0001
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.BiLSTMConfig:marg:text-only:arc:mancini-et-al-2022": {
+  "batch_size": 8,
+  "dropout_rate": 0.4,
+  "embedding_dim": 100,
+  "embedding_model": "glove.6B.100d",
+  "head": "Sequential(\n  (0): Linear(in_features=256, out_features=64, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=64, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   128
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.0001
+  },
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.BiLSTMConfig:mmused-fallacy:text-only:afc:anonymous": {
+  "batch_size": 8,
+  "dropout_rate": 0.0,
+  "embedding_dim": 200,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   128,
+   32
+  ],
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.0001
+  },
+  "seeds": [
+   42
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.BiLSTMConfig:mmused-fallacy:text-only:afd:anonymous": {
+  "batch_size": 8,
+  "dropout_rate": 0.0,
+  "embedding_dim": 200,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.5385851860046387,
+    6.979166507720947
+   ]
+  },
+  "lstm_weights": [
+   128,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.0001
+  },
+  "seeds": [
+   42
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.BiLSTMConfig:mmused:text-only:acc:anonymous": {
+  "batch_size": 4,
+  "dropout_rate": 0.0,
+  "embedding_dim": 200,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   128,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.0001
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.BiLSTMConfig:mmused:text-only:acc:mancini-et-al-2022": {
+  "batch_size": 4,
+  "dropout_rate": 0.3,
+  "embedding_dim": 100,
+  "embedding_model": "glove.6B.100d",
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=64, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=64, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.BiLSTMConfig:mmused:text-only:asd:anonymous": {
+  "batch_size": 4,
+  "dropout_rate": 0.0,
+  "embedding_dim": 200,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   128,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.0001
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.BiLSTMConfig:mmused:text-only:asd:mancini-et-al-2022": {
+  "batch_size": 4,
+  "dropout_rate": 0.0,
+  "embedding_dim": 100,
+  "embedding_model": "glove.6B.100d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   64
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.0001
+  },
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.BiLSTMConfig:ukdebates:text-only:asd:anonymous": {
+  "batch_size": 16,
+  "dropout_rate": 0.0,
+  "embedding_dim": 200,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   128,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.BiLSTMConfig:ukdebates:text-only:asd:mancini-et-al-2022": {
+  "batch_size": 16,
+  "dropout_rate": 0.5,
+  "embedding_dim": 200,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=64, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   128,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "seeds": [
+   15371,
+   15372,
+   15373
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text.TransformerConfig:marg:text-only:arc:anonymous,bert": {
+  "batch_size": 8,
+  "dropout_rate": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "model_card": "bert-base-uncased",
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:marg:text-only:arc:anonymous,roberta": {
+  "batch_size": 8,
+  "dropout_rate": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "model_card": "roberta-base",
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:mmused-fallacy:text-only:afc:anonymous,bert": {
+  "batch_size": 8,
+  "dropout_rate": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "model_card": "bert-base-uncased",
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:mmused-fallacy:text-only:afc:anonymous,roberta": {
+  "batch_size": 8,
+  "dropout_rate": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "model_card": "roberta-base",
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:mmused-fallacy:text-only:afc:bert,mancini-et-al-2024": {
+  "error": "TypeError: BaseConfig.__init__() missing 1 required positional argument: 'seeds'"
+ },
+ "text.TransformerConfig:mmused-fallacy:text-only:afc:mancini-et-al-2024,roberta": {
+  "error": "TypeError: BaseConfig.__init__() missing 1 required positional argument: 'seeds'"
+ },
+ "text.TransformerConfig:mmused-fallacy:text-only:afd:anonymous,roberta": {
+  "batch_size": 8,
+  "dropout_rate": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.5385851860046387,
+    6.979166507720947
+   ]
+  },
+  "model_card": "roberta-base",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:mmused:text-only:acc:anonymous,bert": {
+  "batch_size": 4,
+  "dropout_rate": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "model_card": "bert-base-uncased",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:mmused:text-only:acc:anonymous,roberta": {
+  "batch_size": 4,
+  "dropout_rate": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "model_card": "roberta-base",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:mmused:text-only:asd:anonymous,bert": {
+  "batch_size": 4,
+  "dropout_rate": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "model_card": "bert-base-uncased",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:mmused:text-only:asd:anonymous,roberta": {
+  "batch_size": 4,
+  "dropout_rate": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "model_card": "roberta-base",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:ukdebates:text-only:asd:anonymous,bert": {
+  "batch_size": 16,
+  "dropout_rate": 0.0,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "model_card": "bert-base-uncased",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:ukdebates:text-only:asd:anonymous,roberta": {
+  "batch_size": 16,
+  "dropout_rate": 0.0,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "model_card": "roberta-base",
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 1e-05
+  },
+  "seeds": [
+   42,
+   2024,
+   666,
+   11,
+   1492
+  ],
+  "tokenizer_args": null
+ },
+ "text.TransformerConfig:ukdebates:text-only:asd:mancini-et-al-2022": {
+  "error": "TypeError: BaseConfig.__init__() missing 1 required positional argument: 'seeds'"
+ },
+ "text_audio.BiLSTMMFCCsConfig:marg:text-audio:arc:anonymous": {
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 44,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "batch_size": 8,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=256, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": null,
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMMFCCsConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 44,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "batch_size": 4,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": [
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMMFCCsConfig:mmused-fallacy:text-audio:afd:anonymous": {
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 44,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "batch_size": 4,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.5385851860046387,
+    6.979166507720947
+   ]
+  },
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": [
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMMFCCsConfig:mmused:text-audio:acc:anonymous": {
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 44,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "batch_size": 4,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": [
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMMFCCsConfig:mmused:text-audio:asd:anonymous": {
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 44,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "batch_size": 4,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0002,
+   "weight_decay": 0.001
+  },
+  "pooling_sizes": [
+   5
+  ],
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMMFCCsConfig:ukdebates:text-audio:asd:anonymous": {
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 44,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "batch_size": 16,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "mfccs": 25,
+  "normalize": true,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "pooling_sizes": null,
+  "remove_energy": true,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:marg:text-audio:arc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=256, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:marg:text-audio:arc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=256, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:marg:text-audio:arc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=256, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:acc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:acc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:acc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:asd:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:asd:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:ukdebates:text-audio:asd:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:ukdebates:text-audio:asd:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.BiLSTMTransformerConfig:ukdebates:text-audio:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_lstm_weights": [
+   64,
+   32
+  ],
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "embedding_model": "glove.6B.200d",
+  "head": "Sequential(\n  (0): Linear(in_features=128, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": null,
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 200,
+  "text_lstm_weights": [
+   128,
+   32
+  ],
+  "tokenization_args": null,
+  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+ },
+ "text_audio.CSAConfig:marg:text-audio:arc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:marg:text-audio:arc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:marg:text-audio:arc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:mmused-fallacy:text-audio:afc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:mmused-fallacy:text-audio:afc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:mmused:text-audio:acc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:mmused:text-audio:acc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:mmused:text-audio:acc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:mmused:text-audio:asd:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:mmused:text-audio:asd:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:mmused:text-audio:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:ukdebates:text-audio:asd:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:ukdebates:text-audio:asd:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.CSAConfig:ukdebates:text-audio:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "transformer": "CustomEncoder(\n  (layers): ModuleList(\n    (0): CustomEncoderLayer(\n      (attention): CustomMultiHeadAttention(\n        (attention): CustomScaleDotProductAttention(\n          (softmax): Softmax(dim=-1)\n        )\n        (w_q): Linear(in_features=768, out_features=768, bias=True)\n        (w_k): Linear(in_features=768, out_features=768, bias=True)\n        (w_v): Linear(in_features=768, out_features=768, bias=True)\n        (w_concat): Linear(in_features=768, out_features=768, bias=True)\n      )\n      (norm1): LayerNorm()\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (ffn): PositionwiseFeedForward(\n        (linear1): Linear(in_features=768, out_features=2048, bias=True)\n        (linear2): Linear(in_features=2048, out_features=768, bias=True)\n        (relu): ReLU()\n        (dropout): Dropout(p=0.1, inplace=False)\n      )\n      (norm2): LayerNorm()\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)"
+ },
+ "text_audio.EnsembleConfig:marg:text-audio:arc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:marg:text-audio:arc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:marg:text-audio:arc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:mmused-fallacy:text-audio:afc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:mmused-fallacy:text-audio:afc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:acc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": null
+  },
+  "lower_bound": 0.3,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:acc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": null
+  },
+  "lower_bound": 0.3,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:acc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": null
+  },
+  "lower_bound": 0.3,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:asd:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:asd:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:ukdebates:text-audio:asd:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": null,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:ukdebates:text-audio:asd:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": null,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.EnsembleConfig:ukdebates:text-audio:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_encoder": "TransformerEncoder(\n  (layers): ModuleList(\n    (0): TransformerEncoderLayer(\n      (self_attn): MultiheadAttention(\n        (out_proj): NonDynamicallyQuantizableLinear(in_features=768, out_features=768, bias=True)\n      )\n      (linear1): Linear(in_features=768, out_features=2048, bias=True)\n      (dropout): Dropout(p=0.1, inplace=False)\n      (linear2): Linear(in_features=2048, out_features=768, bias=True)\n      (norm1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (norm2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)\n      (dropout1): Dropout(p=0.1, inplace=False)\n      (dropout2): Dropout(p=0.1, inplace=False)\n    )\n  )\n)",
+  "audio_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": null,
+  "loss_function": {
+   "loss": "NLLLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lower_bound": 0.3,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_head": "Sequential(\n  (0): Linear(in_features=768, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {},
+  "upper_bound": 0.7
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,bert,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1664, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,bert,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1664, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,bert,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1664, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,hubert,roberta": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1664, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,roberta,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1664, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,roberta,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1664, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=3, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,bert,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,bert,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,bert,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,hubert,roberta": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,roberta,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,roberta,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=6, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afd:anonymous,roberta,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 8,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.5385851860046387,
+    6.979166507720947
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,bert,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,bert,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,bert,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,hubert,roberta": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,roberta,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,roberta,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,bert,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,bert,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,bert,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,hubert,roberta": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,roberta,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,roberta,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.2,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.2,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:ukdebates:text-audio:asd:anonymous,bert,clap": {
+  "error": "AttributeError: type object 'MMTransformerConfig' has no attribute 'ukdebates_asd_bert_clap_anonymous'"
+ },
+ "text_audio.MMTransformerConfig:ukdebates:text-audio:asd:anonymous,bert,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 768,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:ukdebates:text-audio:asd:anonymous,hubert,roberta": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:ukdebates:text-audio:asd:anonymous,roberta,wav2vec": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MMTransformerConfig:ukdebates:text-audio:asd:anonymous,roberta,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 16,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=832, out_features=128, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=128, out_features=2, bias=True)\n)",
+  "is_transformer_trainable": false,
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "lstm_weights": [
+   64,
+   32
+  ],
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.001,
+   "weight_decay": 0.0005
+  },
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 768,
+  "text_model_card": "roberta-base",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:marg:text-audio:arc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=3072, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:marg:text-audio:arc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=3072, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:marg:text-audio:arc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=3072, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=3, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.3568507134914398,
+    6.169191837310791,
+    28.080459594726562
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 3,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:mmused-fallacy:text-audio:afc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:mmused-fallacy:text-audio:afc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=6, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.25868821144104004,
+    1.0548902750015259,
+    2.2878787517547607,
+    3.2030303478240967,
+    4.096899032592773,
+    5.18137264251709
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 6,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:acc:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "n_blocks": 2,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:acc:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "n_blocks": 2,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:acc:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": null
+  },
+  "n_blocks": 2,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:asd:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:asd:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.1,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": 0.2,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    2.1538522243499756,
+    0.6511622071266174
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.1,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:ukdebates:text-audio:asd:anonymous": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/wav2vec2-base-960h",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:ukdebates:text-audio:asd:anonymous,hubert": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ },
+ "text_audio.MulTAConfig:ukdebates:text-audio:asd:anonymous,wavlm": {
+  "aggregate": false,
+  "audio_dropout_rate": 0.0,
+  "audio_embedding_dim": 768,
+  "audio_model_args": {},
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "batch_size": 4,
+  "d_ffn": 2048,
+  "downsampling_factor": null,
+  "head": "Sequential(\n  (0): Linear(in_features=1536, out_features=256, bias=True)\n  (1): ReLU()\n  (2): Linear(in_features=256, out_features=2, bias=True)\n)",
+  "loss_function": {
+   "loss": "CrossEntropyLoss",
+   "weight": [
+    0.8247863054275513,
+    1.269736886024475
+   ]
+  },
+  "n_blocks": 4,
+  "num_classes": 2,
+  "optimizer": "torch.optim.adam.Adam",
+  "optimizer_args": {
+   "lr": 0.0001,
+   "weight_decay": 0.001
+  },
+  "positional_encoder": "PositionalEncoding(\n  (dropout): Dropout(p=0.1, inplace=False)\n)",
+  "processor_args": {},
+  "sampling_rate": 16000,
+  "seeds": [
+   42,
+   2024,
+   666
+  ],
+  "text_dropout_rate": 0.0,
+  "text_embedding_dim": 768,
+  "text_model_args": null,
+  "text_model_card": "bert-base-uncased",
+  "tokenizer_args": {}
+ }
+}
