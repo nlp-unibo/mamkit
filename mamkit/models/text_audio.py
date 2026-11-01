@@ -1,63 +1,57 @@
 import torch as th
-from transformers import AutoModel, AutoConfig
+from transformers import AutoConfig, AutoModel
 
 from mamkit.modules.rnn import LSTMStack
 from mamkit.modules.transformer import MulTA_CrossAttentionBlock
 
 
 class TextAudioModel(th.nn.Module):
-
-    def forward(
-            self,
-            inputs
-    ):
+    def forward(self, inputs):
         pass
 
 
 class BiLSTM(TextAudioModel):
-
     def __init__(
-            self,
-            vocab_size,
-            text_embedding_dim,
-            audio_embedding_dim,
-            text_lstm_weights,
-            audio_lstm_weights,
-            head,
-            text_dropout_rate=0.0,
-            audio_dropout_rate=0.0,
-            embedding_matrix=None
+        self,
+        vocab_size,
+        text_embedding_dim,
+        audio_embedding_dim,
+        text_lstm_weights,
+        audio_lstm_weights,
+        head,
+        text_dropout_rate=0.0,
+        audio_dropout_rate=0.0,
+        embedding_matrix=None,
     ):
         super().__init__()
 
-        self.embedding = th.nn.Embedding(num_embeddings=vocab_size,
-                                         embedding_dim=text_embedding_dim,
-                                         padding_idx=0)
+        self.embedding = th.nn.Embedding(
+            num_embeddings=vocab_size, embedding_dim=text_embedding_dim, padding_idx=0
+        )
         if embedding_matrix is not None:
             self.embedding.weight.data = embedding_matrix
 
-        self.text_lstm = LSTMStack(input_size=text_embedding_dim,
-                                   lstm_weigths=text_lstm_weights)
-        self.audio_lstm = LSTMStack(input_size=audio_embedding_dim,
-                                    lstm_weigths=audio_lstm_weights)
+        self.text_lstm = LSTMStack(
+            input_size=text_embedding_dim, lstm_weigths=text_lstm_weights
+        )
+        self.audio_lstm = LSTMStack(
+            input_size=audio_embedding_dim, lstm_weigths=audio_lstm_weights
+        )
         self.head = head()
 
         self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
         self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
 
-    def forward(
-            self,
-            inputs
-    ):
+    def forward(self, inputs):
         # [bs, T, d_t]
-        tokens_emb = self.embedding(inputs['text_inputs'])
+        tokens_emb = self.embedding(inputs["text_inputs"])
         tokens_emb = self.text_dropout(tokens_emb)
 
         # [bs, d'_t]
         text_emb = self.text_lstm(tokens_emb)
 
         # [bs, A, d_a]
-        audio_features = inputs['audio_inputs']
+        audio_features = inputs["audio_inputs"]
         audio_features = self.audio_dropout(audio_features)
 
         # [bs, d'_a]
@@ -73,11 +67,10 @@ class BiLSTM(TextAudioModel):
 
 
 class PairBiLSTM(BiLSTM):
-
     def encode_input(
-            self,
-            text,
-            audio_features,
+        self,
+        text,
+        audio_features,
     ):
         # [bs, T, d_t]
         tokens_emb = self.embedding(text)
@@ -97,12 +90,13 @@ class PairBiLSTM(BiLSTM):
 
         return concat_emb
 
-    def forward(
-            self,
-            inputs
-    ):
-        a_concat_emb = self.encode_input(text=inputs['text_a_inputs'], audio_features=inputs['audio_a_inputs'])
-        b_concat_emb = self.encode_input(text=inputs['text_b_inputs'], audio_features=inputs['audio_b_inputs'])
+    def forward(self, inputs):
+        a_concat_emb = self.encode_input(
+            text=inputs["text_a_inputs"], audio_features=inputs["audio_a_inputs"]
+        )
+        b_concat_emb = self.encode_input(
+            text=inputs["text_b_inputs"], audio_features=inputs["audio_b_inputs"]
+        )
 
         concat_emb = th.concat((a_concat_emb, b_concat_emb), dim=-1)
 
@@ -113,16 +107,15 @@ class PairBiLSTM(BiLSTM):
 
 
 class MMTransformer(TextAudioModel):
-
     def __init__(
-            self,
-            model_card,
-            head,
-            audio_embedding_dim,
-            lstm_weights,
-            text_dropout_rate=0.0,
-            audio_dropout_rate=0.0,
-            is_transformer_trainable: bool = False,
+        self,
+        model_card,
+        head,
+        audio_embedding_dim,
+        lstm_weights,
+        text_dropout_rate=0.0,
+        audio_dropout_rate=0.0,
+        is_transformer_trainable: bool = False,
     ):
         super().__init__()
 
@@ -135,22 +128,22 @@ class MMTransformer(TextAudioModel):
                 for param in module.parameters():
                     param.requires_grad = False
 
-        self.audio_lstm = LSTMStack(input_size=audio_embedding_dim,
-                                    lstm_weigths=lstm_weights)
+        self.audio_lstm = LSTMStack(
+            input_size=audio_embedding_dim, lstm_weigths=lstm_weights
+        )
 
         self.head = head()
         self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
         self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
 
-    def forward(
-            self,
-            inputs
-    ):
-        text_ids, text_mask = inputs['text_inputs'], inputs['text_input_mask']
-        audio, audio_mask = inputs['audio_inputs'], inputs['audio_input_mask']
+    def forward(self, inputs):
+        text_ids, text_mask = inputs["text_inputs"], inputs["text_input_mask"]
+        audio, audio_mask = inputs["audio_inputs"], inputs["audio_input_mask"]
 
         # [bs, T, d_t]
-        tokens_emb = self.model(input_ids=text_ids, attention_mask=text_mask).last_hidden_state
+        tokens_emb = self.model(
+            input_ids=text_ids, attention_mask=text_mask
+        ).last_hidden_state
         tokens_emb = self.text_dropout(tokens_emb)
 
         # [bs, T, d'_t]
@@ -173,16 +166,11 @@ class MMTransformer(TextAudioModel):
 
 
 class PairMMTransformer(MMTransformer):
-
-    def encode_inputs(
-            self,
-            text_ids,
-            text_mask,
-            audio_features,
-            audio_mask
-    ):
+    def encode_inputs(self, text_ids, text_mask, audio_features, audio_mask):
         # [bs, T, d_t]
-        tokens_emb = self.model(input_ids=text_ids, attention_mask=text_mask).last_hidden_state
+        tokens_emb = self.model(
+            input_ids=text_ids, attention_mask=text_mask
+        ).last_hidden_state
         tokens_emb = self.text_dropout(tokens_emb)
 
         # [bs, T, d'_t]
@@ -200,14 +188,19 @@ class PairMMTransformer(MMTransformer):
 
         return concat_emb
 
-    def forward(
-            self,
-            inputs
-    ):
-        a_concat_emb = self.encode_inputs(text_ids=inputs['text_a_inputs'], text_mask=inputs['text_a_input_mask'],
-                                          audio_features=inputs['audio_a_inputs'], audio_mask=inputs['audio_a_inputs'])
-        b_concat_emb = self.encode_inputs(text_ids=inputs['text_b_inputs'], text_mask=inputs['text_b_input_mask'],
-                                          audio_features=inputs['audio_b_inputs'], audio_mask=inputs['audio_b_inputs'])
+    def forward(self, inputs):
+        a_concat_emb = self.encode_inputs(
+            text_ids=inputs["text_a_inputs"],
+            text_mask=inputs["text_a_input_mask"],
+            audio_features=inputs["audio_a_inputs"],
+            audio_mask=inputs["audio_a_inputs"],
+        )
+        b_concat_emb = self.encode_inputs(
+            text_ids=inputs["text_b_inputs"],
+            text_mask=inputs["text_b_input_mask"],
+            audio_features=inputs["audio_b_inputs"],
+            audio_mask=inputs["audio_b_inputs"],
+        )
 
         concat_emb = th.concat((a_concat_emb, b_concat_emb), dim=-1)
 
@@ -219,12 +212,12 @@ class PairMMTransformer(MMTransformer):
 
 class CSA(TextAudioModel):
     def __init__(
-            self,
-            transformer,
-            head,
-            positional_encoder,
-            text_dropout_rate=0.1,
-            audio_dropout_rate=0.1
+        self,
+        transformer,
+        head,
+        positional_encoder,
+        text_dropout_rate=0.1,
+        audio_dropout_rate=0.1,
     ):
         """
         Args:
@@ -239,31 +232,39 @@ class CSA(TextAudioModel):
         self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
         self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
 
-    def forward(
-            self,
-            inputs
-    ):
+    def forward(self, inputs):
         # tokens_emb        -> [bs, N_t, d]
         # text_attentions   -> [bs, N]
         # audio_features    -> [bs, N_a, d]
         # audio_attentions  -> [bs, N]
-        tokens_emb, text_attentions = inputs['text_inputs'], inputs['text_input_mask']
-        audio_features, audio_attentions = inputs['audio_inputs'], inputs['audio_input_mask']
+        tokens_emb, text_attentions = inputs["text_inputs"], inputs["text_input_mask"]
+        audio_features, audio_attentions = (
+            inputs["audio_inputs"],
+            inputs["audio_input_mask"],
+        )
 
-        concatenated_attentions = th.cat((text_attentions, audio_attentions.float()), dim=1)
+        concatenated_attentions = th.cat(
+            (text_attentions, audio_attentions.float()), dim=1
+        )
 
         audio_features = self.positional_encoder(audio_features)
 
         concatenated_features = th.cat((tokens_emb, audio_features), dim=1)
 
-        transformer_output = self.transformer(concatenated_features, text_attentions, audio_attentions)
+        transformer_output = self.transformer(
+            concatenated_features, text_attentions, audio_attentions
+        )
 
         # Dropout and LayerNorm to help training phase
         transformer_output = self.audio_dropout(transformer_output)
 
         # pooling of transformer output
-        transformer_output_sum = (transformer_output * concatenated_attentions.unsqueeze(-1)).sum(dim=1)
-        transformer_output_pooled = transformer_output_sum / concatenated_attentions.sum(dim=1).unsqueeze(-1)
+        transformer_output_sum = (
+            transformer_output * concatenated_attentions.unsqueeze(-1)
+        ).sum(dim=1)
+        transformer_output_pooled = (
+            transformer_output_sum / concatenated_attentions.sum(dim=1).unsqueeze(-1)
+        )
 
         logits = self.head(transformer_output_pooled)
 
@@ -271,44 +272,52 @@ class CSA(TextAudioModel):
 
 
 class PairCSA(CSA):
-
     def encode_inputs(
-            self,
-            tokens_emb,
-            text_attentions,
-            audio_features,
-            audio_attentions
+        self, tokens_emb, text_attentions, audio_features, audio_attentions
     ):
         # tokens_emb        -> [bs, N_t, d]
         # text_attentions   -> [bs, N]
         # audio_features    -> [bs, N_a, d]
         # audio_attentions  -> [bs, N]
 
-        concatenated_attentions = th.cat((text_attentions, audio_attentions.float()), dim=1)
+        concatenated_attentions = th.cat(
+            (text_attentions, audio_attentions.float()), dim=1
+        )
 
         audio_features = self.positional_encoder(audio_features)
 
         concatenated_features = th.cat((tokens_emb, audio_features), dim=1)
 
-        transformer_output = self.transformer(concatenated_features, text_attentions, audio_attentions)
+        transformer_output = self.transformer(
+            concatenated_features, text_attentions, audio_attentions
+        )
 
         # Dropout and LayerNorm to help training phase
         transformer_output = self.audio_dropout(transformer_output)
 
         # pooling of transformer output
-        transformer_output_sum = (transformer_output * concatenated_attentions.unsqueeze(-1)).sum(dim=1)
-        transformer_output_pooled = transformer_output_sum / concatenated_attentions.sum(dim=1).unsqueeze(-1)
+        transformer_output_sum = (
+            transformer_output * concatenated_attentions.unsqueeze(-1)
+        ).sum(dim=1)
+        transformer_output_pooled = (
+            transformer_output_sum / concatenated_attentions.sum(dim=1).unsqueeze(-1)
+        )
 
         return transformer_output_pooled
 
-    def forward(
-            self,
-            inputs
-    ):
-        a_emb = self.encode_inputs(tokens_emb=inputs['text_a_inputs'], text_attentions=inputs['text_a_input_mask'],
-                                   audio_features=inputs['audio_a_inputs'], audio_attentions=inputs['audio_a_input_mask'])
-        b_emb = self.encode_inputs(tokens_emb=inputs['text_b_inputs'], text_attentions=inputs['text_b_input_mask'],
-                                   audio_features=inputs['audio_b_inputs'], audio_attentions=inputs['audio_b_input_mask'])
+    def forward(self, inputs):
+        a_emb = self.encode_inputs(
+            tokens_emb=inputs["text_a_inputs"],
+            text_attentions=inputs["text_a_input_mask"],
+            audio_features=inputs["audio_a_inputs"],
+            audio_attentions=inputs["audio_a_input_mask"],
+        )
+        b_emb = self.encode_inputs(
+            tokens_emb=inputs["text_b_inputs"],
+            text_attentions=inputs["text_b_input_mask"],
+            audio_features=inputs["audio_b_inputs"],
+            audio_attentions=inputs["audio_b_input_mask"],
+        )
 
         concat_emb = th.concat((a_emb, b_emb), dim=-1)
 
@@ -319,16 +328,16 @@ class PairCSA(CSA):
 
 class Ensemble(TextAudioModel):
     def __init__(
-            self,
-            text_head,
-            audio_head,
-            audio_encoder,
-            positional_encoder,
-            audio_embedding_dim,
-            text_dropout_rate=0.1,
-            audio_dropout_rate=0.1,
-            lower_bound=0.3,
-            upper_bound=0.7
+        self,
+        text_head,
+        audio_head,
+        audio_encoder,
+        positional_encoder,
+        audio_embedding_dim,
+        text_dropout_rate=0.1,
+        audio_dropout_rate=0.1,
+        lower_bound=0.3,
+        upper_bound=0.7,
     ):
         super().__init__()
         self.text_head = text_head()
@@ -344,12 +353,9 @@ class Ensemble(TextAudioModel):
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
 
-    def forward(
-            self,
-            inputs
-    ):
+    def forward(self, inputs):
         # Text
-        tokens_emb, text_attentions = inputs['text_inputs'], inputs['text_input_mask']
+        tokens_emb, text_attentions = inputs["text_inputs"], inputs["text_input_mask"]
 
         tokens_emb = self.text_dropout(tokens_emb)
 
@@ -360,24 +366,32 @@ class Ensemble(TextAudioModel):
         text_logits = self.text_head(text_emb)
 
         # Audio
-        audio_features, audio_attentions = inputs['audio_inputs'], inputs['audio_input_mask']
+        audio_features, audio_attentions = (
+            inputs["audio_inputs"],
+            inputs["audio_input_mask"],
+        )
 
         padding_mask = ~audio_attentions.to(th.bool)
-        full_attention_mask = th.zeros((audio_features.shape[1], audio_features.shape[1]), dtype=th.bool).to(
-            audio_features.device)
+        full_attention_mask = th.zeros(
+            (audio_features.shape[1], audio_features.shape[1]), dtype=th.bool
+        ).to(audio_features.device)
 
         audio_features = self.positional_encoder(audio_features)
 
-        transformer_output = self.audio_encoder(audio_features,
-                                                mask=full_attention_mask,
-                                                src_key_padding_mask=padding_mask)
+        transformer_output = self.audio_encoder(
+            audio_features, mask=full_attention_mask, src_key_padding_mask=padding_mask
+        )
 
         # Dropout and LayerNorm to help training phase
         transformer_output = self.audio_dropout(transformer_output)
         transformer_output = self.layer_norm(audio_features + transformer_output)
 
-        transformer_output_sum = (transformer_output * audio_attentions.unsqueeze(-1)).sum(dim=1)
-        transformer_output_pooled = transformer_output_sum / audio_attentions.sum(dim=1).unsqueeze(-1)
+        transformer_output_sum = (
+            transformer_output * audio_attentions.unsqueeze(-1)
+        ).sum(dim=1)
+        transformer_output_pooled = transformer_output_sum / audio_attentions.sum(
+            dim=1
+        ).unsqueeze(-1)
 
         audio_logits = self.audio_head(transformer_output_pooled)
 
@@ -390,63 +404,70 @@ class Ensemble(TextAudioModel):
         coefficient = (th.tanh(self.weight) + 1) / 2
 
         # next step is to have values in [lower_bound, upper_bound] to avoid too much imbalance
-        coefficient = coefficient * (self.upper_bound - self.lower_bound) + self.lower_bound
+        coefficient = (
+            coefficient * (self.upper_bound - self.lower_bound) + self.lower_bound
+        )
 
-        final_prob = coefficient * text_probabilities + (1 - coefficient) * audio_probabilities
+        final_prob = (
+            coefficient * text_probabilities + (1 - coefficient) * audio_probabilities
+        )
 
         return th.log(final_prob + 1e-08)
 
 
 class PairEnsemble(Ensemble):
-
-    def encode_text(
-            self,
-            tokens_emb,
-            text_attentions
-    ):
+    def encode_text(self, tokens_emb, text_attentions):
         text_emb = (tokens_emb * text_attentions[:, :, None]).sum(dim=1)
         text_emb = text_emb / text_attentions.sum(dim=1)[:, None]
 
         return text_emb
 
-    def encode_audio(
-            self,
-            audio_features,
-            audio_attentions
-    ):
+    def encode_audio(self, audio_features, audio_attentions):
         padding_mask = ~audio_attentions.to(th.bool)
-        full_attention_mask = th.zeros((audio_features.shape[1], audio_features.shape[1]), dtype=th.bool).to(
-            audio_features.device)
+        full_attention_mask = th.zeros(
+            (audio_features.shape[1], audio_features.shape[1]), dtype=th.bool
+        ).to(audio_features.device)
 
         audio_features = self.positional_encoder(audio_features)
 
-        transformer_output = self.audio_encoder(audio_features,
-                                                mask=full_attention_mask,
-                                                src_key_padding_mask=padding_mask)
+        transformer_output = self.audio_encoder(
+            audio_features, mask=full_attention_mask, src_key_padding_mask=padding_mask
+        )
 
         # Dropout and LayerNorm to help training phase
         transformer_output = self.audio_dropout(transformer_output)
         transformer_output = self.layer_norm(audio_features + transformer_output)
 
-        transformer_output_sum = (transformer_output * audio_attentions.unsqueeze(-1)).sum(dim=1)
-        transformer_output_pooled = transformer_output_sum / audio_attentions.sum(dim=1).unsqueeze(-1)
+        transformer_output_sum = (
+            transformer_output * audio_attentions.unsqueeze(-1)
+        ).sum(dim=1)
+        transformer_output_pooled = transformer_output_sum / audio_attentions.sum(
+            dim=1
+        ).unsqueeze(-1)
 
         return transformer_output_pooled
 
-    def forward(
-            self,
-            inputs
-    ):
-        a_text_emb = self.encode_text(tokens_emb=inputs['text_a_inputs'], text_attentions=inputs['text_a_input_mask'])
-        b_text_emb = self.encode_text(tokens_emb=inputs['text_b_inputs'], text_attentions=inputs['text_b_input_mask'])
+    def forward(self, inputs):
+        a_text_emb = self.encode_text(
+            tokens_emb=inputs["text_a_inputs"],
+            text_attentions=inputs["text_a_input_mask"],
+        )
+        b_text_emb = self.encode_text(
+            tokens_emb=inputs["text_b_inputs"],
+            text_attentions=inputs["text_b_input_mask"],
+        )
         concat_text_emb = th.concat((a_text_emb, b_text_emb), dim=-1)
         text_logits = self.text_head(concat_text_emb)
 
         # Audio
-        a_audio_emb = self.encode_audio(audio_features=inputs['audio_a_inputs'],
-                                        audio_attentions=inputs['audio_a_input_mask'])
-        b_audio_emb = self.encode_audio(audio_features=inputs['audio_b_inputs'],
-                                        audio_attentions=inputs['audio_b_input_mask'])
+        a_audio_emb = self.encode_audio(
+            audio_features=inputs["audio_a_inputs"],
+            audio_attentions=inputs["audio_a_input_mask"],
+        )
+        b_audio_emb = self.encode_audio(
+            audio_features=inputs["audio_b_inputs"],
+            audio_attentions=inputs["audio_b_input_mask"],
+        )
         concat_audio_emb = th.concat((a_audio_emb, b_audio_emb), dim=-1)
         audio_logits = self.audio_head(concat_audio_emb)
 
@@ -459,9 +480,13 @@ class PairEnsemble(Ensemble):
         coefficient = (th.tanh(self.weight) + 1) / 2
 
         # next step is to have values in [lower_bound, upper_bound] to avoid too much imbalance
-        coefficient = coefficient * (self.upper_bound - self.lower_bound) + self.lower_bound
+        coefficient = (
+            coefficient * (self.upper_bound - self.lower_bound) + self.lower_bound
+        )
 
-        final_prob = coefficient * text_probabilities + (1 - coefficient) * audio_probabilities
+        final_prob = (
+            coefficient * text_probabilities + (1 - coefficient) * audio_probabilities
+        )
 
         return th.log(final_prob + 1e-08)
 
@@ -472,14 +497,14 @@ class MulTA(TextAudioModel):
     """
 
     def __init__(
-            self,
-            embedding_dim,
-            d_ffn,
-            n_blocks,
-            head,
-            positional_encoder,
-            audio_dropout_rate=0.1,
-            text_dropout_rate=0.1
+        self,
+        embedding_dim,
+        d_ffn,
+        n_blocks,
+        head,
+        positional_encoder,
+        audio_dropout_rate=0.1,
+        text_dropout_rate=0.1,
     ):
         """
         Args:
@@ -493,22 +518,33 @@ class MulTA(TextAudioModel):
         self.d_ffn = d_ffn
         self.n_blocks = n_blocks
         self.head = head()
-        self.text_crossmodal_blocks = th.nn.ModuleList([
-            MulTA_CrossAttentionBlock(self.embedding_dim, self.d_ffn, dropout_prob=text_dropout_rate) for _ in
-            range(self.n_blocks)
-        ])
-        self.audio_crossmodal_blocks = th.nn.ModuleList([
-            MulTA_CrossAttentionBlock(self.embedding_dim, self.d_ffn, dropout_prob=audio_dropout_rate) for _ in
-            range(self.n_blocks)
-        ])
+        self.text_crossmodal_blocks = th.nn.ModuleList(
+            [
+                MulTA_CrossAttentionBlock(
+                    self.embedding_dim, self.d_ffn, dropout_prob=text_dropout_rate
+                )
+                for _ in range(self.n_blocks)
+            ]
+        )
+        self.audio_crossmodal_blocks = th.nn.ModuleList(
+            [
+                MulTA_CrossAttentionBlock(
+                    self.embedding_dim, self.d_ffn, dropout_prob=audio_dropout_rate
+                )
+                for _ in range(self.n_blocks)
+            ]
+        )
         self.positional_encoder = positional_encoder()
 
-    def forward(
-            self,
-            inputs
-    ):
-        text_features, text_attentions = inputs['text_inputs'], inputs['text_input_mask']
-        audio_features, audio_attentions = inputs['audio_inputs'], inputs['audio_input_mask']
+    def forward(self, inputs):
+        text_features, text_attentions = (
+            inputs["text_inputs"],
+            inputs["text_input_mask"],
+        )
+        audio_features, audio_attentions = (
+            inputs["audio_inputs"],
+            inputs["audio_input_mask"],
+        )
 
         text_features = self.positional_encoder(text_features)
         audio_features = self.positional_encoder(audio_features)
@@ -517,33 +553,34 @@ class MulTA(TextAudioModel):
         # using audio features as key and value and text features as query
         text_crossmodal_out = text_features
         for cm_block in self.text_crossmodal_blocks:
-            text_crossmodal_out = cm_block(text_crossmodal_out, audio_features, audio_attentions)
+            text_crossmodal_out = cm_block(
+                text_crossmodal_out, audio_features, audio_attentions
+            )
 
         # cross modal attention blocks for audio
         # using text features as key and value and audio features as query
         audio_crossmodal_out = audio_features
         for cm_block in self.audio_crossmodal_blocks:
-            audio_crossmodal_out = cm_block(audio_crossmodal_out, text_features, text_attentions)
+            audio_crossmodal_out = cm_block(
+                audio_crossmodal_out, text_features, text_attentions
+            )
 
         # pooling of transformer output
         text_crossmodal_out_mean = th.mean(text_crossmodal_out, dim=1)
         audio_crossmodal_out_mean = th.mean(audio_crossmodal_out, dim=1)
 
         # concatenate text and audio features
-        text_audio = th.cat((text_crossmodal_out_mean, audio_crossmodal_out_mean), dim=-1)
+        text_audio = th.cat(
+            (text_crossmodal_out_mean, audio_crossmodal_out_mean), dim=-1
+        )
 
         logits = self.head(text_audio)
         return logits
 
 
 class PairMulTA(MulTA):
-
     def encode_inputs(
-            self,
-            text_features,
-            text_attentions,
-            audio_features,
-            audio_attentions
+        self, text_features, text_attentions, audio_features, audio_attentions
     ):
         text_features = self.positional_encoder(text_features)
         audio_features = self.positional_encoder(audio_features)
@@ -552,35 +589,42 @@ class PairMulTA(MulTA):
         # using audio features as key and value and text features as query
         text_crossmodal_out = text_features
         for cm_block in self.text_crossmodal_blocks:
-            text_crossmodal_out = cm_block(text_crossmodal_out, audio_features, audio_attentions)
+            text_crossmodal_out = cm_block(
+                text_crossmodal_out, audio_features, audio_attentions
+            )
 
         # cross modal attention blocks for audio
         # using text features as key and value and audio features as query
         audio_crossmodal_out = audio_features
         for cm_block in self.audio_crossmodal_blocks:
-            audio_crossmodal_out = cm_block(audio_crossmodal_out, text_features, text_attentions)
+            audio_crossmodal_out = cm_block(
+                audio_crossmodal_out, text_features, text_attentions
+            )
 
         # pooling of transformer output
         text_crossmodal_out_mean = th.mean(text_crossmodal_out, dim=1)
         audio_crossmodal_out_mean = th.mean(audio_crossmodal_out, dim=1)
 
         # concatenate text and audio features
-        text_audio = th.cat((text_crossmodal_out_mean, audio_crossmodal_out_mean), dim=-1)
+        text_audio = th.cat(
+            (text_crossmodal_out_mean, audio_crossmodal_out_mean), dim=-1
+        )
 
         return text_audio
 
-    def forward(
-            self,
-            inputs
-    ):
-        a_emb = self.encode_inputs(text_features=inputs['text_a_inputs'],
-                                   text_attentions=inputs['text_a_input_mask'],
-                                   audio_features=inputs['audio_a_inputs'],
-                                   audio_attentions=inputs['audio_a_input_mask'])
-        b_emb = self.encode_inputs(text_features=inputs['text_b_inputs'],
-                                   text_attentions=inputs['text_b_input_mask'],
-                                   audio_features=inputs['audio_b_inputs'],
-                                   audio_attentions=inputs['audio_b_input_mask'])
+    def forward(self, inputs):
+        a_emb = self.encode_inputs(
+            text_features=inputs["text_a_inputs"],
+            text_attentions=inputs["text_a_input_mask"],
+            audio_features=inputs["audio_a_inputs"],
+            audio_attentions=inputs["audio_a_input_mask"],
+        )
+        b_emb = self.encode_inputs(
+            text_features=inputs["text_b_inputs"],
+            text_attentions=inputs["text_b_input_mask"],
+            audio_features=inputs["audio_b_inputs"],
+            audio_attentions=inputs["audio_b_input_mask"],
+        )
 
         concat_emb = th.concat((a_emb, b_emb), dim=-1)
 

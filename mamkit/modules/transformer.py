@@ -8,10 +8,16 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class PositionalEncoding(nn.Module):
     """
-        Positional Encoding for Transformer
+    Positional Encoding for Transformer
     """
 
-    def __init__(self, d_model: int, dual_modality=False, dropout: float = 0.1, max_len: int = 5000):
+    def __init__(
+        self,
+        d_model: int,
+        dual_modality=False,
+        dropout: float = 0.1,
+        max_len: int = 5000,
+    ):
         """
         Args:
             d_model: dimension of model
@@ -22,11 +28,13 @@ class PositionalEncoding(nn.Module):
         super().__init__()
         self.dropout = nn.Dropout(p=dropout)
         position = torch.arange(max_len).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model))
+        div_term = torch.exp(
+            torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model)
+        )
         pe = torch.zeros(1, max_len, d_model)
         pe[0, :, 0::2] = torch.sin(position * div_term)
         pe[0, :, 1::2] = torch.cos(position * div_term)
-        self.register_buffer('pe', pe)
+        self.register_buffer("pe", pe)
         self.dual_modality = dual_modality
         self.pe = self.pe.to(device)
 
@@ -37,13 +45,15 @@ class PositionalEncoding(nn.Module):
             is_first: True if the first modality, False if the second modality
         """
         if self.dual_modality:
-            modality = torch.ones((x.shape[0], x.shape[1], 4), dtype=torch.float32).to(device) * (0 if is_first else 1)
-            x = x + self.pe[:, :x.size(1)]
+            modality = torch.ones((x.shape[0], x.shape[1], 4), dtype=torch.float32).to(
+                device
+            ) * (0 if is_first else 1)
+            x = x + self.pe[:, : x.size(1)]
             x = self.dropout(x)
             return torch.cat((x, modality), dim=-1)
         else:
             # x = (bs, sqlen, emb)  pe = (1, sqlen, emb)
-            x = x + self.pe[:, :x.size(1)]
+            x = x + self.pe[:, : x.size(1)]
             return self.dropout(x)
 
 
@@ -82,10 +92,12 @@ class CustomScaleDotProductAttention(nn.Module):
         # 2. apply masking (opt)
         padding_mask = torch.cat((text_mask, audio_mask), dim=1).unsqueeze(1)
         ## padding_mask is now (batch, 1, seq_length)
-        score = score.masked_fill(padding_mask.unsqueeze(-1) == 0,
-                                  -10_000)  # padding_mask applied = (batch, 1, seq_length, 1)
-        score = score.masked_fill(padding_mask.unsqueeze(1) == 0,
-                                  -10_000)  # padding_mask applied = (batch, 1, 1, seq_length)
+        score = score.masked_fill(
+            padding_mask.unsqueeze(-1) == 0, -10_000
+        )  # padding_mask applied = (batch, 1, seq_length, 1)
+        score = score.masked_fill(
+            padding_mask.unsqueeze(1) == 0, -10_000
+        )  # padding_mask applied = (batch, 1, 1, seq_length)
 
         # 3. pass them softmax to make [0, 1] range
         score = self.softmax(score)
@@ -107,7 +119,9 @@ class CustomScaleDotProductAttention(nn.Module):
         ## text_weights dimension = (batch, text_sequence_length)
         ## audio_weights dimension = (batch, audio_sequence_length)
 
-        attention_coefficients = torch.cat((text_weights, audio_weights), dim=1).unsqueeze(1).unsqueeze(1)
+        attention_coefficients = (
+            torch.cat((text_weights, audio_weights), dim=1).unsqueeze(1).unsqueeze(1)
+        )
         ## attention_coefficients dimension = (batch, 1, 1, total_sequence_length)
         score = score * attention_coefficients
 
@@ -215,7 +229,7 @@ class LayerNorm(nn.Module):
         """
         mean = x.mean(-1, keepdim=True)
         var = x.var(-1, unbiased=False, keepdim=True)
-        # '-1' means last dimension. 
+        # '-1' means last dimension.
 
         out = (x - mean) / torch.sqrt(var + self.eps)
         out = self.gamma * out + self.beta
@@ -270,7 +284,9 @@ class CustomEncoderLayer(nn.Module):
         self.norm1 = LayerNorm(d_model=d_model)
         self.dropout1 = nn.Dropout(p=drop_prob)
 
-        self.ffn = PositionwiseFeedForward(d_model=d_model, hidden=ffn_hidden, drop_prob=drop_prob)
+        self.ffn = PositionwiseFeedForward(
+            d_model=d_model, hidden=ffn_hidden, drop_prob=drop_prob
+        )
         self.norm2 = LayerNorm(d_model=d_model)
         self.dropout2 = nn.Dropout(p=drop_prob)
 
@@ -316,8 +332,16 @@ class CustomEncoder(nn.Module):
         super().__init__()
 
         self.layers = nn.ModuleList(
-            [CustomEncoderLayer(d_model=d_model, ffn_hidden=ffn_hidden, n_head=n_head, drop_prob=drop_prob) for _ in
-             range(n_layers)])
+            [
+                CustomEncoderLayer(
+                    d_model=d_model,
+                    ffn_hidden=ffn_hidden,
+                    n_head=n_head,
+                    drop_prob=drop_prob,
+                )
+                for _ in range(n_layers)
+            ]
+        )
 
     def forward(self, embedding, text_mask, audio_mask):
         """
@@ -352,9 +376,15 @@ class MulTA_CrossAttentionBlock(torch.nn.Module):
         self.num_heads = num_heads
         self.dropout_prob = dropout_prob
         self.layer_norm = torch.nn.LayerNorm(self.embedding_dim)
-        self.mh_attention = torch.nn.MultiheadAttention(embed_dim=self.embedding_dim, num_heads=self.num_heads,
-                                                        dropout=self.dropout_prob, batch_first=True)
-        self.pointwise_ff = PositionwiseFeedForward(d_model=self.embedding_dim, hidden=self.d_ffn)
+        self.mh_attention = torch.nn.MultiheadAttention(
+            embed_dim=self.embedding_dim,
+            num_heads=self.num_heads,
+            dropout=self.dropout_prob,
+            batch_first=True,
+        )
+        self.pointwise_ff = PositionwiseFeedForward(
+            d_model=self.embedding_dim, hidden=self.d_ffn
+        )
 
     def forward(self, elem_a, elem_b, attn_mask):
         """
@@ -369,7 +399,9 @@ class MulTA_CrossAttentionBlock(torch.nn.Module):
         attn_mask = attn_mask.to(torch.float32)
 
         # cross modal attention with elem_a as query and elem_b as key and value
-        mh_out, _ = self.mh_attention(elem_a, elem_b, elem_b, key_padding_mask=attn_mask, need_weights=False)
+        mh_out, _ = self.mh_attention(
+            elem_a, elem_b, elem_b, key_padding_mask=attn_mask, need_weights=False
+        )
         # residual connection
         add_out = mh_out + elem_a
 
