@@ -40,22 +40,30 @@ def test_vocab_builder_counts_repeated_texts_without_context():
     assert "cat" in builder.vocab.get_itos()
 
 
-def test_vocab_builder_counts_repeated_texts_once_with_context():
-    # Defect: with a context, texts are deduplicated before counting.
+def test_vocab_builder_counts_repeated_texts_with_context():
     builder = vocabulary_builder(min_freq=2)
     builder.fit(inputs=["cat", "cat"], context=["dog"])
-    assert "cat" not in builder.vocab.get_itos()
+    assert "cat" in builder.vocab.get_itos()
 
 
-def test_pair_vocab_builder_counts_repeated_texts_once():
-    # Defect: both sides are deduplicated before counting.
+def test_pair_vocab_builder_counts_repeated_texts():
     builder = processing.PairVocabBuilder(
         tokenizer=TOKENIZER, embedding_dim=4, tokenization_args={"min_freq": 2}
     )
     builder.fit(a_inputs=["cat", "dog"], b_inputs=["cat", "bird"])
-    assert "cat" not in builder.vocab.get_itos()
-    builder.fit(a_inputs=["cat dog"], b_inputs=["cat bird"])
-    assert "cat" in builder.vocab.get_itos()
+    assert builder.vocab.get_itos() == ["<pad>", "<unk>", "cat"]
+
+
+def test_vocab_builders_keep_array_texts_apart():
+    # Loaders pass numpy arrays, which add element by element.
+    texts, context = np.array(["the cat"]), np.array(["a dog"])
+    builder = vocabulary_builder()
+    builder.fit(inputs=texts, context=context)
+    pair = processing.PairVocabBuilder(tokenizer=TOKENIZER, embedding_dim=4)
+    pair.fit(a_inputs=texts, b_inputs=context, a_context=texts, b_context=context)
+    expected = ["<pad>", "<unk>", "a", "cat", "dog", "the"]
+    assert builder.vocab.get_itos() == expected
+    assert pair.vocab.get_itos() == expected
 
 
 def test_vocab_builder_leaves_texts_unchanged():

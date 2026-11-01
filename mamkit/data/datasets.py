@@ -368,7 +368,9 @@ class UKDebates(Loader):
         self, as_iterator: bool = False
     ) -> Union[List[SplitInfo], SplitInfo]:
         split_info = self.build_info_from_splits(
-            train_df=self.data, val_df=pd.DataFrame.empty, test_df=pd.DataFrame.empty
+            train_df=self.data,
+            val_df=pd.DataFrame(columns=self.data.columns),
+            test_df=pd.DataFrame(columns=self.data.columns),
         )
         return [split_info] if as_iterator else split_info
 
@@ -954,15 +956,15 @@ class MMUSEDFallacy(Loader):
         return [split_info] if as_iterator else split_info
 
     def get_mancini_2024_splits(self) -> Iterable[SplitInfo]:
-        dialogues = set(self.data["dialogue_id"].values).difference(
-            {"47_2024", "48_2024"}
+        dialogues = sorted(
+            set(self.data["dialogue_id"].values).difference({"47_2024", "48_2024"})
         )
         for dialogue_id in dialogues:
             train_df = self.data[self.data["dialogue_id"] != dialogue_id]
             test_df = self.data[self.data["dialogue_id"] == dialogue_id]
 
-            train_dialogues = set(train_df["dialogue_id"].values)
-            val_dialogues = np.random.choice(list(train_dialogues), size=4)
+            train_dialogues = sorted(set(train_df["dialogue_id"].values))
+            val_dialogues = np.random.choice(train_dialogues, size=4, replace=False)
 
             val_df = train_df[train_df["dialogue_id"].isin(val_dialogues)]
             train_df = train_df[~train_df["dialogue_id"].isin(val_dialogues)]
