@@ -31,7 +31,15 @@ def lint(session: nox.Session) -> None:
 @nox.session(python=PYTHON_VERSIONS)
 def tests(session: nox.Session) -> None:
     install(session, "-e", ".[dev]")
-    session.run("pytest")
+    session.run(
+        "pytest",
+        "--cov=mamkit",
+        "--cov-branch",
+        # Measured at 74.5% on 2026-11-01. The MMUSED, MMUSEDFallacy, and MArg
+        # loaders are untested until their rewrite; raise the gate with it.
+        "--cov-fail-under=74",
+        "--cov-report=term-missing",
+    )
 
 
 @nox.session(python=LINT_VERSION)

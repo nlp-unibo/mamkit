@@ -18,12 +18,21 @@ Run local CI with `nox`:
 | Command | Check |
 |---|---|
 | `nox` | Ruff and tests |
-| `nox -s tests` | Tests on every supported interpreter found locally |
+| `nox -s tests` | Tests with a 74% branch-coverage gate on every supported interpreter found locally |
 | `nox -s docs` | Sphinx build |
 | `nox -s package` | Wheel and sdist build, metadata check, and wheel import |
 
 The sessions install CPU builds of `torch` and `torchaudio` before the package.
 No check needs a GPU.
+
+## Golden files
+
+`tests/golden/` holds outputs recorded from the code before the Cinnamon refactoring.
+Model files also hold the weights and inputs, so a rewritten model can load the same weights under its own parameter names.
+`tests/golden/configs.json` describes every configuration as data.
+Re-record a golden file only for an intended change of behavior, with `MAMKIT_RECORD=1 pytest <test>`, and state the change in the pull request.
+
+The tests download small random-weight models from the Hugging Face Hub on their first run.
 
 ## Branch and pull-request flow
 
