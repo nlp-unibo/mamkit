@@ -1,214 +1,156 @@
-<p align="center">
-    <br>
-    <img src="figures/mamkit-logo-image.png" width="500"/>
-    <br>
-<p>
-
 <div align="center">
 
-| 🌐 [Website](https://nlp-unibo.github.io/mamkit/) | 📚 [Documentation](https://nlp-unibo.github.io/mamkit/mamkit.html) | 🤝 [Contributing](https://nlp-unibo.github.io/mamkit/contribute.html) | 
+<img src="figures/mamkit-logo-image.png" width="400"/>
+
+# MAMKit
+
+[![Tests](https://github.com/nlp-unibo/mamkit/actions/workflows/ci.yml/badge.svg)](https://github.com/nlp-unibo/mamkit/actions/workflows/ci.yml)
+[![Documentation](https://github.com/nlp-unibo/mamkit/actions/workflows/docs.yml/badge.svg)](https://nlp-unibo.github.io/mamkit/)
+[![PyPI](https://img.shields.io/pypi/v/mamkit)](https://pypi.org/project/mamkit/)
+
 </div>
 
-# MAMKit: Multimodal Argument Mining Toolkit
-A Comprehensive Multimodal Argument Mining Toolkit. 
+A comprehensive toolkit for multimodal argument mining.
 
+Multimodal argument mining (MAM) studies arguments in speech.
+A model reads the transcript of a sentence, its audio, or both, and classifies the sentence or the relation between two sentences.
 
+The corpora that MAMKit ships are political debates with aligned transcripts and recordings.
+MAMKit runs the models of the MAMKit paper on four corpora under one configuration system, one training loop, and one set of metrics.
+Every experiment of the paper is a registered task.
+Reproducing a result is therefore running one key, and comparing two models is a change of key.
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Installation](#-installation)
-- [Usage](#%EF%B8%8F-usage)
-  - [Run a registered experiment](#run-a-registered-experiment)
-  - [Run an experiment from Python](#run-an-experiment-from-python)
-  - [Select experiments by tag](#select-experiments-by-tag)
-  - [Add a dataset or a model](#add-a-dataset-or-a-model)
-- [Structure](#-structure)
-- [Documentation](#-website-and-documentation)
-- [Contributing](#-contributing)
-- [Contact Us](#-contact-us)
-- [Citation](#-citation)
-
-## Introduction
-MAMKit is an open-source, publicly available PyTorch toolkit designed to access and develop 
-datasets, models, and benchmarks for Multimodal Argument Mining (MAM).
-It provides a flexible interface for accessing and integrating datasets, models, and preprocessing strategies through 
-composition or custom definition. 
-MAMKit is designed to be extendible, ensure replicability, and provide a shared interface as a common foundation for
-experimentation in the field.
-
-At the time of writing, MAMKit offers 4 datasets, 4 tasks and 6 distinct model architectures, along with audio and text 
-processing capabilities, organized in 5 main components.
-
-| **Datasets**                                                             | **Tasks**                                                                               |
-|--------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| [UkDebates](https://doi.org/10.1145/2850417)                             | Argumentative Sentence Detection (ASD)                                                  |
-| [MArg<sub>&gamma;</sub>](https://doi.org/10.18653/v1/2021.argmining-1.8) | Argumentative Relation Classification (ARC)                                             |
-| [MM-USED](https://aclanthology.org/2022.argmining-1.15)                  | Argumentative Sentence Detection (ASD) <br>Argumentative Component Classification (ACC) |
-| [MM-USED-fallacy](https://aclanthology.org/2024.eacl-short.16)                                                      | Argumentative Fallacy Classification (AFC) <br> Argumentative Fallacy Detection(AFD)                                            |
-
-
-| **Model**  | **Text Encoding** | **Audio Encoding**                          | **Fusion**   |
-|------------|-------------------|---------------------------------------------|--------------|
-| BiLSTM     | GloVe + BiLSTM    | (Wav2Vec2 &or; MFCCs) + BiLSTM                | Concat-Late  |
-| MM-BERT    | BERT              | (Wav2Vec2 &or; HuBERT &or; WavLM) + BiLSTM      | Concat-Late  |
-| MM-RoBERTa | RoBERTa           | (Wav2Vec2 &or; HuBERT &or; WavLM) + BiLSTM      | Concat-Late  |
-| CSA        | BERT              | (Wav2Vec2 &or; HuBERT &or; WavLM) + Transformer | Concat-Early |
-| Ensemble   | BERT              | (Wav2Vec2 &or; HuBERT &or; WavLM) + Transformer | Avg-Late     |
-| Mul_TA     | BERT              | (Wav2Vec2 &or; HuBERT &or; WavLM) + Transformer | Cross        |
-
-
-## 🔧 Installation
-
-
-### ⚠️ Prerequisites
-Before installing MAMKit, ensure you have the following:
-
-- **Python 3.10 to 3.13** (MAMKit is tested with these versions)
-- **ffmpeg** (Required for audio processing)  
-  You can install it via:
-  ```bash
-  sudo apt install ffmpeg  # Debian/Ubuntu  
-  brew install ffmpeg      # macOS  
-  choco install ffmpeg     # Windows (using Chocolatey)  
-  ```
-
-For other installation methods, refer to the [FFmpeg official website](https://www.ffmpeg.org/). 
-
-
-### Install via PyPi
-
-1. Install MAMKit using PyPi:
-```bash
-pip install mamkit 
-
-```
-2. Access MAMKit in your Python code: 
-```bash
-import mamkit 
-```
-
-### Install from GitHub
-This installation is recommended for users who wish to conduct experiments and customize the toolkit according to their needs.
-
-1. Clone the repository and install it in editable mode:
-```bash
-git clone git@github.com:nlp-unibo/mamkit.git
-cd mamkit
-pip install -e .
-```
-2. Access MAMKit in your Python code: 
-```bash
-import mamkit 
-```
-
-
-## ⚙️ Usage
 MAMKit is built on [Cinnamon](https://nlp.unibo.it/cinnamon/).
-Each corpus, split strategy, featurizer, model, and metric is a component with a registered configuration.
-Each experiment of the paper is a registered task that combines them.
-A task trains a fresh model on every split of its corpus, once per seed, and reports the mean and standard deviation of every metric.
+Corpora, split strategies, featurizers, models, and metrics are components with registered configurations.
+A task names each of them by key.
 
-### Run a registered experiment
-The `cmn-run` command lists the registered tasks, asks which ones to run, and runs them.
-It needs the `cli` extra of Cinnamon:
+[Documentation](https://nlp-unibo.github.io/mamkit/) ·
+[Tutorial](https://nlp-unibo.github.io/mamkit/tutorials/quickstart.html) ·
+[Contributing](CONTRIBUTING.md)
+
+## Installation
+
+MAMKit requires Python 3.10 or later.
+
+```bash
+pip install mamkit
+```
+
+Audio tasks also need [FFmpeg](https://www.ffmpeg.org/) on the system path, for example through `sudo apt install ffmpeg` or `brew install ffmpeg`.
+
+The `cmn-run` command, which runs registered tasks interactively, needs the `cli` extra of Cinnamon:
 
 ```bash
 pip install "cinnamon-core[cli]"
 ```
 
-From a clone of the repository, point `cmn-run` to the package directory:
+## Quickstart
 
-```bash
-cmn-run -dir mamkit
-```
-
-From a PyPI installation, point it to the installed package:
-
-```bash
-cmn-run -dir "$(python -c 'import mamkit, os; print(os.path.dirname(mamkit.__file__))')"
-```
-
-The command asks for a namespace, a name, and tags.
-Select the `task` name, then add tags until the list holds the experiments to run.
-Each task writes `results.json` under its `save_path`, which is relative to the working directory.
-For example, the BiLSTM of Mancini et al. (2022) on UKDebates writes to `results/ukdebates/asd/text-only/bilstm/mancini-et-al-2022`.
-On first use, each corpus is downloaded into a folder of the working directory, such as `UKDebates/`.
-
-### Run an experiment from Python
-A task can also be built and run from a script:
+A task is one experiment from start to finish: a corpus, a split strategy, a featurizer per modality, a model, its metrics, and a list of seeds.
+The script below runs the toy task, which trains a text BiLSTM on a synthetic corpus in seconds on a CPU.
 
 ```python
 from pathlib import Path
 
 import mamkit
-from cinnamon.registry import RegistrationKey, Registry
+from cinnamon.registry import Registry
+from mamkit.configurations.keys import TOY_TASK
 
 Registry.build(directory=Path(mamkit.__file__).parent)
+
+task = Registry.from_key(TOY_TASK, save_path="results", seeds=[0, 1])
+results = task.run()
+print(results["test"]["f1"])
+```
+
+```
+{'per_seed_mean': [1.0, 1.0], 'per_seed_std': [0.0, 0.0], 'mean': 1.0, 'std': 0.0}
+```
+
+For each seed and split, the task builds fresh featurizers and a fresh model, trains with early stopping on the validation loss, and scores the best checkpoint.
+`per_seed_mean` and `per_seed_std` summarize the splits of each seed, and `mean` and `std` summarize the per-seed means.
+The same results land in `results/results.json`, beside the checkpoints.
+The toy corpus marks each label with a cue word, so a perfect score only shows that the run holds together.
+
+An experiment of the paper is a key with the name `task` in the `mamkit` namespace.
+Its tags name the corpus, the task, the input mode, the model family, and the source of the configuration:
+
+```python
+from cinnamon.registry import RegistrationKey
+
 key = RegistrationKey(
     name="task",
     tags={"ukdebates", "asd", "text-only", "bilstm", "mancini-et-al-2022"},
     namespace="mamkit",
 )
 results = Registry.from_key(key).run()
-print(results["test"])
 ```
 
-`Registry.retrieve_configuration(key)` returns the configuration without building the task, so its fields can be inspected or changed first.
+On first use, the task downloads UKDebates and the GloVe vectors into the working directory.
+It writes its results under `results/ukdebates/asd/text-only/bilstm/mancini-et-al-2022`.
+`cmn-run -dir mamkit`, from a clone of the repository, offers every registered task from the command line.
 
-### Select experiments by tag
-Every task key has the name `task` and the namespace `mamkit`.
-Its tags name the corpus, the task, the input mode, the model family, and the source of the configuration:
+## Tasks
 
-| **Field**      | **Tags**                                                                                                         |
-|----------------|------------------------------------------------------------------------------------------------------------------|
-| Corpus         | `ukdebates`, `marg`, `mmused`, `mmused-fallacy`                                                                   |
-| Task           | `asd`, `arc`, `acc`, `afc`, `afd`                                                                                 |
-| Input mode     | `text-only`, `audio-only`, `text-audio`                                                                           |
-| Model family   | `bilstm`, `bilstm-mfcc`, `bilstm-transformer`, `transformer`, `transformer-encoder`, `mmtransformer`, `csa`, `ensemble`, `multa` |
-| Text model     | `bert`, `roberta`                                                                                                 |
-| Source         | `mancini-et-al-2022`, `anonymous`                                                                                 |
+| Tag | Task | Corpora |
+|---|---|---|
+| `asd` | Argumentative sentence detection | UKDebates, MM-USED |
+| `acc` | Argumentative component classification, claim or premise | MM-USED |
+| `arc` | Argumentative relation classification, support, attack, or neither | M-Arg |
+| `afc` | Argumentative fallacy classification, over six fallacy categories | MM-USED-fallacy |
+| `afd` | Argumentative fallacy detection | MM-USED-fallacy |
 
-Tasks that encode audio with a pretrained model come in one variant per model.
-The variant adds a tag such as `audio.model_card=facebook/hubert-base-ls960`.
-Without that tag, a task uses the card in its registration.
-That card is `facebook/wav2vec2-base-960h`, except for the two AFD tasks that use WavLM.
+Each task runs in one of three input modes, `text-only`, `audio-only`, or `text-audio`, and the mode is a tag of its key.
 
-### Add a dataset or a model
-Components live in `mamkit/components`, and their configurations live in `mamkit/configurations`.
-A new corpus subclasses `Loader` in `mamkit/components/loaders.py`.
-A new encoder is a PyTorch module that `Classifier` wraps with a classification head.
-A new experiment registers a configuration for each new component and a task that names them by key.
-The [Cinnamon documentation](https://nlp.unibo.it/cinnamon/) describes configurations, registrations, and external project directories.
+## Models
 
-Run `cmn-check -dir mamkit --deep` after editing the registrations.
-It reports unresolved keys and constructor arguments that do not match their configuration.
+| Model | Text encoding | Audio encoding | Fusion | Tags |
+|---|---|---|---|---|
+| **BiLSTM** | GloVe and BiLSTM | MFCCs, or a pretrained audio model, and BiLSTM | Concatenation | `bilstm`, `bilstm-mfcc`, `bilstm-transformer` |
+| **Transformer** | BERT or RoBERTa | Pretrained audio model and BiLSTM | Concatenation | `transformer`, `mmtransformer` |
+| **Audio Transformer** | None | Pretrained audio model and Transformer encoder | None | `transformer-encoder` |
+| **CSA** | BERT token embeddings | Pretrained audio model | Self-attention over the concatenated sequences | `csa` |
+| **Ensemble** | BERT token embeddings | Pretrained audio model and Transformer encoder | Learned average of the two class distributions | `ensemble` |
+| **MulTA** | BERT token embeddings | Pretrained audio model | Cross-modal attention in both directions | `multa` |
 
-## 🧠 Structure
-The `mamkit` package holds four subpackages:
+The pretrained audio model is wav2vec 2.0 by default.
+The HuBERT and WavLM variants of a task carry a tag such as `audio.model_card=facebook/hubert-base-ls960`.
+The [models page](https://nlp-unibo.github.io/mamkit/models/index.html) describes each family.
 
-1. `components` holds the loaders, split strategies, featurizers, encoders, models, the Lightning module, and the task.
-2. `configurations` holds the configuration classes and every registration, including the experiments of the paper under `configurations/experiments`.
-3. `modules` holds the recurrent and attention layers that the encoders use.
-4. `utility` holds downloads, audio and text processing, and metrics.
+## Corpora
 
-## 📚 Website and Documentation 
-The documentation is available [here](https://nlp-unibo.github.io/mamkit/mamkit.html).
+| Corpus | Source | Tasks | Size | Splits |
+|---|---|---|---|---|
+| **UKDebates** | [Lippi and Torroni, 2016](https://doi.org/10.1145/2850417) | ASD | 386 sentences from the 2015 UK Prime Ministerial debate | Folds of Mancini et al. (2022) |
+| **M-Arg** | [Mestre et al., ArgMining 2021](https://doi.org/10.18653/v1/2021.argmining-1.8) | ARC | 4,104 sentence pairs from the 2020 US presidential debates, of which 2,443 have an agreement confidence of at least 85% | Folds of Mancini et al. (2022), on the 85% subset |
+| **MM-USED** | [Mancini et al., ArgMining 2022](https://aclanthology.org/2022.argmining-1.15) | ASD, ACC | 23,505 sentences from 39 US presidential debates aired from 1960 to 2016 | Fixed training, validation, and test sets |
+| **MM-USED-fallacy** | [Mancini et al., EACL 2024](https://aclanthology.org/2024.eacl-short.16) | AFC, AFD | 1,278 fallacious snippets from the same debates | Leave one dialogue out, from Mancini et al. (2024) |
 
-The website is available [here](https://nlp-unibo.github.io/mamkit/).
+The alignment of MM-USED and MM-USED-fallacy was refined after their publication, so their sample counts differ from the original papers.
+Each corpus is downloaded on first use.
+MM-USED and MM-USED-fallacy download the debate recordings only for a task that reads audio.
 
-Our website provides a comprehensive overview of the toolkit, including installation instructions, usage examples, and a detailed description of the toolkit's components.
-The website also describes the datasets, tasks, and models of the toolkit.
-Its leaderboard reports the results of the current models on each dataset.
+## Metrics
 
-## 🤝 Contributing 
-We welcome contributions to MAMKit!  Please refer to the [contributing guidelines](https://nlp-unibo.github.io/mamkit/contribute.html) for more information.
+| Corpus | Score |
+|---|---|
+| **UKDebates** | F1 of the claim class |
+| **M-Arg** | F1 of the support and attack classes, averaged |
+| **MM-USED** | Macro F1 |
+| **MM-USED-fallacy** | Macro F1 |
 
-## 📧 Contact Us
-For questions or suggestions, contact us: [Eleonora Mancini](mailto:e.mancini@unibo.it), [Federico Ruggeri](mailto:federico.ruggeri6@unibo.it).
+The [leaderboard](https://nlp-unibo.github.io/mamkit/reference/leaderboard.html) reports the results of the MAMKit paper.
 
-## 📖 Citation
+## Contact
+
+Questions about a component or a result are best raised as an [issue](https://github.com/nlp-unibo/mamkit/issues).
+For anything else, write to [Eleonora Mancini](mailto:e.mancini@unibo.it) or [Federico Ruggeri](mailto:federico.ruggeri6@unibo.it).
+
+## Citation
+
 If you use MAMKit in your research, please cite the following paper:
-```
+
+```bibtex
 @inproceedings{mancini-etal-2024-mamkit,
     title = "{MAMK}it: A Comprehensive Multimodal Argument Mining Toolkit",
     author = "Mancini, Eleonora  and
@@ -231,8 +173,8 @@ If you use MAMKit in your research, please cite the following paper:
     doi = "10.18653/v1/2024.argmining-1.7",
     pages = "69--82",
 }
-
 ```
 
-## 🙏 Acknowledgement
+## Acknowledgement
+
 This work was partially supported by project FAIR: Future Artificial Intelligence Research (European Commission NextGeneration EU programme, PNRR-M4C2-Investimento 1.3, PE00000013-"FAIR" - Spoke 8).

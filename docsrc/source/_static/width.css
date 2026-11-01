@@ -1,0 +1,8 @@
+/* Gives the content column more of the viewport, for the wide tables. */
+.bd-page-width {
+    max-width: 100rem;
+}
+
+.bd-main .bd-content .bd-article-container {
+    max-width: 70rem;
+}

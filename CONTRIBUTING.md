@@ -18,7 +18,7 @@ Run local CI with `nox`:
 |---|---|
 | `nox` | Ruff and tests |
 | `nox -s tests` | Tests with a 93% branch-coverage gate, then `cmn-check --deep` on the registrations, on every supported interpreter found locally |
-| `nox -s docs` | Sphinx build |
+| `nox -s docs` | Sphinx build, with warnings as errors |
 | `nox -s package` | Wheel and sdist build, metadata check, and wheel import |
 
 The sessions install CPU builds of `torch` and `torchaudio` before the package.

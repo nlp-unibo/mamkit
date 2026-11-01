@@ -1,140 +1,97 @@
-.. mamkit documentation master file, created by
-   sphinx-quickstart on Sun May 21 18:00:41 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 MAMKit
-================================================
+======
 
-MAMKit is an open-source, publicly available PyTorch toolkit designed to access and develop datasets, models, and benchmarks for Multimodal Argument Mining (MAM). It provides a flexible interface for accessing and integrating datasets, models, and preprocessing strategies through composition or custom definition. MAMKit is designed to be extendible, ensure replicability, and provide a shared interface as a common foundation for experimentation in the field.
+A comprehensive toolkit for multimodal argument mining.
 
-MAMKit is built on `Cinnamon <https://nlp.unibo.it/cinnamon/>`_.
-Each corpus, split strategy, featurizer, model, and metric is a component with a registered configuration.
-Each experiment of the paper is a registered task that combines them.
+Multimodal argument mining (MAM) studies arguments in speech, where a model reads the transcript of a sentence, its audio, or both.
+MAMKit ships four corpora of political debates, five tasks, and the models of the MAMKit paper, under one configuration system and one training loop.
+Every published experiment is a registered task, so reproducing a result is running one key.
 
-Structure
-================================================
+.. code-block:: console
 
-The ``mamkit`` package holds four subpackages:
+   pip install mamkit
 
-1. ``components`` holds the loaders, split strategies, featurizers, encoders, models, the Lightning module, and the task.
-2. ``configurations`` holds the configuration classes and every registration, including the experiments of the paper under ``configurations/experiments``.
-3. ``modules`` holds the recurrent and attention layers that the encoders use.
-4. ``utility`` holds downloads, audio and text processing, and metrics.
+.. code-block:: python
 
-Prerequisites
-=============
+   from pathlib import Path
 
-Before installing MAMKit, ensure you have the following:
+   import mamkit
+   from cinnamon.registry import Registry
+   from mamkit.configurations.keys import TOY_TASK
 
-- **Python 3.10 to 3.13** (MAMKit is tested with these versions)
-- **FFmpeg** (Required for audio processing)  
+   Registry.build(directory=Path(mamkit.__file__).parent)
 
-  You can install it via:
+   results = Registry.from_key(TOY_TASK, save_path="results", seeds=[0, 1]).run()
+   print(results["test"]["f1"])
 
-  .. code-block:: bash
+The corpus, the split strategy, the featurizers, the model, and the metrics of a task are all registration keys.
+Swapping the corpus or the model is therefore a change of key rather than a change of code.
+A run writes every score per seed and split, and their summary, to ``results.json``.
 
-     sudo apt install ffmpeg  # Debian/Ubuntu  
-     brew install ffmpeg      # macOS  
-     choco install ffmpeg     # Windows (using Chocolatey)  
+Where to start
+--------------
 
-  For other installation methods, refer to the `FFmpeg official website <https://www.ffmpeg.org/>`_.
+- :doc:`concepts/argument-mining` describes the tasks, the input modes, and the sentence pairs that MAMKit models.
+- :doc:`tutorials/index` holds two walkthroughs. :doc:`tutorials/quickstart` runs a task end to end, and :doc:`tutorials/custom-model` registers a model of your own.
+- :doc:`models/index` compares the model families and gives each one a page.
+- :doc:`reference/index` describes the corpora, the featurizers, the tasks, the metrics, every registration, and the results of the paper.
+- :doc:`project/contributing` describes the environment, the checks, and the release flow for a change to the toolkit itself.
 
-Install via PyPi
-================
+.. toctree::
+   :maxdepth: 2
+   :caption: Start here
+   :hidden:
 
-1. Install MAMKit using PyPi:
+   concepts/argument-mining
+   tutorials/index
 
-   .. code-block:: bash
+.. toctree::
+   :maxdepth: 2
+   :caption: Models
+   :hidden:
 
-      pip install mamkit  
+   models/index
 
-2. Access MAMKit in your Python code:
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
+   :hidden:
 
-   .. code-block:: python
+   reference/index
 
-      import mamkit  
+.. toctree::
+   :maxdepth: 2
+   :caption: Project
+   :hidden:
 
-Install from GitHub
-===================
-
-This installation is recommended for users who wish to conduct experiments and customize the toolkit according to their needs.
-
-1. Clone the repository and install it in editable mode:
-
-   .. code-block:: bash
-
-      git clone git@github.com:nlp-unibo/mamkit.git
-      cd mamkit
-      pip install -e .  
-
-2. Access MAMKit in your Python code:
-
-   .. code-block:: python
-
-      import mamkit  
-
-
-
-Contribute
-===============================================
-
-Feel free to submit a pull request!
-We welcome new datasets, models, and any other contribution that can improve the toolkit!
-
-MAMKit is meant to be a community project :)
-
-
-Contact
-===============================================
-
-Don't hesitate to contact:
-- `Eleonora Mancini <e.mancini@unibo.it>`_
-- `Federico Ruggeri <federico.ruggeri6@unibo.it>`_
-
-for questions/doubts/issues!
-
+   project/contributing
 
 Citing
-===============================================
+------
 
 If you use MAMKit in your research, please cite the following paper:
 
-.. code-block::
+.. code-block:: bibtex
 
    @inproceedings{mancini-etal-2024-mamkit,
-    title = "{MAMK}it: A Comprehensive Multimodal Argument Mining Toolkit",
-    author = "Mancini, Eleonora  and
-      Ruggeri, Federico  and
-      Colamonaco, Stefano  and
-      Zecca, Andrea  and
-      Marro, Samuele  and
-      Torroni, Paolo",
-    editor = "Ajjour, Yamen  and
-      Bar-Haim, Roy  and
-      El Baff, Roxanne  and
-      Liu, Zhexiong  and
-      Skitalinskaya, Gabriella",
-    booktitle = "Proceedings of the 11th Workshop on Argument Mining (ArgMining 2024)",
-    month = aug,
-    year = "2024",
-    address = "Bangkok, Thailand",
-    publisher = "Association for Computational Linguistics",
-    url = "https://aclanthology.org/2024.argmining-1.7",
-    doi = "10.18653/v1/2024.argmining-1.7",
-    pages = "69--82",
+       title = "{MAMK}it: A Comprehensive Multimodal Argument Mining Toolkit",
+       author = "Mancini, Eleonora  and
+         Ruggeri, Federico  and
+         Colamonaco, Stefano  and
+         Zecca, Andrea  and
+         Marro, Samuele  and
+         Torroni, Paolo",
+       editor = "Ajjour, Yamen  and
+         Bar-Haim, Roy  and
+         El Baff, Roxanne  and
+         Liu, Zhexiong  and
+         Skitalinskaya, Gabriella",
+       booktitle = "Proceedings of the 11th Workshop on Argument Mining (ArgMining 2024)",
+       month = aug,
+       year = "2024",
+       address = "Bangkok, Thailand",
+       publisher = "Association for Computational Linguistics",
+       url = "https://aclanthology.org/2024.argmining-1.7",
+       doi = "10.18653/v1/2024.argmining-1.7",
+       pages = "69--82",
    }
-
-
-.. toctree::
-   :maxdepth: 4
-   :hidden:
-   :caption: Contents:
-   :titlesonly:
-
-   Quick Start <quickstart.rst>
-   Leaderboard <leaderboard.rst>
-   Datasets <datasets.rst>
-   Models <models.rst>
-   Contribute <contribute.rst>
-   mamkit <mamkit.rst>

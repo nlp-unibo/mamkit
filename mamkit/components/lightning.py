@@ -71,4 +71,5 @@ class MAMKitLightningModel(L.LightningModule):
         self.test_metrics.reset()
 
     def configure_optimizers(self):
+        """The optimizer over the model parameters, with ``optimizer_args``."""
         return self.optimizer(self.model.parameters(), **self.optimizer_args)

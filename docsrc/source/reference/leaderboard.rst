@@ -1,19 +1,9 @@
-.. _leaderboard:
-
 Leaderboard
-*********************************************
+===========
 
-The values below are the ones reported in the MAMKit paper.
-The Cinnamon refactoring fixes defects that change some of them, and it reports macro F1 on MM-USED and MM-USED-fallacy.
-The affected experiments are being rerun, as tracked in `issue #18 <https://github.com/nlp-unibo/mamkit/issues/18>`_.
+The values below are the test scores reported in the MAMKit paper, as the mean and the standard deviation.
 
-Tasks:
-   - **ASD**: Argumentative Stance Detection
-   - **ARC**: Argumentative Relation Classification
-   - **ACC**: Argumentative Component Classification
-   - **AFC**: Argumentative Fallacy Classification
-
-
+The tasks are argumentative sentence detection (ASD), argumentative relation classification (ARC), argumentative component classification (ACC), and argumentative fallacy classification (AFC).
 
 .. list-table:: **Test classification performance on MAM datasets**
    :header-rows: 1

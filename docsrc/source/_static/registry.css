@@ -1,0 +1,99 @@
+/* Cards for the registry page: one expandable block per registration. */
+.rc-block {
+    margin-top: 1.2rem;
+}
+
+.rc-search {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+    border: 1px solid var(--pst-color-border, #ccc);
+    border-radius: 6px;
+    background: var(--pst-color-surface, #fff);
+    color: var(--pst-color-text-base, #222);
+}
+
+.rc-count {
+    margin: 0.5rem 0 1rem;
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+.rc-card {
+    border: 1px solid var(--pst-color-border, #ddd);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    background: var(--pst-color-surface, #fff);
+}
+
+.rc-card[hidden] {
+    display: none;
+}
+
+.rc-card > summary {
+    cursor: pointer;
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.rc-card[open] > summary {
+    border-bottom: 1px solid var(--pst-color-border, #eee);
+}
+
+.rc-name {
+    font-weight: 600;
+}
+
+.rc-tag,
+.rc-run {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+/* One colour per kind of tag, assigned by name so a tag reads the same on
+   every card it appears on. */
+.rc-tag { background: #eceff4; color: #263238; border-color: #cfd8dc; }
+.rc-tag:nth-of-type(3n+1) { background: #cfe3ff; color: #0b2545; border-color: #9fc4f0; }
+.rc-tag:nth-of-type(3n+2) { background: #d7f0dc; color: #0d3018; border-color: #a7d5b4; }
+.rc-tag:nth-of-type(3n)   { background: #ffe9c7; color: #3d2100; border-color: #e8c68a; }
+.rc-run { background: #e8e4f3; color: #241a3d; border-color: #c3b9e0; }
+
+.rc-component {
+    margin: 0.6rem 0.8rem 0.2rem;
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+table.rc-fields {
+    width: 100%;
+    margin: 0.4rem 0 0.8rem;
+    font-size: 0.85rem;
+    border-collapse: collapse;
+    display: table;
+}
+
+table.rc-fields th,
+table.rc-fields td {
+    text-align: left;
+    padding: 0.35rem 0.8rem;
+    border-top: 1px solid var(--pst-color-border, #eee);
+    vertical-align: top;
+}
+
+.rc-empty {
+    margin: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+html[data-theme="dark"] .rc-tag { background: #2b3440; color: #dbe4ee; border-color: #3d4c5c; }
+html[data-theme="dark"] .rc-tag:nth-of-type(3n+1) { background: #1c3457; color: #cfe3ff; border-color: #2d4d7a; }
+html[data-theme="dark"] .rc-tag:nth-of-type(3n+2) { background: #1b3a25; color: #d7f0dc; border-color: #2b5838; }
+html[data-theme="dark"] .rc-tag:nth-of-type(3n)   { background: #4a3413; color: #ffe9c7; border-color: #6b4c1d; }
+html[data-theme="dark"] .rc-run { background: #322a4d; color: #e8e4f3; border-color: #4a3f6e; }
