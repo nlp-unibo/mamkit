@@ -128,6 +128,7 @@ class UKDebatesRegistrations:
             pooling_sizes=None,
             remove_energy=True,
             normalize=True,
+            cache_path="mfccs.pkl",
         )
         return config
 
@@ -198,6 +199,7 @@ class UKDebatesRegistrations:
             pooling_sizes=[5, 5, 5],
             remove_energy=True,
             normalize=True,
+            cache_path="mfccs.pkl",
         )
         return config
 

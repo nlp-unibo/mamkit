@@ -81,3 +81,8 @@ lint.select = ["E", "F", "I", "W"]
 [tool.coverage.run]
 branch = true
 source = ["mamkit"]
+
+[tool.coverage.report]
+# Measured at 94.40% on Python 3.10 on 2026-11-02. The registration modules
+# run fully on import, so they raise the figure. CI and nox both read this.
+fail_under = 94

@@ -1,9 +1,11 @@
 """Featurizers turn the inputs of one modality into model inputs.
 
 A featurizer replaces a processor and its collator. ``fit`` reads the training
-inputs, ``transform`` precomputes features once per dataset, ``collate`` pads a
-batch, and ``model_inputs`` returns what the model needs from the fitted
-featurizer. ``fit``, ``transform``, and ``collate`` apply featurizers to a
+inputs, ``transform`` precomputes features, ``collate`` pads a batch, and
+``model_inputs`` returns what the model needs from the fitted featurizer. The
+featurizers with a pretrained model or MFCCs compute each distinct input once
+and reuse it in later transforms, so the splits and seeds of a task share it.
+``fit``, ``transform``, and ``collate`` apply featurizers to a
 ``MAMDataset``, one featurizer per modality, with the same featurizer for
 side ``a`` and side ``b``.
 """
@@ -11,7 +13,7 @@ side ``a`` and side ``b``.
 import logging
 import pickle
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, Hashable, Iterable, List, Optional
 
 import numpy as np
 import torch as th
@@ -20,7 +22,12 @@ from tqdm import tqdm
 from transformers import AutoFeatureExtractor, AutoModel, AutoTokenizer
 
 from mamkit.components.datasets import MAMDataset, sides
-from mamkit.utility.processing import encode_audio_mfcc, encode_audio_nn, encode_text_nn
+from mamkit.utility.processing import (
+    check_text,
+    encode_audio_mfcc,
+    encode_audio_nn,
+    encode_text_nn,
+)
 from mamkit.utility.text import basic_english, build_vocabulary, glove_vectors
 
 DEVICE = th.device("cuda" if th.cuda.is_available() else "cpu")
@@ -55,6 +62,42 @@ class Featurizer:
         pass
 
 
+def input_key(value) -> Hashable:
+    """A key for one input: the text itself, or the path of each clip in order."""
+    if isinstance(value, Path):
+        return value.as_posix()
+    if isinstance(value, (list, tuple)):
+        return tuple(input_key(item) for item in value)
+    return value
+
+
+class CachedFeaturizer(Featurizer):
+    """Computes each distinct input once and reuses it in later transforms.
+
+    A subclass implements ``encode``, which computes the features of a list of
+    inputs that are not cached yet.
+    """
+
+    def __init__(self):
+        self.cache = {}
+
+    def key(self, value) -> Hashable:
+        return input_key(value)
+
+    def encode(self, inputs: List) -> List:
+        raise NotImplementedError
+
+    def transform(self, inputs: List) -> List:
+        keys = [self.key(value) for value in inputs]
+        missing = {}
+        for key, value in zip(keys, inputs):
+            if key not in self.cache:
+                missing.setdefault(key, value)
+        if missing:
+            self.cache.update(zip(missing, self.encode(list(missing.values()))))
+        return [self.cache[key] for key in keys]
+
+
 class VocabularyText(Featurizer):
     """Token indices from a vocabulary fitted on the training texts.
 
@@ -78,8 +121,10 @@ class VocabularyText(Featurizer):
             )
 
     def collate(self, inputs):
-        # A missing or empty text is one padding token, as in the old TextCollator.
-        ids = [self.vocabulary(basic_english(text or "")) or [0] for text in inputs]
+        for text in inputs:
+            check_text(text)
+        # A text of punctuation alone has no token and becomes one padding token.
+        ids = [self.vocabulary(basic_english(text)) or [0] for text in inputs]
         return pad([th.tensor(item) for item in ids])
 
     def model_inputs(self):
@@ -97,15 +142,16 @@ class TokenizedText(Featurizer):
         self.tokenizer_args = tokenizer_args or {}
 
     def collate(self, inputs):
-        texts = [text if text is not None else "" for text in inputs]
+        for text in inputs:
+            check_text(text)
         tokens = self.tokenizer(
-            texts, padding=True, return_tensors="pt", **self.tokenizer_args
+            list(inputs), padding=True, return_tensors="pt", **self.tokenizer_args
         )
         return {"inputs": tokens["input_ids"], "input_mask": tokens["attention_mask"]}
 
 
-class EncodedText(Featurizer):
-    """Token embeddings from a pretrained model, computed once per dataset."""
+class EncodedText(CachedFeaturizer):
+    """Token embeddings from a pretrained model, computed once per text."""
 
     def __init__(
         self,
@@ -113,13 +159,14 @@ class EncodedText(Featurizer):
         tokenizer_args: Optional[Dict] = None,
         model_args: Optional[Dict] = None,
     ):
+        super().__init__()
         self.model_card = model_card
         self.tokenizer_args = tokenizer_args or {}
         self.model_args = model_args or {}
         self.tokenizer = None
         self.model = None
 
-    def transform(self, inputs):
+    def encode(self, inputs):
         if self.model is None:
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_card)
             self.model = AutoModel.from_pretrained(self.model_card).to(DEVICE)
@@ -142,11 +189,12 @@ class EncodedText(Featurizer):
         th.cuda.empty_cache()
 
 
-class MFCCAudio(Featurizer):
-    """MFCCs and spectral features of each clip.
+class MFCCAudio(CachedFeaturizer):
+    """MFCCs and spectral features of each clip, computed once per clip.
 
-    With ``cache_path``, computed features are stored in that file and reused
-    by later runs.
+    With ``cache_path``, computed features are also stored in that file and
+    reused by later runs. Each entry is keyed by the clip and by the MFCC
+    settings, so featurizers with different settings can share one file.
     """
 
     def __init__(
@@ -158,20 +206,30 @@ class MFCCAudio(Featurizer):
         normalize: bool = True,
         cache_path: Optional[Path] = None,
     ):
+        super().__init__()
         self.mfccs = mfccs
         self.sampling_rate = sampling_rate
         self.pooling_sizes = pooling_sizes
         self.remove_energy = remove_energy
         self.normalize = normalize
         self.cache_path = None if cache_path is None else Path(cache_path)
-        self.cache = {}
         if self.cache_path is not None and self.cache_path.exists():
             with self.cache_path.open("rb") as file:
                 self.cache = pickle.load(file)
 
-    def transform(self, inputs):
-        size = len(self.cache)
-        features = [
+    def key(self, value) -> Hashable:
+        pooling = None if self.pooling_sizes is None else tuple(self.pooling_sizes)
+        settings = (
+            self.mfccs,
+            self.sampling_rate,
+            pooling,
+            self.remove_energy,
+            self.normalize,
+        )
+        return settings, input_key(value)
+
+    def encode(self, inputs):
+        return [
             encode_audio_mfcc(
                 audio_input=audio,
                 mfccs=self.mfccs,
@@ -179,18 +237,25 @@ class MFCCAudio(Featurizer):
                 pooling_sizes=self.pooling_sizes,
                 remove_energy=self.remove_energy,
                 normalize=self.normalize,
-                preloaded_mfccs=self.cache,
             )
             for audio in tqdm(inputs, desc="Extracting MFCCs")
         ]
+
+    def transform(self, inputs):
+        size = len(self.cache)
+        features = super().transform(inputs)
         if self.cache_path is not None and len(self.cache) != size:
-            with self.cache_path.open("wb") as file:
+            # A complete file replaces the old one, so an interrupted write
+            # never leaves a truncated cache.
+            partial = self.cache_path.with_name(self.cache_path.name + ".part")
+            with partial.open("wb") as file:
                 pickle.dump(self.cache, file)
+            partial.replace(self.cache_path)
         return features
 
 
-class EncodedAudio(Featurizer):
-    """Frame embeddings from a pretrained audio model, computed once per dataset.
+class EncodedAudio(CachedFeaturizer):
+    """Frame embeddings from a pretrained audio model, computed once per clip.
 
     The inputs come from the model's feature extractor, which gives the same
     values as its processor for the wav2vec 2.0 and WavLM cards and also works
@@ -207,6 +272,7 @@ class EncodedAudio(Featurizer):
         processor_args: Optional[Dict] = None,
         model_args: Optional[Dict] = None,
     ):
+        super().__init__()
         self.model_card = model_card
         self.sampling_rate = sampling_rate
         self.downsampling_factor = downsampling_factor
@@ -216,7 +282,7 @@ class EncodedAudio(Featurizer):
         self.processor = None
         self.model = None
 
-    def transform(self, inputs):
+    def encode(self, inputs):
         if self.model is None:
             self.processor = AutoFeatureExtractor.from_pretrained(self.model_card)
             self.model = AutoModel.from_pretrained(self.model_card).to(DEVICE)

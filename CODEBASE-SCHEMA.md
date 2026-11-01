@@ -49,19 +49,21 @@ This file records call relations and module dependencies of the `mamkit` package
 `mamkit.components.features` depends on `mamkit.components.datasets`, `mamkit.utility.processing`, `mamkit.utility.text`, and transformers.
 
 1. `VocabularyText` calls `build_vocabulary` and `basic_english`, and `glove_vectors` when it has an embedding model.
-2. `TokenizedText` calls a pretrained tokenizer. `EncodedText` calls `encode_text_nn`.
-3. `MFCCAudio` calls `encode_audio_mfcc`. `EncodedAudio` calls `encode_audio_nn`.
-4. Every `collate` method calls `pad`, except the one of `TokenizedText`.
-5. The functions `fit`, `transform`, and `collate` call one featurizer per modality on each side of a `MAMDataset`.
-6. `VocabularyText.model_inputs` returns the arguments `vocab_size` and `embedding_matrix` of `TextBiLSTM`.
+2. `TokenizedText` calls a pretrained tokenizer. `VocabularyText.collate` and `TokenizedText.collate` call `check_text`.
+3. `EncodedText`, `MFCCAudio`, and `EncodedAudio` extend `CachedFeaturizer`. Its `transform` calls `encode` only for inputs whose `input_key` is not cached.
+4. `EncodedText.encode` calls `encode_text_nn`, `MFCCAudio.encode` calls `encode_audio_mfcc`, and `EncodedAudio.encode` calls `encode_audio_nn`. These functions call `check_text` or `check_audio`, which raise on an empty transcript or a missing clip.
+5. Every `collate` method calls `pad`, except the one of `TokenizedText`.
+6. The functions `fit`, `transform`, and `collate` call one featurizer per modality on each side of a `MAMDataset`.
+7. `VocabularyText.model_inputs` returns the arguments `vocab_size` and `embedding_matrix` of `TextBiLSTM`.
 
 ## Loaders and split strategies
 
 `mamkit.components.loaders` depends on `mamkit.components.datasets`, `mamkit.utility.data`, pandas, pydub, and nltk.
 
-1. Each loader downloads its corpus in `__init__` when its folder is missing. `MMUSED` and `MMUSEDFallacy` call `build_clips` only when their input mode reads audio.
+1. Each loader downloads its corpus in `__init__` through `build_once`, which builds a `.part` folder and renames it when the build completes. `MMUSED` and `MMUSEDFallacy` build their clip folder the same way, only when their input mode reads audio.
 2. `build_clips` calls `youtube_download`, `trimmed_recording`, and `export_clip`.
-3. `Loader.dataset` reads the column names from `columns` and returns a `MAMDataset` with the modalities of the input mode.
+3. `MArg.build_chunks` calls `split_sentences`, which downloads the NLTK sentence model when it is missing. `MMUSEDFallacy` calls `window_start` to cut the context of both tasks.
+4. `Loader.dataset` reads the column names from `columns` and returns a `MAMDataset` with the modalities of the input mode.
 
 `mamkit.components.splits` depends on `mamkit.components.datasets` and `mamkit.utility.data`. Each strategy reads `loader.data`, calls `loader.dataset` on row subsets, and returns a list of `Split`. `FoldFiles` calls `download` when its file is missing from the loader folder.
 
@@ -72,7 +74,7 @@ This file records call relations and module dependencies of the `mamkit` package
 `mamkit.components.tasks` depends on `mamkit.components.features`, `mamkit.components.lightning`, Lightning, and `cinnamon.registry`.
 
 1. `Task.run` builds the loader and the split strategy with `Registry.from_key`, seeds Lightning, and calls `Task.train` once per seed and split.
-2. `Task.train` builds a fresh featurizer per modality with `Registry.from_key` and calls `features.fit`, `features.transform`, and `features.collate`.
+2. `Task.run` builds one featurizer per modality with `Registry.from_key` and passes them to every `Task.train` call. `Task.train` calls `features.fit`, `features.transform`, and `features.collate`.
 3. `Task.train` builds the model with `Registry.from_key`. Then it passes the featurizer `model_inputs` to `load_vocabulary`, which `TextBiLSTM` defines.
 4. `Task.train` wraps the model in `MAMKitLightningModel` and calls `Trainer.fit` and `Trainer.test`.
 

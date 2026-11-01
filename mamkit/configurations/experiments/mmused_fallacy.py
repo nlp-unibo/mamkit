@@ -143,6 +143,7 @@ class MMUSEDFallacyRegistrations:
             pooling_sizes=[5],
             remove_energy=True,
             normalize=True,
+            cache_path="mfccs.pkl",
         )
         return config
 

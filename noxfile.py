@@ -34,9 +34,6 @@ def tests(session: nox.Session) -> None:
         "pytest",
         "--cov=mamkit",
         "--cov-branch",
-        # Measured at 93.62% on Python 3.10 on 2026-11-01. The registration
-        # modules run fully on import, so they raise the figure.
-        "--cov-fail-under=93",
         "--cov-report=term-missing",
     )
     # Imports every registered component and checks it against its configuration.

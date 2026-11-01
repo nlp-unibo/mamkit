@@ -412,3 +412,47 @@ def test_mm_argfallacy_2025_split_is_registered(registry):
     assert split.train == DIALOGUES[:8]
     assert split.val is None
     assert split.test == ["47_2024", "48_2024"]
+
+
+def test_build_once_retries_a_failed_build(tmp_path):
+    path = tmp_path / "corpus"
+
+    def failing(target):
+        (target / "half.txt").write_text("")
+        raise OSError("network down")
+
+    with pytest.raises(OSError):
+        loaders.build_once(path, failing)
+    assert not path.exists()
+
+    def complete(target):
+        # The files of the failed attempt are still there to resume from.
+        assert (target / "half.txt").exists()
+        (target / "done.txt").write_text("")
+
+    loaders.build_once(path, complete)
+    assert sorted(p.name for p in path.iterdir()) == ["done.txt", "half.txt"]
+    loaders.build_once(path, failing)
+
+
+@pytest.mark.parametrize(
+    "window, context", [(-1, ["s0 s1", "s0 s1 s2 s3 s4"]), (0, ["", ""])]
+)
+def test_mmused_fallacy_afc_context_window_keeps_all_or_none(
+    fallacy_root, window, context
+):
+    data = fallacy(fallacy_root, context_window=window).data
+    assert list(data.dialogue) == context
+
+
+def test_split_sentences_downloads_the_nltk_model_once(monkeypatch):
+    downloads = []
+
+    def missing(name):
+        raise LookupError(name)
+
+    monkeypatch.setattr(loaders.nltk.data, "find", missing)
+    monkeypatch.setattr(loaders.nltk, "download", lambda *a, **k: downloads.append(a))
+    monkeypatch.setattr(loaders.nltk, "sent_tokenize", lambda text: text.split(". "))
+    assert loaders.split_sentences("One. Two") == ["One", "Two"]
+    assert downloads == [("punkt_tab",)]

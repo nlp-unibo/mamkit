@@ -189,6 +189,7 @@ class MMUSEDRegistrations:
             pooling_sizes=[5],
             remove_energy=True,
             normalize=True,
+            cache_path="mfccs.pkl",
         )
         return config
 
@@ -259,6 +260,7 @@ class MMUSEDRegistrations:
             pooling_sizes=[10],
             remove_energy=True,
             normalize=True,
+            cache_path="mfccs.pkl",
         )
         return config
 

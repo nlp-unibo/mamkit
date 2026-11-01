@@ -13,11 +13,11 @@ import zipfile
 from functools import cached_property
 from itertools import chain
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Callable, Dict, Optional
 
+import nltk
 import numpy as np
 import pandas as pd
-from nltk.tokenize import sent_tokenize
 from pydub import AudioSegment
 from tqdm import tqdm
 
@@ -95,8 +95,38 @@ class Loader:
         )
 
 
+def build_once(path: Path, build: Callable[[Path], None]):
+    """Runs ``build`` on a ``.part`` sibling of ``path``, then renames it to ``path``.
+
+    ``path`` exists only after a complete build, so the next run retries a build
+    that failed. The sibling keeps what the failed build wrote, so that steps
+    which skip existing files can resume.
+    """
+    if path.exists():
+        return
+    partial = path.with_name(path.name + ".part")
+    partial.mkdir(parents=True, exist_ok=True)
+    build(partial)
+    partial.rename(path)
+
+
+def window_start(position: int, window: int) -> int:
+    """The first of the ``window`` items before ``position``; 0 when ``window`` < 0."""
+    return 0 if window < 0 else max(position - window, 0)
+
+
+def split_sentences(text: str):
+    """Splits ``text`` into sentences, downloading the NLTK model on first use."""
+    try:
+        nltk.data.find("tokenizers/punkt_tab")
+    except LookupError:
+        nltk.download("punkt_tab", quiet=True)
+    return nltk.sent_tokenize(text)
+
+
 def extract_zenodo_archive(url: str, data_path: Path, inner_name: str):
     """Downloads a Zenodo record archive and extracts the archive inside it."""
+    logging.info(f"Downloading {url}...")
     data_path.mkdir(parents=True, exist_ok=True)
     archive = data_path.joinpath("data.zip")
     download(url=url, file_path=archive)
@@ -144,18 +174,19 @@ class UKDebates(Loader):
         super().__init__(**kwargs)
         self.audio_path = self.data_path.joinpath("dataset", "audio")
         # The archive holds text and audio together.
-        if not self.data_path.exists():
-            logging.info(f"Downloading {self.folder_name} data...")
-            self.data_path.mkdir(parents=True)
-            archive = self.data_path.parent.joinpath(f"{self.folder_name}.tar.gz")
-            download(url=self.archive_url, file_path=archive)
-            with tarfile.open(archive) as files:
-                # The data filter rejects absolute paths and links out of the folder.
-                if hasattr(tarfile, "data_filter"):
-                    files.extractall(self.data_path, filter="data")
-                else:  # pragma: no cover, Python 3.10 before 3.10.12
-                    files.extractall(self.data_path)
-            archive.unlink()
+        build_once(self.data_path, self.download)
+
+    def download(self, target: Path):
+        logging.info(f"Downloading {self.folder_name} data...")
+        archive = target.parent.joinpath(f"{self.folder_name}.tar.gz")
+        download(url=self.archive_url, file_path=archive)
+        with tarfile.open(archive) as files:
+            # The data filter rejects absolute paths and links out of the folder.
+            if hasattr(tarfile, "data_filter"):
+                files.extractall(target, filter="data")
+            else:  # pragma: no cover, Python 3.10 before 3.10.12
+                files.extractall(target)
+        archive.unlink()
 
     def columns(self):
         return {
@@ -199,13 +230,16 @@ class MMUSED(Loader):
         self.clips_path = self.data_path.joinpath("audio_clips")
         self.dataset_path = self.data_path.joinpath("dataset.pkl")
 
-        if not self.data_path.exists():
-            logging.info(f"Downloading {self.folder_name} data...")
-            extract_zenodo_archive(self.archive_url, self.data_path, "MMUSED.zip")
-        if self.needs_audio and not self.clips_path.exists():
-            self.build_clips()
+        build_once(
+            self.data_path,
+            lambda target: extract_zenodo_archive(
+                self.archive_url, target, "MMUSED.zip"
+            ),
+        )
+        if self.needs_audio:
+            build_once(self.clips_path, self.build_clips)
 
-    def build_clips(self):
+    def build_clips(self, target: Path):
         """Downloads the debate recordings and cuts one clip per sentence."""
         links = pd.read_csv(self.data_path.joinpath("download_links.csv"), sep=";")
         youtube_download(
@@ -222,7 +256,7 @@ class MMUSED(Loader):
                     row["speech_start_time"],
                     row["speech_end_time"],
                 ):
-                    path = self.clips_path.joinpath(dialogue_id, f"{index}.wav")
+                    path = target.joinpath(dialogue_id, f"{index}.wav")
                     export_clip(recording, path, start, end, self.sample_rate)
         shutil.rmtree(self.audio_path)
 
@@ -290,15 +324,16 @@ class MMUSEDFallacy(Loader):
         self.clips_path = self.data_path.joinpath("audio_clips")
         self.dataset_path = self.data_path.joinpath("dataset.pkl")
 
-        if not self.data_path.exists():
-            logging.info(f"Downloading {self.folder_name} data...")
-            extract_zenodo_archive(
-                self.archive_url, self.data_path, "MMUSED-fallacy.zip"
-            )
-        if self.needs_audio and not self.clips_path.exists():
-            self.build_clips()
+        build_once(
+            self.data_path,
+            lambda target: extract_zenodo_archive(
+                self.archive_url, target, "MMUSED-fallacy.zip"
+            ),
+        )
+        if self.needs_audio:
+            build_once(self.clips_path, self.build_clips)
 
-    def build_clips(self):
+    def build_clips(self, target: Path):
         """Downloads the debate recordings and cuts one clip per sentence."""
         links = pd.read_csv(self.data_path.joinpath("download_links.csv"), sep=";")
         youtube_download(
@@ -316,7 +351,7 @@ class MMUSEDFallacy(Loader):
                         row[f"{part}_start_time"],
                         row[f"{part}_end_time"],
                     ):
-                        path = self.clips_path.joinpath(dialogue_id, f"{index}.wav")
+                        path = target.joinpath(dialogue_id, f"{index}.wav")
                         export_clip(recording, path, start, end, self.sample_rate)
         shutil.rmtree(self.audio_path)
 
@@ -365,7 +400,8 @@ class MMUSEDFallacy(Loader):
                 position
                 for position, index in enumerate(row["dialogue_indexes"])
                 if index < start
-            ][-self.context_window :]
+            ]
+            kept = kept[window_start(len(kept), self.context_window) :]
             sentences = [row["dialogue_sentences"][position] for position in kept]
             rows.append(
                 {
@@ -408,10 +444,8 @@ class MMUSEDFallacy(Loader):
             sentences = sorted(
                 set(dialogue_sentences + snippet_sentences), key=lambda item: item[0]
             )
-            window = self.context_window if self.context_window >= 0 else len(sentences)
-
             for position, (index, sentence, label) in enumerate(sentences):
-                past = sentences[max(position - window, 0) : position]
+                past = sentences[window_start(position, self.context_window) : position]
                 rows.append(
                     {
                         "context_paths": [
@@ -522,7 +556,7 @@ class MArg(Loader):
             "us_election_2020_vice_presidential_debate_2_timestamp.csv": "16",
         }
 
-        self.data_path.mkdir(parents=True, exist_ok=True)
+        build_once(self.data_path, self.download)
         if not self.final_path.exists():
             self.build()
 
@@ -605,7 +639,7 @@ class MArg(Loader):
 
             for r in df.index:
                 # Tokenised text
-                split_text = sent_tokenize(df["text"].iloc[r])
+                split_text = split_sentences(df["text"].iloc[r])
                 text += split_text
                 # Match speakers to their names using the dictionary above
                 try:
@@ -738,36 +772,28 @@ class MArg(Loader):
             filepath_topic.joinpath("full_feature_extraction_dataset.csv"), index=False
         )
 
+    def download(self, target: Path):
+        logging.info("Downloading M-Arg data...")
+        archive = target.joinpath("data.zip")
+        download(url=self.archive_url, file_path=archive)
+        with zipfile.ZipFile(archive, "r") as loaded_zip:
+            loaded_zip.extractall(target)
+        archive.unlink()
+
+        inner = target.joinpath(
+            "rafamestre", "m-arg_multimodal-argumentation-dataset-v1.0.0.zip"
+        )
+        with zipfile.ZipFile(inner, "r") as loaded_zip:
+            loaded_zip.extractall(target)
+        inner.unlink()
+
+        source_path = target.joinpath(
+            "rafamestre-m-arg_multimodal-argumentation-dataset-851736f"
+        )
+        shutil.copytree(source_path, target, dirs_exist_ok=True)
+        shutil.rmtree(source_path)
+
     def build(self):
-        if not any(self.data_path.iterdir()):
-            logging.info("Downloading M-Arg data...")
-            tmp_path = self.data_path.joinpath("data.zip")
-            download(
-                url="https://zenodo.org/api/records/5653504/files-archive",
-                file_path=tmp_path,
-            )
-            logging.info("Download completed...")
-
-            with zipfile.ZipFile(tmp_path, "r") as loaded_zip:
-                loaded_zip.extractall(self.data_path)
-
-            tmp_path.unlink()
-
-            dl_tmp_path = self.data_path.joinpath(
-                "rafamestre", "m-arg_multimodal-argumentation-dataset-v1.0.0.zip"
-            )
-            with zipfile.ZipFile(dl_tmp_path, "r") as loaded_zip:
-                loaded_zip.extractall(self.data_path)
-
-            dl_tmp_path.unlink()
-
-            source_path = self.data_path.joinpath(
-                "rafamestre-m-arg_multimodal-argumentation-dataset-851736f"
-            )
-            shutil.copytree(source_path, self.data_path, dirs_exist_ok=True)
-
-            shutil.rmtree(source_path)
-
         logging.info("Building M-Arg dataset...")
         self.build_chunks()
         feature_df = pd.read_csv(self.feature_path)

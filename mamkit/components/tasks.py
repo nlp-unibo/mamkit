@@ -19,12 +19,14 @@ from mamkit.components.lightning import MAMKitLightningModel
 class Task:
     """Trains a model on every split of a loader, once per seed.
 
-    For each seed and split, ``run`` builds fresh featurizers and a fresh
-    model, fits the featurizers on the training set, and trains with early
-    stopping on the validation loss. It scores the best checkpoint on the
-    validation and test sets. A split without a validation set trains for the
-    configured epochs and scores the last weights. ``text`` and ``audio`` name
-    the featurizer of each modality that the model reads.
+    ``run`` builds the featurizers once, so the features that a pretrained
+    model or MFCCs compute are shared by every seed and split. For each seed
+    and split, it refits the featurizers on the training set, builds a fresh
+    model, and trains with early stopping on the validation loss. It scores
+    the best checkpoint on the validation and test sets. A split without a
+    validation set trains for the configured epochs and scores the last
+    weights. ``text`` and ``audio`` name the featurizer of each modality that
+    the model reads.
 
     The results hold every score per seed and split, the mean and standard
     deviation over the splits of each seed, and the mean and standard
@@ -66,13 +68,15 @@ class Task:
         self.trainer_args = trainer_args or {}
         self.save_path = None if save_path is None else Path(save_path)
 
-    def train(self, split) -> Dict[str, Dict[str, float]]:
-        """Trains one model on one split and returns its scores."""
-        featurizers = {
+    def featurizers(self) -> Dict[str, features.Featurizer]:
+        return {
             modality: Registry.from_key(key)
             for modality, key in (("text", self.text), ("audio", self.audio))
             if key is not None
         }
+
+    def train(self, split, featurizers) -> Dict[str, Dict[str, float]]:
+        """Trains one model on one split and returns its scores."""
         features.fit(split.train, featurizers)
         sets = {
             name: features.transform(dataset, featurizers)
@@ -137,12 +141,15 @@ class Task:
     def run(self) -> Dict:
         loader = Registry.from_key(self.loader)
         strategy = Registry.from_key(self.split)
+        featurizers = self.featurizers()
         runs = []
         for seed in self.seeds:
             L.seed_everything(seed)
             for index, split in enumerate(strategy(loader)):
                 logging.info(f"Seed {seed}, split {index}")
-                runs.append({"seed": seed, "split": index, **self.train(split)})
+                runs.append(
+                    {"seed": seed, "split": index, **self.train(split, featurizers)}
+                )
 
         results = {"runs": runs}
         for name in ("validation", "test"):

@@ -41,7 +41,7 @@ It names a corpus, a split strategy, a featurizer per modality, a model, its met
    results = task.run()
 
 The keyword arguments override fields of the registered configuration for this run only.
-For each seed and each split, the task builds fresh featurizers and a fresh model.
+For each seed and each split, the task refits its featurizers and builds a fresh model.
 It fits the featurizers on the training set and trains with early stopping on the validation loss.
 It then scores the best checkpoint on the validation and test sets.
 
