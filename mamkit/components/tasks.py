@@ -23,7 +23,8 @@ class Task:
     model, fits the featurizers on the training set, and trains with early
     stopping on the validation loss. It scores the best checkpoint on the
     validation and test sets. A split without a validation set trains for the
-    configured epochs and scores the last weights.
+    configured epochs and scores the last weights. ``text`` and ``audio`` name
+    the featurizer of each modality that the model reads.
 
     The results hold every score per seed and split, the mean and standard
     deviation over the splits of each seed, and the mean and standard
@@ -35,10 +36,11 @@ class Task:
         self,
         loader: RegistrationKey,
         split: RegistrationKey,
-        featurizers: Dict[str, RegistrationKey],
         model: RegistrationKey,
         metrics: Dict[str, RegistrationKey],
         seeds: List[int],
+        text: Optional[RegistrationKey] = None,
+        audio: Optional[RegistrationKey] = None,
         loss: str = "torch.nn.CrossEntropyLoss",
         class_weights: Optional[List[float]] = None,
         optimizer: str = "torch.optim.Adam",
@@ -50,7 +52,8 @@ class Task:
     ):
         self.loader = loader
         self.split = split
-        self.featurizers = featurizers
+        self.text = text
+        self.audio = audio
         self.model = model
         self.metrics = metrics
         self.seeds = seeds
@@ -65,7 +68,11 @@ class Task:
 
     def train(self, split) -> Dict[str, Dict[str, float]]:
         """Trains one model on one split and returns its scores."""
-        featurizers = Registry.from_keys(self.featurizers)
+        featurizers = {
+            modality: Registry.from_key(key)
+            for modality, key in (("text", self.text), ("audio", self.audio))
+            if key is not None
+        }
         features.fit(split.train, featurizers)
         sets = {
             name: features.transform(dataset, featurizers)

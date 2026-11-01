@@ -247,7 +247,7 @@ class Concat(th.nn.Module):
     def __init__(self, encoders: List[th.nn.Module]):
         super().__init__()
         self.encoders = th.nn.ModuleList(Registry.from_keys(encoders))
-        self.output_dim = sum(encoder.output_dim for encoder in encoders)
+        self.output_dim = sum(encoder.output_dim for encoder in self.encoders)
 
     def forward(self, sample: dict) -> th.Tensor:
         return th.cat([encoder(sample) for encoder in self.encoders], dim=-1)

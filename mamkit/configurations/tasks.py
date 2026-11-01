@@ -20,9 +20,8 @@ class TaskConfig(Configuration):
 
     loader: RegistrationKey = Param(description="The corpus")
     split: RegistrationKey = Param(description="The split strategy")
-    featurizers: Dict[str, RegistrationKey] = Param(
-        description="One featurizer per modality, keyed text or audio"
-    )
+    text: Optional[RegistrationKey] = Param(None, description="Text featurizer")
+    audio: Optional[RegistrationKey] = Param(None, description="Audio featurizer")
     model: RegistrationKey = Param()
     metrics: Dict[str, RegistrationKey] = Param()
     seeds: List[int] = Param()
@@ -44,7 +43,7 @@ class ToyTaskConfig(TaskConfig):
 
     loader: RegistrationKey = Param(TOY_LOADER)
     split: RegistrationKey = Param(COLUMN_SPLIT)
-    featurizers: Dict[str, RegistrationKey] = Param({"text": VOCABULARY_TEXT})
+    text: Optional[RegistrationKey] = Param(VOCABULARY_TEXT)
     model: RegistrationKey = Param(TOY_CLASSIFIER)
     metrics: Dict[str, RegistrationKey] = Param({"f1": TOY_F1})
     seeds: List[int] = Param([42])

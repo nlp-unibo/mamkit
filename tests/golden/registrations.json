@@ -1,0 +1,1780 @@
+{
+ "audio.BiLSTMMFCCsConfig:marg:audio-only:arc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "audio-only",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused-fallacy:audio-only:afc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "audio-only",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused-fallacy:audio-only:afd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afd",
+   "audio-only",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused:audio-only:acc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "audio-only",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused:audio-only:acc:mancini-et-al-2022": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "audio-only",
+   "bilstm-mfcc",
+   "mancini-et-al-2022"
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused:audio-only:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "audio-only",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:mmused:audio-only:asd:mancini-et-al-2022": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "audio-only",
+   "bilstm-mfcc",
+   "mancini-et-al-2022"
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:ukdebates:audio-only:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "audio-only",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMMFCCsConfig:ukdebates:audio-only:asd:mancini-et-al-2022": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "audio-only",
+   "bilstm-mfcc",
+   "mancini-et-al-2022"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:marg:audio-only:arc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:marg:audio-only:arc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:marg:audio-only:arc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused-fallacy:audio-only:afc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused-fallacy:audio-only:afc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused-fallacy:audio-only:afc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:acc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:acc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:acc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:acc:mancini-et-al-2022": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "audio-only",
+   "bilstm-transformer",
+   "mancini-et-al-2022"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:mmused:audio-only:asd:mancini-et-al-2022": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "audio-only",
+   "bilstm-transformer",
+   "mancini-et-al-2022"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:ukdebates:audio-only:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:ukdebates:audio-only:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:ukdebates:audio-only:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "audio-only",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "audio.BiLSTMTransformerConfig:ukdebates:audio-only:asd:mancini-et-al-2022": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "audio-only",
+   "bilstm-transformer",
+   "mancini-et-al-2022"
+  ]
+ },
+ "audio.TransformerEncoderConfig:marg:audio-only:arc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:marg:audio-only:arc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:marg:audio-only:arc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused-fallacy:audio-only:afc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused-fallacy:audio-only:afc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused-fallacy:audio-only:afc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused-fallacy:audio-only:afd:anonymous,wavlm": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afd",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:acc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:acc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:acc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:mmused:audio-only:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:ukdebates:audio-only:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:ukdebates:audio-only:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "audio.TransformerEncoderConfig:ukdebates:audio-only:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "audio-only",
+   "transformer-encoder",
+   "anonymous"
+  ]
+ },
+ "text.BiLSTMConfig:marg:text-only:arc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-only",
+   "bilstm",
+   "anonymous"
+  ]
+ },
+ "text.BiLSTMConfig:mmused-fallacy:text-only:afc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-only",
+   "bilstm",
+   "anonymous"
+  ]
+ },
+ "text.BiLSTMConfig:mmused-fallacy:text-only:afd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afd",
+   "text-only",
+   "bilstm",
+   "anonymous"
+  ]
+ },
+ "text.BiLSTMConfig:mmused:text-only:acc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-only",
+   "bilstm",
+   "anonymous"
+  ]
+ },
+ "text.BiLSTMConfig:mmused:text-only:acc:mancini-et-al-2022": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-only",
+   "bilstm",
+   "mancini-et-al-2022"
+  ]
+ },
+ "text.BiLSTMConfig:mmused:text-only:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-only",
+   "bilstm",
+   "anonymous"
+  ]
+ },
+ "text.BiLSTMConfig:mmused:text-only:asd:mancini-et-al-2022": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-only",
+   "bilstm",
+   "mancini-et-al-2022"
+  ]
+ },
+ "text.BiLSTMConfig:ukdebates:text-only:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-only",
+   "bilstm",
+   "anonymous"
+  ]
+ },
+ "text.BiLSTMConfig:ukdebates:text-only:asd:mancini-et-al-2022": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-only",
+   "bilstm",
+   "mancini-et-al-2022"
+  ]
+ },
+ "text.TransformerConfig:marg:text-only:arc:anonymous,bert": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text.TransformerConfig:marg:text-only:arc:anonymous,roberta": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text.TransformerConfig:mmused-fallacy:text-only:afc:anonymous,bert": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text.TransformerConfig:mmused-fallacy:text-only:afc:anonymous,roberta": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text.TransformerConfig:mmused-fallacy:text-only:afd:anonymous,roberta": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afd",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text.TransformerConfig:mmused:text-only:acc:anonymous,bert": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text.TransformerConfig:mmused:text-only:acc:anonymous,roberta": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text.TransformerConfig:mmused:text-only:asd:anonymous,bert": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text.TransformerConfig:mmused:text-only:asd:anonymous,roberta": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text.TransformerConfig:ukdebates:text-only:asd:anonymous,bert": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text.TransformerConfig:ukdebates:text-only:asd:anonymous,roberta": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-only",
+   "transformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.BiLSTMMFCCsConfig:marg:text-audio:arc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMMFCCsConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMMFCCsConfig:mmused-fallacy:text-audio:afd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afd",
+   "text-audio",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMMFCCsConfig:mmused:text-audio:acc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMMFCCsConfig:mmused:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMMFCCsConfig:ukdebates:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "bilstm-mfcc",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:marg:text-audio:arc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:marg:text-audio:arc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:marg:text-audio:arc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:acc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:acc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:acc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:mmused:text-audio:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:ukdebates:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:ukdebates:text-audio:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.BiLSTMTransformerConfig:ukdebates:text-audio:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "bilstm-transformer",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:marg:text-audio:arc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:marg:text-audio:arc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:marg:text-audio:arc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:mmused-fallacy:text-audio:afc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:mmused-fallacy:text-audio:afc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:mmused:text-audio:acc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:mmused:text-audio:acc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:mmused:text-audio:acc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:mmused:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:mmused:text-audio:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:mmused:text-audio:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:ukdebates:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:ukdebates:text-audio:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.CSAConfig:ukdebates:text-audio:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "csa",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:marg:text-audio:arc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:marg:text-audio:arc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:marg:text-audio:arc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:mmused-fallacy:text-audio:afc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:mmused-fallacy:text-audio:afc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:acc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:acc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:acc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:mmused:text-audio:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:ukdebates:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:ukdebates:text-audio:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.EnsembleConfig:ukdebates:text-audio:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "ensemble",
+   "anonymous"
+  ]
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,bert,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,bert,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,bert,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,hubert,roberta": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,roberta,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:marg:text-audio:arc:anonymous,roberta,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,bert,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,bert,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,bert,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,hubert,roberta": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,roberta,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,roberta,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused-fallacy:text-audio:afd:anonymous,roberta,wavlm": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,bert,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,bert,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,bert,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,hubert,roberta": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,roberta,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:acc:anonymous,roberta,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,bert,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,bert,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,bert,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,hubert,roberta": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,roberta,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:mmused:text-audio:asd:anonymous,roberta,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:ukdebates:text-audio:asd:anonymous,bert,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "bert"
+  ]
+ },
+ "text_audio.MMTransformerConfig:ukdebates:text-audio:asd:anonymous,hubert,roberta": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:ukdebates:text-audio:asd:anonymous,roberta,wav2vec": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MMTransformerConfig:ukdebates:text-audio:asd:anonymous,roberta,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "mmtransformer",
+   "anonymous",
+   "roberta"
+  ]
+ },
+ "text_audio.MulTAConfig:marg:text-audio:arc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:marg:text-audio:arc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:marg:text-audio:arc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "marg",
+   "arc",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:mmused-fallacy:text-audio:afc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:mmused-fallacy:text-audio:afc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:mmused-fallacy:text-audio:afc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused-fallacy",
+   "afc",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:acc:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:acc:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:acc:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "acc",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:mmused:text-audio:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "mmused",
+   "asd",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:ukdebates:text-audio:asd:anonymous": {
+  "audio_model_card": null,
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:ukdebates:text-audio:asd:anonymous,hubert": {
+  "audio_model_card": "facebook/hubert-base-ls960",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ },
+ "text_audio.MulTAConfig:ukdebates:text-audio:asd:anonymous,wavlm": {
+  "audio_model_card": "patrickvonplaten/wavlm-libri-clean-100h-base-plus",
+  "task": [
+   "task",
+   "ukdebates",
+   "asd",
+   "text-audio",
+   "multa",
+   "anonymous"
+  ]
+ }
+}
