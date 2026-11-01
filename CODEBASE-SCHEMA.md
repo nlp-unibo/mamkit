@@ -71,3 +71,16 @@ The processors and collators in `mamkit.data` stay until the legacy configuratio
 `mamkit.configurations.splits` registers one configuration per published split. Its keys are declared in `mamkit.configurations.keys`. `Registry.build` on the `mamkit` package folder loads them.
 
 The loaders in `mamkit.data.datasets` stay until the legacy configurations that use them are removed.
+
+## Task and Lightning model
+
+`mamkit.components.tasks` depends on `mamkit.components.features`, `mamkit.components.lightning`, Lightning, and `cinnamon.registry`.
+
+1. `Task.run` builds the loader and the split strategy with `Registry.from_key`, seeds Lightning, and calls `Task.train` once per seed and split.
+2. `Task.train` builds fresh featurizers with `Registry.from_keys` and calls `features.fit`, `features.transform`, and `features.collate`.
+3. `Task.train` builds the model with `Registry.from_key`. Then it passes the featurizer `model_inputs` to `load_vocabulary`, which `TextBiLSTM` defines.
+4. `Task.train` wraps the model in `MAMKitLightningModel` and calls `Trainer.fit` and `Trainer.test`.
+
+`MAMKitLightningModel` calls `import_path` to resolve its loss and optimizer. `Classifier`, `Ensemble`, and `Concat` call `Registry.from_keys` on their child components. A configuration can therefore name a child by its key.
+
+`mamkit.configurations.tasks` registers `TOY_TASK`, which reads the `Toy` loader through `COLUMN_SPLIT`.

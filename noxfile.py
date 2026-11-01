@@ -39,6 +39,8 @@ def tests(session: nox.Session) -> None:
         "--cov-fail-under=77",
         "--cov-report=term-missing",
     )
+    # Imports every registered component and checks it against its configuration.
+    session.run("cmn-check", "-dir", "mamkit", "--deep")
 
 
 @nox.session(python=LINT_VERSION)

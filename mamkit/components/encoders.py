@@ -8,11 +8,15 @@ A sample maps a modality to its fields::
 A mask holds 1 for valid positions and 0 for padding. Every encoder exposes
 ``output_dim``, the width of the vector it returns. Encoders know nothing about
 pairs: ``mamkit.components.models.Classifier`` applies one encoder to each side.
+
+An argument that holds another component also accepts its Cinnamon
+registration key, which ``Registry.from_keys`` builds.
 """
 
 from typing import List, Optional
 
 import torch as th
+from cinnamon.registry import Registry
 from transformers import AutoModel
 
 from mamkit.modules.rnn import LSTMStack
@@ -37,24 +41,28 @@ def lengths(fields: dict) -> Optional[th.Tensor]:
 class TextBiLSTM(th.nn.Module):
     """Embeds token indices and returns the last hidden states of a BiLSTM stack.
 
-    When the sample holds a text mask, the stack skips the padded tokens.
+    The embedding exists once ``load_vocabulary`` receives the vocabulary that a
+    featurizer fitted. When the sample holds a text mask, the stack skips the
+    padded tokens.
     """
 
     def __init__(
-        self,
-        vocab_size: int,
-        embedding_dim: int,
-        lstm_weights: List[int],
-        dropout_rate: float = 0.0,
-        embedding_matrix: Optional[th.Tensor] = None,
+        self, embedding_dim: int, lstm_weights: List[int], dropout_rate: float = 0.0
     ):
         super().__init__()
-        self.embedding = th.nn.Embedding(vocab_size, embedding_dim, padding_idx=0)
-        if embedding_matrix is not None:
-            self.embedding.weight.data = embedding_matrix
+        self.embedding_dim = embedding_dim
+        self.embedding = None
         self.lstm = LSTMStack(input_size=embedding_dim, lstm_weigths=lstm_weights)
         self.dropout = th.nn.Dropout(p=dropout_rate)
         self.output_dim = 2 * lstm_weights[-1]
+
+    def load_vocabulary(
+        self, vocab_size: int, embedding_matrix: Optional[th.Tensor] = None
+    ):
+        """Creates the embedding, initialized from ``embedding_matrix`` if given."""
+        self.embedding = th.nn.Embedding(vocab_size, self.embedding_dim, padding_idx=0)
+        if embedding_matrix is not None:
+            self.embedding.weight.data = embedding_matrix
 
     def forward(self, sample: dict) -> th.Tensor:
         text = sample["text"]
@@ -238,7 +246,7 @@ class Concat(th.nn.Module):
 
     def __init__(self, encoders: List[th.nn.Module]):
         super().__init__()
-        self.encoders = th.nn.ModuleList(encoders)
+        self.encoders = th.nn.ModuleList(Registry.from_keys(encoders))
         self.output_dim = sum(encoder.output_dim for encoder in encoders)
 
     def forward(self, sample: dict) -> th.Tensor:

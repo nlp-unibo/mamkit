@@ -1,12 +1,14 @@
 """Models built from the encoders in ``mamkit.components.encoders``.
 
 A pair batch maps ``"a"`` and ``"b"`` to two samples. Only ``Classifier``
-knows whether a batch is a pair.
+knows whether a batch is a pair. An argument that holds another component also
+accepts its Cinnamon registration key.
 """
 
 from typing import List
 
 import torch as th
+from cinnamon.registry import Registry
 
 
 class Classifier(th.nn.Module):
@@ -19,9 +21,9 @@ class Classifier(th.nn.Module):
 
     def __init__(self, encoder: th.nn.Module, head: List[int], pair: bool = False):
         super().__init__()
-        self.encoder = encoder
+        self.encoder = Registry.from_keys(encoder)
         self.pair = pair
-        width = encoder.output_dim * (2 if pair else 1)
+        width = self.encoder.output_dim * (2 if pair else 1)
         layers = []
         for size in head:
             layers += [th.nn.Linear(width, size), th.nn.ReLU()]
@@ -52,8 +54,8 @@ class Ensemble(th.nn.Module):
         upper_bound: float = 0.7,
     ):
         super().__init__()
-        self.text = text
-        self.audio = audio
+        self.text = Registry.from_keys(text)
+        self.audio = Registry.from_keys(audio)
         # tanh(0) gives both classifiers the same weight at the start.
         self.weight = th.nn.Parameter(th.tensor(0.0))
         self.lower_bound = lower_bound

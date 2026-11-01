@@ -32,7 +32,9 @@ ENSEMBLE = [
 
 
 def text_bilstm():
-    return encoders.TextBiLSTM(VOCAB, DIM, [6])
+    encoder = encoders.TextBiLSTM(DIM, [6])
+    encoder.load_vocabulary(VOCAB)
+    return encoder
 
 
 def audio_bilstm():
