@@ -9,6 +9,7 @@ Subpackages
 
    mamkit.components
    mamkit.configs
+   mamkit.configurations
    mamkit.data
    mamkit.models
    mamkit.modules

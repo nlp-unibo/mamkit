@@ -28,10 +28,26 @@ mamkit.components.features module
    :undoc-members:
    :show-inheritance:
 
+mamkit.components.loaders module
+--------------------------------
+
+.. automodule:: mamkit.components.loaders
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 mamkit.components.models module
 -------------------------------
 
 .. automodule:: mamkit.components.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mamkit.components.splits module
+-------------------------------
+
+.. automodule:: mamkit.components.splits
    :members:
    :undoc-members:
    :show-inheritance:

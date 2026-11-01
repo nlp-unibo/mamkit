@@ -17,7 +17,7 @@ Run local CI with `nox`:
 | Command | Check |
 |---|---|
 | `nox` | Ruff and tests |
-| `nox -s tests` | Tests with a 74% branch-coverage gate on every supported interpreter found locally |
+| `nox -s tests` | Tests with a 77% branch-coverage gate on every supported interpreter found locally |
 | `nox -s docs` | Sphinx build |
 | `nox -s package` | Wheel and sdist build, metadata check, and wheel import |
 

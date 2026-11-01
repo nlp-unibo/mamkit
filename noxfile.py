@@ -34,9 +34,9 @@ def tests(session: nox.Session) -> None:
         "pytest",
         "--cov=mamkit",
         "--cov-branch",
-        # Measured at 74.5% on 2026-11-01. The MMUSED, MMUSEDFallacy, and MArg
-        # loaders are untested until their rewrite; raise the gate with it.
-        "--cov-fail-under=74",
+        # Measured at 77.21% on Python 3.10 on 2026-11-01, with the rewritten
+        # loaders tested. The legacy modules are removed in #16.
+        "--cov-fail-under=77",
         "--cov-report=term-missing",
     )
 
