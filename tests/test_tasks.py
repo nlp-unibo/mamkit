@@ -48,10 +48,11 @@ def test_toy_task_trains_and_scores_every_split(registry, tmp_path):
     assert json.loads((tmp_path / "results.json").read_text()) == results
 
 
-def test_task_without_validation_trains_for_the_configured_epochs(registry):
+def test_task_without_validation_trains_for_the_configured_epochs(registry, tmp_path):
     # AllTrain yields no validation or test set, so nothing is scored.
     task = Registry.from_key(keys.TOY_TASK)
     task.split = keys.ALL_TRAIN_SPLIT
+    task.save_path = tmp_path
     task.seeds = [1, 2]
     task.trainer_args = {**task.trainer_args, "max_epochs": 1}
     results = task.run()

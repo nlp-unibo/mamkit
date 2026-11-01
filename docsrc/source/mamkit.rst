@@ -8,10 +8,7 @@ Subpackages
    :maxdepth: 4
 
    mamkit.components
-   mamkit.configs
    mamkit.configurations
-   mamkit.data
-   mamkit.models
    mamkit.modules
    mamkit.utility
 

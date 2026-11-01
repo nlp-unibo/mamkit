@@ -4,22 +4,6 @@ mamkit.utility package
 Submodules
 ----------
 
-mamkit.utility.callbacks module
--------------------------------
-
-.. automodule:: mamkit.utility.callbacks
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-mamkit.utility.config module
-----------------------------
-
-.. automodule:: mamkit.utility.config
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 mamkit.utility.data module
 --------------------------
 
@@ -36,18 +20,18 @@ mamkit.utility.metrics module
    :undoc-members:
    :show-inheritance:
 
-mamkit.utility.model module
----------------------------
+mamkit.utility.processing module
+--------------------------------
 
-.. automodule:: mamkit.utility.model
+.. automodule:: mamkit.utility.processing
    :members:
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+mamkit.utility.text module
+--------------------------
 
-.. automodule:: mamkit.utility
+.. automodule:: mamkit.utility.text
    :members:
    :undoc-members:
    :show-inheritance:

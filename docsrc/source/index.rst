@@ -8,26 +8,26 @@ MAMKit
 
 MAMKit is an open-source, publicly available PyTorch toolkit designed to access and develop datasets, models, and benchmarks for Multimodal Argument Mining (MAM). It provides a flexible interface for accessing and integrating datasets, models, and preprocessing strategies through composition or custom definition. MAMKit is designed to be extendible, ensure replicability, and provide a shared interface as a common foundation for experimentation in the field.
 
-Currently, MAMKit offers 4 datasets, 4 tasks and 6 distinct model architectures, along with audio and text processing capabilities, organized in 5 main components.
+MAMKit is built on `Cinnamon <https://nlp.unibo.it/cinnamon/>`_.
+Each corpus, split strategy, featurizer, model, and metric is a component with a registered configuration.
+Each experiment of the paper is a registered task that combines them.
 
 Structure
 ================================================
 
-The toolkit is organized into five main components: ``configs``, ``data``, ``models``,  ``modules`` and ``utility``.
-In addition to that, the toolkit provides a ``demos`` directory for running all the experiments presented in the paper.
-The figure below illustrates the toolkit's structure.
+The ``mamkit`` package holds four subpackages:
 
-.. image:: img/mamkit2-resized.png
-    :align: center
-
-
+1. ``components`` holds the loaders, split strategies, featurizers, encoders, models, the Lightning module, and the task.
+2. ``configurations`` holds the configuration classes and every registration, including the experiments of the paper under ``configurations/experiments``.
+3. ``modules`` holds the recurrent and attention layers that the encoders use.
+4. ``utility`` holds downloads, audio and text processing, and metrics.
 
 Prerequisites
 =============
 
 Before installing MAMKit, ensure you have the following:
 
-- **Python 3.10, 3.11, or 3.12** (MAMKit is tested with these versions)
+- **Python 3.10 to 3.13** (MAMKit is tested with these versions)
 - **FFmpeg** (Required for audio processing)  
 
   You can install it via:

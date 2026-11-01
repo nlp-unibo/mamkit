@@ -1,13 +1,11 @@
 """Shared fixtures for the characterization suite.
 
 Golden files under ``tests/golden`` hold outputs recorded from the code as it
-stood before the Cinnamon refactoring. A rewritten module must reproduce them
-from the same weights and inputs. Re-record a file only when a change of
-behavior is intended, by running ``MAMKIT_RECORD=1 pytest <test>``, and say so
-in the pull request.
+stood before the Cinnamon refactoring. That code has been removed, so the files
+are fixed references. A rewritten module must reproduce them from the same
+weights and inputs.
 """
 
-import os
 from pathlib import Path
 
 import numpy as np
@@ -16,7 +14,6 @@ import soundfile
 import torch as th
 
 GOLDEN = Path(__file__).parent / "golden"
-RECORD = os.environ.get("MAMKIT_RECORD") == "1"
 
 #: Small pretrained models with random weights, published for testing.
 BERT = "hf-internal-testing/tiny-random-BertModel"
@@ -34,15 +31,6 @@ def tensors(value):
     if isinstance(value, (list, tuple)):
         return [tensors(item) for item in value]
     return value
-
-
-def golden(name: str, value):
-    """Compares ``value`` with the golden file ``name``, or records it."""
-    path = GOLDEN / f"{name}.pt"
-    if RECORD:
-        path.parent.mkdir(parents=True, exist_ok=True)
-        th.save(tensors(value), path)
-    th.testing.assert_close(tensors(value), th.load(path), rtol=1e-4, atol=1e-5)
 
 
 def stored(name: str):

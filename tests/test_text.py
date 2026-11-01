@@ -6,7 +6,7 @@ import zipfile
 import pytest
 from conftest import GOLDEN
 
-from mamkit.data.processing import VocabBuilder
+from mamkit.components.features import VocabularyText
 from mamkit.utility.text import (
     Vocabulary,
     basic_english,
@@ -60,13 +60,12 @@ def test_glove_vectors_rejects_other_models(cache):
         glove_vectors("fasttext.en.300d", ["cat"], cache=cache)
 
 
-def test_vocab_builder_builds_glove_embedding_matrix(cache, monkeypatch):
+def test_vocabulary_text_builds_glove_embedding_matrix(cache, monkeypatch):
     (cache / ".vector_cache").mkdir()
     (cache / ".vector_cache" / "glove.6B.50d.txt").write_text(LINES)
     monkeypatch.chdir(cache)
-    builder = VocabBuilder(
-        basic_english, embedding_dim=50, embedding_model="glove.6B.50d"
-    )
-    builder.fit(inputs=["the cat", "a cat"])
-    assert builder.vocab.get_itos() == ["<pad>", "<unk>", "cat", "a", "the"]
-    assert builder.embedding_matrix.tolist()[2:] == [[3.0, 4.0], [0.0, 0.0], [5.0, 6.0]]
+    featurizer = VocabularyText(embedding_model="glove.6B.50d")
+    featurizer.fit(["the cat", "a cat"])
+    assert featurizer.vocabulary.get_itos() == ["<pad>", "<unk>", "cat", "a", "the"]
+    matrix = featurizer.model_inputs()["embedding_matrix"]
+    assert matrix.tolist()[2:] == [[3.0, 4.0], [0.0, 0.0], [5.0, 6.0]]

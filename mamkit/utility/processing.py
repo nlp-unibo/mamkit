@@ -107,41 +107,6 @@ def encode_audio_mfcc(
     return audio_features
 
 
-def encode_audio_and_context_mfcc(
-    audio_input: Union[Path, List[Path]],
-    mfccs: int,
-    audio_context: List[Path] = None,
-    sampling_rate: int = 16000,
-    pooling_sizes: Optional[Iterable[int]] = None,
-    remove_energy: bool = True,
-    normalize: bool = True,
-    preloaded_mfccs: Dict = {},
-):
-    audio_features = encode_audio_mfcc(
-        audio_input=audio_input,
-        preloaded_mfccs=preloaded_mfccs,
-        mfccs=mfccs,
-        normalize=normalize,
-        pooling_sizes=pooling_sizes,
-        remove_energy=remove_energy,
-        sampling_rate=sampling_rate,
-    )
-
-    context_audio_features = None
-    if audio_context is not None:
-        context_audio_features = encode_audio_mfcc(
-            audio_input=audio_context,
-            preloaded_mfccs=preloaded_mfccs,
-            mfccs=mfccs,
-            normalize=normalize,
-            pooling_sizes=pooling_sizes,
-            remove_energy=remove_energy,
-            sampling_rate=sampling_rate,
-        )
-
-    return audio_features, context_audio_features
-
-
 def parse_audio_nn(
     audio_input: Union[Path, List[Path]],
     sampling_rate: int = 16000,
@@ -213,47 +178,6 @@ def encode_audio_nn(
     return features
 
 
-def encode_audio_and_context_nn(
-    audio_input: Union[Path, List[Path]],
-    processor,
-    model,
-    device,
-    audio_context: List[Path] = None,
-    processor_args: Dict = {},
-    model_args: Dict = {},
-    sampling_rate: int = 16000,
-    downsampling_factor=None,
-    aggregate: bool = False,
-):
-    audio_features = encode_audio_nn(
-        audio_input=audio_input,
-        model=model,
-        processor=processor,
-        processor_args=processor_args,
-        model_args=model_args,
-        device=device,
-        sampling_rate=sampling_rate,
-        downsampling_factor=downsampling_factor,
-        aggregate=aggregate,
-    )
-
-    context_audio_features = None
-    if audio_context is not None:
-        context_audio_features = encode_audio_nn(
-            audio_input=audio_context,
-            model=model,
-            processor=processor,
-            processor_args=processor_args,
-            model_args=model_args,
-            device=device,
-            sampling_rate=sampling_rate,
-            downsampling_factor=downsampling_factor,
-            aggregate=aggregate,
-        )
-
-    return audio_features, context_audio_features
-
-
 def encode_text_nn(
     text: str,
     tokenizer,
@@ -273,35 +197,3 @@ def encode_text_nn(
     text_emb = text_emb.detach().cpu().numpy()[0]
 
     return text_emb
-
-
-def encode_text_and_context_nn(
-    text: str,
-    tokenizer,
-    model,
-    device,
-    context: str = None,
-    tokenizer_args: Dict = None,
-    model_args: Dict = None,
-):
-    text_emb = encode_text_nn(
-        text=text,
-        model=model,
-        tokenizer=tokenizer,
-        model_args=model_args,
-        tokenizer_args=tokenizer_args,
-        device=device,
-    )
-
-    context_emb = None
-    if context is not None:
-        context_emb = encode_text_nn(
-            text=context,
-            model=model,
-            tokenizer=tokenizer,
-            model_args=model_args,
-            tokenizer_args=tokenizer_args,
-            device=device,
-        )
-
-    return text_emb, context_emb
