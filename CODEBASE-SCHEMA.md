@@ -23,3 +23,22 @@ This file records call relations and module dependencies. It covers the modules 
 `parse_audio_nn` calls `load` and resamples the audio with `torchaudio.functional.resample`.
 `encode_audio_nn` calls `parse_audio_nn`.
 `parse_audio_mfcc` reads audio through librosa.
+
+## Encoders and models
+
+`mamkit.components.encoders` depends on torch, transformers, `mamkit.modules.rnn`, and `mamkit.modules.transformer`.
+
+1. Every encoder reads one sample, which maps `text` and `audio` to their fields, and returns one vector of width `output_dim`.
+2. `TextBiLSTM` and `AudioBiLSTM` call `LSTMStack`. When the sample holds an `input_mask`, they pass its lengths, and `LSTMStack` packs the padded sequences.
+3. `TextTransformer` calls a pretrained model from transformers. `TextPool` averages precomputed token embeddings.
+4. `AudioTransformer` calls `torch.nn.TransformerEncoder` and `PositionalEncoding`.
+5. `CSA` calls `CustomEncoder` and `PositionalEncoding`. `MulTA` calls `MulTA_CrossAttentionBlock` and `PositionalEncoding`.
+6. `Concat` calls each of its encoders on the same sample.
+7. `TextTransformer`, `TextPool`, `AudioTransformer`, `CSA`, and `MulTA` call `masked_mean`.
+
+`mamkit.components.models` depends only on torch.
+
+1. `Classifier` calls its encoder once, or once per side for a pair batch, and then its head.
+2. `Ensemble` calls a text classifier and an audio classifier and mixes their class distributions.
+
+The model classes in `mamkit.models` stay until the legacy configurations that use them are removed.
