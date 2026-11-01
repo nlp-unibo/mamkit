@@ -4,10 +4,16 @@ from typing import Dict, Iterable, List, Optional, Union
 import librosa
 import numpy as np
 import resampy
+import soundfile
 import torch as th
 from skimage.measure import block_reduce
-from torchaudio import load
 from torchaudio.functional import resample
+
+
+def load(path: Path):
+    """Reads an audio file as a float tensor of shape (channels, frames)."""
+    audio, sampling_rate = soundfile.read(path, dtype="float32", always_2d=True)
+    return th.from_numpy(audio.T), sampling_rate
 
 
 def parse_audio_mfcc(

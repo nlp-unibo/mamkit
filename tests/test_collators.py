@@ -1,23 +1,17 @@
 """Collator outputs, including the defects the refactoring removes."""
 
-from collections import OrderedDict
-
 import numpy as np
 import torch as th
 from conftest import BERT, golden
-from torchtext.data.utils import get_tokenizer
-from torchtext.vocab import vocab as build_vocab
 
 from mamkit.data import collators
+from mamkit.utility.text import Vocabulary, basic_english
 
-TOKENIZER = get_tokenizer("basic_english")
+TOKENIZER = basic_english
 
 
 def vocabulary():
-    tokens = ["<pad>", "<unk>", "the", "cat", "sat"]
-    value = build_vocab(OrderedDict((token, 1) for token in tokens))
-    value.set_default_index(value["<unk>"])
-    return value
+    return Vocabulary(["<pad>", "<unk>", "the", "cat", "sat"])
 
 
 def test_text_collator_pads_token_ids():

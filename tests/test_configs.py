@@ -26,7 +26,10 @@ def describe(value):
             "weight": None if weight is None else weight.tolist(),
         }
     if isinstance(value, th.nn.Module):
-        return repr(value)
+        # Newer torch releases add the LayerNorm bias flag to the repr.
+        return repr(value).replace(
+            "elementwise_affine=True, bias=True)", "elementwise_affine=True)"
+        )
     if inspect.isclass(value) or inspect.isfunction(value):
         if value.__name__ == "<lambda>":
             return describe(value())

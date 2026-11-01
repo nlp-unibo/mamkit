@@ -10,8 +10,7 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 ```
 
-MAMKit supports Python 3.10, 3.11, and 3.12.
-The upper bound comes from `torchtext` 0.18, which publishes no wheels for later interpreters.
+MAMKit supports Python 3.10 to 3.13.
 
 Run local CI with `nox`:
 

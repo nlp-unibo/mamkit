@@ -4,10 +4,9 @@ from pathlib import Path
 
 import nox
 
-# torchtext 0.18 publishes wheels up to CPython 3.12.
-PYTHON_VERSIONS = ["3.10", "3.11", "3.12"]
+PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13"]
 LINT_VERSION = "3.12"
-TORCH = ["torch>=2.3.0,<2.4", "torchaudio>=2.3.0,<2.4"]
+TORCH = ["torch>=2.3.0", "torchaudio>=2.3.0"]
 TORCH_CPU_INDEX = "https://download.pytorch.org/whl/cpu"
 
 nox.options.default_venv_backend = "uv|virtualenv"

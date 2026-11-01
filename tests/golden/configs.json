@@ -1442,7 +1442,7 @@
    666
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.BiLSTMConfig:marg:text-only:arc:mancini-et-al-2022": {
   "batch_size": 8,
@@ -1473,7 +1473,7 @@
    15373
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.BiLSTMConfig:mmused-fallacy:text-only:afc:anonymous": {
   "batch_size": 8,
@@ -1506,7 +1506,7 @@
    42
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.BiLSTMConfig:mmused-fallacy:text-only:afd:anonymous": {
   "batch_size": 8,
@@ -1535,7 +1535,7 @@
    42
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.BiLSTMConfig:mmused:text-only:acc:anonymous": {
   "batch_size": 4,
@@ -1563,7 +1563,7 @@
    666
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.BiLSTMConfig:mmused:text-only:acc:mancini-et-al-2022": {
   "batch_size": 4,
@@ -1591,7 +1591,7 @@
    15373
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.BiLSTMConfig:mmused:text-only:asd:anonymous": {
   "batch_size": 4,
@@ -1622,7 +1622,7 @@
    666
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.BiLSTMConfig:mmused:text-only:asd:mancini-et-al-2022": {
   "batch_size": 4,
@@ -1653,7 +1653,7 @@
    15373
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.BiLSTMConfig:ukdebates:text-only:asd:anonymous": {
   "batch_size": 16,
@@ -1684,7 +1684,7 @@
    666
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.BiLSTMConfig:ukdebates:text-only:asd:mancini-et-al-2022": {
   "batch_size": 16,
@@ -1715,7 +1715,7 @@
    15373
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text.TransformerConfig:marg:text-only:arc:anonymous,bert": {
   "batch_size": 8,
@@ -2053,7 +2053,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMMFCCsConfig:mmused-fallacy:text-audio:afc:anonymous": {
   "audio_dropout_rate": 0.0,
@@ -2099,7 +2099,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMMFCCsConfig:mmused-fallacy:text-audio:afd:anonymous": {
   "audio_dropout_rate": 0.0,
@@ -2141,7 +2141,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMMFCCsConfig:mmused:text-audio:acc:anonymous": {
   "audio_dropout_rate": 0.0,
@@ -2182,7 +2182,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMMFCCsConfig:mmused:text-audio:asd:anonymous": {
   "audio_dropout_rate": 0.0,
@@ -2226,7 +2226,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMMFCCsConfig:ukdebates:text-audio:asd:anonymous": {
   "audio_dropout_rate": 0.0,
@@ -2268,7 +2268,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:marg:text-audio:arc:anonymous": {
   "aggregate": false,
@@ -2312,7 +2312,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:marg:text-audio:arc:anonymous,hubert": {
   "aggregate": false,
@@ -2356,7 +2356,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:marg:text-audio:arc:anonymous,wavlm": {
   "aggregate": false,
@@ -2400,7 +2400,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous": {
   "aggregate": false,
@@ -2445,7 +2445,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,hubert": {
   "aggregate": false,
@@ -2490,7 +2490,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:mmused-fallacy:text-audio:afc:anonymous,wavlm": {
   "aggregate": false,
@@ -2535,7 +2535,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:mmused:text-audio:acc:anonymous": {
   "aggregate": false,
@@ -2575,7 +2575,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:mmused:text-audio:acc:anonymous,hubert": {
   "aggregate": false,
@@ -2615,7 +2615,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:mmused:text-audio:acc:anonymous,wavlm": {
   "aggregate": false,
@@ -2655,7 +2655,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:mmused:text-audio:asd:anonymous": {
   "aggregate": false,
@@ -2698,7 +2698,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:mmused:text-audio:asd:anonymous,hubert": {
   "aggregate": false,
@@ -2741,7 +2741,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:mmused:text-audio:asd:anonymous,wavlm": {
   "aggregate": false,
@@ -2784,7 +2784,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:ukdebates:text-audio:asd:anonymous": {
   "aggregate": false,
@@ -2827,7 +2827,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:ukdebates:text-audio:asd:anonymous,hubert": {
   "aggregate": false,
@@ -2870,7 +2870,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.BiLSTMTransformerConfig:ukdebates:text-audio:asd:anonymous,wavlm": {
   "aggregate": false,
@@ -2913,7 +2913,7 @@
    32
   ],
   "tokenization_args": null,
-  "tokenizer": "torchtext.data.utils._basic_english_normalize"
+  "tokenizer": "mamkit.utility.text.basic_english"
  },
  "text_audio.CSAConfig:marg:text-audio:arc:anonymous": {
   "aggregate": false,

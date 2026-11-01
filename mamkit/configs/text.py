@@ -1,8 +1,8 @@
 import torch as th
-from torchtext.data.utils import get_tokenizer
 
 from mamkit.configs.base import BaseConfig, ConfigKey
 from mamkit.data.datasets import InputMode
+from mamkit.utility.text import basic_english
 
 
 class BiLSTMConfig(BaseConfig):
@@ -105,7 +105,7 @@ class BiLSTMConfig(BaseConfig):
             optimizer=th.optim.Adam,
             optimizer_args={"lr": 0.0001, "weight_decay": 0.0005},
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.82478632, 1.26973684])
             ),
@@ -125,7 +125,7 @@ class BiLSTMConfig(BaseConfig):
             dropout_rate=0.5,
             embedding_dim=200,
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             num_classes=2,
             seeds=[15371, 15372, 15373],
             batch_size=16,
@@ -144,7 +144,7 @@ class BiLSTMConfig(BaseConfig):
             embedding_dim=100,
             embedding_model="glove.6B.100d",
             lstm_weights=[128],
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             optimizer=th.optim.Adam,
             optimizer_args={"lr": 0.0002, "weight_decay": 0.0001},
             num_classes=2,
@@ -168,7 +168,7 @@ class BiLSTMConfig(BaseConfig):
             optimizer=th.optim.Adam,
             optimizer_args={"lr": 0.0002, "weight_decay": 0.0001},
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])
             ),
@@ -186,7 +186,7 @@ class BiLSTMConfig(BaseConfig):
             embedding_dim=100,
             embedding_model="glove.6B.100d",
             lstm_weights=[64, 64],
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             optimizer=th.optim.Adam,
             optimizer_args={"lr": 0.0002, "weight_decay": 0.0001},
             num_classes=2,
@@ -210,7 +210,7 @@ class BiLSTMConfig(BaseConfig):
             optimizer=th.optim.Adam,
             optimizer_args={"lr": 0.0002, "weight_decay": 0.0001},
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([2.15385234, 0.65116223])
             ),
@@ -228,7 +228,7 @@ class BiLSTMConfig(BaseConfig):
             embedding_dim=100,
             embedding_model="glove.6B.100d",
             lstm_weights=[64, 32],
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             optimizer=th.optim.Adam,
             optimizer_args={"lr": 0.001, "weight_decay": 0.0005},
             num_classes=2,
@@ -249,7 +249,7 @@ class BiLSTMConfig(BaseConfig):
             optimizer=th.optim.Adam,
             optimizer_args={"lr": 0.0002, "weight_decay": 0.0001},
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             batch_size=4,
             num_classes=2,
         )
@@ -267,7 +267,7 @@ class BiLSTMConfig(BaseConfig):
             optimizer=th.optim.Adam,
             optimizer_args={"lr": 0.0002, "weight_decay": 0.0001},
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor(
                     [
@@ -297,7 +297,7 @@ class BiLSTMConfig(BaseConfig):
             optimizer=th.optim.Adam,
             optimizer_args={"lr": 0.0002, "weight_decay": 0.0001},
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.53858521, 6.97916667])
             ),

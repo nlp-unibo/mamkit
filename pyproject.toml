@@ -19,26 +19,28 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-# torchtext 0.18 publishes wheels up to CPython 3.12 and binds torch 2.3.
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10"
 dependencies = [
     "httpx>=0.28.1",
     "librosa>=0.9.1",
     "lightning>=2.5.1",
     "nltk>=3.9.1",
-    "numpy>=1.26.4,<2",
+    "numpy>=1.26.4",
     "pandas>=2.2.2",
     "pydub>=0.25.1",
+    # pydub imports audioop, which Python 3.13 removed from the standard library.
+    "audioop-lts>=0.2.2; python_version >= '3.13'",
     "resampy>=0.4.3",
     "scikit-image>=0.19.2",
     "simplejson>=3.20.1",
-    "torch>=2.3.0,<2.4",
-    "torchaudio>=2.3.0,<2.4",
+    "soundfile>=0.12.1",
+    "torch>=2.3.0",
+    "torchaudio>=2.3.0",
     "torchmetrics>=1.4.1",
-    "torchtext==0.18.0",
     "tqdm>=4.66.5",
     "transformers~=4.48.0",
     "yt_dlp>=2025.2.19",
@@ -55,7 +57,6 @@ dev = [
     "nox>=2024.3.2",
     "pytest>=7.0.0",
     "pytest-cov>=5.0",
-    "soundfile>=0.12.1",
     "ruff>=0.15.20",
 ]
 docs = [
