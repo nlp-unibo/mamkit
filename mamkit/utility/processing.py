@@ -85,7 +85,8 @@ def encode_audio_mfcc(
     if isinstance(audio_input, Path) and not audio_input.exists():
         return np.array([0.0])
 
-    input_hash = hash(
+    # A string key, because hash() of a string changes between processes.
+    input_hash = (
         audio_input.as_posix()
         if isinstance(audio_input, Path)
         else "--".join(sorted([item.as_posix() for item in audio_input]))
