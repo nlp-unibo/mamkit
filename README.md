@@ -14,24 +14,19 @@ A Comprehensive Multimodal Argument Mining Toolkit.
 
 
 
-## Table of Contents 
+## Table of Contents
 - [Introduction](#introduction)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Data](#data)
-    - [Load a Dataset](#load-a-dataset)
-    - [Add a New Dataset](#add-a-new-dataset)
-  - [Modelling](#modelling)
-    - [Load a Model](#load-a-model)
-    - [Custom Model Definition](#custom-model-definition)
-    
-  - [Training](#training)
-  - [Benchmarking](#benchmarking)
-- [Structure](#structure)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [Contact Us](#contact-us)
-- [Citation](#citation)
+- [Installation](#-installation)
+- [Usage](#%EF%B8%8F-usage)
+  - [Run a registered experiment](#run-a-registered-experiment)
+  - [Run an experiment from Python](#run-an-experiment-from-python)
+  - [Select experiments by tag](#select-experiments-by-tag)
+  - [Add a dataset or a model](#add-a-dataset-or-a-model)
+- [Structure](#-structure)
+- [Documentation](#-website-and-documentation)
+- [Contributing](#-contributing)
+- [Contact Us](#-contact-us)
+- [Citation](#-citation)
 
 ## Introduction
 MAMKit is an open-source, publicly available PyTorch toolkit designed to access and develop 
@@ -54,7 +49,7 @@ processing capabilities, organized in 5 main components.
 
 | **Model**  | **Text Encoding** | **Audio Encoding**                          | **Fusion**   |
 |------------|-------------------|---------------------------------------------|--------------|
-| BiLSTM     | GloVe + BiLSTM    | (Wav2Vec2 &or; MFCCs) + BiLSTM                | Conat-Late   |
+| BiLSTM     | GloVe + BiLSTM    | (Wav2Vec2 &or; MFCCs) + BiLSTM                | Concat-Late  |
 | MM-BERT    | BERT              | (Wav2Vec2 &or; HuBERT &or; WavLM) + BiLSTM      | Concat-Late  |
 | MM-RoBERTa | RoBERTa           | (Wav2Vec2 &or; HuBERT &or; WavLM) + BiLSTM      | Concat-Late  |
 | CSA        | BERT              | (Wav2Vec2 &or; HuBERT &or; WavLM) + Transformer | Concat-Early |
@@ -108,169 +103,93 @@ import mamkit
 
 
 ## ⚙️ Usage
-### Data 
-MAMKit provides a modular interface for defining datasets or allowing users to load datasets from the literature. 
+MAMKit is built on [Cinnamon](https://nlp.unibo.it/cinnamon/).
+Each corpus, split strategy, featurizer, model, and metric is a component with a registered configuration.
+Each experiment of the paper is a registered task that combines them.
+A task trains a fresh model on every split of its corpus, once per seed, and reports the mean and standard deviation of every metric.
 
-#### Load a Dataset
-In the example that follows, illustrates how to load a dataset.
-In this case, a dataset is loaded using the `MMUSED` class from `mamkit.data.datasets`, which extends the `Loader` interface and implements specific functionalities for data loading and retrieval.
-Users can specify task and input mode (`text-only`, `audio-only`, or `text-audio`) when loading the data, with options to use default splits or load splits from previous works. The example uses splits from [Mancini et al. (2022)](https://aclanthology.org/2022.argmining-1.15).
+### Run a registered experiment
+The `cmn-run` command lists the registered tasks, asks which ones to run, and runs them.
+It needs the `cli` extra of Cinnamon:
 
-The `get_splits` method of the `loader` returns data splits in the form of a `data.datasets.SplitInfo`. The latter wraps split-specific data, each implementing PyTorch's `Dataset` interface and compliant to the specified input modality (i.e., `text-only`).
-
-
-
-```python
-from mamkit.data.datasets import UKDebates, InputMode
-
-loader = UKDebates(
-          task_name='asd',
-          input_mode=InputMode.TEXT_ONLY,
-          base_data_path=base_data_path)
-
-
-split_info = loader.get_splits('mancini-et-al-2022')
-```
-The `Loader` interface also allows users to integrate methods defining custom splits as follows:
-
-```python
-from mamkit.data.datasets import SplitInfo
-
-def custom_splits(self) -> List[SplitInfo]:
-    train_df = self.data.iloc[:50]
-    val_df = self.data.iloc[50:100]
-    test_df = self.data.iloc[100:]
-    fold_info = self.build_info_from_splits(train_df=...)
-    return [fold_info]
-              
-loader.add_splits(method=custom_splits,
-                  key='custom')
-
-split_info = loader.get_splits('custom')
+```bash
+pip install "cinnamon-core[cli]"
 ```
 
-#### Add a New Dataset
-To add a new dataset, users need to create a new class that extends the `Loader` interface and implements the required functionalities for data loading and retrieval.
-The new class should be placed in the `mamkit.data.datasets` module.
+From a clone of the repository, point `cmn-run` to the package directory:
 
-### Modelling
-The toolkit provides a modular interface for defining models, allowing users to compose models from pre-defined components or define custom models.
-In particular, MAMkit offers a simple method for both defining custom models and leveraging models from the literature. 
-
-#### Load a Model
-The following example demonstrates how to instantiate a model with a configuration found in the literature.
-This configuration is identified by a key, `ConfigKey`, containing all the defining information.
-The key is used to fetch the precise configuration of the model from the `configs` package.
-Subsequently, the model is retrieved from the `models` package and configured with the specific parameters outlined in the configuration.
-```python
-from mamkit.configs.base import ConfigKey
-from mamkit.configs.text import TransformerConfig
-from mamkit.data.datasets import InputMode
-
-config_key = ConfigKey(
-              dataset='mmused', 
-              task_name='asd',
-              input_mode=InputMode.TEXT_ONLY,
-              tags={'mancini-et-al-2022'})
-
-config = TransformerConfig.from_config(
-                           key=config_key)
-    
-model = Transformer(
-         model_card=config.model_card,
-         dropout_rate=config.dropout_rate
-         ...)
+```bash
+cmn-run -dir mamkit
 ```
 
-#### Custom Model Definition 
-The example below illustrates that defining a custom model is straightforward. It entails creating the model within the `models` package, specifically by extending either the `AudioOnlyModel`, `TextOnlyModel`, or `TextAudioModel` classes in the `models.audio`, `models.text`, or `models.text_audio` modules, respectively, depending on the input modality handled by the model.
-```python
-class Transformer(TextOnlyModel):
+From a PyPI installation, point it to the installed package:
 
-    def __init__(
-            self,
-            model_card,
-            head,
-            dropout_rate=0.0,
-            is_transformer_trainable: bool = False,
-    ): ...
-
+```bash
+cmn-run -dir "$(python -c 'import mamkit, os; print(os.path.dirname(mamkit.__file__))')"
 ```
 
-```python
-from mamkit.models.text import Transformer
+The command asks for a namespace, a name, and tags.
+Select the `task` name, then add tags until the list holds the experiments to run.
+Each task writes `results.json` under its `save_path`, which is relative to the working directory.
+For example, the BiLSTM of Mancini et al. (2022) on UKDebates writes to `results/ukdebates/asd/text-only/bilstm/mancini-et-al-2022`.
+On first use, each corpus is downloaded into a folder of the working directory, such as `UKDebates/`.
 
-model = Transformer(
-          model_card='bert-base-uncased',
-          dropout_rate=0.1, ...)
-```
-
-
-### Training
-Our models are designed to be encapsulated into a PyTorch `LightningModule`, which can be trained using PyTorch Lightning's `Trainer` class.
-The following example demonstrates how to wrap and train a model using PyTorch Lightning. 
+### Run an experiment from Python
+A task can also be built and run from a script:
 
 ```python
-from mamkit.utility.model import to_lighting_model
-import lightning
+from pathlib import Path
 
-model = to_lighting_model(model=model, 
-        num_classes=config.num_classes,
-        loss_function=...,
-        optimizer_class=...)
+import mamkit
+from cinnamon.registry import RegistrationKey, Registry
 
-trainer = lightning.Trainer(max_epochs=100,
-                            accelerator='gpu',
-                            ...)
-trainer.fit(model,
-            train_dataloaders=train_dataloader,
-            val_dataloaders=val_dataloader)
+Registry.build(directory=Path(mamkit.__file__).parent)
+key = RegistrationKey(
+    name="task",
+    tags={"ukdebates", "asd", "text-only", "bilstm", "mancini-et-al-2022"},
+    namespace="mamkit",
+)
+results = Registry.from_key(key).run()
+print(results["test"])
 ```
 
-### Benchmarking
-The `mamkit.configs` package simplifies reproducing literature results in a structured manner. 
-Upon loading the dataset, experiment-specific configurations can be easily retrieved via a configuration key.
-This enables instantiating a processor using the same features processor employed in the experiment. 
+`Registry.retrieve_configuration(key)` returns the configuration without building the task, so its fields can be inspected or changed first.
 
-In the example below, we adopt a configuration akin to [Mancini et al. (2022)](https://aclanthology.org/2022.argmining-1.15), employing a BiLSTM model with audio encoded with MFCCs features. Hence, we define a `MFCCExtractor` processor using configuration parameters.
+### Select experiments by tag
+Every task key has the name `task` and the namespace `mamkit`.
+Its tags name the corpus, the task, the input mode, the model family, and the source of the configuration:
 
-```python
-from mamkit.configs.audio import BiLSTMMFCCsConfig
-from mamkit.configs.base import ConfigKey
-from mamkit.data.datasets import UKDebates, InputMode
-from mamkit.data.processing import MFCCExtractor, UnimodalProcessor
-from mamkit.models.audio import BiLSTM
+| **Field**      | **Tags**                                                                                                         |
+|----------------|------------------------------------------------------------------------------------------------------------------|
+| Corpus         | `ukdebates`, `marg`, `mmused`, `mmused-fallacy`                                                                   |
+| Task           | `asd`, `arc`, `acc`, `afc`, `afd`                                                                                 |
+| Input mode     | `text-only`, `audio-only`, `text-audio`                                                                           |
+| Model family   | `bilstm`, `bilstm-mfcc`, `bilstm-transformer`, `transformer`, `transformer-encoder`, `mmtransformer`, `csa`, `ensemble`, `multa` |
+| Text model     | `bert`, `roberta`                                                                                                 |
+| Source         | `mancini-et-al-2022`, `anonymous`                                                                                 |
 
-loader = UKDebates(task_name='asd',
-           input_mode=InputMode.AUDIO_ONLY)
+Tasks that encode audio with a pretrained model come in one variant per model.
+The variant adds a tag such as `audio.model_card=facebook/hubert-base-ls960`.
+Without that tag, a task uses the card in its registration.
+That card is `facebook/wav2vec2-base-960h`, except for the two AFD tasks that use WavLM.
 
-config = BiLSTMMFCCsConfig.from_config(
-                key=ConfigKey(dataset='ukdebates',
-                input_mode=InputMode.AUDIO_ONLY,
-                task_name='asd',
-                tags='mancini-et-al-2022'))
+### Add a dataset or a model
+Components live in `mamkit/components`, and their configurations live in `mamkit/configurations`.
+A new corpus subclasses `Loader` in `mamkit/components/loaders.py`.
+A new encoder is a PyTorch module that `Classifier` wraps with a classification head.
+A new experiment registers a configuration for each new component and a task that names them by key.
+The [Cinnamon documentation](https://nlp.unibo.it/cinnamon/) describes configurations, registrations, and external project directories.
 
-
-for split_info in loader.get_splits(
-                         key='mancini-et-al-2022'):
-    processor = 
-        UnimodalProcessor(
-            features_processor=MFCCExtractor(
-                mfccs=config.mfccs, ...))
-
-    split_info.train = processor(split_info.train)
-    ...
-    model = BiLSTM(embedding_dim=
-                    config.embedding_dim, ...)
-```
+Run `cmn-check -dir mamkit --deep` after editing the registrations.
+It reports unresolved keys and constructor arguments that do not match their configuration.
 
 ## 🧠 Structure
-The toolkit is organized into five main components: `configs`, `data`, `models`,  `modules` and `utility`. 
-In addition to that, the toolkit provides a `demos` directory for running all the experiments presented in the paper.
-The figure below illustrates the toolkit's structure.
+The `mamkit` package holds four subpackages:
 
-![Toolkit Structure](figures/mamkit2.png)
-
+1. `components` holds the loaders, split strategies, featurizers, encoders, models, the Lightning module, and the task.
+2. `configurations` holds the configuration classes and every registration, including the experiments of the paper under `configurations/experiments`.
+3. `modules` holds the recurrent and attention layers that the encoders use.
+4. `utility` holds downloads, audio and text processing, and metrics.
 
 ## 📚 Website and Documentation 
 The documentation is available [here](https://nlp-unibo.github.io/mamkit/mamkit.html).
@@ -278,13 +197,14 @@ The documentation is available [here](https://nlp-unibo.github.io/mamkit/mamkit.
 The website is available [here](https://nlp-unibo.github.io/mamkit/).
 
 Our website provides a comprehensive overview of the toolkit, including installation instructions, usage examples, and a detailed description of the toolkit's components.
-Moreover, the website provides a detailed description of the datasets, tasks, and models available in the toolkit, together with a leaderboard of the results obtained on the datasets with the current models.
+The website also describes the datasets, tasks, and models of the toolkit.
+Its leaderboard reports the results of the current models on each dataset.
 
 ## 🤝 Contributing 
 We welcome contributions to MAMKit!  Please refer to the [contributing guidelines](https://nlp-unibo.github.io/mamkit/contribute.html) for more information.
 
 ## 📧 Contact Us
-For any questions or suggestions, don't hesitate to contact  us: [Eleonora Mancini](mailto:e.mancini@unibo.it), [Federico Ruggeri](mailto:federico.ruggeri6@unibo.it).
+For questions or suggestions, contact us: [Eleonora Mancini](mailto:e.mancini@unibo.it), [Federico Ruggeri](mailto:federico.ruggeri6@unibo.it).
 
 ## 📖 Citation
 If you use MAMKit in your research, please cite the following paper:

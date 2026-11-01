@@ -169,3 +169,6 @@ mmused_fallacy_afc.sh
 ukdebates.sh
 mamkit.egg-info
 .nox/
+checkpoints/
+.DS_Store
+mamkit/registrations/

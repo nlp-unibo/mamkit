@@ -8,8 +8,6 @@ from conftest import BERT, HUBERT, WAV2VEC, stored, tensors
 from mamkit.components import encoders, features
 from mamkit.components.datasets import MAMDataset
 from mamkit.components.models import Classifier
-from mamkit.data import collators, processing
-from mamkit.utility.text import basic_english
 
 
 def same(actual, name, key=None):
@@ -89,16 +87,15 @@ def test_tokenized_text_matches_golden():
 TEXTS = ["The cat sat", "a cat", "the dog"]
 
 
-def test_vocabulary_text_matches_vocab_builder_and_text_collator():
-    old = processing.VocabBuilder(tokenizer=basic_english, embedding_dim=4)
-    old.fit(inputs=TEXTS[:2], context=TEXTS[2:])
+def test_vocabulary_text_counts_context_and_pads_missing_texts():
     new = features.VocabularyText()
     new.fit(TEXTS[:2], TEXTS[2:])
-    assert new.vocabulary.get_itos() == old.vocab.get_itos()
+    # Recorded from the removed VocabBuilder: frequency first, ties sorted.
+    itos = ["<pad>", "<unk>", "cat", "the", "a", "dog", "sat"]
+    assert new.vocabulary.get_itos() == itos
 
     output = new.collate(TEXTS[:2] + [None])
-    collator = collators.TextCollator(tokenizer=basic_english, vocab=old.vocab)
-    assert th.equal(output["inputs"], collator(inputs=TEXTS[:2] + [None])["inputs"])
+    assert output["inputs"].tolist() == [[3, 2, 6], [4, 2, 0], [0, 0, 0]]
     assert output["input_mask"].tolist() == [[1, 1, 1], [1, 1, 0], [1, 0, 0]]
     assert new.model_inputs() == {"vocab_size": 7, "embedding_matrix": None}
 

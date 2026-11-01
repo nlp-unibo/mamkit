@@ -2,6 +2,11 @@
 
 Leaderboard
 *********************************************
+
+The values below are the ones reported in the MAMKit paper.
+The Cinnamon refactoring fixes defects that change some of them, and it reports macro F1 on MM-USED and MM-USED-fallacy.
+The affected experiments are being rerun, as tracked in `issue #18 <https://github.com/nlp-unibo/mamkit/issues/18>`_.
+
 Tasks:
    - **ASD**: Argumentative Stance Detection
    - **ARC**: Argumentative Relation Classification
@@ -194,7 +199,7 @@ Tasks:
      - .010\ :sub:`± .004`
      - .822\ :sub:`± .007`
      - .681\ :sub:`± .003`
-     - .611\ :sub:`± .107
+     - .611\ :sub:`± .107`
 
 
 

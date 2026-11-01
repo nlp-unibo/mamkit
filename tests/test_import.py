@@ -18,7 +18,7 @@ def test_module_imports(name: str) -> None:
 
 
 def test_modules_are_discovered() -> None:
-    assert "mamkit.data.datasets" in MODULES
+    assert "mamkit.components.tasks" in MODULES
 
 
 def test_transformers_uses_torch() -> None:

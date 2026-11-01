@@ -17,7 +17,7 @@ Run local CI with `nox`:
 | Command | Check |
 |---|---|
 | `nox` | Ruff and tests |
-| `nox -s tests` | Tests with a 77% branch-coverage gate, then `cmn-check --deep` on the registrations, on every supported interpreter found locally |
+| `nox -s tests` | Tests with a 93% branch-coverage gate, then `cmn-check --deep` on the registrations, on every supported interpreter found locally |
 | `nox -s docs` | Sphinx build |
 | `nox -s package` | Wheel and sdist build, metadata check, and wheel import |
 
@@ -27,9 +27,10 @@ No check needs a GPU.
 ## Golden files
 
 `tests/golden/` holds outputs recorded from the code before the Cinnamon refactoring.
+That code has been removed, so the golden files are fixed references.
 Model files also hold the weights and inputs, so a rewritten model can load the same weights under its own parameter names.
-`tests/golden/configs.json` describes every configuration as data.
-Re-record a golden file only for an intended change of behavior, with `MAMKIT_RECORD=1 pytest <test>`, and state the change in the pull request.
+`tests/golden/configs.json` describes every legacy experiment configuration as data, and `tests/test_registrations.py` compares each registered task with it.
+An intended change of behavior updates the test that reads the golden file, and the pull request states the change.
 
 The tests download small random-weight models from the Hugging Face Hub on their first run.
 

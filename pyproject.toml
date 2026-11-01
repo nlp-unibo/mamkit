@@ -81,12 +81,3 @@ lint.select = ["E", "F", "I", "W"]
 [tool.coverage.run]
 branch = true
 source = ["mamkit"]
-
-[tool.ruff.lint.per-file-ignores]
-# ponytail: long docstrings and data tables in modules the Cinnamon refactoring
-# replaces; delete each entry when its module is rewritten.
-"demos/*" = ["E501"]
-"mamkit/data/collators.py" = ["E501"]
-"mamkit/data/datasets.py" = ["E501"]
-"mamkit/data/processing.py" = ["E501"]
-"mamkit/models/text_audio.py" = ["E501"]
