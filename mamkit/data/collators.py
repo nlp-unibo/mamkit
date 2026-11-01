@@ -327,8 +327,8 @@ class TextCollator(CollatorComponent):
     def __init__(self, tokenizer, vocab):
         """
         Args:
-            tokenizer: any torchtext tokenizer
-            vocab: torchtext vocab
+            tokenizer: a function from a text to its tokens
+            vocab: a mamkit.utility.text.Vocabulary
         """
 
         self.tokenizer = tokenizer
@@ -362,8 +362,8 @@ class PairTextCollator(PairCollatorComponent):
     def __init__(self, tokenizer, vocab):
         """
         Args:
-            tokenizer: any torchtext tokenizer
-            vocab: torchtext vocab
+            tokenizer: a function from a text to its tokens
+            vocab: a mamkit.utility.text.Vocabulary
         """
 
         self.tokenizer = tokenizer

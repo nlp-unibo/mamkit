@@ -4,7 +4,6 @@ import numpy as np
 import pytest
 import torch as th
 from conftest import BERT, HUBERT, WAV2VEC, golden
-from torchtext.data.utils import get_tokenizer
 
 from mamkit.data import processing
 from mamkit.data.datasets import (
@@ -14,8 +13,9 @@ from mamkit.data.datasets import (
     UnimodalDataset,
 )
 from mamkit.utility.processing import parse_audio_nn
+from mamkit.utility.text import basic_english
 
-TOKENIZER = get_tokenizer("basic_english")
+TOKENIZER = basic_english
 
 
 def vocabulary_builder(**tokenization_args):

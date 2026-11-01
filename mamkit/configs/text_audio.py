@@ -1,9 +1,9 @@
 import torch as th
-from torchtext.data.utils import get_tokenizer
 
 from mamkit.configs.base import BaseConfig, ConfigKey
 from mamkit.data.datasets import InputMode
 from mamkit.modules.transformer import CustomEncoder, PositionalEncoding
+from mamkit.utility.text import basic_english
 
 
 class BiLSTMMFCCsConfig(BaseConfig):
@@ -99,7 +99,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             optimizer_args={"lr": 0.0001, "weight_decay": 0.0005},
             sampling_rate=16000,
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.82478632, 1.26973684])
             ),
@@ -125,7 +125,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             text_dropout_rate=0.0,
             audio_dropout_rate=0.0,
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             audio_lstm_weights=[64, 32],
             mfccs=25,
             normalize=True,
@@ -146,7 +146,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             text_dropout_rate=0.0,
             audio_dropout_rate=0.0,
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             audio_lstm_weights=[64, 32],
             sampling_rate=16000,
             head=lambda: th.nn.Sequential(
@@ -174,7 +174,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             text_dropout_rate=0.0,
             audio_dropout_rate=0.0,
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             audio_lstm_weights=[64, 32],
             sampling_rate=16000,
             head=lambda: th.nn.Sequential(
@@ -199,7 +199,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             text_dropout_rate=0.0,
             audio_dropout_rate=0.0,
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             audio_lstm_weights=[64, 32],
             sampling_rate=16000,
             head=lambda: th.nn.Sequential(
@@ -236,7 +236,7 @@ class BiLSTMMFCCsConfig(BaseConfig):
             text_dropout_rate=0.0,
             audio_dropout_rate=0.0,
             embedding_model="glove.6B.200d",
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             audio_lstm_weights=[64, 32],
             sampling_rate=16000,
             head=lambda: th.nn.Sequential(
@@ -413,7 +413,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.82478632, 1.26973684])
             ),
@@ -442,7 +442,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.82478632, 1.26973684])
             ),
@@ -471,7 +471,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.82478632, 1.26973684])
             ),
@@ -500,7 +500,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([2.15385234, 0.65116223])
             ),
@@ -529,7 +529,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([2.15385234, 0.65116223])
             ),
@@ -558,7 +558,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([2.15385234, 0.65116223])
             ),
@@ -587,7 +587,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             batch_size=4,
             num_classes=2,
         )
@@ -613,7 +613,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             batch_size=4,
             num_classes=2,
         )
@@ -639,7 +639,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             batch_size=4,
             num_classes=2,
         )
@@ -665,7 +665,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])
             ),
@@ -694,7 +694,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])
             ),
@@ -723,7 +723,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=None,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor([0.35685072, 6.16919192, 28.08045977])
             ),
@@ -752,7 +752,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor(
                     [
@@ -790,7 +790,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor(
                     [
@@ -828,7 +828,7 @@ class BiLSTMTransformerConfig(BaseConfig):
             aggregate=False,
             downsampling_factor=1 / 5,
             audio_model_args={},
-            tokenizer=get_tokenizer(tokenizer="basic_english"),
+            tokenizer=basic_english,
             loss_function=lambda: th.nn.CrossEntropyLoss(
                 weight=th.Tensor(
                     [

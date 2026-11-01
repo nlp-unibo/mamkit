@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Union
 
 import torch as th
-from torchtext.vocab import build_vocab_from_iterator, pretrained_aliases
 from tqdm import tqdm
 from transformers import AutoFeatureExtractor, AutoModel, AutoProcessor, AutoTokenizer
 
@@ -20,6 +19,7 @@ from mamkit.utility.processing import (
     encode_audio_and_context_nn,
     encode_text_and_context_nn,
 )
+from mamkit.utility.text import build_vocabulary, glove_vectors
 
 
 class MAMProcessor:
@@ -363,19 +363,15 @@ class VocabBuilder(ProcessorComponent):
     ):
         """
         Args:
-            tokenizer: any torchtext tokenizer
+            tokenizer: a function from a text to its tokens
             embedding_dim: embedding dimension for pre-trained vocabs
-            embedding_model: pre-trained embedding model, if any
+            embedding_model: name of the GloVe vectors, such as glove.6B.200d, if any
             tokenization_args: any additional tokenizer specific arguments, if any
         """
 
         self.tokenizer = tokenizer
         self.embedding_dim = embedding_dim
-        self.embedding_model = (
-            pretrained_aliases[embedding_model]()
-            if embedding_model is not None
-            else None
-        )
+        self.embedding_model = embedding_model
         self.vocab = None
         self.tokenization_args = (
             tokenization_args if tokenization_args is not None else {}
@@ -393,24 +389,20 @@ class VocabBuilder(ProcessorComponent):
 
         logging.info("Building vocabulary...")
         vocab_input = list(inputs) + (list(context) if context is not None else [])
-        self.vocab = build_vocab_from_iterator(
-            iterator=iter([self.tokenizer(text) for text in vocab_input]),
-            specials=["<pad>", "<unk>"],
-            special_first=True,
-            **self.tokenization_args,
+        self.vocab = build_vocabulary(
+            vocab_input, self.tokenizer, **self.tokenization_args
         )
-        self.vocab.set_default_index(self.vocab["<unk>"])
 
         if self.embedding_model is not None:
-            self.embedding_matrix = self.embedding_model.get_vecs_by_tokens(
-                self.vocab.get_itos()
+            self.embedding_matrix = glove_vectors(
+                self.embedding_model, self.vocab.get_itos()
             )
 
     def __call__(self, inputs: List[str], context: List[str] = None):
         return inputs, context
 
     def clear(self):
-        self.embedding_model = None
+        pass
 
     def reset(self):
         self.embedding_matrix = None
@@ -430,19 +422,15 @@ class PairVocabBuilder(PairProcessorComponent):
     ):
         """
         Args:
-            tokenizer: any torchtext tokenizer
+            tokenizer: a function from a text to its tokens
             embedding_dim: embedding dimension for pre-trained vocabs
-            embedding_model: pre-trained embedding model, if any
+            embedding_model: name of the GloVe vectors, such as glove.6B.200d, if any
             tokenization_args: any additional tokenizer specific arguments, if any
         """
 
         self.tokenizer = tokenizer
         self.embedding_dim = embedding_dim
-        self.embedding_model = (
-            pretrained_aliases[embedding_model]()
-            if embedding_model is not None
-            else None
-        )
+        self.embedding_model = embedding_model
         self.vocab = None
         self.tokenization_args = (
             tokenization_args if tokenization_args is not None else {}
@@ -474,17 +462,13 @@ class PairVocabBuilder(PairProcessorComponent):
         if b_context is not None:
             vocab_input += list(b_context)
 
-        self.vocab = build_vocab_from_iterator(
-            iterator=iter([self.tokenizer(text) for text in vocab_input]),
-            specials=["<pad>", "<unk>"],
-            special_first=True,
-            **self.tokenization_args,
+        self.vocab = build_vocabulary(
+            vocab_input, self.tokenizer, **self.tokenization_args
         )
-        self.vocab.set_default_index(self.vocab["<unk>"])
 
         if self.embedding_model is not None:
-            self.embedding_matrix = self.embedding_model.get_vecs_by_tokens(
-                self.vocab.get_itos()
+            self.embedding_matrix = glove_vectors(
+                self.embedding_model, self.vocab.get_itos()
             )
 
     def __call__(
@@ -497,7 +481,7 @@ class PairVocabBuilder(PairProcessorComponent):
         return a_inputs, b_inputs, a_context, b_context
 
     def clear(self):
-        self.embedding_model = None
+        pass
 
     def reset(self):
         self.embedding_matrix = None

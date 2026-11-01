@@ -68,7 +68,7 @@ processing capabilities, organized in 5 main components.
 ### ⚠️ Prerequisites
 Before installing MAMKit, ensure you have the following:
 
-- **Python 3.10, 3.11, or 3.12** (MAMKit is tested with these versions)
+- **Python 3.10 to 3.13** (MAMKit is tested with these versions)
 - **ffmpeg** (Required for audio processing)  
   You can install it via:
   ```bash
