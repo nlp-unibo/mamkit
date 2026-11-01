@@ -13,17 +13,6 @@ Subpackages
    mamkit.modules
    mamkit.utility
 
-Submodules
-----------
-
-mamkit.version module
----------------------
-
-.. automodule:: mamkit.version
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 

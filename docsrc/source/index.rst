@@ -27,7 +27,7 @@ Prerequisites
 
 Before installing MAMKit, ensure you have the following:
 
-- **Python 3.10** (MAMKit is tested with this version)
+- **Python 3.10, 3.11, or 3.12** (MAMKit is tested with these versions)
 - **FFmpeg** (Required for audio processing)  
 
   You can install it via:
@@ -60,13 +60,13 @@ Install from GitHub
 
 This installation is recommended for users who wish to conduct experiments and customize the toolkit according to their needs.
 
-1. Clone the repository and install the requirements:
+1. Clone the repository and install it in editable mode:
 
    .. code-block:: bash
 
       git clone git@github.com:nlp-unibo/mamkit.git
       cd mamkit
-      pip install -r requirements.txt  
+      pip install -e .  
 
 2. Access MAMKit in your Python code:
 
