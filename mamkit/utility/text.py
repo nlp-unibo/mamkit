@@ -2,6 +2,7 @@
 
 import logging
 import re
+import shutil
 import urllib.request
 import zipfile
 from collections import Counter
@@ -105,8 +106,13 @@ def glove_vectors(
             partial = archive.with_suffix(".part")
             urllib.request.urlretrieve(GLOVE_URL, partial)
             partial.rename(archive)
-        with zipfile.ZipFile(archive) as files:
-            files.extract(path.name, cache)
+        # Extracted under another name and renamed when complete, so an
+        # interrupted extraction never leaves a truncated vector file.
+        partial = path.with_name(path.name + ".part")
+        with zipfile.ZipFile(archive) as files, files.open(path.name) as source:
+            with partial.open("wb") as target:
+                shutil.copyfileobj(source, target)
+        partial.replace(path)
 
     wanted = {token: index for index, token in enumerate(tokens)}
     vectors = None

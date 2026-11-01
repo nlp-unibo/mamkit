@@ -67,7 +67,8 @@ print(results["test"]["f1"])
 {'per_seed_mean': [1.0, 1.0], 'per_seed_std': [0.0, 0.0], 'mean': 1.0, 'std': 0.0}
 ```
 
-For each seed and split, the task builds fresh featurizers and a fresh model, trains with early stopping on the validation loss, and scores the best checkpoint.
+For each seed and split, the task refits its featurizers, builds a fresh model, trains with early stopping on the validation loss, and scores the best checkpoint.
+Features from a pretrained model or MFCCs are computed once per input and shared by every seed and split.
 `per_seed_mean` and `per_seed_std` summarize the splits of each seed, and `mean` and `std` summarize the per-seed means.
 The same results land in `results/results.json`, beside the checkpoints.
 The toy corpus marks each label with a cue word, so a perfect score only shows that the run holds together.

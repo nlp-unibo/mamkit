@@ -9,6 +9,7 @@ from cinnamon.registry import Registry
 
 import mamkit
 from mamkit.components.lightning import MAMKitLightningModel, import_path
+from mamkit.components.tasks import Task
 from mamkit.configurations import keys
 
 
@@ -57,3 +58,17 @@ def test_task_without_validation_trains_for_the_configured_epochs(registry, tmp_
     task.trainer_args = {**task.trainer_args, "max_epochs": 1}
     results = task.run()
     assert results == {"runs": [{"seed": 1, "split": 0}, {"seed": 2, "split": 0}]}
+
+
+def test_task_builds_its_featurizers_once_per_run(registry, tmp_path, monkeypatch):
+    built = []
+    featurizers = Task.featurizers
+    monkeypatch.setattr(
+        Task, "featurizers", lambda self: built.append(1) or featurizers(self)
+    )
+    task = Registry.from_key(keys.TOY_TASK)
+    task.save_path = tmp_path
+    task.seeds = [1, 2]
+    task.trainer_args = {**task.trainer_args, "max_epochs": 1}
+    task.run()
+    assert built == [1]

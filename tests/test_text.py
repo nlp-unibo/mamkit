@@ -7,6 +7,7 @@ import pytest
 from conftest import GOLDEN
 
 from mamkit.components.features import VocabularyText
+from mamkit.utility import text
 from mamkit.utility.text import (
     Vocabulary,
     basic_english,
@@ -69,3 +70,18 @@ def test_vocabulary_text_builds_glove_embedding_matrix(cache, monkeypatch):
     assert featurizer.vocabulary.get_itos() == ["<pad>", "<unk>", "cat", "a", "the"]
     matrix = featurizer.model_inputs()["embedding_matrix"]
     assert matrix.tolist()[2:] == [[3.0, 4.0], [0.0, 0.0], [5.0, 6.0]]
+
+
+def test_glove_vectors_never_leave_a_truncated_file(cache, monkeypatch):
+    def interrupted(source, target):
+        target.write(source.read(4))
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(text.shutil, "copyfileobj", interrupted)
+    with pytest.raises(KeyboardInterrupt):
+        glove_vectors("glove.6B.50d", ["cat"], cache=cache)
+    assert not (cache / "glove.6B.50d.txt").exists()
+
+    monkeypatch.undo()
+    vectors = glove_vectors("glove.6B.50d", ["cat"], cache=cache)
+    assert vectors.tolist() == [[3.0, 4.0]]

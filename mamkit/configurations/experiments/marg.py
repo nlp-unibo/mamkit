@@ -114,6 +114,7 @@ class MArgRegistrations:
             pooling_sizes=None,
             remove_energy=True,
             normalize=True,
+            cache_path="mfccs.pkl",
         )
         return config
 

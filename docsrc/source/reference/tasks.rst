@@ -18,11 +18,12 @@ A task is one experiment from start to finish: a corpus, a split strategy, a fea
 What a run does
 ---------------
 
-``run`` builds the loader and the split strategy once.
+``run`` builds the loader, the split strategy, and the featurizers once.
+The featurizers therefore compute pretrained and MFCC features once, for every seed and split.
 Then, for each seed, in order:
 
 1. Seed Python, NumPy, and PyTorch through Lightning, and compute the splits.
-2. For each split, build fresh featurizers and a fresh model from their keys.
+2. For each split, build a fresh model from its key.
 3. Fit the featurizers on the training set, transform every set, and pass the fitted vocabulary to every module that defines ``load_vocabulary``.
 4. Train with early stopping on the validation loss, with ``patience`` epochs, and keep the checkpoint with the lowest validation loss.
 5. Score that checkpoint on the validation set and on the test set.

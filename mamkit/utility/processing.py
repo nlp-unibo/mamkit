@@ -16,6 +16,22 @@ def load(path: Path):
     return th.from_numpy(audio.T), sampling_rate
 
 
+def check_audio(audio_input: Union[Path, List[Path]]):
+    """Raises ``ValueError`` unless ``audio_input`` names existing audio files."""
+    paths = [audio_input] if isinstance(audio_input, Path) else audio_input
+    if not paths:
+        raise ValueError(f"No audio clip for this sample: {audio_input!r}")
+    missing = [path for path in paths if not Path(path).exists()]
+    if missing:
+        raise ValueError(f"Missing audio clips: {missing}")
+
+
+def check_text(text: str):
+    """Raises ``ValueError`` when ``text`` is missing or blank."""
+    if text is None or not text.strip():
+        raise ValueError(f"Every sample needs a non-empty transcript, not {text!r}")
+
+
 def parse_audio_mfcc(
     audio_input: Union[Path, List[Path]],
     mfccs: int,
@@ -74,27 +90,9 @@ def encode_audio_mfcc(
     pooling_sizes: Optional[Iterable[int]] = None,
     remove_energy: bool = True,
     normalize: bool = True,
-    preloaded_mfccs: Dict = {},
 ):
-    if isinstance(audio_input, list) and not len(audio_input):
-        return np.array([0.0])
-
-    if audio_input is None:
-        return np.array([0.0])
-
-    if isinstance(audio_input, Path) and not audio_input.exists():
-        return np.array([0.0])
-
-    # A string key, because hash() of a string changes between processes.
-    input_hash = (
-        audio_input.as_posix()
-        if isinstance(audio_input, Path)
-        else "--".join(sorted([item.as_posix() for item in audio_input]))
-    )
-    if input_hash in preloaded_mfccs:
-        return preloaded_mfccs[input_hash]
-
-    audio_features = parse_audio_mfcc(
+    check_audio(audio_input)
+    return parse_audio_mfcc(
         audio_input=audio_input,
         mfccs=mfccs,
         normalize=normalize,
@@ -102,9 +100,6 @@ def encode_audio_mfcc(
         remove_energy=remove_energy,
         sampling_rate=sampling_rate,
     )
-    preloaded_mfccs[input_hash] = audio_features
-
-    return audio_features
 
 
 def parse_audio_nn(
@@ -135,15 +130,7 @@ def encode_audio_nn(
     downsampling_factor=None,
     aggregate: bool = False,
 ):
-    if audio_input is None:
-        return th.tensor([0.0], dtype=th.float32)
-
-    if isinstance(audio_input, Path) and not audio_input.exists():
-        return th.tensor([0.0], dtype=th.float32)
-
-    if isinstance(audio_input, list) and not len(audio_input):
-        return th.tensor([0.0], dtype=th.float32)
-
+    check_audio(audio_input)
     audio = parse_audio_nn(audio_input=audio_input, sampling_rate=sampling_rate)
 
     with th.inference_mode():
@@ -186,9 +173,7 @@ def encode_text_nn(
     tokenizer_args: Dict = None,
     model_args: Dict = None,
 ):
-    if text is None or not len(text):
-        return th.tensor([0.0], dtype=th.float32)
-
+    check_text(text)
     tokenized = tokenizer(
         [text], padding=True, return_tensors="pt", **tokenizer_args
     ).to(device)

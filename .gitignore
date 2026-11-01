@@ -172,3 +172,6 @@ mamkit.egg-info
 checkpoints/
 .DS_Store
 mamkit/registrations/
+mfccs.pkl
+results/
+.vector_cache/
