@@ -1,15 +1,18 @@
 import torch as th
-from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
+from torch.nn.utils.rnn import pack_padded_sequence
 
 
 class LSTMStack(th.nn.Module):
-    def __init__(self, input_size, lstm_weigths, return_hidden=True):
+    """A stack of bidirectional LSTMs, one per width in ``lstm_weights``.
+
+    It returns the last hidden states of both directions of the top layer,
+    concatenated, with shape ``[bs, 2 * lstm_weights[-1]]``.
+    """
+
+    def __init__(self, input_size: int, lstm_weights):
         super().__init__()
-
-        self.return_hidden = return_hidden
-
         self.lstm = th.nn.ModuleList()
-        for weight in lstm_weigths:
+        for weight in lstm_weights:
             self.lstm.append(
                 th.nn.LSTM(
                     input_size=input_size,
@@ -30,16 +33,5 @@ class LSTMStack(th.nn.Module):
             )
         for lstm_module in self.lstm:
             inputs, hidden = lstm_module(inputs)
-
-        if self.return_hidden:
-            # [bs, d * 2]
-            last_hidden = hidden[0]
-            return last_hidden.permute(1, 0, 2).reshape(x.shape[0], -1)
-
-        if lengths is not None:
-            inputs, _ = pad_packed_sequence(
-                inputs, batch_first=True, total_length=x.shape[1]
-            )
-
-        # [bs, T, d]
-        return inputs
+        # [bs, d * 2]
+        return hidden[0].permute(1, 0, 2).reshape(x.shape[0], -1)

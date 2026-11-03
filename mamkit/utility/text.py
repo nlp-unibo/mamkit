@@ -3,13 +3,14 @@
 import logging
 import re
 import shutil
-import urllib.request
 import zipfile
 from collections import Counter
 from pathlib import Path
 from typing import Callable, Iterable, List, Union
 
 import torch as th
+
+from mamkit.utility.data import download
 
 # The rules of the basic_english tokenizer in torchtext 0.18, in their order.
 _PATTERNS = [
@@ -103,9 +104,7 @@ def glove_vectors(
         if not archive.exists():
             logging.info(f"Downloading {GLOVE_URL}...")
             cache.mkdir(parents=True, exist_ok=True)
-            partial = archive.with_suffix(".part")
-            urllib.request.urlretrieve(GLOVE_URL, partial)
-            partial.rename(archive)
+            download(GLOVE_URL, archive)
         # Extracted under another name and renamed when complete, so an
         # interrupted extraction never leaves a truncated vector file.
         partial = path.with_name(path.name + ".part")

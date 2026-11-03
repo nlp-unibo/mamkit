@@ -13,18 +13,21 @@ An argument that holds another component also accepts its Cinnamon
 registration key, which ``Registry.from_keys`` builds.
 """
 
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import torch as th
-from cinnamon.registry import Registry
+from cinnamon.registry import RegistrationKey, Registry
 from transformers import AutoModel
 
 from mamkit.modules.rnn import LSTMStack
 from mamkit.modules.transformer import (
     CustomEncoder,
-    MulTA_CrossAttentionBlock,
+    MulTACrossAttentionBlock,
     PositionalEncoding,
 )
+
+#: A child component, or the registration key that builds it.
+Child = Union[RegistrationKey, th.nn.Module]
 
 
 def masked_mean(values: th.Tensor, mask: th.Tensor) -> th.Tensor:
@@ -52,7 +55,7 @@ class TextBiLSTM(th.nn.Module):
         super().__init__()
         self.embedding_dim = embedding_dim
         self.embedding = None
-        self.lstm = LSTMStack(input_size=embedding_dim, lstm_weigths=lstm_weights)
+        self.lstm = LSTMStack(input_size=embedding_dim, lstm_weights=lstm_weights)
         self.dropout = th.nn.Dropout(p=dropout_rate)
         self.output_dim = 2 * lstm_weights[-1]
 
@@ -116,7 +119,7 @@ class AudioBiLSTM(th.nn.Module):
         self, embedding_dim: int, lstm_weights: List[int], dropout_rate: float = 0.0
     ):
         super().__init__()
-        self.lstm = LSTMStack(input_size=embedding_dim, lstm_weigths=lstm_weights)
+        self.lstm = LSTMStack(input_size=embedding_dim, lstm_weights=lstm_weights)
         self.dropout = th.nn.Dropout(p=dropout_rate)
         self.output_dim = 2 * lstm_weights[-1]
 
@@ -207,13 +210,13 @@ class MulTA(th.nn.Module):
     ):
         super().__init__()
         self.text_crossmodal_blocks = th.nn.ModuleList(
-            MulTA_CrossAttentionBlock(
+            MulTACrossAttentionBlock(
                 embedding_dim, ffn_dim, dropout_prob=text_dropout_rate
             )
             for _ in range(n_blocks)
         )
         self.audio_crossmodal_blocks = th.nn.ModuleList(
-            MulTA_CrossAttentionBlock(
+            MulTACrossAttentionBlock(
                 embedding_dim, ffn_dim, dropout_prob=audio_dropout_rate
             )
             for _ in range(n_blocks)
@@ -244,7 +247,7 @@ class MulTA(th.nn.Module):
 class Concat(th.nn.Module):
     """Concatenates the outputs of several encoders on the same sample."""
 
-    def __init__(self, encoders: List[th.nn.Module]):
+    def __init__(self, encoders: List[Child]):
         super().__init__()
         self.encoders = th.nn.ModuleList(Registry.from_keys(encoders))
         self.output_dim = sum(encoder.output_dim for encoder in self.encoders)
