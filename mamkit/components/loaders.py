@@ -124,19 +124,15 @@ def split_sentences(text: str):
     return nltk.sent_tokenize(text)
 
 
-def extract_zenodo_archive(url: str, data_path: Path, inner_name: str):
-    """Downloads a Zenodo record archive and extracts the archive inside it."""
+def extract_zip(url: str, data_path: Path):
+    """Downloads a zip archive into ``data_path`` and extracts it there."""
     logging.info(f"Downloading {url}...")
     data_path.mkdir(parents=True, exist_ok=True)
     archive = data_path.joinpath("data.zip")
     download(url=url, file_path=archive)
     with zipfile.ZipFile(archive) as files:
         files.extractall(data_path)
-    inner = data_path.joinpath(inner_name)
-    with zipfile.ZipFile(inner) as files:
-        files.extractall(data_path)
     archive.unlink()
-    inner.unlink()
 
 
 def trimmed_recording(dialogue_id: str, audio_path: Path, links: pd.DataFrame):
@@ -178,7 +174,7 @@ class UKDebates(Loader):
 
     def download(self, target: Path):
         logging.info(f"Downloading {self.folder_name} data...")
-        archive = target.parent.joinpath(f"{self.folder_name}.tar.gz")
+        archive = target.joinpath(f"{self.folder_name}.tar.gz")
         download(url=self.archive_url, file_path=archive)
         with tarfile.open(archive) as files:
             # The data filter rejects absolute paths and links out of the folder.
@@ -221,7 +217,8 @@ class MMUSED(Loader):
 
     folder_name = "MMUSED"
     tasks = ("asd", "acc")
-    archive_url = "https://zenodo.org/api/records/14938592/files-archive"
+    # Zenodo answers 403 for record archives, so the loaders fetch the file.
+    archive_url = "https://zenodo.org/api/records/14938592/files/MMUSED.zip/content"
 
     def __init__(self, sample_rate: int = 16000, **kwargs):
         super().__init__(**kwargs)
@@ -232,9 +229,7 @@ class MMUSED(Loader):
 
         build_once(
             self.data_path,
-            lambda target: extract_zenodo_archive(
-                self.archive_url, target, "MMUSED.zip"
-            ),
+            lambda target: extract_zip(self.archive_url, target),
         )
         if self.needs_audio:
             build_once(self.clips_path, self.build_clips)
@@ -307,7 +302,9 @@ class MMUSEDFallacy(Loader):
 
     folder_name = "MMUSED-fallacy"
     tasks = ("afc", "afd")
-    archive_url = "https://zenodo.org/api/records/17143462/files-archive"
+    archive_url = (
+        "https://zenodo.org/api/records/17143462/files/MMUSED-fallacy.zip/content"
+    )
 
     def __init__(
         self,
@@ -326,9 +323,7 @@ class MMUSEDFallacy(Loader):
 
         build_once(
             self.data_path,
-            lambda target: extract_zenodo_archive(
-                self.archive_url, target, "MMUSED-fallacy.zip"
-            ),
+            lambda target: extract_zip(self.archive_url, target),
         )
         if self.needs_audio:
             build_once(self.clips_path, self.build_clips)
@@ -475,7 +470,10 @@ class MArg(Loader):
 
     folder_name = "MArg"
     tasks = ("arc",)
-    archive_url = "https://zenodo.org/api/records/5653504/files-archive"
+    archive_url = (
+        "https://zenodo.org/api/records/5653504/files/"
+        "rafamestre/m-arg_multimodal-argumentation-dataset-v1.0.0.zip/content"
+    )
     relations = ("neither", "support", "attack")
 
     def __init__(self, confidence: float, **kwargs):
@@ -773,20 +771,7 @@ class MArg(Loader):
         )
 
     def download(self, target: Path):
-        logging.info("Downloading M-Arg data...")
-        archive = target.joinpath("data.zip")
-        download(url=self.archive_url, file_path=archive)
-        with zipfile.ZipFile(archive, "r") as loaded_zip:
-            loaded_zip.extractall(target)
-        archive.unlink()
-
-        inner = target.joinpath(
-            "rafamestre", "m-arg_multimodal-argumentation-dataset-v1.0.0.zip"
-        )
-        with zipfile.ZipFile(inner, "r") as loaded_zip:
-            loaded_zip.extractall(target)
-        inner.unlink()
-
+        extract_zip(self.archive_url, target)
         source_path = target.joinpath(
             "rafamestre-m-arg_multimodal-argumentation-dataset-851736f"
         )

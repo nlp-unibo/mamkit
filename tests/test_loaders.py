@@ -100,7 +100,7 @@ def test_ukdebates_downloads_and_extracts_its_archive(monkeypatch, tmp_path):
     monkeypatch.setattr(loaders, "download", fake_download)
     data = ukdebates(tmp_path / "root").data
     assert len(data) == 4
-    assert not (tmp_path / "root" / "UKDebates.tar.gz").exists()
+    assert [p.name for p in (tmp_path / "root").iterdir()] == ["UKDebates"]
 
 
 MMUSED_ROWS = pd.DataFrame(
@@ -166,23 +166,20 @@ def test_mmused_cuts_clips_only_when_audio_is_needed(mmused_root, monkeypatch):
     assert not (mmused_root / "MMUSED" / "audio_recordings").exists()
 
 
-def zenodo_archive(inner_name: str, files: dict) -> bytes:
-    """A Zenodo record archive holding one zip archive of ``files``."""
-    inner = io.BytesIO()
-    with zipfile.ZipFile(inner, "w") as archive:
-        for name, content in files.items():
-            archive.writestr(name, content)
-    outer = io.BytesIO()
-    with zipfile.ZipFile(outer, "w") as archive:
-        archive.writestr(inner_name, inner.getvalue())
-    return outer.getvalue()
+def zip_archive(files: dict) -> bytes:
+    """A zip archive of ``files``, as a Zenodo file link serves it."""
+    content = io.BytesIO()
+    with zipfile.ZipFile(content, "w") as archive:
+        for name, data in files.items():
+            archive.writestr(name, data)
+    return content.getvalue()
 
 
 def test_mmused_downloads_its_zenodo_record(monkeypatch, tmp_path):
     pickled = io.BytesIO()
     MMUSED_ROWS.to_pickle(pickled)
-    content = zenodo_archive(
-        "MMUSED.zip", {"dataset.pkl": pickled.getvalue(), "download_links.csv": LINKS}
+    content = zip_archive(
+        {"dataset.pkl": pickled.getvalue(), "download_links.csv": LINKS}
     )
     monkeypatch.setattr(
         loaders, "download", lambda url, file_path: file_path.write_bytes(content)
@@ -456,3 +453,167 @@ def test_split_sentences_downloads_the_nltk_model_once(monkeypatch):
     monkeypatch.setattr(loaders.nltk, "sent_tokenize", lambda text: text.split(". "))
     assert loaders.split_sentences("One. Two") == ["One", "Two"]
     assert downloads == [("punkt_tab",)]
+
+
+# Interrupted builds (#32). Each test fails one build step of a loader, checks
+# that the loader folder does not exist, and checks that a second run completes
+# with the data of an uninterrupted run.
+
+
+def fail_once(monkeypatch, owner, name):
+    """Makes ``owner.name`` do its work and then raise, on its first call only.
+
+    The work is done before the error, so the failed build leaves the files a
+    real interruption would leave, and the retry has to cope with them.
+    """
+    original = getattr(owner, name)
+    calls = []
+
+    def flaky(*args, **kwargs):
+        result = original(*args, **kwargs)
+        calls.append(name)
+        if len(calls) == 1:
+            raise OSError(f"{name} interrupted")
+        return result
+
+    monkeypatch.setattr(owner, name, flaky)
+    return calls
+
+
+def ukdebates_download(source):
+    def fake_download(url, file_path):
+        with tarfile.open(file_path, "w:gz") as archive:
+            archive.add(source / "dataset", arcname="dataset")
+
+    return fake_download
+
+
+@pytest.mark.parametrize(
+    "owner, name",
+    [(loaders, "download"), (tarfile.TarFile, "extractall")],
+    ids=["download", "extraction"],
+)
+def test_ukdebates_recovers_from_an_interrupted_build(
+    monkeypatch, tmp_path, owner, name
+):
+    write_ukdebates(tmp_path / "source")
+    monkeypatch.setattr(loaders, "download", ukdebates_download(tmp_path / "source"))
+    expected = ukdebates(tmp_path / "clean").data
+
+    calls = fail_once(monkeypatch, owner, name)
+    with pytest.raises(OSError, match="interrupted"):
+        ukdebates(tmp_path / "root")
+    # Only the partial folder remains, with the archive inside it.
+    assert [p.name for p in (tmp_path / "root").iterdir()] == ["UKDebates.part"]
+
+    data = ukdebates(tmp_path / "root").data
+    assert len(calls) > 1  # the retry ran the failed step again
+    pd.testing.assert_frame_equal(
+        data.drop(columns="audio"), expected.drop(columns="audio")
+    )
+    assert not (tmp_path / "root" / "UKDebates.part").exists()
+
+
+def mmused_record(rows, links):
+    pickled = io.BytesIO()
+    rows.to_pickle(pickled)
+    content = zip_archive(
+        {"dataset.pkl": pickled.getvalue(), "download_links.csv": links}
+    )
+    return lambda url, file_path: file_path.write_bytes(content)
+
+
+ZENODO_CORPORA = {
+    "MMUSED": (
+        lambda root, mode: mmused(root, mode=mode),
+        lambda: mmused_record(MMUSED_ROWS, LINKS),
+    ),
+    "MMUSED-fallacy": (
+        lambda root, mode: fallacy(root, mode=mode),
+        lambda: mmused_record(FALLACY_ROWS, LINKS.replace("d2;u2;0;0;0;0\n", "")),
+    ),
+}
+
+
+@pytest.mark.parametrize("corpus", sorted(ZENODO_CORPORA))
+@pytest.mark.parametrize(
+    "owner, name",
+    [
+        (loaders, "download"),
+        (zipfile.ZipFile, "extractall"),
+        (loaders, "youtube_download"),
+        (loaders, "export_clip"),
+    ],
+    ids=["download", "extraction", "recordings", "clips"],
+)
+def test_zenodo_corpora_recover_from_an_interrupted_build(
+    monkeypatch, tmp_path, corpus, owner, name
+):
+    build, record = ZENODO_CORPORA[corpus]
+    monkeypatch.setattr(loaders, "download", record())
+    monkeypatch.setattr(loaders, "youtube_download", fake_youtube_download)
+    expected = build(tmp_path / "clean", "audio-only").data
+
+    calls = fail_once(monkeypatch, owner, name)
+    with pytest.raises(OSError, match="interrupted"):
+        build(tmp_path / "root", "audio-only")
+    folder = tmp_path / "root" / corpus
+    clips = folder / "audio_clips"
+    if name in ("youtube_download", "export_clip"):
+        # The corpus is complete, and only its clip folder is missing.
+        assert folder.exists() and not clips.exists()
+    else:
+        assert not folder.exists()
+    partial = folder / "audio_clips.part"
+    kept = {
+        path.relative_to(partial): path.stat().st_mtime_ns
+        for path in partial.glob("*/*.wav")
+    }
+    if name == "export_clip":
+        assert kept, "the failed clip build cut no clip"
+
+    data = build(tmp_path / "root", "audio-only").data
+    assert len(calls) > 1  # the retry ran the failed step again
+    assert len(data) == len(expected)
+    assert sorted(p.relative_to(clips).as_posix() for p in clips.rglob("*.wav")) == (
+        sorted(
+            p.relative_to(tmp_path / "clean" / corpus / "audio_clips").as_posix()
+            for p in (tmp_path / "clean" / corpus / "audio_clips").rglob("*.wav")
+        )
+    )
+    # A retried clip build keeps the clips that the failed build already cut.
+    for relative, written in kept.items():
+        assert clips.joinpath(relative).stat().st_mtime_ns == written
+    assert not list(tmp_path.joinpath("root").rglob("*.part"))
+
+
+def marg_record():
+    source = "rafamestre-m-arg_multimodal-argumentation-dataset-851736f"
+    content = zip_archive(
+        {f"{source}/final_dataset_0.85.csv": MARG_ROWS.to_csv(index=False)}
+    )
+    return lambda url, file_path: file_path.write_bytes(content)
+
+
+@pytest.mark.parametrize(
+    "owner, name",
+    [
+        (loaders, "download"),
+        (zipfile.ZipFile, "extractall"),
+        (loaders.shutil, "copytree"),
+    ],
+    ids=["download", "extraction", "copy"],
+)
+def test_marg_recovers_from_an_interrupted_download(monkeypatch, tmp_path, owner, name):
+    monkeypatch.setattr(loaders, "download", marg_record())
+    expected = marg(tmp_path / "clean").data
+
+    calls = fail_once(monkeypatch, owner, name)
+    with pytest.raises(OSError, match="interrupted"):
+        marg(tmp_path / "root")
+    assert not (tmp_path / "root" / "MArg").exists()
+
+    data = marg(tmp_path / "root").data
+    assert len(calls) > 1  # the retry ran the failed step again
+    pd.testing.assert_frame_equal(data, expected)
+    assert not (tmp_path / "root" / "MArg.part").exists()

@@ -60,7 +60,7 @@ This file records call relations and module dependencies of the `mamkit` package
 
 `mamkit.components.loaders` depends on `mamkit.components.datasets`, `mamkit.utility.data`, pandas, pydub, and nltk.
 
-1. Each loader downloads its corpus in `__init__` through `build_once`, which builds a `.part` folder and renames it when the build completes. `MMUSED` and `MMUSEDFallacy` build their clip folder the same way, only when their input mode reads audio.
+1. Each loader downloads its corpus in `__init__` through `build_once`, which builds a `.part` folder and renames it when the build completes. `MMUSED` and `MMUSEDFallacy` build their clip folder the same way, only when their input mode reads audio. `MMUSED`, `MMUSEDFallacy`, and `MArg` call `extract_zip`, which downloads one zip file from Zenodo and extracts it.
 2. `build_clips` calls `youtube_download`, `trimmed_recording`, and `export_clip`.
 3. `MArg.build_chunks` calls `split_sentences`, which downloads the NLTK sentence model when it is missing. `MMUSEDFallacy` calls `window_start` to cut the context of both tasks.
 4. `Loader.dataset` reads the column names from `columns` and returns a `MAMDataset` with the modalities of the input mode.
