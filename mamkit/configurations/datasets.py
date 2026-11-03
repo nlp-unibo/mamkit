@@ -37,6 +37,12 @@ class MMUSEDFallacyConfig(LoaderConfig):
 class MArgConfig(LoaderConfig):
     task_name: str = Param("arc")
     confidence: float = Param(0.85, description="Minimum annotation confidence")
+    clip_buffer: float = Param(
+        2.0, ge=0.0, description="Seconds kept before and after each sentence"
+    )
+    sample_rate: Optional[int] = Param(
+        None, ge=1, description="Sampling rate of the clips; None keeps the source"
+    )
 
 
 @register_class(key=TOY_LOADER, component="mamkit.components.loaders.Toy")

@@ -3,59 +3,37 @@ import math
 import torch
 import torch.nn as nn
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+def sinusoids(length: int, d_model: int) -> torch.Tensor:
+    """Sinusoidal positional encodings of shape [1, length, d_model]."""
+    position = torch.arange(length).unsqueeze(1)
+    div_term = torch.exp(torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model))
+    pe = torch.zeros(1, length, d_model)
+    pe[0, :, 0::2] = torch.sin(position * div_term)
+    pe[0, :, 1::2] = torch.cos(position * div_term)
+    return pe
 
 
 class PositionalEncoding(nn.Module):
-    """
-    Positional Encoding for Transformer
+    """Adds sinusoidal positional encodings to a sequence, then dropout.
+
+    The encodings of the first ``max_len`` positions are stored once. A longer
+    sequence gets encodings computed for its own length.
     """
 
-    def __init__(
-        self,
-        d_model: int,
-        dual_modality=False,
-        dropout: float = 0.1,
-        max_len: int = 5000,
-    ):
-        """
-        Args:
-            d_model: dimension of model
-            dual_modality: when True, add a sequence of 0s or 1s depending on the
-                modality
-            dropout: dropout rate
-            max_len: max length of sequence
-        """
+    def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000):
         super().__init__()
         self.dropout = nn.Dropout(p=dropout)
-        position = torch.arange(max_len).unsqueeze(1)
-        div_term = torch.exp(
-            torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model)
-        )
-        pe = torch.zeros(1, max_len, d_model)
-        pe[0, :, 0::2] = torch.sin(position * div_term)
-        pe[0, :, 1::2] = torch.cos(position * div_term)
-        self.register_buffer("pe", pe)
-        self.dual_modality = dual_modality
-        self.pe = self.pe.to(device)
+        self.register_buffer("pe", sinusoids(max_len, d_model))
 
-    def forward(self, x, is_first=True):
-        """
-        Args:
-            x: input tensor (bs, sqlen, emb)
-            is_first: True if the first modality, False if the second modality
-        """
-        if self.dual_modality:
-            modality = torch.ones((x.shape[0], x.shape[1], 4), dtype=torch.float32).to(
-                device
-            ) * (0 if is_first else 1)
-            x = x + self.pe[:, : x.size(1)]
-            x = self.dropout(x)
-            return torch.cat((x, modality), dim=-1)
+    def forward(self, x):
+        """Encodes ``x`` of shape [bs, T, d]."""
+        length, d_model = x.shape[1:]
+        if length > self.pe.shape[1]:
+            pe = sinusoids(length, d_model).to(x)
         else:
-            # x = (bs, sqlen, emb)  pe = (1, sqlen, emb)
-            x = x + self.pe[:, : x.size(1)]
-            return self.dropout(x)
+            pe = self.pe[:, :length]
+        return self.dropout(x + pe)
 
 
 class CustomScaleDotProductAttention(nn.Module):
@@ -71,7 +49,7 @@ class CustomScaleDotProductAttention(nn.Module):
         super(CustomScaleDotProductAttention, self).__init__()
         self.softmax = nn.Softmax(dim=-1)
 
-    def forward(self, q, k, v, text_mask, audio_mask, e=1e-12):
+    def forward(self, q, k, v, text_mask, audio_mask):
         """
         Args:
             q: query (decoder)
@@ -79,11 +57,9 @@ class CustomScaleDotProductAttention(nn.Module):
             v: value (encoder)
             text_mask: mask for text sequence
             audio_mask: mask for audio sequence
-            e: epsilon value for masking
         """
-        # input is 4 dimension tensor
         # [batch_size, head, length, d_tensor]
-        batch_size, head, length, d_tensor = k.size()
+        d_tensor = k.size(-1)
 
         # 1. dot product Query with Key^T to compute similarity
         k_t = k.transpose(2, 3)  # transpose
@@ -167,16 +143,11 @@ class CustomMultiHeadAttention(nn.Module):
         q, k, v = self.split(q), self.split(k), self.split(v)
 
         # 3. do scale dot product to compute similarity
-        out, attention = self.attention(q, k, v, text_mask, audio_mask)
+        out, _ = self.attention(q, k, v, text_mask, audio_mask)
 
         # 4. concat and pass to linear layer
         out = self.concat(out)
-        out = self.w_concat(out)
-
-        # 5. visualize attention map
-        # TODO : we should implement visualization
-
-        return out
+        return self.w_concat(out)
 
     def split(self, tensor):
         """
@@ -187,7 +158,6 @@ class CustomMultiHeadAttention(nn.Module):
         """
 
         batch_size, length, d_model = tensor.size()
-
         d_tensor = d_model // self.n_head
         tensor = tensor.view(batch_size, length, self.n_head, d_tensor).transpose(1, 2)
         # it is similar with group convolution (split by number of heads)
@@ -216,7 +186,7 @@ class LayerNorm(nn.Module):
         """
         Args:
             d_model: dimension of model
-            eps: epsilon value for masking
+            eps: epsilon added to the variance
         """
         super(LayerNorm, self).__init__()
         self.gamma = nn.Parameter(torch.ones(d_model))
@@ -363,13 +333,16 @@ class MulTACrossAttentionBlock(torch.nn.Module):
     Class for the cross modal attention block
     """
 
-    def __init__(self, embedding_dim, d_ffn, num_heads=4, dropout_prob=0.1):
+    def __init__(
+        self, embedding_dim, d_ffn, num_heads=4, dropout_prob=0.1, ffn_dropout_prob=0.1
+    ):
         """
         Args:
             embedding_dim: dimension of the embedding
             d_ffn: dimension of the feed forward layer
             num_heads: number of heads to use
-            dropout_prob: dropout to use
+            dropout_prob: dropout of the attention weights
+            ffn_dropout_prob: dropout inside the feed forward layer
         """
         super().__init__()
         self.embedding_dim = embedding_dim
@@ -384,7 +357,7 @@ class MulTACrossAttentionBlock(torch.nn.Module):
             batch_first=True,
         )
         self.pointwise_ff = PositionwiseFeedForward(
-            d_model=self.embedding_dim, hidden=self.d_ffn
+            d_model=self.embedding_dim, hidden=self.d_ffn, drop_prob=ffn_dropout_prob
         )
 
     def forward(self, elem_a, elem_b, attn_mask):

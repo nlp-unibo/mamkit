@@ -9,7 +9,7 @@ Method
 
 1. ``EncodedText`` computes the token embeddings of a pretrained text model, and ``EncodedAudio`` computes the frame embeddings.
 2. ``MulTA`` adds positional encodings to both sequences.
-3. A stack of cross-attention blocks updates the text sequence from the audio, and a second stack updates the audio sequence from the text. Each block ignores the padded positions of the sequence it attends to.
+3. A stack of cross-attention blocks updates the text sequence from the audio, and a second stack updates the audio sequence from the text. Each block attends with ``n_heads`` heads, four by default, ignores the padded positions of the sequence it attends to, and ends with a feed-forward layer.
 4. Each output is averaged over its valid positions, and the two vectors are concatenated.
 
 Registered tasks

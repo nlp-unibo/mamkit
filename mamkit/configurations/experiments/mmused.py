@@ -1,6 +1,6 @@
 """MMUSED registrations of the published experiments.
 
-Generated from the legacy configurations in ``mamkit.configs`` and the demos;
+Generated from the experiment configurations and demos of earlier releases;
 ``tests/test_registrations.py`` checks them against ``tests/golden/configs.json``.
 """
 
@@ -200,7 +200,7 @@ class MMUSEDRegistrations:
     )
     def mmused_acc_audio_only_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.1,
         )
@@ -271,7 +271,7 @@ class MMUSEDRegistrations:
     )
     def mmused_acc_audio_only_bilstm_mfcc_mancini_et_al_2022_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[128, 32],
             dropout_rate=0.1,
         )
@@ -338,7 +338,7 @@ class MMUSEDRegistrations:
     )
     def mmused_asd_audio_only_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.1,
         )
@@ -394,7 +394,7 @@ class MMUSEDRegistrations:
     )
     def mmused_asd_audio_only_bilstm_mfcc_mancini_et_al_2022_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.3,
         )
@@ -1362,7 +1362,7 @@ class MMUSEDRegistrations:
     )
     def mmused_acc_text_audio_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.0,
         )
@@ -1457,7 +1457,7 @@ class MMUSEDRegistrations:
     )
     def mmused_asd_text_audio_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.0,
         )

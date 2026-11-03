@@ -135,6 +135,13 @@ def extract_zip(url: str, data_path: Path):
     archive.unlink()
 
 
+def write_csv(df: pd.DataFrame, path: Path):
+    """Writes ``df`` to ``path`` only when complete, through a ``.part`` file."""
+    partial = path.with_name(path.name + ".part")
+    df.to_csv(partial, index=False)
+    partial.replace(path)
+
+
 def trimmed_recording(dialogue_id: str, audio_path: Path, links: pd.DataFrame):
     """The full debate recording without the trimmed start and end."""
     recording = AudioSegment.from_file(
@@ -479,6 +486,11 @@ class MArg(Loader):
     M-Arg: Multimodal Argument Mining Dataset for Political Debates with Audio
     and Transcripts. Pairs of sentences are kept when their annotation
     confidence reaches ``confidence``.
+
+    Each clip spans its sentence and up to ``clip_buffer`` seconds before and
+    after it, at ``sample_rate``, or at the rate of the recording when
+    ``sample_rate`` is ``None``. The clips, the feature table, and the pairs
+    of each clip setting are built once in a folder of their own.
     """
 
     folder_name = "MArg"
@@ -488,6 +500,66 @@ class MArg(Loader):
         "rafamestre/m-arg_multimodal-argumentation-dataset-v1.0.0.zip/content"
     )
     relations = ("neither", "support", "attack")
+    speakers_map = {
+        "Chris Wallace": "Chris Wallace",
+        "Vice President Joe Biden": "Joe Biden",
+        "President Donald J. Trump": "Donald Trump",
+        "Chris Wallace:": "Chris Wallace",
+        "Kristen Welker": "Kristen Welker",
+        "Donald Trump": "Donald Trump",
+        "Joe Biden": "Joe Biden",
+        "George Stephanopoulos": "George Stephanopoulos",
+        "Nicholas Fed": "Audience Member 1",
+        "Kelly Lee": "Audience Member 2",
+        "Anthony Archer": "Audience Member 3",
+        "Voice Over": "Voice Over",
+        "Cedric Humphrey": "Audience Member 4",
+        "George Stephanopoulus": "George Stephanopoulos",
+        "Angelia Politarhos": "Audience Member 5",
+        "Speaker 1": "Voice Over",
+        "Nathan Osburn": "Audience Member 6",
+        "Andrew Lewis": "Audience Member 7",
+        "Speaker 2": "Voice Over",
+        "Michele Ellison": "Audience Member 8",
+        "Mark Hoffman": "Audience Member 9",
+        "Mieke Haeck": "Audience Member 10",
+        "Speaker 3": "Voice Over",
+        "Keenan Wilson": "Audience Member 11",
+        "Savannah Guthrie": "Savannah Guthrie",
+        "President Trump": "Donald Trump",
+        "Jacqueline Lugo": "Audience Member 12",
+        "Barbara Peña": "Audience Member 13",
+        "Isabella Peña": "Audience Member 14",
+        "Savannah": "Savannah Guthrie",
+        "Cristy Montesinos Alonso": "Audience Member 15",
+        "Adam Schucher": "Audience Member 16",
+        "Moriah Geene": "Audience Member 17",
+        "Cindy Velez": "Audience Member 18",
+        "Paulette Dale": "Audience Member 19",
+        "Susan Page": "Susan Page",
+        "Kamala Harris": "Kamala Harris",
+        "Mike Pence": "Mike Pence",
+        "Kamala Harris ": "Kamala Harris",
+    }
+    debate_id_map = {
+        "us_election_2020_1st_presidential_debate_part1_timestamp.csv": "00",
+        "us_election_2020_1st_presidential_debate_part2_timestamp.csv": "01",
+        "us_election_2020_2nd_presidential_debate_part1_timestamp.csv": "02",
+        "us_election_2020_2nd_presidential_debate_part2_timestamp.csv": "03",
+        "us_election_2020_biden_town_hall_part1_timestamp.csv": "04",
+        "us_election_2020_biden_town_hall_part2_timestamp.csv": "05",
+        "us_election_2020_biden_town_hall_part3_timestamp.csv": "06",
+        "us_election_2020_biden_town_hall_part4_timestamp.csv": "07",
+        "us_election_2020_biden_town_hall_part5_timestamp.csv": "08",
+        "us_election_2020_biden_town_hall_part6_timestamp.csv": "09",
+        "us_election_2020_biden_town_hall_part7_timestamp.csv": "10",
+        "us_election_2020_trump_town_hall_1_timestamp.csv": "11",
+        "us_election_2020_trump_town_hall_2_timestamp.csv": "12",
+        "us_election_2020_trump_town_hall_3_timestamp.csv": "13",
+        "us_election_2020_trump_town_hall_4_timestamp.csv": "14",
+        "us_election_2020_vice_presidential_debate_1_timestamp.csv": "15",
+        "us_election_2020_vice_presidential_debate_2_timestamp.csv": "16",
+    }
 
     def __init__(
         self,
@@ -495,83 +567,28 @@ class MArg(Loader):
         input_mode: str,
         confidence: float,
         base_data_path: Optional[str] = None,
+        clip_buffer: float = 2.0,
+        sample_rate: Optional[int] = None,
     ):
         super().__init__(task_name, input_mode, base_data_path)
         if confidence not in (0.85, 1.0):
             raise ValueError("MArg confidence must be 0.85 or 1.0")
         self.confidence = confidence
-        self.feature_path = self.data_path.joinpath(
-            "data", "preprocessed full dataset", "full_feature_extraction_dataset.csv"
-        )
+        self.clip_buffer = clip_buffer
+        self.sample_rate = sample_rate
         self.aggregated_path = self.data_path.joinpath(
             "annotated dataset", "aggregated_dataset.csv"
         )
-        self.final_path = self.data_path.joinpath(
+        # The archive ships a feature table of its own, which the build leaves.
+        self.build_path = self.data_path.joinpath(
+            f"clips_buffer-{clip_buffer:g}_rate-{sample_rate or 'source'}"
+        )
+        self.feature_path = self.build_path.joinpath("features.csv")
+        self.final_path = self.build_path.joinpath(
             f"final_dataset_{self.confidence:.2f}.csv"
         )
-        self.audio_path = self.data_path.joinpath("data", "audio sentences")
-
-        self.speakers_map = {
-            "Chris Wallace": "Chris Wallace",
-            "Vice President Joe Biden": "Joe Biden",
-            "President Donald J. Trump": "Donald Trump",
-            "Chris Wallace:": "Chris Wallace",
-            "Kristen Welker": "Kristen Welker",
-            "Donald Trump": "Donald Trump",
-            "Joe Biden": "Joe Biden",
-            "George Stephanopoulos": "George Stephanopoulos",
-            "Nicholas Fed": "Audience Member 1",
-            "Kelly Lee": "Audience Member 2",
-            "Anthony Archer": "Audience Member 3",
-            "Voice Over": "Voice Over",
-            "Cedric Humphrey": "Audience Member 4",
-            "George Stephanopoulus": "George Stephanopoulos",
-            "Angelia Politarhos": "Audience Member 5",
-            "Speaker 1": "Voice Over",
-            "Nathan Osburn": "Audience Member 6",
-            "Andrew Lewis": "Audience Member 7",
-            "Speaker 2": "Voice Over",
-            "Michele Ellison": "Audience Member 8",
-            "Mark Hoffman": "Audience Member 9",
-            "Mieke Haeck": "Audience Member 10",
-            "Speaker 3": "Voice Over",
-            "Keenan Wilson": "Audience Member 11",
-            "Savannah Guthrie": "Savannah Guthrie",
-            "President Trump": "Donald Trump",
-            "Jacqueline Lugo": "Audience Member 12",
-            "Barbara Peña": "Audience Member 13",
-            "Isabella Peña": "Audience Member 14",
-            "Savannah": "Savannah Guthrie",
-            "Cristy Montesinos Alonso": "Audience Member 15",
-            "Adam Schucher": "Audience Member 16",
-            "Moriah Geene": "Audience Member 17",
-            "Cindy Velez": "Audience Member 18",
-            "Paulette Dale": "Audience Member 19",
-            "Susan Page": "Susan Page",
-            "Kamala Harris": "Kamala Harris",
-            "Mike Pence": "Mike Pence",
-            "Kamala Harris ": "Kamala Harris",
-        }
+        self.audio_path = self.build_path.joinpath("audio")
         self.speakers_to_id = {"error": "error"}
-        self.debate_id_map = {
-            "us_election_2020_1st_presidential_debate_part1_timestamp.csv": "00",
-            "us_election_2020_1st_presidential_debate_part2_timestamp.csv": "01",
-            "us_election_2020_2nd_presidential_debate_part1_timestamp.csv": "02",
-            "us_election_2020_2nd_presidential_debate_part2_timestamp.csv": "03",
-            "us_election_2020_biden_town_hall_part1_timestamp.csv": "04",
-            "us_election_2020_biden_town_hall_part2_timestamp.csv": "05",
-            "us_election_2020_biden_town_hall_part3_timestamp.csv": "06",
-            "us_election_2020_biden_town_hall_part4_timestamp.csv": "07",
-            "us_election_2020_biden_town_hall_part5_timestamp.csv": "08",
-            "us_election_2020_biden_town_hall_part6_timestamp.csv": "09",
-            "us_election_2020_biden_town_hall_part7_timestamp.csv": "10",
-            "us_election_2020_trump_town_hall_1_timestamp.csv": "11",
-            "us_election_2020_trump_town_hall_2_timestamp.csv": "12",
-            "us_election_2020_trump_town_hall_3_timestamp.csv": "13",
-            "us_election_2020_trump_town_hall_4_timestamp.csv": "14",
-            "us_election_2020_vice_presidential_debate_1_timestamp.csv": "15",
-            "us_election_2020_vice_presidential_debate_2_timestamp.csv": "16",
-        }
 
         build_once(self.data_path, self.download)
         if not self.final_path.exists():
@@ -649,8 +666,7 @@ class MArg(Loader):
         )
         contexts = dict(zip(topics["id"], topics["context"]))
         self.audio_path.mkdir(parents=True, exist_ok=True)
-        # Seconds of audio kept around each sentence.
-        buffer = 2
+        buffer = self.clip_buffer
 
         rows = []
         for timestamp_name, debate in self.debate_id_map.items():
@@ -681,6 +697,8 @@ class MArg(Loader):
                 # A sentence that starts within the buffer keeps its own start.
                 start = row.start if row.start < buffer else row.start - buffer
                 clip = recording[start * 1000 : (row.end + buffer) * 1000]
+                if self.sample_rate is not None:
+                    clip = clip.set_frame_rate(self.sample_rate)
                 clip.export(self.audio_path.joinpath(f"a{number}.wav"), format="wav")
 
                 speaker = speakers.get(row.text)
@@ -700,7 +718,7 @@ class MArg(Loader):
                         "timestamp": row.id,
                     }
                 )
-        pd.DataFrame(rows).to_csv(self.feature_path, index=False)
+        write_csv(pd.DataFrame(rows), self.feature_path)
 
     def download(self, target: Path):
         extract_zip(self.archive_url, target)
@@ -711,14 +729,16 @@ class MArg(Loader):
         shutil.rmtree(source_path)
 
     def build(self):
+        """Builds the pairs of ``confidence``, cutting the clips only once."""
         logging.info("Building M-Arg dataset...")
-        self.build_chunks()
+        if not self.feature_path.exists():
+            self.build_chunks()
         feature_df = pd.read_csv(self.feature_path)
         aggregated_df = pd.read_csv(self.aggregated_path)
         df = self.pairs(feature_df, aggregated_df)
         # The fold files list row positions, which this column records.
         df["index"] = np.arange(len(df))
-        df.to_csv(self.final_path, index=False)
+        write_csv(df, self.final_path)
 
 
 class Toy(Loader):

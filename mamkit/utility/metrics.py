@@ -4,8 +4,7 @@ from torchmetrics.functional.classification.f_beta import _fbeta_reduce
 
 
 class ClassSubsetMulticlassF1Score(MulticlassF1Score):
-    def __iter__(self):
-        pass
+    """The F1 score of each class in ``class_subset``, averaged."""
 
     def __init__(self, class_subset, **kwargs):
         super().__init__(**kwargs)

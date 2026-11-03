@@ -24,7 +24,7 @@ TOY_CLASSIFIER = NAMESPACE.key("model", "classifier", "toy")
 TOY_F1 = NAMESPACE.key("metric", "f1", "toy")
 TOY_TASK = NAMESPACE.key("task", "toy")
 
-# Generated from the legacy configurations; see experiments/.
+# Generated from the experiment configurations of earlier releases; see experiments/.
 
 MACRO_F1_2_CLASSES = NAMESPACE.key("metric", "f1", "macro", "2-classes")
 MACRO_F1_6_CLASSES = NAMESPACE.key("metric", "f1", "macro", "6-classes")
