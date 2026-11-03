@@ -154,7 +154,7 @@ class MMUSEDFallacyRegistrations:
     )
     def mmused_fallacy_afc_audio_only_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.1,
         )
@@ -229,7 +229,7 @@ class MMUSEDFallacyRegistrations:
     )
     def mmused_fallacy_afd_audio_only_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.1,
         )
@@ -894,7 +894,7 @@ class MMUSEDFallacyRegistrations:
     )
     def mmused_fallacy_afc_text_audio_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.0,
         )
@@ -997,7 +997,7 @@ class MMUSEDFallacyRegistrations:
     )
     def mmused_fallacy_afd_text_audio_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.0,
         )

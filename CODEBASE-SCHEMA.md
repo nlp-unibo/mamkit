@@ -16,7 +16,7 @@ This file records call relations and module dependencies of the `mamkit` package
 `mamkit.utility.processing.load` reads an audio file through soundfile.
 `parse_audio_nn` calls `load` and resamples the audio with `torchaudio.functional.resample`.
 `encode_audio_nn` calls `parse_audio_nn`.
-`parse_audio_mfcc` reads audio through librosa.
+`parse_audio_mfcc` reads audio through librosa, at the target sampling rate.
 `encode_audio_mfcc` calls `parse_audio_mfcc` and stores the result in a cache keyed by path.
 `encode_text_nn` calls a pretrained tokenizer and model.
 
@@ -33,7 +33,7 @@ This file records call relations and module dependencies of the `mamkit` package
 2. `TextBiLSTM` and `AudioBiLSTM` call `LSTMStack`. When the sample holds an `input_mask`, they pass its lengths, and `LSTMStack` packs the padded sequences.
 3. `TextTransformer` calls a pretrained model from transformers. `TextPool` averages precomputed token embeddings.
 4. `AudioTransformer` calls `torch.nn.TransformerEncoder` and `PositionalEncoding`.
-5. `CSA` calls `CustomEncoder` and `PositionalEncoding`. `MulTA` calls `MulTACrossAttentionBlock` and `PositionalEncoding`.
+5. `CSA` calls `CustomEncoder` and `PositionalEncoding`. `MulTA` calls `MulTACrossAttentionBlock` and `PositionalEncoding`. `PositionalEncoding` calls `sinusoids` for its buffer, and again for a sequence longer than the buffer.
 6. `Concat` calls each of its encoders on the same sample.
 7. `TextTransformer`, `TextPool`, `AudioTransformer`, `CSA`, and `MulTA` call `masked_mean`.
 
@@ -62,7 +62,7 @@ This file records call relations and module dependencies of the `mamkit` package
 
 1. Each loader downloads its corpus in `__init__` through `build_once`, which builds a `.part` folder and renames it when the build completes. `MMUSED` and `MMUSEDFallacy` build their clip folder the same way, only when their input mode reads audio. `MMUSED`, `MMUSEDFallacy`, and `MArg` call `extract_zip`, which downloads one zip file from Zenodo and extracts it.
 2. `build_clips` calls `youtube_download`, `trimmed_recording`, and `export_clip`.
-3. `MArg.build` calls `build_chunks` when the feature table is missing, then `pairs`. `build_chunks` calls `split_transcripts`, which calls `split_sentences`, and then cuts one clip per timestamped sentence. `build_chunks` and `build` write their tables through `write_csv`, which renames a `.part` file when complete. `split_sentences` downloads the NLTK sentence model when it is missing. `MMUSEDFallacy` calls `window_start` to cut the context of both tasks.
+3. `MArg.build` calls `build_chunks` when the feature table of its clip settings is missing, then `pairs`. The clips, the feature table, and the pairs of each clip buffer and sampling rate live in one build folder. `build_chunks` calls `split_transcripts`, which calls `split_sentences`, and then cuts one clip per timestamped sentence. `build_chunks` and `build` write their tables through `write_csv`, which renames a `.part` file when complete. `split_sentences` downloads the NLTK sentence model when it is missing. `MMUSEDFallacy` calls `window_start` to cut the context of both tasks.
 4. `Loader.dataset` reads the column names from `columns` and returns a `MAMDataset` with the modalities of the input mode.
 
 `mamkit.components.splits` depends on `mamkit.components.datasets` and `mamkit.utility.data`. Each strategy reads `loader.data`, calls `loader.dataset` on row subsets, and returns a list of `Split`. `FoldFiles` calls `download` when its file is missing from the loader folder.

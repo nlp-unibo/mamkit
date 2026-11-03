@@ -238,3 +238,18 @@ def test_attention_encoders_take_their_dropouts_and_heads():
     assert multa.text_crossmodal_blocks[0].mh_attention.num_heads == 2
     assert multa.audio_crossmodal_blocks[0].mh_attention.num_heads == 2
     assert multa.positional_encoder.dropout.p == 0.4
+
+
+def test_multa_takes_its_feed_forward_dropout():
+    multa = encoders.MulTA(DIM, 16, 1, ffn_dropout_rate=0.3)
+    for block in (*multa.text_crossmodal_blocks, *multa.audio_crossmodal_blocks):
+        assert block.pointwise_ff.dropout.p == 0.3
+
+
+def test_positional_encoding_covers_sequences_longer_than_its_buffer():
+    from mamkit.modules.transformer import PositionalEncoding
+
+    short = PositionalEncoding(DIM, dropout=0.0, max_len=4)
+    long = PositionalEncoding(DIM, dropout=0.0, max_len=16)
+    x = th.zeros(2, 10, DIM)
+    th.testing.assert_close(short(x), long(x))

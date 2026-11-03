@@ -37,6 +37,10 @@ Corpora
 
 Each loader takes a ``task_name``, which must be one of its tasks.
 It also takes an ``input_mode``, which is ``text-only``, ``audio-only``, or ``text-audio``.
+``MArg`` takes the annotation ``confidence`` of its pairs, 0.85 or 1.0.
+It cuts each clip with ``clip_buffer`` seconds before and after the sentence, 2 by default, at ``sample_rate``, or at the rate of the recording by default.
+Each clip setting is built in a folder of its own.
+``MMUSED`` and ``MMUSEDFallacy`` cut their clips at ``sample_rate``, 16 kHz by default.
 ``Toy`` is a synthetic text corpus for smoke tests, which needs no download.
 
 Split strategies

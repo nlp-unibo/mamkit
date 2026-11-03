@@ -193,9 +193,14 @@ class MFCCAudio(CachedFeaturizer):
     """MFCCs and spectral features of each clip, computed once per clip.
 
     With ``cache_path``, computed features are also stored in that file and
-    reused by later runs. Each entry is keyed by the clip and by the MFCC
-    settings, so featurizers with different settings can share one file.
+    reused by later runs. Each entry is keyed by the clip, by the MFCC
+    settings, and by ``layout``, so featurizers with different settings can
+    share one file.
     """
+
+    #: The version of the feature columns. A change of columns raises it, so
+    #: that cache files written before the change are not read.
+    layout = 2
 
     def __init__(
         self,
@@ -220,6 +225,7 @@ class MFCCAudio(CachedFeaturizer):
     def key(self, value) -> Hashable:
         pooling = None if self.pooling_sizes is None else tuple(self.pooling_sizes)
         settings = (
+            self.layout,
             self.mfccs,
             self.sampling_rate,
             pooling,

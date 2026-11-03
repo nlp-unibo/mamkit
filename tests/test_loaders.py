@@ -261,6 +261,9 @@ def test_mmused_fallacy_cuts_dialogue_and_snippet_clips(fallacy_root, monkeypatc
     assert sorted(p.name for p in clips.iterdir()) == [f"{i}.wav" for i in range(6)]
 
 
+#: The build folder of the default clip settings.
+MARG_BUILD = "clips_buffer-2_rate-source"
+
 MARG_ROWS = pd.DataFrame(
     {
         "sentence_1": ["a", "b", "c"],
@@ -274,8 +277,8 @@ MARG_ROWS = pd.DataFrame(
 
 @pytest.fixture
 def marg_root(tmp_path):
-    folder = tmp_path / "MArg"
-    folder.mkdir()
+    folder = tmp_path / "MArg" / MARG_BUILD
+    folder.mkdir(parents=True)
     MARG_ROWS.to_csv(folder / "final_dataset_0.85.csv", index=False)
     return tmp_path
 
@@ -591,7 +594,7 @@ def test_zenodo_corpora_recover_from_an_interrupted_build(
 def marg_record():
     source = "rafamestre-m-arg_multimodal-argumentation-dataset-851736f"
     content = zip_archive(
-        {f"{source}/final_dataset_0.85.csv": MARG_ROWS.to_csv(index=False)}
+        {f"{source}/{MARG_BUILD}/final_dataset_0.85.csv": MARG_ROWS.to_csv(index=False)}
     )
     return lambda url, file_path: file_path.write_bytes(content)
 
@@ -626,6 +629,9 @@ def write_marg_sources(folder: Path, debates):
     for name in ("original data", "tokenised text", "timestamps", "split audio"):
         (data / name).mkdir(parents=True, exist_ok=True)
     (data / "preprocessed full dataset").mkdir()
+    # The archive ships a feature table, which the build must not mistake for
+    # its own.
+    (data / "preprocessed full dataset" / "full_feature_extraction_dataset.csv").touch()
     (folder / "annotated dataset").mkdir()
     contexts = []
     for timestamp_name, debate in debates.items():
@@ -660,24 +666,14 @@ def write_marg_sources(folder: Path, debates):
 def test_marg_builds_its_dataset_from_the_source_files(monkeypatch, tmp_path):
     from pydub import AudioSegment
 
-    folder = tmp_path / "MArg"
-    # A loader built without its data gives the debate names to write.
-    monkeypatch.setattr(loaders, "build_once", lambda path, build: None)
-    monkeypatch.setattr(loaders.MArg, "build", lambda self: None)
-    loader = loaders.MArg(
-        task_name="arc",
-        input_mode="text-only",
-        confidence=0.85,
-        base_data_path=tmp_path,
-    )
-    monkeypatch.undo()
-    write_marg_sources(folder, loader.debate_id_map)
+    write_marg_sources(tmp_path / "MArg", loaders.MArg.debate_id_map)
     monkeypatch.setattr(loaders, "split_sentences", lambda text: [text])
     monkeypatch.setattr(
         loaders.AudioSegment, "from_mp3", lambda path: AudioSegment.silent(3000)
     )
 
-    data = marg(tmp_path).data
+    loader = marg(tmp_path)
+    data = loader.data
     assert list(data.relation) == [1]
     assert list(data.sentence_1) == ["Sentence 00."]
     assert [p.name for p in data.sentence_2_audio_path] == ["a160000.wav"]
@@ -698,4 +694,28 @@ def test_marg_builds_its_dataset_from_the_source_files(monkeypatch, tmp_path):
         task_name="arc", input_mode="text-only", confidence=1.0, base_data_path=tmp_path
     )
     assert list(strict.data.sentence_1) == ["Sentence 00."]
-    assert not list(folder.rglob("*.part"))
+    assert not list((tmp_path / "MArg").rglob("*.part"))
+
+
+def test_marg_clip_settings_build_their_own_clips(monkeypatch, tmp_path):
+    from pydub import AudioSegment
+
+    folder = tmp_path / "MArg"
+    write_marg_sources(folder, loaders.MArg.debate_id_map)
+    monkeypatch.setattr(loaders, "split_sentences", lambda text: [text])
+    monkeypatch.setattr(
+        loaders.AudioSegment, "from_mp3", lambda path: AudioSegment.silent(3000)
+    )
+    loader = loaders.MArg(
+        task_name="arc",
+        input_mode="text-only",
+        confidence=0.85,
+        base_data_path=tmp_path,
+        clip_buffer=0.25,
+        sample_rate=8000,
+    )
+    clip = AudioSegment.from_wav(loader.data.sentence_2_audio_path[0])
+    # The sentence spans 0.5 s to 1.5 s.
+    assert len(clip) == 1500
+    assert clip.frame_rate == 8000
+    assert loader.build_path.name == "clips_buffer-0.25_rate-8000"

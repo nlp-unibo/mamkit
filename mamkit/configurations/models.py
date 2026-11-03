@@ -63,6 +63,7 @@ class MulTAConfig(Configuration):
     text_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
     audio_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
     positional_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
+    ffn_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
 
 
 class ConcatConfig(Configuration):

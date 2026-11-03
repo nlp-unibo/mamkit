@@ -125,7 +125,7 @@ class MArgRegistrations:
     )
     def marg_arc_audio_only_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.1,
         )
@@ -553,7 +553,7 @@ class MArgRegistrations:
     )
     def marg_arc_text_audio_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.0,
         )

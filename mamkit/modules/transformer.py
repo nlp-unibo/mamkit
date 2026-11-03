@@ -4,27 +4,36 @@ import torch
 import torch.nn as nn
 
 
+def sinusoids(length: int, d_model: int) -> torch.Tensor:
+    """Sinusoidal positional encodings of shape [1, length, d_model]."""
+    position = torch.arange(length).unsqueeze(1)
+    div_term = torch.exp(torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model))
+    pe = torch.zeros(1, length, d_model)
+    pe[0, :, 0::2] = torch.sin(position * div_term)
+    pe[0, :, 1::2] = torch.cos(position * div_term)
+    return pe
+
+
 class PositionalEncoding(nn.Module):
     """Adds sinusoidal positional encodings to a sequence, then dropout.
 
-    Sequences may hold at most ``max_len`` positions.
+    The encodings of the first ``max_len`` positions are stored once. A longer
+    sequence gets encodings computed for its own length.
     """
 
     def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000):
         super().__init__()
         self.dropout = nn.Dropout(p=dropout)
-        position = torch.arange(max_len).unsqueeze(1)
-        div_term = torch.exp(
-            torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model)
-        )
-        pe = torch.zeros(1, max_len, d_model)
-        pe[0, :, 0::2] = torch.sin(position * div_term)
-        pe[0, :, 1::2] = torch.cos(position * div_term)
-        self.register_buffer("pe", pe)
+        self.register_buffer("pe", sinusoids(max_len, d_model))
 
     def forward(self, x):
         """Encodes ``x`` of shape [bs, T, d]."""
-        return self.dropout(x + self.pe[:, : x.size(1)])
+        length, d_model = x.shape[1:]
+        if length > self.pe.shape[1]:
+            pe = sinusoids(length, d_model).to(x)
+        else:
+            pe = self.pe[:, :length]
+        return self.dropout(x + pe)
 
 
 class CustomScaleDotProductAttention(nn.Module):
@@ -324,13 +333,16 @@ class MulTACrossAttentionBlock(torch.nn.Module):
     Class for the cross modal attention block
     """
 
-    def __init__(self, embedding_dim, d_ffn, num_heads=4, dropout_prob=0.1):
+    def __init__(
+        self, embedding_dim, d_ffn, num_heads=4, dropout_prob=0.1, ffn_dropout_prob=0.1
+    ):
         """
         Args:
             embedding_dim: dimension of the embedding
             d_ffn: dimension of the feed forward layer
             num_heads: number of heads to use
-            dropout_prob: dropout to use
+            dropout_prob: dropout of the attention weights
+            ffn_dropout_prob: dropout inside the feed forward layer
         """
         super().__init__()
         self.embedding_dim = embedding_dim
@@ -345,7 +357,7 @@ class MulTACrossAttentionBlock(torch.nn.Module):
             batch_first=True,
         )
         self.pointwise_ff = PositionwiseFeedForward(
-            d_model=self.embedding_dim, hidden=self.d_ffn
+            d_model=self.embedding_dim, hidden=self.d_ffn, drop_prob=ffn_dropout_prob
         )
 
     def forward(self, elem_a, elem_b, attn_mask):

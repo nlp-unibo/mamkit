@@ -35,8 +35,15 @@ A task holds at most one featurizer per modality, and applies the same featurize
 Every sample needs a non-empty transcript and existing audio clips.
 A text featurizer raises ``ValueError`` on an empty transcript, and an audio featurizer raises it on a missing clip.
 
+``MFCCAudio`` reads each clip at ``sampling_rate``.
+Each frame holds 22 spectral features and then the ``mfccs`` coefficients.
+The spectral features are the centroid, the bandwidth, the rolloff, seven contrast bands, and twelve chroma bins.
+``remove_energy`` drops the first coefficient, which tracks the energy of the frame.
+The registered experiments use 25 coefficients without the first, so each frame holds 46 features.
+
 ``MFCCAudio`` can also store its features in the file that ``cache_path`` names, so that later runs load them.
-Each entry is keyed by the clip and by the MFCC settings, so featurizers with different settings can share one file.
+Each entry is keyed by the clip, by the MFCC settings, and by the version of the feature columns.
+Featurizers with different settings can therefore share one file.
 The registered experiments share ``mfccs.pkl`` in the working directory.
 
 ``EncodedText`` and ``EncodedAudio`` load their pretrained model in ``transform`` and release it in ``clear``, so the model does not stay in memory during training.

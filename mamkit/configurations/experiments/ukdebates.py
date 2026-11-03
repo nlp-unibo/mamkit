@@ -139,7 +139,7 @@ class UKDebatesRegistrations:
     )
     def ukdebates_asd_audio_only_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.0,
         )
@@ -210,7 +210,7 @@ class UKDebatesRegistrations:
     )
     def ukdebates_asd_audio_only_bilstm_mfcc_mancini_et_al_2022_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.2,
         )
@@ -768,7 +768,7 @@ class UKDebatesRegistrations:
     )
     def ukdebates_asd_text_audio_bilstm_mfcc_anonymous_audio(cls):
         config = AudioBiLSTMConfig(
-            embedding_dim=44,
+            embedding_dim=46,
             lstm_weights=[64, 32],
             dropout_rate=0.0,
         )

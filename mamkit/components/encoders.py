@@ -219,7 +219,8 @@ class MulTA(th.nn.Module):
 
     Each of the ``n_blocks`` blocks per direction attends with ``n_heads``
     heads. ``text_dropout_rate`` and ``audio_dropout_rate`` apply to the
-    attention weights of each direction, and ``positional_dropout_rate`` after
+    attention weights of each direction, ``ffn_dropout_rate`` inside the
+    feed-forward layer of every block, and ``positional_dropout_rate`` after
     the positional encodings.
     """
 
@@ -232,17 +233,26 @@ class MulTA(th.nn.Module):
         text_dropout_rate: float = 0.1,
         audio_dropout_rate: float = 0.1,
         positional_dropout_rate: float = 0.1,
+        ffn_dropout_rate: float = 0.1,
     ):
         super().__init__()
         self.text_crossmodal_blocks = th.nn.ModuleList(
             MulTACrossAttentionBlock(
-                embedding_dim, ffn_dim, n_heads, dropout_prob=text_dropout_rate
+                embedding_dim,
+                ffn_dim,
+                n_heads,
+                dropout_prob=text_dropout_rate,
+                ffn_dropout_prob=ffn_dropout_rate,
             )
             for _ in range(n_blocks)
         )
         self.audio_crossmodal_blocks = th.nn.ModuleList(
             MulTACrossAttentionBlock(
-                embedding_dim, ffn_dim, n_heads, dropout_prob=audio_dropout_rate
+                embedding_dim,
+                ffn_dim,
+                n_heads,
+                dropout_prob=audio_dropout_rate,
+                ffn_dropout_prob=ffn_dropout_rate,
             )
             for _ in range(n_blocks)
         )

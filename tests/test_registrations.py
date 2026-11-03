@@ -26,6 +26,11 @@ MAPPING = json.loads((GOLDEN / "registrations.json").read_text())
 #: Hidden size of the BERT and RoBERTa base cards, which the legacy heads read.
 HIDDEN = {"bert-base-uncased": 768, "roberta-base": 768}
 
+#: Columns that MFCC features gained over the legacy ones. The legacy code
+#: dropped the first two coefficients and, with ``remove_energy``, the spectral
+#: centroid. It now drops only the first coefficient, the frame energy.
+MFCC_EXTRA_COLUMNS = 2
+
 #: Buildable legacy keys that are not registered, with the reason.
 SKIPPED = {
     # The head reads 256 features, but an M-Arg model reads a pair of sides
@@ -177,6 +182,10 @@ def describe(label, key) -> dict:
             else [encoder]
         )
         describe_encoders(family, view, parts)
+    if audio is not None and "mfccs" in audio.model_dump():
+        for name in ("embedding_dim", "audio_embedding_dim"):
+            if name in view:
+                view[name] -= MFCC_EXTRA_COLUMNS
     if text is not None and "tokenizer_args" in text.model_dump():
         view["tokenizer_args"] = text.tokenizer_args
         if family == "text.TransformerConfig":
@@ -308,3 +317,24 @@ def test_registered_models_and_metrics_build(registry):
             Registry.from_key(key)
             built += 1
     assert built > 100
+
+
+def test_mfcc_encoders_read_the_mfcc_width(registry):
+    # Spectral centroid, bandwidth, rolloff, 7 contrast bands, 12 chroma bins.
+    checked = 0
+    for key in registry:
+        if key.name != "task" or not config(key).audio:
+            continue
+        audio = config(config(key).audio)
+        if "mfccs" not in audio.model_dump():
+            continue
+        encoder = config(config(config(key).model).encoder)
+        parts = (
+            [config(k) for k in encoder.encoders]
+            if "encoders" in encoder.model_dump()
+            else [encoder]
+        )
+        width = 22 + audio.mfccs - int(audio.remove_energy)
+        assert parts[-1].embedding_dim == width, key
+        checked += 1
+    assert checked == 15

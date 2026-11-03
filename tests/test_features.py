@@ -22,13 +22,44 @@ def mfcc(tmp_path):
     return features.MFCCAudio(mfccs=13, cache_path=tmp_path / "mfccs.pkl")
 
 
-def test_mfcc_audio_matches_golden(mfcc, audio_files):
-    inputs = [audio_files["short"], [audio_files["short"], audio_files["long"]]]
-    same(mfcc.transform(inputs), "processing/mfcc", "features")
+def raw_mfcc(paths, remove_energy):
+    return features.MFCCAudio(
+        mfccs=13, remove_energy=remove_energy, normalize=False
+    ).transform([paths])[0]
 
 
-def test_mfcc_audio_resamples_to_target_rate(mfcc, audio_files):
-    same(mfcc.transform([audio_files["resampled"]]), "processing/mfcc_resampled")
+@pytest.mark.parametrize("remove_energy", [False, True])
+def test_mfcc_audio_columns_end_with_the_coefficients(audio_files, remove_energy):
+    import librosa
+
+    path = audio_files["short"]
+    signal = librosa.load(path, sr=16000)[0]
+    columns = raw_mfcc(path, remove_energy)
+    coefficients = librosa.feature.mfcc(y=signal, sr=16000, n_mfcc=13).T
+    if remove_energy:
+        coefficients = coefficients[:, 1:]
+    # Centroid, bandwidth, rolloff, 7 contrast bands, and 12 chroma bins come first.
+    assert columns.shape[1] == 22 + coefficients.shape[1]
+    np.testing.assert_allclose(columns[:, 22:], coefficients, rtol=1e-5, atol=1e-4)
+
+
+@pytest.mark.parametrize("name", ["short", "resampled"])
+def test_mfcc_audio_reads_clips_once_at_the_target_rate(audio_files, name):
+    import librosa
+
+    path = audio_files[name]
+    signal = librosa.load(path, sr=16000)[0]
+    centroid = librosa.feature.spectral_centroid(y=signal, sr=16000)[0]
+    np.testing.assert_allclose(raw_mfcc(path, False)[:, 0], centroid, rtol=1e-5)
+
+
+def test_mfcc_audio_joins_clips_in_order(audio_files):
+    import librosa
+
+    paths = [audio_files["short"], audio_files["long"]]
+    signal = np.concatenate([librosa.load(path, sr=16000)[0] for path in paths])
+    centroid = librosa.feature.spectral_centroid(y=signal, sr=16000)[0]
+    np.testing.assert_allclose(raw_mfcc(paths, False)[:, 0], centroid, rtol=1e-5)
 
 
 def test_mfcc_audio_cache_is_reused_by_a_new_featurizer(mfcc, audio_files, tmp_path):
@@ -230,3 +261,18 @@ def test_mfcc_audio_keeps_constant_features_finite(tmp_path):
     soundfile.write(path, np.zeros(16000, dtype="float32"), 16000)
     [silent] = features.MFCCAudio(mfccs=13).transform([path])
     assert np.isfinite(silent).all()
+
+
+def test_encoded_audio_keeps_one_frame_of_a_short_clip(audio_files):
+    [frames] = encoded_audio(downsampling_factor=1e-4).transform([audio_files["short"]])
+    assert frames.shape[0] == 1
+
+
+def test_mfcc_audio_ignores_features_of_an_older_layout(audio_files):
+    featurizer = features.MFCCAudio(mfccs=13)
+    [expected] = featurizer.transform([audio_files["short"]])
+    # The key that the clip had before the layout joined it.
+    old_key = ((13, 16000, None, True, True), audio_files["short"].as_posix())
+    featurizer.cache = {old_key: np.zeros(1)}
+    [recomputed] = featurizer.transform([audio_files["short"]])
+    np.testing.assert_array_equal(recomputed, expected)

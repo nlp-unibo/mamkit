@@ -3,7 +3,6 @@ from typing import Dict, Iterable, List, Optional, Union
 
 import librosa
 import numpy as np
-import resampy
 import soundfile
 import torch as th
 from skimage.measure import block_reduce
@@ -40,36 +39,32 @@ def parse_audio_mfcc(
     remove_energy: bool = True,
     normalize: bool = True,
 ):
-    if isinstance(audio_input, Path):
-        audio, audio_sampling_rate = librosa.load(audio_input)
-    else:
-        _, audio_sampling_rate = librosa.load(audio_input[0])
-        audio = np.concatenate([librosa.load(item)[0] for item in audio_input])
+    """Spectral features and MFCCs of a clip, or of clips joined in order.
 
-    if audio_sampling_rate != sampling_rate:
-        audio = resampy.resample(audio, audio_sampling_rate, sampling_rate)
-    mfccs = librosa.feature.mfcc(y=audio, sr=sampling_rate, n_mfcc=mfccs)[2:]
-    spectral_centroids = librosa.feature.spectral_centroid(y=audio, sr=sampling_rate)
-    spectral_bandwidth = librosa.feature.spectral_bandwidth(y=audio, sr=sampling_rate)
-    spectral_rolloff = librosa.feature.spectral_rolloff(y=audio, sr=sampling_rate)
-    spectral_contrast = librosa.feature.spectral_contrast(y=audio, sr=sampling_rate)
-    chroma_ft = librosa.feature.chroma_stft(y=audio, sr=sampling_rate)
+    Each clip is read at ``sampling_rate``. The result has one row per frame
+    and the columns spectral centroid, bandwidth, rolloff, the seven spectral
+    contrast bands, the twelve chroma bins, and the ``mfccs`` coefficients.
+    ``remove_energy`` drops the first coefficient, which tracks the energy of
+    the frame. ``pooling_sizes`` average consecutive frames, and ``normalize``
+    standardizes each column over the frames of the clip.
+    """
+    paths = [audio_input] if isinstance(audio_input, Path) else audio_input
+    audio = np.concatenate([librosa.load(path, sr=sampling_rate)[0] for path in paths])
 
-    # [frames, mfccs]
+    coefficients = librosa.feature.mfcc(y=audio, sr=sampling_rate, n_mfcc=mfccs)
+    if remove_energy:
+        coefficients = coefficients[1:]
     features = np.concatenate(
         (
-            spectral_centroids,
-            spectral_bandwidth,
-            spectral_rolloff,
-            spectral_contrast,
-            chroma_ft,
-            mfccs,
+            librosa.feature.spectral_centroid(y=audio, sr=sampling_rate),
+            librosa.feature.spectral_bandwidth(y=audio, sr=sampling_rate),
+            librosa.feature.spectral_rolloff(y=audio, sr=sampling_rate),
+            librosa.feature.spectral_contrast(y=audio, sr=sampling_rate),
+            librosa.feature.chroma_stft(y=audio, sr=sampling_rate),
+            coefficients,
         ),
         axis=0,
     ).transpose()
-
-    if remove_energy:
-        features = features[:, 1:]
 
     if pooling_sizes is not None:
         for pooling_size in pooling_sizes:
@@ -80,7 +75,7 @@ def parse_audio_mfcc(
         std = np.std(features, axis=0)
         # A constant feature, such as any feature of a silent clip, becomes 0.
         std[std == 0] = 1
-        features = np.divide((features - mean[np.newaxis, :]), std[np.newaxis, :])
+        features = (features - mean) / std
 
     return features
 
@@ -148,18 +143,13 @@ def encode_audio_nn(
             model(features, **(model_args or {})).last_hidden_state[0].unsqueeze(0)
         )
 
+        features = model_features
         if downsampling_factor is not None:
-            try:
-                features = th.nn.functional.interpolate(
-                    model_features.permute(0, 2, 1),
-                    scale_factor=downsampling_factor,
-                    mode="linear",
-                )
-                features = features.permute(0, 2, 1)
-            except RuntimeError:
-                features = model_features
-        else:
-            features = model_features
+            # A clip too short for the factor keeps one frame.
+            frames = max(1, int(features.shape[1] * downsampling_factor))
+            features = th.nn.functional.interpolate(
+                features.permute(0, 2, 1), size=frames, mode="linear"
+            ).permute(0, 2, 1)
 
         features = features[0].detach().cpu().numpy()
 
