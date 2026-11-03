@@ -40,6 +40,8 @@ class AudioTransformerConfig(Configuration):
     ffn_dim: int = Param(ge=1)
     n_layers: int = Param(1, ge=1)
     dropout_rate: float = Param(0.0, ge=0.0, le=1.0)
+    encoder_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
+    positional_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
 
 
 class CSAConfig(Configuration):
@@ -50,14 +52,17 @@ class CSAConfig(Configuration):
     encoder_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
     text_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
     audio_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
+    positional_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
 
 
 class MulTAConfig(Configuration):
     embedding_dim: int = Param(ge=1)
     ffn_dim: int = Param(ge=1)
     n_blocks: int = Param(ge=1)
+    n_heads: int = Param(4, ge=1, description="Attention heads of each block")
     text_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
     audio_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
+    positional_dropout_rate: float = Param(0.1, ge=0.0, le=1.0)
 
 
 class ConcatConfig(Configuration):

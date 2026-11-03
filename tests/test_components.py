@@ -224,3 +224,17 @@ def test_text_dropout_applies_in_training(name):
     with th.no_grad():
         expected = model.eval()(silent)
         th.testing.assert_close(model.train()(batch), expected)
+
+
+def test_attention_encoders_take_their_dropouts_and_heads():
+    audio = encoders.AudioTransformer(
+        DIM, 2, 16, 1, encoder_dropout_rate=0.3, positional_dropout_rate=0.4
+    )
+    assert audio.encoder.layers[0].dropout.p == 0.3
+    assert audio.pos_encoder.dropout.p == 0.4
+    csa = encoders.CSA(DIM, 16, 2, 1, positional_dropout_rate=0.4)
+    assert csa.positional_encoder.dropout.p == 0.4
+    multa = encoders.MulTA(DIM, 16, 1, n_heads=2, positional_dropout_rate=0.4)
+    assert multa.text_crossmodal_blocks[0].mh_attention.num_heads == 2
+    assert multa.audio_crossmodal_blocks[0].mh_attention.num_heads == 2
+    assert multa.positional_encoder.dropout.p == 0.4

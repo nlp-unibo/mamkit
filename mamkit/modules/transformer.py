@@ -3,29 +3,14 @@ import math
 import torch
 import torch.nn as nn
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
 class PositionalEncoding(nn.Module):
-    """
-    Positional Encoding for Transformer
+    """Adds sinusoidal positional encodings to a sequence, then dropout.
+
+    Sequences may hold at most ``max_len`` positions.
     """
 
-    def __init__(
-        self,
-        d_model: int,
-        dual_modality=False,
-        dropout: float = 0.1,
-        max_len: int = 5000,
-    ):
-        """
-        Args:
-            d_model: dimension of model
-            dual_modality: when True, add a sequence of 0s or 1s depending on the
-                modality
-            dropout: dropout rate
-            max_len: max length of sequence
-        """
+    def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000):
         super().__init__()
         self.dropout = nn.Dropout(p=dropout)
         position = torch.arange(max_len).unsqueeze(1)
@@ -36,26 +21,10 @@ class PositionalEncoding(nn.Module):
         pe[0, :, 0::2] = torch.sin(position * div_term)
         pe[0, :, 1::2] = torch.cos(position * div_term)
         self.register_buffer("pe", pe)
-        self.dual_modality = dual_modality
-        self.pe = self.pe.to(device)
 
-    def forward(self, x, is_first=True):
-        """
-        Args:
-            x: input tensor (bs, sqlen, emb)
-            is_first: True if the first modality, False if the second modality
-        """
-        if self.dual_modality:
-            modality = torch.ones((x.shape[0], x.shape[1], 4), dtype=torch.float32).to(
-                device
-            ) * (0 if is_first else 1)
-            x = x + self.pe[:, : x.size(1)]
-            x = self.dropout(x)
-            return torch.cat((x, modality), dim=-1)
-        else:
-            # x = (bs, sqlen, emb)  pe = (1, sqlen, emb)
-            x = x + self.pe[:, : x.size(1)]
-            return self.dropout(x)
+    def forward(self, x):
+        """Encodes ``x`` of shape [bs, T, d]."""
+        return self.dropout(x + self.pe[:, : x.size(1)])
 
 
 class CustomScaleDotProductAttention(nn.Module):
@@ -71,7 +40,7 @@ class CustomScaleDotProductAttention(nn.Module):
         super(CustomScaleDotProductAttention, self).__init__()
         self.softmax = nn.Softmax(dim=-1)
 
-    def forward(self, q, k, v, text_mask, audio_mask, e=1e-12):
+    def forward(self, q, k, v, text_mask, audio_mask):
         """
         Args:
             q: query (decoder)
@@ -79,11 +48,9 @@ class CustomScaleDotProductAttention(nn.Module):
             v: value (encoder)
             text_mask: mask for text sequence
             audio_mask: mask for audio sequence
-            e: epsilon value for masking
         """
-        # input is 4 dimension tensor
         # [batch_size, head, length, d_tensor]
-        batch_size, head, length, d_tensor = k.size()
+        d_tensor = k.size(-1)
 
         # 1. dot product Query with Key^T to compute similarity
         k_t = k.transpose(2, 3)  # transpose
@@ -167,16 +134,11 @@ class CustomMultiHeadAttention(nn.Module):
         q, k, v = self.split(q), self.split(k), self.split(v)
 
         # 3. do scale dot product to compute similarity
-        out, attention = self.attention(q, k, v, text_mask, audio_mask)
+        out, _ = self.attention(q, k, v, text_mask, audio_mask)
 
         # 4. concat and pass to linear layer
         out = self.concat(out)
-        out = self.w_concat(out)
-
-        # 5. visualize attention map
-        # TODO : we should implement visualization
-
-        return out
+        return self.w_concat(out)
 
     def split(self, tensor):
         """
@@ -187,7 +149,6 @@ class CustomMultiHeadAttention(nn.Module):
         """
 
         batch_size, length, d_model = tensor.size()
-
         d_tensor = d_model // self.n_head
         tensor = tensor.view(batch_size, length, self.n_head, d_tensor).transpose(1, 2)
         # it is similar with group convolution (split by number of heads)
@@ -216,7 +177,7 @@ class LayerNorm(nn.Module):
         """
         Args:
             d_model: dimension of model
-            eps: epsilon value for masking
+            eps: epsilon added to the variance
         """
         super(LayerNorm, self).__init__()
         self.gamma = nn.Parameter(torch.ones(d_model))

@@ -100,7 +100,7 @@ def audio_encoder(encoder) -> str:
 
 
 def positional(dim) -> str:
-    return repr(PositionalEncoding(dim, dual_modality=False))
+    return repr(PositionalEncoding(dim))
 
 
 def describe(label, key) -> dict:

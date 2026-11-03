@@ -1,6 +1,6 @@
 """MMUSEDFallacy registrations of the published experiments.
 
-Generated from the legacy configurations in ``mamkit.configs`` and the demos;
+Generated from the experiment configurations and demos of earlier releases;
 ``tests/test_registrations.py`` checks them against ``tests/golden/configs.json``.
 """
 

@@ -129,7 +129,12 @@ class AudioBiLSTM(th.nn.Module):
 
 
 class AudioTransformer(th.nn.Module):
-    """A Transformer encoder over audio frames, averaged over valid frames."""
+    """A Transformer encoder over audio frames, averaged over valid frames.
+
+    ``encoder_dropout_rate`` applies inside the encoder layers,
+    ``positional_dropout_rate`` after the positional encodings, and
+    ``dropout_rate`` to the encoder output before the residual connection.
+    """
 
     def __init__(
         self,
@@ -138,18 +143,23 @@ class AudioTransformer(th.nn.Module):
         ffn_dim: int,
         n_layers: int,
         dropout_rate: float = 0.0,
+        encoder_dropout_rate: float = 0.1,
+        positional_dropout_rate: float = 0.1,
     ):
         super().__init__()
         layer = th.nn.TransformerEncoderLayer(
             d_model=embedding_dim,
             nhead=n_heads,
             dim_feedforward=ffn_dim,
+            dropout=encoder_dropout_rate,
             batch_first=True,
         )
         self.encoder = th.nn.TransformerEncoder(
             layer, num_layers=n_layers, enable_nested_tensor=False
         )
-        self.pos_encoder = PositionalEncoding(embedding_dim, dual_modality=False)
+        self.pos_encoder = PositionalEncoding(
+            embedding_dim, dropout=positional_dropout_rate
+        )
         self.layer_norm = th.nn.LayerNorm(embedding_dim)
         self.dropout = th.nn.Dropout(p=dropout_rate)
         self.output_dim = embedding_dim
@@ -164,7 +174,11 @@ class AudioTransformer(th.nn.Module):
 
 
 class CSA(th.nn.Module):
-    """Self-attention over the concatenation of text embeddings and audio frames."""
+    """Self-attention over the concatenation of text embeddings and audio frames.
+
+    ``positional_dropout_rate`` applies after the positional encodings of the
+    audio frames.
+    """
 
     def __init__(
         self,
@@ -175,12 +189,15 @@ class CSA(th.nn.Module):
         encoder_dropout_rate: float = 0.1,
         text_dropout_rate: float = 0.1,
         audio_dropout_rate: float = 0.1,
+        positional_dropout_rate: float = 0.1,
     ):
         super().__init__()
         self.transformer = CustomEncoder(
             embedding_dim, ffn_dim, n_heads, n_layers, encoder_dropout_rate
         )
-        self.positional_encoder = PositionalEncoding(embedding_dim, dual_modality=False)
+        self.positional_encoder = PositionalEncoding(
+            embedding_dim, dropout=positional_dropout_rate
+        )
         self.text_dropout = th.nn.Dropout(p=text_dropout_rate)
         # Applied to the encoder output, as in the original CSA.
         self.audio_dropout = th.nn.Dropout(p=audio_dropout_rate)
@@ -198,30 +215,40 @@ class CSA(th.nn.Module):
 
 
 class MulTA(th.nn.Module):
-    """Cross-modal attention from text to audio and from audio to text."""
+    """Cross-modal attention from text to audio and from audio to text.
+
+    Each of the ``n_blocks`` blocks per direction attends with ``n_heads``
+    heads. ``text_dropout_rate`` and ``audio_dropout_rate`` apply to the
+    attention weights of each direction, and ``positional_dropout_rate`` after
+    the positional encodings.
+    """
 
     def __init__(
         self,
         embedding_dim: int,
         ffn_dim: int,
         n_blocks: int,
+        n_heads: int = 4,
         text_dropout_rate: float = 0.1,
         audio_dropout_rate: float = 0.1,
+        positional_dropout_rate: float = 0.1,
     ):
         super().__init__()
         self.text_crossmodal_blocks = th.nn.ModuleList(
             MulTACrossAttentionBlock(
-                embedding_dim, ffn_dim, dropout_prob=text_dropout_rate
+                embedding_dim, ffn_dim, n_heads, dropout_prob=text_dropout_rate
             )
             for _ in range(n_blocks)
         )
         self.audio_crossmodal_blocks = th.nn.ModuleList(
             MulTACrossAttentionBlock(
-                embedding_dim, ffn_dim, dropout_prob=audio_dropout_rate
+                embedding_dim, ffn_dim, n_heads, dropout_prob=audio_dropout_rate
             )
             for _ in range(n_blocks)
         )
-        self.positional_encoder = PositionalEncoding(embedding_dim, dual_modality=False)
+        self.positional_encoder = PositionalEncoding(
+            embedding_dim, dropout=positional_dropout_rate
+        )
         self.output_dim = 2 * embedding_dim
 
     def forward(self, sample: dict) -> th.Tensor:

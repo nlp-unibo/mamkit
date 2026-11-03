@@ -221,3 +221,12 @@ def test_padded_tokens_do_not_change_text_bilstm_logits():
     both, _ = features.collate([dataset[0], dataset[1]], featurizers)
     with th.no_grad():
         th.testing.assert_close(model(both)[:1], model(alone))
+
+
+def test_mfcc_audio_keeps_constant_features_finite(tmp_path):
+    import soundfile
+
+    path = tmp_path / "silent.wav"
+    soundfile.write(path, np.zeros(16000, dtype="float32"), 16000)
+    [silent] = features.MFCCAudio(mfccs=13).transform([path])
+    assert np.isfinite(silent).all()

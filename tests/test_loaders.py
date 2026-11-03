@@ -687,3 +687,15 @@ def test_marg_builds_its_dataset_from_the_source_files(monkeypatch, tmp_path):
     features = pd.read_csv(loader.feature_path, dtype={"speaker_id": str})
     assert list(features.speaker_id.unique()) == ["00"]
     assert features.context.isna().all()
+
+    # Another confidence reuses the clips and the feature table.
+    monkeypatch.setattr(
+        loaders.AudioSegment,
+        "from_mp3",
+        lambda path: pytest.fail("the clips were cut twice"),
+    )
+    strict = loaders.MArg(
+        task_name="arc", input_mode="text-only", confidence=1.0, base_data_path=tmp_path
+    )
+    assert list(strict.data.sentence_1) == ["Sentence 00."]
+    assert not list(folder.rglob("*.part"))

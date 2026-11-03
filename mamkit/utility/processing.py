@@ -78,6 +78,8 @@ def parse_audio_mfcc(
     if normalize and features.shape[0] > 1:
         mean = np.mean(features, axis=0)
         std = np.std(features, axis=0)
+        # A constant feature, such as any feature of a silent clip, becomes 0.
+        std[std == 0] = 1
         features = np.divide((features - mean[np.newaxis, :]), std[np.newaxis, :])
 
     return features

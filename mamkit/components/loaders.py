@@ -135,6 +135,13 @@ def extract_zip(url: str, data_path: Path):
     archive.unlink()
 
 
+def write_csv(df: pd.DataFrame, path: Path):
+    """Writes ``df`` to ``path`` only when complete, through a ``.part`` file."""
+    partial = path.with_name(path.name + ".part")
+    df.to_csv(partial, index=False)
+    partial.replace(path)
+
+
 def trimmed_recording(dialogue_id: str, audio_path: Path, links: pd.DataFrame):
     """The full debate recording without the trimmed start and end."""
     recording = AudioSegment.from_file(
@@ -700,7 +707,7 @@ class MArg(Loader):
                         "timestamp": row.id,
                     }
                 )
-        pd.DataFrame(rows).to_csv(self.feature_path, index=False)
+        write_csv(pd.DataFrame(rows), self.feature_path)
 
     def download(self, target: Path):
         extract_zip(self.archive_url, target)
@@ -711,14 +718,16 @@ class MArg(Loader):
         shutil.rmtree(source_path)
 
     def build(self):
+        """Builds the pairs of ``confidence``, cutting the clips only once."""
         logging.info("Building M-Arg dataset...")
-        self.build_chunks()
+        if not self.feature_path.exists():
+            self.build_chunks()
         feature_df = pd.read_csv(self.feature_path)
         aggregated_df = pd.read_csv(self.aggregated_path)
         df = self.pairs(feature_df, aggregated_df)
         # The fold files list row positions, which this column records.
         df["index"] = np.arange(len(df))
-        df.to_csv(self.final_path, index=False)
+        write_csv(df, self.final_path)
 
 
 class Toy(Loader):

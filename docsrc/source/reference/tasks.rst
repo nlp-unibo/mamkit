@@ -23,8 +23,8 @@ The featurizers therefore compute pretrained and MFCC features once, for every s
 Then, for each seed, in order:
 
 1. Seed Python, NumPy, and PyTorch through Lightning, and compute the splits.
-2. For each split, build a fresh model from its key.
-3. Fit the featurizers on the training set, transform every set, and pass the fitted vocabulary to every module that defines ``load_vocabulary``.
+2. For each split, fit the featurizers on the training set and transform every set.
+3. Build a fresh model from its key, and pass the fitted vocabulary to every module that defines ``load_vocabulary``.
 4. Train with early stopping on the validation loss, with ``patience`` epochs, and keep the checkpoint with the lowest validation loss.
 5. Score that checkpoint on the validation set and on the test set.
 
