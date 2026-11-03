@@ -2,6 +2,7 @@
 
 import io
 import json
+import re
 import tarfile
 import zipfile
 from pathlib import Path
@@ -617,3 +618,72 @@ def test_marg_recovers_from_an_interrupted_download(monkeypatch, tmp_path, owner
     assert len(calls) > 1  # the retry ran the failed step again
     pd.testing.assert_frame_equal(data, expected)
     assert not (tmp_path / "root" / "MArg.part").exists()
+
+
+def write_marg_sources(folder: Path, debates):
+    """The M-Arg source files with one sentence per debate, and two pairs."""
+    data = folder / "data"
+    for name in ("original data", "tokenised text", "timestamps", "split audio"):
+        (data / name).mkdir(parents=True, exist_ok=True)
+    (data / "preprocessed full dataset").mkdir()
+    (folder / "annotated dataset").mkdir()
+    contexts = []
+    for timestamp_name, debate in debates.items():
+        stem = re.sub(r"_(part)?\d+_timestamp\.csv$", "", timestamp_name)
+        text = f"Sentence {debate}."
+        # A transcript names each speaker once per paragraph.
+        pd.DataFrame(
+            {"speaker": ["Chris Wallace"], "minute": ["00:00"], "text": [text]}
+        ).to_csv(data / "original data" / f"{stem}.csv", index=False, mode="a")
+        pd.DataFrame([["t0", 0.5, 1.5, text]]).to_csv(
+            data / "timestamps" / timestamp_name, header=False, index=False
+        )
+        (
+            data / "split audio" / (timestamp_name.split("_timestamp")[0] + ".mp3")
+        ).touch()
+        contexts.append({"id": f"n{debate}0000", "context": "Ignore"})
+    pd.DataFrame(contexts).to_csv(
+        data / "preprocessed full dataset" / "dataset_context_definition.csv",
+        index=False,
+    )
+    pd.DataFrame(
+        {
+            "pair_id": [1, 2],
+            "relation": ["support", "attack"],
+            "relation:confidence": [1.0, 0.5],
+            "sentence_1": ["Sentence 00.", "Sentence 01."],
+            "sentence_2": ["Sentence 16.", "Sentence 02."],
+        }
+    ).to_csv(folder / "annotated dataset" / "aggregated_dataset.csv", index=False)
+
+
+def test_marg_builds_its_dataset_from_the_source_files(monkeypatch, tmp_path):
+    from pydub import AudioSegment
+
+    folder = tmp_path / "MArg"
+    # A loader built without its data gives the debate names to write.
+    monkeypatch.setattr(loaders, "build_once", lambda path, build: None)
+    monkeypatch.setattr(loaders.MArg, "build", lambda self: None)
+    loader = loaders.MArg(
+        task_name="arc",
+        input_mode="text-only",
+        confidence=0.85,
+        base_data_path=tmp_path,
+    )
+    monkeypatch.undo()
+    write_marg_sources(folder, loader.debate_id_map)
+    monkeypatch.setattr(loaders, "split_sentences", lambda text: [text])
+    monkeypatch.setattr(
+        loaders.AudioSegment, "from_mp3", lambda path: AudioSegment.silent(3000)
+    )
+
+    data = marg(tmp_path).data
+    assert list(data.relation) == [1]
+    assert list(data.sentence_1) == ["Sentence 00."]
+    assert [p.name for p in data.sentence_2_audio_path] == ["a160000.wav"]
+    # The clip keeps its start, which is within the buffer, and 2 s after its end.
+    clip = AudioSegment.from_wav(data.sentence_2_audio_path[0])
+    assert len(clip) == 2500
+    features = pd.read_csv(loader.feature_path, dtype={"speaker_id": str})
+    assert list(features.speaker_id.unique()) == ["00"]
+    assert features.context.isna().all()

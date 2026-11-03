@@ -124,8 +124,8 @@ def encode_audio_nn(
     processor,
     model,
     device,
-    processor_args: Dict = {},
-    model_args: Dict = {},
+    processor_args: Optional[Dict] = None,
+    model_args: Optional[Dict] = None,
     sampling_rate: int = 16000,
     downsampling_factor=None,
     aggregate: bool = False,
@@ -139,10 +139,12 @@ def encode_audio_nn(
             sampling_rate=sampling_rate,
             padding=True,
             return_tensors="pt",
-            **processor_args,
+            **(processor_args or {}),
         )
         features = features.input_values[0].to(device)
-        model_features = model(features, **model_args).last_hidden_state[0].unsqueeze(0)
+        model_features = (
+            model(features, **(model_args or {})).last_hidden_state[0].unsqueeze(0)
+        )
 
         if downsampling_factor is not None:
             try:
@@ -170,14 +172,14 @@ def encode_text_nn(
     tokenizer,
     model,
     device,
-    tokenizer_args: Dict = None,
-    model_args: Dict = None,
+    tokenizer_args: Optional[Dict] = None,
+    model_args: Optional[Dict] = None,
 ):
     check_text(text)
     tokenized = tokenizer(
-        [text], padding=True, return_tensors="pt", **tokenizer_args
+        [text], padding=True, return_tensors="pt", **(tokenizer_args or {})
     ).to(device)
-    model_output = model(**tokenized, **model_args)
+    model_output = model(**tokenized, **(model_args or {}))
     text_emb = model_output.last_hidden_state * tokenized.attention_mask[:, :, None]
     text_emb = text_emb.detach().cpu().numpy()[0]
 

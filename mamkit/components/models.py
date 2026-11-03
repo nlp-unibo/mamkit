@@ -10,6 +10,8 @@ from typing import List
 import torch as th
 from cinnamon.registry import Registry
 
+from mamkit.components.encoders import Child
+
 
 class Classifier(th.nn.Module):
     """An encoder followed by a head of linear layers separated by ReLU.
@@ -19,7 +21,7 @@ class Classifier(th.nn.Module):
     ``b``, and the head reads both vectors concatenated.
     """
 
-    def __init__(self, encoder: th.nn.Module, head: List[int], pair: bool = False):
+    def __init__(self, encoder: Child, head: List[int], pair: bool = False):
         super().__init__()
         self.encoder = Registry.from_keys(encoder)
         self.pair = pair
@@ -48,8 +50,8 @@ class Ensemble(th.nn.Module):
 
     def __init__(
         self,
-        text: th.nn.Module,
-        audio: th.nn.Module,
+        text: Child,
+        audio: Child,
         lower_bound: float = 0.3,
         upper_bound: float = 0.7,
     ):

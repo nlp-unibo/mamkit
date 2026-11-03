@@ -9,7 +9,7 @@ This file records call relations and module dependencies of the `mamkit` package
 1. `basic_english` lowercases a text, separates punctuation, and splits the text on whitespace.
 2. `build_vocabulary` calls a tokenizer on every text and returns a `Vocabulary`.
 3. `Vocabulary` maps tokens to indices and maps unknown tokens to `<unk>`.
-4. `glove_vectors` downloads and extracts a GloVe file into a cache and returns one vector per token.
+4. `glove_vectors` calls `download` for the GloVe archive, extracts one vector file into a cache, and returns one vector per token.
 
 ## Audio utilities
 
@@ -22,7 +22,7 @@ This file records call relations and module dependencies of the `mamkit` package
 
 ## Downloads and metrics
 
-`mamkit.utility.data.download` fetches a URL with httpx. `youtube_download` fetches the audio of a video with yt_dlp.
+`mamkit.utility.data.download` fetches a URL with httpx into a `.part` file and renames it when complete. `youtube_download` fetches the audio of each debate video with yt_dlp and skips the debates already downloaded.
 `mamkit.utility.metrics.ClassSubsetMulticlassF1Score` computes the multiclass F1 score and averages it over a subset of classes.
 
 ## Encoders and models
@@ -33,7 +33,7 @@ This file records call relations and module dependencies of the `mamkit` package
 2. `TextBiLSTM` and `AudioBiLSTM` call `LSTMStack`. When the sample holds an `input_mask`, they pass its lengths, and `LSTMStack` packs the padded sequences.
 3. `TextTransformer` calls a pretrained model from transformers. `TextPool` averages precomputed token embeddings.
 4. `AudioTransformer` calls `torch.nn.TransformerEncoder` and `PositionalEncoding`.
-5. `CSA` calls `CustomEncoder` and `PositionalEncoding`. `MulTA` calls `MulTA_CrossAttentionBlock` and `PositionalEncoding`.
+5. `CSA` calls `CustomEncoder` and `PositionalEncoding`. `MulTA` calls `MulTACrossAttentionBlock` and `PositionalEncoding`.
 6. `Concat` calls each of its encoders on the same sample.
 7. `TextTransformer`, `TextPool`, `AudioTransformer`, `CSA`, and `MulTA` call `masked_mean`.
 
@@ -62,7 +62,7 @@ This file records call relations and module dependencies of the `mamkit` package
 
 1. Each loader downloads its corpus in `__init__` through `build_once`, which builds a `.part` folder and renames it when the build completes. `MMUSED` and `MMUSEDFallacy` build their clip folder the same way, only when their input mode reads audio. `MMUSED`, `MMUSEDFallacy`, and `MArg` call `extract_zip`, which downloads one zip file from Zenodo and extracts it.
 2. `build_clips` calls `youtube_download`, `trimmed_recording`, and `export_clip`.
-3. `MArg.build_chunks` calls `split_sentences`, which downloads the NLTK sentence model when it is missing. `MMUSEDFallacy` calls `window_start` to cut the context of both tasks.
+3. `MArg.build` calls `build_chunks` and `pairs`. `build_chunks` calls `split_transcripts`, which calls `split_sentences`, and then cuts one clip per timestamped sentence. `split_sentences` downloads the NLTK sentence model when it is missing. `MMUSEDFallacy` calls `window_start` to cut the context of both tasks.
 4. `Loader.dataset` reads the column names from `columns` and returns a `MAMDataset` with the modalities of the input mode.
 
 `mamkit.components.splits` depends on `mamkit.components.datasets` and `mamkit.utility.data`. Each strategy reads `loader.data`, calls `loader.dataset` on row subsets, and returns a list of `Split`. `FoldFiles` calls `download` when its file is missing from the loader folder.

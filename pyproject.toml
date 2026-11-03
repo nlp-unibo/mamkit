@@ -83,6 +83,6 @@ branch = true
 source = ["mamkit"]
 
 [tool.coverage.report]
-# Measured at 94.40% on Python 3.10 on 2026-11-02. The registration modules
+# Measured at 98.76% on Python 3.10 on 2026-11-03. The registration modules
 # run fully on import, so they raise the figure. CI and nox both read this.
-fail_under = 94
+fail_under = 98

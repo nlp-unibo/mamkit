@@ -27,7 +27,7 @@ Run local CI with ``nox``:
    * - ``nox``
      - Ruff and tests
    * - ``nox -s tests``
-     - Tests with a 94% branch-coverage gate, then ``cmn-check --deep`` on the registrations, on every supported interpreter found locally
+     - Tests with a 98% branch-coverage gate, then ``cmn-check --deep`` on the registrations, on every supported interpreter found locally
    * - ``nox -s docs``
      - Sphinx build, with warnings as errors
    * - ``nox -s package``

@@ -358,7 +358,7 @@ class CustomEncoder(nn.Module):
         return x
 
 
-class MulTA_CrossAttentionBlock(torch.nn.Module):
+class MulTACrossAttentionBlock(torch.nn.Module):
     """
     Class for the cross modal attention block
     """

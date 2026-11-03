@@ -166,8 +166,13 @@ class UKDebates(Loader):
     archive_url = "http://argumentationmining.disi.unibo.it/dataset_aaai2016.tgz"
     speakers = ("Miliband", "Clegg", "Cameron")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        task_name: str,
+        input_mode: str,
+        base_data_path: Optional[str] = None,
+    ):
+        super().__init__(task_name, input_mode, base_data_path)
         self.audio_path = self.data_path.joinpath("dataset", "audio")
         # The archive holds text and audio together.
         build_once(self.data_path, self.download)
@@ -220,8 +225,14 @@ class MMUSED(Loader):
     # Zenodo answers 403 for record archives, so the loaders fetch the file.
     archive_url = "https://zenodo.org/api/records/14938592/files/MMUSED.zip/content"
 
-    def __init__(self, sample_rate: int = 16000, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        task_name: str,
+        input_mode: str,
+        base_data_path: Optional[str] = None,
+        sample_rate: int = 16000,
+    ):
+        super().__init__(task_name, input_mode, base_data_path)
         self.sample_rate = sample_rate
         self.audio_path = self.data_path.joinpath("audio_recordings")
         self.clips_path = self.data_path.joinpath("audio_clips")
@@ -308,12 +319,14 @@ class MMUSEDFallacy(Loader):
 
     def __init__(
         self,
+        task_name: str,
+        input_mode: str,
+        base_data_path: Optional[str] = None,
         with_context: bool = False,
         context_window: int = 3,
         sample_rate: int = 16000,
-        **kwargs,
     ):
-        super().__init__(**kwargs)
+        super().__init__(task_name, input_mode, base_data_path)
         self.with_context = with_context
         self.context_window = context_window
         self.sample_rate = sample_rate
@@ -476,8 +489,14 @@ class MArg(Loader):
     )
     relations = ("neither", "support", "attack")
 
-    def __init__(self, confidence: float, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        task_name: str,
+        input_mode: str,
+        confidence: float,
+        base_data_path: Optional[str] = None,
+    ):
+        super().__init__(task_name, input_mode, base_data_path)
         if confidence not in (0.85, 1.0):
             raise ValueError("MArg confidence must be 0.85 or 1.0")
         self.confidence = confidence
@@ -576,199 +595,112 @@ class MArg(Loader):
         df["relation"] = df.relation.map(self.relations.index)
         return df
 
-    def _build_complete_dataset(self, feature_df, aggregated_df):
-        df_final = pd.DataFrame(
-            columns=[
-                "id",
-                "relation",
-                "confidence",
-                "sentence_1",
-                "sentence_2",
-                "sentence_1_audio",
-                "sentence_2_audio",
+    def pairs(self, feature_df: pd.DataFrame, aggregated_df: pd.DataFrame):
+        """The annotated pairs with at least ``confidence``, with their clips."""
+        # The first clip of a text, as the M-Arg scripts pick it.
+        clips = feature_df.drop_duplicates("text").set_index("text")["audio_file"]
+        pairs = aggregated_df[aggregated_df["relation:confidence"] >= self.confidence]
+        df = pd.DataFrame(
+            {
+                "id": pairs["pair_id"],
+                "relation": pairs["relation"],
+                "confidence": pairs["relation:confidence"],
+                "sentence_1": pairs["sentence_1"],
+                "sentence_2": pairs["sentence_2"],
+                "sentence_1_audio": pairs["sentence_1"].map(clips),
+                "sentence_2_audio": pairs["sentence_2"].map(clips),
+            }
+        ).reset_index(drop=True)
+        for side in ("sentence_1", "sentence_2"):
+            df[f"{side}_audio_path"] = [
+                self.audio_path.joinpath(f"{clip}.wav") for clip in df[f"{side}_audio"]
             ]
-        )
+        return df
 
-        for index, row in aggregated_df.iterrows():
-            # ids
-            id1 = row["pair_id"]
+    def split_transcripts(self):
+        """Splits each transcript into sentences, one CSV file per debate.
 
-            # labels
-            relation1 = row["relation"]
-
-            # label confidence
-            conf1 = row["relation:confidence"]
-
-            # sentences
-            s1t = row["sentence_1"]
-            s2t = row["sentence_2"]
-
-            # corresponding audio sentences based on the text
-            s1a = feature_df["audio_file"].loc[feature_df["text"] == s1t].values[0]
-            s2a = feature_df["audio_file"].loc[feature_df["text"] == s2t].values[0]
-
-            if row["relation:confidence"] >= self.confidence:
-                df_final = df_final._append(
-                    {
-                        "id": id1,
-                        "relation": relation1,
-                        "confidence": conf1,
-                        "sentence_1": s1t,
-                        "sentence_2": s2t,
-                        "sentence_1_audio": s1a,
-                        "sentence_1_audio_path": self.audio_path.joinpath(s1a + ".wav"),
-                        "sentence_2_audio": s2a,
-                        "sentence_2_audio_path": self.audio_path.joinpath(s2a + ".wav"),
-                    },
-                    ignore_index=True,
-                )
-
-        return df_final
-
-    def build_chunks(self):
+        It also numbers the speakers in order of first appearance.
+        """
         tokenized_path = self.data_path.joinpath("data", "tokenised text")
-
-        idx = 0
-        for filepath in self.data_path.joinpath("data", "original data").glob("*.csv"):
-            speaker = []
-            text = []
-
+        original = sorted(
+            self.data_path.joinpath("data", "original data").glob("*.csv")
+        )
+        for filepath in original:
             df = pd.read_csv(filepath, header=0, names=["speaker", "minute", "text"])
-
-            for r in df.index:
-                # Tokenised text
-                split_text = split_sentences(df["text"].iloc[r])
-                text += split_text
-                # Match speakers to their names using the dictionary above
-                try:
-                    speaker_name = self.speakers_map[df["speaker"].iloc[r]]
-                except Exception:  # In theory this exception is never raised
-                    speaker_name = "Speaker not found"
-                speaker += [speaker_name] * len(split_text)
-                # Assign IDs to speakers
-                # A dictionary of speakers_to_id is filled for later use
-                if speaker_name not in self.speakers_to_id:
-                    if idx < 10:
-                        self.speakers_to_id[speaker_name] = "0" + str(idx)
-                    else:
-                        self.speakers_to_id[speaker_name] = str(idx)
-                    idx = idx + 1
-
-            df_split = pd.DataFrame({"speaker": speaker, "text": text})
-            df_split.to_csv(
+            rows = []
+            for speaker, text in zip(df["speaker"], df["text"]):
+                name = self.speakers_map.get(speaker, "Speaker not found")
+                if name not in self.speakers_to_id:
+                    # The "error" entry holds no number, so numbers start at 00.
+                    number = len(self.speakers_to_id) - 1
+                    self.speakers_to_id[name] = f"{number:02d}"
+                rows += [(name, sentence) for sentence in split_sentences(text)]
+            pd.DataFrame(rows, columns=["speaker", "text"]).to_csv(
                 tokenized_path.joinpath(filepath.stem + "_split.csv"), index=False
             )
 
-            # We also create a version in plan text (used by the force aligner tool)
-            with open(
-                tokenized_path.joinpath(filepath.stem + "_plain.txt"),
-                "w",
-                encoding="utf8",
-            ) as f:
-                for t in df_split["text"]:
-                    f.write(t + "\n")
-
-        filepath_topic = self.data_path.joinpath("data", "preprocessed full dataset")
-        df_topic = pd.read_csv(
-            filepath_topic.joinpath("dataset_context_definition.csv")
+    def build_chunks(self):
+        """Cuts one clip per timestamped sentence and writes the feature table."""
+        self.split_transcripts()
+        data = self.data_path.joinpath("data")
+        topics = pd.read_csv(
+            data.joinpath("preprocessed full dataset", "dataset_context_definition.csv")
         )
-        filepath_timestamps = self.data_path.joinpath("data", "timestamps")
-        filepath_audio = self.data_path.joinpath("data", "split audio")
-        filepath_audio_save = self.data_path.joinpath("data", "audio sentences")
-
-        filepath_audio_save.mkdir(parents=True, exist_ok=True)
-
+        contexts = dict(zip(topics["id"], topics["context"]))
+        self.audio_path.mkdir(parents=True, exist_ok=True)
+        # Seconds of audio kept around each sentence.
         buffer = 2
 
-        big_df = pd.DataFrame(
-            columns=[
-                "id",
-                "text",
-                "speaker",
-                "speaker_id",
-                "audio_file",
-                "context",
-                "debate",
-            ]
-        )
-
-        for timestamp_name in self.debate_id_map:
+        rows = []
+        for timestamp_name, debate in self.debate_id_map.items():
             df = pd.read_csv(
-                filepath_timestamps.joinpath(timestamp_name),
+                data.joinpath("timestamps", timestamp_name),
                 header=None,
                 names=["id", "start", "end", "text"],
             )
-
-            debate_mp3 = AudioSegment.from_mp3(
-                filepath_audio.joinpath(timestamp_name.split("_timestamp")[0] + ".mp3")
+            recording = AudioSegment.from_mp3(
+                data.joinpath(
+                    "split audio", timestamp_name.split("_timestamp")[0] + ".mp3"
+                )
             )
-
-            speak_df = pd.read_csv(
-                tokenized_path.joinpath(
-                    re.sub(r"_(part)?\d+_timestamp\.csv$", "_split.csv", timestamp_name)
+            speakers = pd.read_csv(
+                data.joinpath(
+                    "tokenised text",
+                    re.sub(
+                        r"_(part)?\d+_timestamp\.csv$", "_split.csv", timestamp_name
+                    ),
                 ),
                 header=0,
                 names=["speaker", "text"],
-            )
+            ).drop_duplicates("text")
+            speakers = dict(zip(speakers["text"], speakers["speaker"]))
 
-            f_idx = self.debate_id_map[timestamp_name]
-            idx = 0
-            for index, row in df.iterrows():
-                if row["start"] < buffer:
-                    extract = debate_mp3[
-                        row["start"] * 1000 : (row["end"] + buffer) * 1000
-                    ]
-                else:
-                    try:
-                        extract = debate_mp3[
-                            (row["start"] - buffer) * 1000 : (row["end"] + buffer)
-                            * 1000
-                        ]
-                    except Exception:
-                        extract = debate_mp3[
-                            (row["start"] - buffer) * 1000 : row["end"] * 1000
-                        ]
+            for index, row in enumerate(df.itertuples()):
+                number = f"{debate}{index:04d}"
+                # A sentence that starts within the buffer keeps its own start.
+                start = row.start if row.start < buffer else row.start - buffer
+                clip = recording[start * 1000 : (row.end + buffer) * 1000]
+                clip.export(self.audio_path.joinpath(f"a{number}.wav"), format="wav")
 
-                str_idx = str(idx)
-                while len(str_idx) < 4:
-                    str_idx = "0" + str_idx
-                str_idx = str(f_idx) + str_idx
-
-                idx = idx + 1
-                try:
-                    speaker = speak_df[speak_df["text"] == row["text"]]["speaker"].iloc[
-                        0
-                    ]
-                except Exception:
-                    logging.info(f"Error parsing {row['text']}")
+                speaker = speakers.get(row.text)
+                if speaker is None:
+                    logging.info(f"Error parsing {row.text}")
                     speaker = "error"
-
-                context = df_topic[df_topic["id"] == "n" + str_idx]["context"].values[0]
-                if context == "Ignore":
-                    context = None
-
-                timestamp = row["id"]
-                big_df = big_df._append(
+                context = contexts[f"n{number}"]
+                rows.append(
                     {
-                        "id": "n" + str_idx,
-                        "text": row["text"],
+                        "id": f"n{number}",
+                        "text": row.text,
                         "speaker": speaker,
                         "speaker_id": self.speakers_to_id[speaker],
-                        "audio_file": ("a" + str_idx),
-                        "context": context,
-                        "debate": str(f_idx),
-                        "timestamp": timestamp,
-                    },
-                    ignore_index=True,
+                        "audio_file": f"a{number}",
+                        "context": None if context == "Ignore" else context,
+                        "debate": debate,
+                        "timestamp": row.id,
+                    }
                 )
-
-                extract.export(
-                    filepath_audio_save.joinpath("a" + str_idx + ".wav"), format="wav"
-                )
-
-        big_df.to_csv(
-            filepath_topic.joinpath("full_feature_extraction_dataset.csv"), index=False
-        )
+        pd.DataFrame(rows).to_csv(self.feature_path, index=False)
 
     def download(self, target: Path):
         extract_zip(self.archive_url, target)
@@ -783,14 +715,10 @@ class MArg(Loader):
         self.build_chunks()
         feature_df = pd.read_csv(self.feature_path)
         aggregated_df = pd.read_csv(self.aggregated_path)
-        train_df = self._build_complete_dataset(
-            feature_df=feature_df, aggregated_df=aggregated_df
-        )
-
-        # Add index for cv routine
-        train_df["index"] = np.arange(train_df.shape[0])
-
-        train_df.to_csv(self.final_path, index=False)
+        df = self.pairs(feature_df, aggregated_df)
+        # The fold files list row positions, which this column records.
+        df["index"] = np.arange(len(df))
+        df.to_csv(self.final_path, index=False)
 
 
 class Toy(Loader):
@@ -805,8 +733,15 @@ class Toy(Loader):
     tasks = ("toy",)
     filler = ("the", "a", "debate", "policy", "tax", "vote", "plan", "now")
 
-    def __init__(self, size: int = 200, seed: int = 0, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        task_name: str,
+        input_mode: str,
+        base_data_path: Optional[str] = None,
+        size: int = 200,
+        seed: int = 0,
+    ):
+        super().__init__(task_name, input_mode, base_data_path)
         if self.input_mode != "text-only":
             raise ValueError("The toy corpus has text only")
         self.size = size
